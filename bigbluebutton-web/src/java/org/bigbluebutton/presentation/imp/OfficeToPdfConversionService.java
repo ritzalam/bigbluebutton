@@ -59,7 +59,7 @@ public class OfficeToPdfConversionService {
 	}
 	
 	private boolean convertOfficeDocToPdf(UploadedPresentation pres, File pdfOutput) {
-		PageConverter converter = new Office2PdfPageConverter();
+		PageConverter converter = new MsOffice2PdfPageConverter();
 		return converter.convert(pres.getUploadedFile(), pdfOutput, 0);
 	}
 	

@@ -53,6 +53,8 @@ dependencies {
 	compile 'com.zaxxer:nuprocess:1.0.4'
 
 	compile 'org.bigbluebutton:bbb-common-message:0.0.13'
+	compile 'org.apache.httpcomponents:httpclient:4.5.1'
+	compile 'org.apache.httpcomponents:httpmime:4.5.1'
 	
   // Logging
   // Commenting out as it results in build failure (ralam - may 11, 2014)

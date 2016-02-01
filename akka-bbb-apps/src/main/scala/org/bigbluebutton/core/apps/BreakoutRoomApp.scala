@@ -29,6 +29,11 @@ trait BreakoutRoomApp extends SystemConfiguration {
     presURL
   }
 
+  def handleBreakoutRoomsList(msg: BreakoutRoomsListMessage) {
+    val breakoutRooms = breakoutModel.getRooms().toVector map { r => new BreakoutRoomBody(r.name, r.id) }
+    outGW.send(new BreakoutRoomsListOutMessage(mProps.meetingID, breakoutRooms));
+  }
+
   def handleCreateBreakoutRooms(msg: CreateBreakoutRooms) {
     var i = 0
     for (room <- msg.rooms) {
@@ -67,7 +72,6 @@ trait BreakoutRoomApp extends SystemConfiguration {
 
     breakoutModel.getAssignedUsers(msg.breakoutRoomId) foreach { users =>
       users.foreach { u =>
-        log.debug("## Sending Join URL for users: {}", u);
         sendJoinURL(u, msg.breakoutRoomId)
       }
     }
@@ -75,6 +79,11 @@ trait BreakoutRoomApp extends SystemConfiguration {
 
   def sendBreakoutRoomStarted(meetingId: String, breakoutName: String, breakoutId: String, voiceConfId: String) {
     outGW.send(new BreakoutRoomStartedOutMessage(meetingId, mProps.recorded, new BreakoutRoomBody(breakoutName, breakoutId)))
+  }
+
+  def handleBreakoutRoomEnded(msg: BreakoutRoomEnded) {
+    breakoutModel.remove(msg.breakoutRoomId)
+    outGW.send(new BreakoutRoomEndedOutMessage(msg.meetingId, msg.breakoutRoomId))
   }
 
   def handleBreakoutRoomUsersUpdate(msg: BreakoutRoomUsersUpdate) {
@@ -88,6 +97,19 @@ trait BreakoutRoomApp extends SystemConfiguration {
     val breakoutUsers = users map { u => new BreakoutUser(u.userID, u.name) }
     eventBus.publish(BigBlueButtonEvent(mProps.externalMeetingID,
       new BreakoutRoomUsersUpdate(mProps.externalMeetingID, mProps.meetingID, breakoutUsers)))
+  }
+
+  def handleEndAllBreakoutRooms(msg: EndAllBreakoutRooms) {
+    breakoutModel.getRooms().foreach { room =>
+      outGW.send(new EndBreakoutRoom(room.id))
+    }
+  }
+
+  def handleEndMeeting(msg: EndMeeting) {
+    if (mProps.isBreakout) {
+      eventBus.publish(BigBlueButtonEvent(mProps.externalMeetingID,
+        BreakoutRoomEnded(mProps.externalMeetingID, mProps.meetingID)))
+    }
   }
 }
 

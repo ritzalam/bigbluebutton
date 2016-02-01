@@ -26,11 +26,13 @@ trait UsersApp {
 
     val user = usersModel.getUser(msg.userid)
     user foreach { u =>
-      val vu = u.voiceUser.copy(joined = false, talking = false)
-      val uvo = u.copy(listenOnly = true, voiceUser = vu)
-      usersModel.addUser(uvo)
-      log.info("UserConnectedToGlobalAudio: meetingId=" + mProps.meetingID + " userId=" + uvo.userID + " user=" + uvo)
-      outGW.send(new UserListeningOnly(mProps.meetingID, mProps.recorded, uvo.userID, uvo.listenOnly))
+      if (usersModel.addGlobalAudioConnection(msg.userid)) {
+        val vu = u.voiceUser.copy(joined = false, talking = false)
+        val uvo = u.copy(listenOnly = true, voiceUser = vu)
+        usersModel.addUser(uvo)
+        log.info("UserConnectedToGlobalAudio: meetingId=" + mProps.meetingID + " userId=" + uvo.userID + " user=" + uvo)
+        outGW.send(new UserListeningOnly(mProps.meetingID, mProps.recorded, uvo.userID, uvo.listenOnly))
+      }
     }
   }
 
@@ -39,16 +41,18 @@ trait UsersApp {
 
     val user = usersModel.getUser(msg.userid)
     user foreach { u =>
-      if (!u.joinedWeb) {
-        val userLeaving = usersModel.removeUser(u.userID)
-        log.info("Not web user. Send user left message. meetingId=" + mProps.meetingID + " userId=" + u.userID + " user=" + u)
-        userLeaving foreach (u => outGW.send(new UserLeft(mProps.meetingID, mProps.recorded, u)))
-      } else {
-        val vu = u.voiceUser.copy(joined = false)
-        val uvo = u.copy(listenOnly = false, voiceUser = vu)
-        usersModel.addUser(uvo)
-        log.info("UserDisconnectedToGlobalAudio: meetingId=" + mProps.meetingID + " userId=" + uvo.userID + " user=" + uvo)
-        outGW.send(new UserListeningOnly(mProps.meetingID, mProps.recorded, uvo.userID, uvo.listenOnly))
+      if (usersModel.removeGlobalAudioConnection(msg.userid)) {
+        if (!u.joinedWeb) {
+          val userLeaving = usersModel.removeUser(u.userID)
+          log.info("Not web user. Send user left message. meetingId=" + mProps.meetingID + " userId=" + u.userID + " user=" + u)
+          userLeaving foreach (u => outGW.send(new UserLeft(mProps.meetingID, mProps.recorded, u)))
+        } else {
+          val vu = u.voiceUser.copy(joined = false)
+          val uvo = u.copy(listenOnly = false, voiceUser = vu)
+          usersModel.addUser(uvo)
+          log.info("UserDisconnectedToGlobalAudio: meetingId=" + mProps.meetingID + " userId=" + uvo.userID + " user=" + uvo)
+          outGW.send(new UserListeningOnly(mProps.meetingID, mProps.recorded, uvo.userID, uvo.listenOnly))
+        }
       }
     }
   }
@@ -152,6 +156,24 @@ trait UsersApp {
         if (u.voiceUser.joined) {
           log.info("Ejecting user from voice.  meetingId=" + mProps.meetingID + " userId=" + u.userID)
           outGW.send(new EjectVoiceUser(mProps.meetingID, mProps.recorded, msg.ejectedBy, u.userID, mProps.voiceBridge, u.voiceUser.userId))
+        }
+      }
+      case None => // do nothing
+    }
+  }
+
+  def handleTransferUserToMeeting(msg: TransferUserToMeetingRequest) {
+    log.info("Received transfer user to meeting request. meetingId=" + mProps.meetingID + " breakoutId=" + msg.breakoutId + " userId=" + msg.userId + " toBreakout=" + msg.listen)
+    breakoutModel.getBreakoutRoom(msg.breakoutId) match {
+      case Some(b) => {
+        usersModel.getUser(msg.userId) match {
+          case Some(u) => {
+            if (u.voiceUser.joined) {
+              log.info("Transferring user between meetingId=" + mProps.meetingID + " userId=" + u.userID + " and breakoutId=" + b.id)
+              outGW.send(new TransferUserToMeeting(mProps.voiceBridge, b.voiceConfId, u.voiceUser.userId, msg.listen))
+            }
+          }
+          case None => // do nothing
         }
       }
       case None => // do nothing
@@ -457,7 +479,8 @@ trait UsersApp {
   }
 
   def startRecordingVoiceConference() {
-    if (usersModel.numUsersInVoiceConference == 1 && mProps.recorded) {
+    if (usersModel.numUsersInVoiceConference == 1 && mProps.recorded && !usersModel.isVoiceRecording) {
+      usersModel.startRecordingVoice()
       log.info("Send START RECORDING voice conf. meetingId=" + mProps.meetingID + " voice conf=" + mProps.voiceBridge)
       outGW.send(new StartRecordingVoiceConf(mProps.meetingID, mProps.recorded, mProps.voiceBridge))
     }
@@ -497,6 +520,9 @@ trait UsersApp {
 
     usersModel.getUser(msg.userId) match {
       case Some(user) => {
+        // this is used to restore the mute state on reconnect
+        val previouslyMuted = user.voiceUser.muted
+
         val vu = new VoiceUser(msg.voiceUserId, msg.userId, msg.callerIdName,
           msg.callerIdNum, joined = true, locked = false,
           msg.muted, msg.talking, msg.listenOnly)
@@ -506,10 +532,10 @@ trait UsersApp {
         log.info("User joined voice. meetingId=" + mProps.meetingID + " userId=" + user.userID + " user=" + nu)
         outGW.send(new UserJoinedVoice(mProps.meetingID, mProps.recorded, mProps.voiceBridge, nu))
 
-        if (meetingModel.isMeetingMuted()) {
+        if (meetingModel.isMeetingMuted() || previouslyMuted) {
           outGW.send(new MuteVoiceUser(mProps.meetingID, mProps.recorded,
             nu.userID, nu.userID, mProps.voiceBridge,
-            nu.voiceUser.userId, meetingModel.isMeetingMuted()))
+            nu.voiceUser.userId, true))
         }
 
         startRecordingVoiceConference()
@@ -522,7 +548,8 @@ trait UsersApp {
   }
 
   def stopRecordingVoiceConference() {
-    if (usersModel.numUsersInVoiceConference == 0 && mProps.recorded) {
+    if (usersModel.numUsersInVoiceConference == 0 && mProps.recorded && usersModel.isVoiceRecording) {
+      usersModel.stopRecordingVoice()
       log.info("Send STOP RECORDING voice conf. meetingId=" + mProps.meetingID + " voice conf=" + mProps.voiceBridge)
       outGW.send(new StopRecordingVoiceConf(mProps.meetingID, mProps.recorded,
         mProps.voiceBridge, meetingModel.getVoiceRecordingFilename()))

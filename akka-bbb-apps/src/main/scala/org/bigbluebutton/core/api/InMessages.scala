@@ -1,10 +1,10 @@
 package org.bigbluebutton.core.api
 
 import org.bigbluebutton.core.api.Role._
-import org.bigbluebutton.core.apps.AnnotationVO
-import org.bigbluebutton.core.apps.Presentation
+import org.bigbluebutton.core.models.AnnotationVO
+import org.bigbluebutton.core.models.Presentation
 import org.bigbluebutton.core.MeetingProperties
-import org.bigbluebutton.core.apps.BreakoutUser
+import org.bigbluebutton.core.models.BreakoutUser
 import spray.json.JsObject
 
 case class InMessageHeader(name: String)

@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.apps
+package org.bigbluebutton.core.models
 
 case class CurrentPresenter(userId: String, name: String, assignedBy: String)
 case class CurrentPresentationInfo(presenter: CurrentPresenter, presentations: Seq[Presentation])

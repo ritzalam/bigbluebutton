@@ -1,18 +1,16 @@
-package org.bigbluebutton.core.apps
+package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
-import scala.collection.mutable.ArrayBuffer
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.SystemConfiguration
 import org.apache.commons.codec.digest.DigestUtils
 import scala.collection._
 import scala.collection.SortedSet
-import org.apache.commons.lang3.StringUtils
 import java.net.URLEncoder
-import scala.collection.immutable.StringOps
-import org.bigbluebutton.core.LiveMeeting
 import org.bigbluebutton.core.bus.IncomingEventBus
 import org.bigbluebutton.core.bus.BigBlueButtonEvent
+import org.bigbluebutton.core.LiveMeeting
+import org.bigbluebutton.core.models.BreakoutUser
 
 trait BreakoutRoomApp extends SystemConfiguration {
   this: LiveMeeting =>

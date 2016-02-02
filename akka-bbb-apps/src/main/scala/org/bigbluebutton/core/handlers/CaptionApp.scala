@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.apps
+package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
 import scala.collection.mutable.ArrayBuffer

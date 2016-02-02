@@ -13,11 +13,11 @@ import org.bigbluebutton.core.pubsub.senders.MeetingMessageToJsonConverter
 import org.bigbluebutton.core.pubsub.senders.PesentationMessageToJsonConverter
 import org.bigbluebutton.common.messages.GetPresentationInfoReplyMessage
 import org.bigbluebutton.common.messages.PresentationRemovedMessage
-import org.bigbluebutton.core.apps.Page
+import org.bigbluebutton.core.models.Page
 import collection.JavaConverters._
 import scala.collection.JavaConversions._
-import org.bigbluebutton.core.apps.SimplePollResultOutVO
-import org.bigbluebutton.core.apps.SimplePollOutVO
+import org.bigbluebutton.core.models.SimplePollResultOutVO
+import org.bigbluebutton.core.models.SimplePollOutVO
 import org.bigbluebutton.core.pubsub.senders.UsersMessageToJsonConverter
 import org.bigbluebutton.common.messages._
 import org.bigbluebutton.core.pubsub.senders.WhiteboardMessageToJsonConverter

@@ -1,14 +1,14 @@
 package org.bigbluebutton.core.api
 
-import org.bigbluebutton.core.apps.AnnotationVO
-import org.bigbluebutton.core.apps.CurrentPresentationInfo
-import org.bigbluebutton.core.apps.Presentation
-import org.bigbluebutton.core.apps.Page
+import org.bigbluebutton.core.models.AnnotationVO
+import org.bigbluebutton.core.models.CurrentPresentationInfo
+import org.bigbluebutton.core.models.Presentation
+import org.bigbluebutton.core.models.Page
 import org.bigbluebutton.core.MeetingProperties
-import org.bigbluebutton.core.apps.PollVO
-import org.bigbluebutton.core.apps.SimplePollOutVO
-import org.bigbluebutton.core.apps.SimplePollResultOutVO
-import org.bigbluebutton.core.apps.BreakoutUser
+import org.bigbluebutton.core.models.PollVO
+import org.bigbluebutton.core.models.SimplePollOutVO
+import org.bigbluebutton.core.models.SimplePollResultOutVO
+import org.bigbluebutton.core.models.BreakoutUser
 
 case class VoiceRecordingStarted(meetingID: String, recorded: Boolean, recordingFile: String, timestamp: String, confNum: String) extends IOutMessage
 case class VoiceRecordingStopped(meetingID: String, recorded: Boolean, recordingFile: String, timestamp: String, confNum: String) extends IOutMessage

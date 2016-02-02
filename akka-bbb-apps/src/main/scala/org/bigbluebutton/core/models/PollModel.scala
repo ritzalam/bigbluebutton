@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.apps
+package org.bigbluebutton.core.models
 
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.HashMap

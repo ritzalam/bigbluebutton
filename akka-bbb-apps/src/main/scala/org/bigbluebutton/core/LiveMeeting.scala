@@ -1,27 +1,28 @@
 package org.bigbluebutton.core
 
 import org.bigbluebutton.core.bus.IncomingEventBus
-import org.bigbluebutton.core.apps.UsersApp
-import org.bigbluebutton.core.apps.PresentationApp
-import org.bigbluebutton.core.apps.PollApp
-import org.bigbluebutton.core.apps.WhiteboardApp
-import org.bigbluebutton.core.apps.ChatApp
-import org.bigbluebutton.core.apps.LayoutApp
-import org.bigbluebutton.core.apps.BreakoutRoomApp
-import org.bigbluebutton.core.apps.ChatModel
-import org.bigbluebutton.core.apps.LayoutModel
-import org.bigbluebutton.core.apps.UsersModel
-import org.bigbluebutton.core.apps.PollModel
-import org.bigbluebutton.core.apps.WhiteboardModel
-import org.bigbluebutton.core.apps.PresentationModel
-import org.bigbluebutton.core.apps.BreakoutRoomModel
+import org.bigbluebutton.core.handlers.UsersApp
+import org.bigbluebutton.core.handlers.PresentationApp
+import org.bigbluebutton.core.handlers.PollApp
+import org.bigbluebutton.core.handlers.WhiteboardApp
+import org.bigbluebutton.core.handlers.ChatApp
+import org.bigbluebutton.core.handlers.LayoutApp
+import org.bigbluebutton.core.handlers.BreakoutRoomApp
+import org.bigbluebutton.core.models.ChatModel
+import org.bigbluebutton.core.models.LayoutModel
+import org.bigbluebutton.core.models.UsersModel
+import org.bigbluebutton.core.models.PollModel
+import org.bigbluebutton.core.models.WhiteboardModel
+import org.bigbluebutton.core.models.PresentationModel
+import org.bigbluebutton.core.models.BreakoutRoomModel
 import org.bigbluebutton.core.api._
 import akka.actor.ActorContext
 import akka.actor.ActorSystem
 import java.util.concurrent.TimeUnit
 import akka.event.Logging
-import org.bigbluebutton.core.apps.CaptionApp
-import org.bigbluebutton.core.apps.CaptionModel
+import org.bigbluebutton.core.handlers.CaptionApp
+import org.bigbluebutton.core.models.CaptionModel
+import org.bigbluebutton.core.filters.AuthorizationFilter
 
 class LiveMeeting(val mProps: MeetingProperties,
   val eventBus: IncomingEventBus,
@@ -37,7 +38,7 @@ class LiveMeeting(val mProps: MeetingProperties,
   val captionModel: CaptionModel)(implicit val context: ActorContext)
     extends UsersApp with PresentationApp
     with LayoutApp with ChatApp with WhiteboardApp with PollApp
-    with BreakoutRoomApp with CaptionApp {
+    with BreakoutRoomApp with CaptionApp with AuthorizationFilter {
 
   val log = Logging(context.system, getClass)
 

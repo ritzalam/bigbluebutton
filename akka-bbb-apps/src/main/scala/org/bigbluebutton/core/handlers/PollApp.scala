@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.apps
+package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
 import scala.collection.mutable.HashMap
@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import java.util.ArrayList
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
+import org.bigbluebutton.core.models._
 
 trait PollApp {
   this: LiveMeeting =>

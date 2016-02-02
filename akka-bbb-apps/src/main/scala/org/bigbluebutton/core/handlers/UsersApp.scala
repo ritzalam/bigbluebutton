@@ -1,8 +1,6 @@
-package org.bigbluebutton.core.apps
+package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
-import scala.collection.mutable.HashMap
-import java.util.ArrayList
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.immutable.ListSet
 import org.bigbluebutton.core.OutMessageGateway

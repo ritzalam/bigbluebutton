@@ -1,11 +1,9 @@
-package org.bigbluebutton.core.apps
+package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.service.whiteboard.WhiteboardKeyUtil
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
-
-case class Whiteboard(id: String, shapes: Seq[AnnotationVO])
 
 trait WhiteboardApp {
   this: LiveMeeting =>

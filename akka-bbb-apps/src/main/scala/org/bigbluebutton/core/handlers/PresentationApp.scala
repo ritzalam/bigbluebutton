@@ -1,9 +1,12 @@
-package org.bigbluebutton.core.apps
+package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
 import com.google.gson.Gson
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
+import org.bigbluebutton.core.models.CursorLocation
+import org.bigbluebutton.core.models.CurrentPresenter
+import org.bigbluebutton.core.models.CurrentPresentationInfo
 
 trait PresentationApp {
   this: LiveMeeting =>

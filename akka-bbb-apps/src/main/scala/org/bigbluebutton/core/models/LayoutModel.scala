@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.apps
+package org.bigbluebutton.core.models
 
 class LayoutModel {
   private var setByUser: String = "system";

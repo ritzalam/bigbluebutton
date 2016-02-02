@@ -5,7 +5,7 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
 import org.bigbluebutton.core.LiveMeeting
 
-trait ChatApp {
+trait ChatHandler {
   this: LiveMeeting =>
 
   val outGW: OutMessageGateway

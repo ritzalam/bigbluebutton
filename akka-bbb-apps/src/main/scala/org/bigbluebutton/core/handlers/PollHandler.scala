@@ -10,7 +10,7 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
 import org.bigbluebutton.core.models._
 
-trait PollApp {
+trait PollHandler {
   this: LiveMeeting =>
 
   val outGW: OutMessageGateway

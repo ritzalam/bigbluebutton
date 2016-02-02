@@ -6,7 +6,7 @@ import org.bigbluebutton.core.MeetingActor
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
 
-trait CaptionApp {
+trait CaptionHandler {
   this: LiveMeeting =>
 
   val outGW: OutMessageGateway

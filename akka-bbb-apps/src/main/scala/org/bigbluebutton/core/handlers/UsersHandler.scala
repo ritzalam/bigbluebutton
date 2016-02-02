@@ -6,7 +6,7 @@ import scala.collection.immutable.ListSet
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
 
-trait UsersApp {
+trait UsersHandler {
   this: LiveMeeting =>
 
   val outGW: OutMessageGateway

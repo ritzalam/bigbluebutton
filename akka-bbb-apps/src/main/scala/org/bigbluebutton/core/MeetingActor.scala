@@ -9,10 +9,10 @@ import org.bigbluebutton.core.api._
 import java.util.concurrent.TimeUnit
 import org.bigbluebutton.core.util._
 import scala.concurrent.duration._
-import org.bigbluebutton.core.handlers.{ PollApp, UsersApp, PresentationApp, LayoutApp, ChatApp, WhiteboardApp, CaptionApp }
+import org.bigbluebutton.core.handlers.{ PollHandler, UsersHandler, PresentationHandler, LayoutHandler, ChatHandler, WhiteboardHandler, CaptionHandler }
 import org.bigbluebutton.core.models.{ ChatModel, LayoutModel, UsersModel, PollModel, WhiteboardModel, CaptionModel }
 import org.bigbluebutton.core.models.PresentationModel
-import org.bigbluebutton.core.handlers.BreakoutRoomApp
+import org.bigbluebutton.core.handlers.BreakoutRoomHandler
 import org.bigbluebutton.core.models.BreakoutRoomModel
 
 object MeetingActorInternal {

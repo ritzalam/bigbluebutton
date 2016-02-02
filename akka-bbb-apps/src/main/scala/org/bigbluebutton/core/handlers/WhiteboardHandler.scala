@@ -5,7 +5,7 @@ import org.bigbluebutton.core.service.whiteboard.WhiteboardKeyUtil
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
 
-trait WhiteboardApp {
+trait WhiteboardHandler {
   this: LiveMeeting =>
 
   val outGW: OutMessageGateway

@@ -1,13 +1,13 @@
 package org.bigbluebutton.core
 
 import org.bigbluebutton.core.bus.IncomingEventBus
-import org.bigbluebutton.core.handlers.UsersApp
-import org.bigbluebutton.core.handlers.PresentationApp
-import org.bigbluebutton.core.handlers.PollApp
-import org.bigbluebutton.core.handlers.WhiteboardApp
-import org.bigbluebutton.core.handlers.ChatApp
-import org.bigbluebutton.core.handlers.LayoutApp
-import org.bigbluebutton.core.handlers.BreakoutRoomApp
+import org.bigbluebutton.core.handlers.UsersHandler
+import org.bigbluebutton.core.handlers.PresentationHandler
+import org.bigbluebutton.core.handlers.PollHandler
+import org.bigbluebutton.core.handlers.WhiteboardHandler
+import org.bigbluebutton.core.handlers.ChatHandler
+import org.bigbluebutton.core.handlers.LayoutHandler
+import org.bigbluebutton.core.handlers.BreakoutRoomHandler
 import org.bigbluebutton.core.models.ChatModel
 import org.bigbluebutton.core.models.LayoutModel
 import org.bigbluebutton.core.models.UsersModel
@@ -20,7 +20,7 @@ import akka.actor.ActorContext
 import akka.actor.ActorSystem
 import java.util.concurrent.TimeUnit
 import akka.event.Logging
-import org.bigbluebutton.core.handlers.CaptionApp
+import org.bigbluebutton.core.handlers.CaptionHandler
 import org.bigbluebutton.core.models.CaptionModel
 import org.bigbluebutton.core.filters.AuthorizationFilter
 
@@ -36,9 +36,9 @@ class LiveMeeting(val mProps: MeetingProperties,
   val presModel: PresentationModel,
   val breakoutModel: BreakoutRoomModel,
   val captionModel: CaptionModel)(implicit val context: ActorContext)
-    extends UsersApp with PresentationApp
-    with LayoutApp with ChatApp with WhiteboardApp with PollApp
-    with BreakoutRoomApp with CaptionApp with AuthorizationFilter {
+    extends UsersHandler with PresentationHandler
+    with LayoutHandler with ChatHandler with WhiteboardHandler with PollHandler
+    with BreakoutRoomHandler with CaptionHandler with AuthorizationFilter {
 
   val log = Logging(context.system, getClass)
 

@@ -2,7 +2,7 @@ package org.bigbluebutton.core.filters
 
 import org.bigbluebutton.core.api.UserJoining
 import org.bigbluebutton.core.LiveMeeting
-import org.bigbluebutton.core.handlers.UsersApp
+import org.bigbluebutton.core.handlers.UsersHandler
 
 object Authz {
   val NAME = "name"
@@ -14,7 +14,7 @@ trait DefaultAuthz {
   }
 }
 
-trait AuthorizationFilter extends UsersApp {
+trait AuthorizationFilter extends UsersHandler {
   this: LiveMeeting =>
 
   abstract override def handleUserJoin(msg: UserJoining): Unit = {

@@ -8,7 +8,7 @@ import org.bigbluebutton.core.models.CursorLocation
 import org.bigbluebutton.core.models.CurrentPresenter
 import org.bigbluebutton.core.models.CurrentPresentationInfo
 
-trait PresentationApp {
+trait PresentationHandler {
   this: LiveMeeting =>
 
   val outGW: OutMessageGateway

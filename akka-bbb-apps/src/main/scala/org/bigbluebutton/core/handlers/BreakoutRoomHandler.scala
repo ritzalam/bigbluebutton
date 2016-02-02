@@ -12,7 +12,7 @@ import org.bigbluebutton.core.bus.BigBlueButtonEvent
 import org.bigbluebutton.core.LiveMeeting
 import org.bigbluebutton.core.models.BreakoutUser
 
-trait BreakoutRoomApp extends SystemConfiguration {
+trait BreakoutRoomHandler extends SystemConfiguration {
   this: LiveMeeting =>
 
   val outGW: OutMessageGateway

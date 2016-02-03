@@ -19,7 +19,6 @@ trait UsersApp {
   }
 
   def becomePresenterIfOnlyModerator(userId: String, name: String, role: Role.Role) {
-    // Become presenter if the only moderator		
     if ((usersModel.numModerators == 1) || (usersModel.noPresenter())) {
       if (role == Role.MODERATOR) {
         assignNewPresenter(userId, name, userId)
@@ -27,7 +26,21 @@ trait UsersApp {
     }
   }
 
-  def createNewUser(userId: String, externId: String, name: String, role: Role.Role,
+  def changeUserEmojiStatus(userId: String, emojiStatus: String): Option[UserVO] = {
+    val vu = for {
+      user <- usersModel.getUser(userId)
+      val uvo = user.copy(emojiStatus = emojiStatus)
+    } yield uvo
+
+    vu foreach { u =>
+      usersModel.addUser(u)
+    }
+
+    vu
+  }
+
+  def createNewUser(userId: String, externId: String,
+    name: String, role: Role.Role,
     voiceUser: VoiceUser, locked: Boolean): UserVO = {
     /**
      * Initialize the newly joined user copying voice status in case this
@@ -38,7 +51,6 @@ trait UsersApp {
       hasStream = false, locked = locked,
       webcamStreams = new ListSet[String](), phoneUser = false, voiceUser,
       listenOnly = voiceUser.listenOnly, joinedWeb = true)
-
     usersModel.addUser(uvo)
     uvo
   }

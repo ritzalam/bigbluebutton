@@ -14,7 +14,7 @@ trait DefaultAuthz {
   }
 }
 
-trait AuthorizationFilter extends UsersHandler {
+trait UsersHandlerFilter extends UsersHandler {
   this: LiveMeeting =>
 
   abstract override def handleUserJoin(msg: UserJoining): Unit = {

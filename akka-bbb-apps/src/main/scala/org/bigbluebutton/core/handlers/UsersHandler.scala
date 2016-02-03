@@ -6,7 +6,7 @@ import scala.collection.immutable.ListSet
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
 
-trait UsersHandler {
+trait UsersHandler extends UsersApp {
   this: LiveMeeting =>
 
   val outGW: OutMessageGateway
@@ -303,7 +303,44 @@ trait UsersHandler {
     outGW.send(new GetUsersReply(msg.meetingID, msg.requesterID, usersModel.getUsers))
   }
 
+  def sendUserLeftEvent(user: UserVO) {
+    val u = usersModel.removeUser(user.userID)
+    outGW.send(new UserLeft(mProps.meetingID, mProps.recorded, user))
+  }
+
   def handleUserJoin(msg: UserJoining): Unit = {
+    log.debug("Received user joined meeting. metingId=" + mProps.meetingID + " userId=" + msg.userID)
+
+    val regUser = findRegisteredUserWithToken(msg.authToken)
+    val webUser = findUser(msg.userID)
+    webUser foreach { wu =>
+      if (!wu.joinedWeb) {
+        /**
+         * If user is not joined through the web (perhaps reconnecting).
+         * Send a user left event to clear up user list of all clients.
+         */
+        sendUserLeftEvent(wu)
+      }
+    }
+
+    regUser foreach { ru =>
+      val voiceUser = initializeVoice(msg.userID, ru.name)
+      val locked = getInitialLockStatus(ru.role)
+      val uvo = createNewUser(msg.userID, ru.externId, ru.name, ru.role, voiceUser, getInitialLockStatus(ru.role))
+
+      log.info("User joined meeting. metingId=" + mProps.meetingID + " userId=" + uvo.userID + " user=" + uvo)
+
+      outGW.send(new UserJoined(mProps.meetingID, mProps.recorded, uvo))
+      outGW.send(new MeetingState(mProps.meetingID, mProps.recorded, uvo.userID, meetingModel.getPermissions(), meetingModel.isMeetingMuted()))
+
+      becomePresenterIfOnlyModerator(msg.userID, ru.name, ru.role)
+    }
+
+    webUserJoined
+    startRecordingIfAutoStart()
+  }
+
+  def handleUserJoin2(msg: UserJoining): Unit = {
     log.debug("Received user joined meeting. metingId=" + mProps.meetingID + " userId=" + msg.userID)
 
     val regUser = usersModel.getRegisteredUserWithToken(msg.authToken)

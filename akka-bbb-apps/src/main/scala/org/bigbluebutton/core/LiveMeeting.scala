@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 import akka.event.Logging
 import org.bigbluebutton.core.handlers.CaptionHandler
 import org.bigbluebutton.core.models.CaptionModel
-import org.bigbluebutton.core.filters.AuthorizationFilter
+import org.bigbluebutton.core.filters.UsersHandlerFilter
 
 class LiveMeeting(val mProps: MeetingProperties,
   val eventBus: IncomingEventBus,
@@ -36,9 +36,9 @@ class LiveMeeting(val mProps: MeetingProperties,
   val presModel: PresentationModel,
   val breakoutModel: BreakoutRoomModel,
   val captionModel: CaptionModel)(implicit val context: ActorContext)
-    extends UsersHandler with PresentationHandler
+    extends PresentationHandler
     with LayoutHandler with ChatHandler with WhiteboardHandler with PollHandler
-    with BreakoutRoomHandler with CaptionHandler with AuthorizationFilter {
+    with BreakoutRoomHandler with CaptionHandler with UsersHandlerFilter {
 
   val log = Logging(context.system, getClass)
 

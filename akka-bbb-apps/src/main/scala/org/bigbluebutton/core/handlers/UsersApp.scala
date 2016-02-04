@@ -29,7 +29,7 @@ trait UsersApp {
   def changeUserEmojiStatus(userId: String, emojiStatus: String): Option[UserVO] = {
     val vu = for {
       user <- usersModel.getUser(userId)
-      val uvo = user.copy(emojiStatus = emojiStatus)
+       uvo = user.copy(emojiStatus = emojiStatus)
     } yield uvo
 
     vu foreach { u =>
@@ -42,10 +42,8 @@ trait UsersApp {
   def createNewUser(userId: String, externId: String,
     name: String, role: Role.Role,
     voiceUser: VoiceUser, locked: Boolean): UserVO = {
-    /**
-     * Initialize the newly joined user copying voice status in case this
-     * join is due to a reconnect.
-     */
+    // Initialize the newly joined user copying voice status in case this
+    // join is due to a reconnect.
     val uvo = new UserVO(userId, externId, name,
       role, emojiStatus = "none", presenter = false,
       hasStream = false, locked = locked,
@@ -61,25 +59,19 @@ trait UsersApp {
     val vu = wUser match {
       case Some(u) => {
         if (u.voiceUser.joined) {
-          /*
-             * User is in voice conference. Must mean that the user reconnected with audio
-             * still in the voice conference.
-             */
+          // User is in voice conference. Must mean that the user reconnected with audio
+          // still in the voice conference.
           u.voiceUser.copy()
         } else {
-          /**
-           * User is not joined in voice conference. Initialize user and copy status
-           * as user maybe joined listenOnly.
-           */
+          // User is not joined in voice conference. Initialize user and copy status
+          // as user maybe joined listenOnly.
           new VoiceUser(u.voiceUser.userId, userId, username, username,
             joined = false, locked = false, muted = false,
             talking = false, listenOnly = u.listenOnly)
         }
       }
       case None => {
-        /**
-         * New user. Initialize voice status.
-         */
+        // New user. Initialize voice status.
         new VoiceUser(userId, userId, username, username,
           joined = false, locked = false,
           muted = false, talking = false, listenOnly = false)

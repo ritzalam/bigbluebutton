@@ -29,7 +29,7 @@ trait UsersApp {
   def changeUserEmojiStatus(userId: String, emojiStatus: String): Option[UserVO] = {
     val vu = for {
       user <- usersModel.getUser(userId)
-       uvo = user.copy(emojiStatus = emojiStatus)
+      uvo = user.copy(emojiStatus = emojiStatus)
     } yield uvo
 
     vu foreach { u =>

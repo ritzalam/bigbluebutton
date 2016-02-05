@@ -9,6 +9,8 @@ sudo chmod -R 777 $RED5_DIR/webapps/
 
 cd $BBB_DIR
 
+sudo chmod -R 777 $RED5_DIR/webapps/
+
 DESKSHARE=$BBB_DIR/deskshare
 VOICE=$BBB_DIR/bbb-voice
 VIDEO=$BBB_DIR/bbb-video

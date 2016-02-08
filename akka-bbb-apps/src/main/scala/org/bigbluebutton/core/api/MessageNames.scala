@@ -166,4 +166,7 @@ object MessageNames {
   val EDIT_CAPTION_HISTORY = "edit_caption_history_message"
   val UPDATE_CAPTION_OWNER = "update_caption_owner_message"
   val SEND_CAPTION_HISTORY_REPLY = "send_caption_history_reply_message"
+
+  // breakout rooms
+  val BREAKOUT_ROOM_STARTED = "BreakoutRoomStarted"
 }

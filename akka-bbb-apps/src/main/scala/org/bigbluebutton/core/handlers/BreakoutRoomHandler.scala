@@ -127,7 +127,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
   def handleEndAllBreakoutRooms(msg: EndAllBreakoutRooms) {
     log.info("EndAllBreakoutRooms event received for meetingId={}", mProps.meetingID)
     breakoutModel.getRooms().foreach { room =>
-      outGW.send(new EndBreakoutRoom(room.id)) 
+      outGW.send(new EndBreakoutRoom(room.id))
     }
   }
 

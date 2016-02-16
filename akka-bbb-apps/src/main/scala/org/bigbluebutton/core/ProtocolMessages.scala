@@ -1,7 +1,7 @@
 package org.bigbluebutton.core
 
 case class OutMsgHeader(name: String)
-case class OutMsgEnvelopeHeader(`type`: MessageType.FooType, address: String)
+case class OutMsgEnvelopeHeader(`type`: MessageType.MessageType, address: String)
 
 trait OutMessage
 

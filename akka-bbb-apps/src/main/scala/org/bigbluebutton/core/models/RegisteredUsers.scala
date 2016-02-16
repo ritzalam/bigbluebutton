@@ -17,7 +17,7 @@ class RegisteredUsers {
     regUsers.values find (ru => userID contains ru.id)
   }
 
-  def remove(userId: String):Option[RegisteredUser2] = {
+  def remove(userId: String): Option[RegisteredUser2] = {
     val ru = findWithUserId(userId)
     ru foreach { u => regUsers -= u.authToken }
     ru

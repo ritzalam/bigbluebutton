@@ -18,12 +18,12 @@ class Users2 {
     users += uvo.id -> uvo
   }
 
-  def remove(id: String): Option[UserVO] = {
-    val user = uservos get (userId)
-    user foreach (u => uservos -= userId)
+  def remove(id: String): Option[User2] = {
+    val user = users get (id)
+    user foreach (u => users -= id)
     user
   }
-  
+
   def generateWebUserId(): String = {
     val webUserId = RandomStringGenerator.randomAlphanumericString(6)
     if (!hasUser(webUserId)) webUserId else generateWebUserId

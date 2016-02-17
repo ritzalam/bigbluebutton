@@ -70,6 +70,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
 
     breakoutModel.getAssignedUsers(msg.breakoutRoomId) foreach { users =>
       users.foreach { u =>
+        log.debug("## Sending Join URL for users: {}", u);
         sendJoinURL(u, msg.breakoutRoomId)
       }
     }
@@ -97,9 +98,36 @@ trait BreakoutRoomHandler extends SystemConfiguration {
       new BreakoutRoomUsersUpdate(mProps.externalMeetingID, mProps.meetingID, breakoutUsers)))
   }
 
+  def handleTransferUserToMeeting(msg: TransferUserToMeetingRequest) {
+    var targetVoiceBridge: String = msg.targetMeetingId
+    // If the current room is a parent room we fetch the voice bridge from the breakout room
+    if (!mProps.isBreakout) {
+      breakoutModel.getBreakoutRoom(msg.targetMeetingId) match {
+        case Some(b) => {
+          targetVoiceBridge = b.voiceConfId;
+        }
+        case None => // do nothing
+      }
+    } // if it is a breakout room, the target voice bridge is the same after removing the last digit
+    else {
+      targetVoiceBridge = mProps.voiceBridge.dropRight(1)
+    }
+    // We check the iser from the mode
+    usersModel.getUser(msg.userId) match {
+      case Some(u) => {
+        if (u.voiceUser.joined) {
+          log.info("Transferring user userId=" + u.userID + " from voiceBridge=" + mProps.voiceBridge + " to targetVoiceConf=" + targetVoiceBridge)
+          outGW.send(new TransferUserToMeeting(mProps.voiceBridge, targetVoiceBridge, u.voiceUser.userId))
+        }
+      }
+      case None => // do nothing
+    }
+  }
+
   def handleEndAllBreakoutRooms(msg: EndAllBreakoutRooms) {
+    log.info("EndAllBreakoutRooms event received for meetingId={}", mProps.meetingID)
     breakoutModel.getRooms().foreach { room =>
-      outGW.send(new EndBreakoutRoom(room.id))
+      outGW.send(new EndBreakoutRoom(room.id)) 
     }
   }
 

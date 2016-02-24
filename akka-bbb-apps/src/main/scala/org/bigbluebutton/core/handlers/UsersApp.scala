@@ -2,10 +2,10 @@ package org.bigbluebutton.core.handlers
 
 import scala.collection.immutable.ListSet
 import org.bigbluebutton.core.LiveMeeting
-import org.bigbluebutton.core.api.RegisteredUser
-import org.bigbluebutton.core.api.UserVO
-import org.bigbluebutton.core.api.VoiceUser
-import org.bigbluebutton.core.api.Role
+import org.bigbluebutton.core.models.RegisteredUser
+import org.bigbluebutton.core.models.UserVO
+import org.bigbluebutton.core.models.VoiceUser
+import org.bigbluebutton.core.models.Role
 
 trait UsersApp {
   this: LiveMeeting =>

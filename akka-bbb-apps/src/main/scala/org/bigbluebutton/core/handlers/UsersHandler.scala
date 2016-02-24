@@ -5,8 +5,12 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.immutable.ListSet
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
+import org.bigbluebutton.core.models._
+import org.bigbluebutton.core.models.VoiceUser
+import org.bigbluebutton.core.models.UserVO
+import org.bigbluebutton.core.models.RegisteredUser
 
-trait UsersHandler extends UsersApp {
+trait UsersHandler extends UsersApp with UsersMessageSender {
   this: LiveMeeting =>
 
   val outGW: OutMessageGateway
@@ -29,7 +33,7 @@ trait UsersHandler extends UsersApp {
         val uvo = u.copy(listenOnly = true, voiceUser = vu)
         usersModel.addUser(uvo)
         log.info("UserConnectedToGlobalAudio: meetingId=" + mProps.meetingID + " userId=" + uvo.userID + " user=" + uvo)
-        outGW.send(new UserListeningOnly(mProps.meetingID, mProps.recorded, uvo.userID, uvo.listenOnly))
+        sendUserListeningOnlyMessage(uvo.userID, uvo.listenOnly)
       }
     }
   }
@@ -43,13 +47,13 @@ trait UsersHandler extends UsersApp {
         if (!u.joinedWeb) {
           val userLeaving = usersModel.removeUser(u.userID)
           log.info("Not web user. Send user left message. meetingId=" + mProps.meetingID + " userId=" + u.userID + " user=" + u)
-          userLeaving foreach (u => outGW.send(new UserLeft(mProps.meetingID, mProps.recorded, u)))
+          userLeaving foreach (u => sendUerLeftMessage(u))
         } else {
           val vu = u.voiceUser.copy(joined = false)
           val uvo = u.copy(listenOnly = false, voiceUser = vu)
           usersModel.addUser(uvo)
           log.info("UserDisconnectedToGlobalAudio: meetingId=" + mProps.meetingID + " userId=" + uvo.userID + " user=" + uvo)
-          outGW.send(new UserListeningOnly(mProps.meetingID, mProps.recorded, uvo.userID, uvo.listenOnly))
+          sendUserListeningOnlyMessage(uvo.userID, uvo.listenOnly)
         }
       }
     }
@@ -61,11 +65,11 @@ trait UsersHandler extends UsersApp {
     } else {
       meetingModel.unmuteMeeting()
     }
-    outGW.send(new MeetingMuted(mProps.meetingID, mProps.recorded, meetingModel.isMeetingMuted()))
+
+    sendMeetingMutedMessage()
 
     usersWhoAreNotPresenter foreach { u =>
-      outGW.send(new MuteVoiceUser(mProps.meetingID, mProps.recorded, msg.requesterID,
-        u.userID, mProps.voiceBridge, u.voiceUser.userId, msg.mute))
+      sendMuteVoiceUserMessage(u.userID, msg.requesterID, u.voiceUser.userId, msg.mute)
     }
   }
 

@@ -22,6 +22,7 @@ import org.bigbluebutton.messages._
 import org.bigbluebutton.messages.payload._
 import akka.event.Logging
 import spray.json.JsonParser
+import org.bigbluebutton.core.models.Role
 
 class BigBlueButtonInGW(
     val system: ActorSystem,

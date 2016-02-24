@@ -4,9 +4,10 @@ import org.bigbluebutton.core.api._
 import org.bigbluebutton.common.messages.MessagingConstants
 import org.bigbluebutton.core.messaging.Util
 import com.google.gson.Gson
-import org.bigbluebutton.core.api.UserVO
+import org.bigbluebutton.core.models.UserVO
 import collection.JavaConverters._
 import scala.collection.JavaConversions._
+import org.bigbluebutton.core.models.RegisteredUser
 
 object UsersMessageToJsonConverter {
   private def userToMap(user: UserVO): java.util.Map[String, Any] = {

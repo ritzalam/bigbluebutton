@@ -4,6 +4,8 @@ import org.bigbluebutton.core.api._
 import scala.collection.mutable.ArrayBuffer
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
+import org.bigbluebutton.core.models.UserVO
+import org.bigbluebutton.core.models.Role
 
 trait LayoutHandler {
   this: LiveMeeting =>

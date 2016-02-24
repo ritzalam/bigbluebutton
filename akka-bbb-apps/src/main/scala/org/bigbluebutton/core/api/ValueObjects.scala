@@ -2,12 +2,6 @@ package org.bigbluebutton.core.api
 
 import java.lang.Boolean
 
-object Role extends Enumeration {
-  type Role = Value
-  val MODERATOR = Value("MODERATOR")
-  val VIEWER = Value("VIEWER")
-}
-
 case class StatusCode(val code: Int, val text: String)
 object StatusCodes {
   // Borrowed from https://dev.twitter.com/overview/api/response-codes (ralam June 18, 2015)
@@ -44,19 +38,8 @@ case class Permissions(disableCam: Boolean = false, disableMic: Boolean = false,
   disablePrivChat: Boolean = false, disablePubChat: Boolean = false,
   lockedLayout: Boolean = false, lockOnJoin: Boolean = false, lockOnJoinConfigurable: Boolean = false)
 
-case class RegisteredUser(id: String, externId: String, name: String, role: Role.Role, authToken: String)
-
 case class Voice(id: String, webId: String, callId: CallerId, phoningIn: Boolean,
   joined: Boolean, locked: Boolean, muted: Boolean, talking: Boolean)
-
-case class UserVO(userID: String, externUserID: String, name: String, role: Role.Role,
-  emojiStatus: String, presenter: Boolean, hasStream: Boolean, locked: Boolean,
-  webcamStreams: Set[String], phoneUser: Boolean, voiceUser: VoiceUser,
-  listenOnly: Boolean, joinedWeb: Boolean)
-
-case class VoiceUser(userId: String, webUserId: String, callerName: String,
-  callerNum: String, joined: Boolean, locked: Boolean, muted: Boolean,
-  talking: Boolean, listenOnly: Boolean)
 
 case class MeetingConfig(name: String, id: MeetingID, passwords: MeetingPasswords,
   welcomeMsg: String, logoutUrl: String, maxUsers: Int, record: Boolean = false,

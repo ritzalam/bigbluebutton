@@ -15,6 +15,7 @@ import org.bigbluebutton.core.models.PollModel
 import org.bigbluebutton.core.models.WhiteboardModel
 import org.bigbluebutton.core.models.PresentationModel
 import org.bigbluebutton.core.models.BreakoutRoomModel
+import org.bigbluebutton.core.models.Permissions
 import org.bigbluebutton.core.api._
 import akka.actor.ActorContext
 import akka.actor.ActorSystem

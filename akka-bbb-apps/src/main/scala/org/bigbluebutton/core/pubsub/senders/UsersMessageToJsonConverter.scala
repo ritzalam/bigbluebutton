@@ -8,6 +8,7 @@ import org.bigbluebutton.core.models.UserVO
 import collection.JavaConverters._
 import scala.collection.JavaConversions._
 import org.bigbluebutton.core.models.RegisteredUser
+import org.bigbluebutton.core.models.Permissions
 
 object UsersMessageToJsonConverter {
   private def userToMap(user: UserVO): java.util.Map[String, Any] = {

@@ -4,7 +4,6 @@ import scala.collection.mutable.HashMap
 import org.bigbluebutton.core.models.Role._
 import scala.collection.mutable.ArrayBuffer
 import org.bigbluebutton.core.util.RandomStringGenerator
-import org.bigbluebutton.core.api.Presenter
 
 class UsersModel {
   private var uservos = new collection.immutable.HashMap[String, UserVO]

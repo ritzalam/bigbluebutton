@@ -22,6 +22,7 @@ import org.bigbluebutton.core.recorders.events.VoiceUserTalkingRecordEvent
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import scala.collection._
 import com.google.gson.Gson
+import org.bigbluebutton.core.models.MeetingInfo
 
 object BigBlueButtonActor extends SystemConfiguration {
   def props(system: ActorSystem,

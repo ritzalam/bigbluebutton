@@ -1,6 +1,6 @@
 package org.bigbluebutton.core
 
-import org.bigbluebutton.core.api.Permissions
+import org.bigbluebutton.core.models.Permissions
 import java.util.concurrent.TimeUnit
 
 case object StopMeetingActor

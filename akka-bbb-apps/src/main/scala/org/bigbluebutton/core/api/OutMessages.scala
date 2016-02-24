@@ -11,6 +11,8 @@ import org.bigbluebutton.core.models.SimplePollResultOutVO
 import org.bigbluebutton.core.models.BreakoutUser
 import org.bigbluebutton.core.models.UserVO
 import org.bigbluebutton.core.models.RegisteredUser
+import org.bigbluebutton.core.models.Permissions
+import org.bigbluebutton.core.models.Presenter
 
 case class VoiceRecordingStarted(meetingID: String, recorded: Boolean, recordingFile: String, timestamp: String, confNum: String) extends IOutMessage
 case class VoiceRecordingStopped(meetingID: String, recorded: Boolean, recordingFile: String, timestamp: String, confNum: String) extends IOutMessage

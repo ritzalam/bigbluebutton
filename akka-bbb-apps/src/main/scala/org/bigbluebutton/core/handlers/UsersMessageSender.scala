@@ -25,6 +25,12 @@ import org.bigbluebutton.core.api.UserStatusChange
 import org.bigbluebutton.core.api.GetUsersReply
 import org.bigbluebutton.core.api.UserJoined
 import org.bigbluebutton.core.api.MeetingState
+import org.bigbluebutton.core.api.UserJoinedVoice
+import org.bigbluebutton.core.api.StartRecordingVoiceConf
+import org.bigbluebutton.core.api.UserVoiceMuted
+import org.bigbluebutton.core.api.UserVoiceTalking
+import org.bigbluebutton.core.api.PresenterAssigned
+import org.bigbluebutton.core.models.Presenter
 
 trait UsersMessageSender {
   this: LiveMeeting =>
@@ -115,5 +121,29 @@ trait UsersMessageSender {
 
   def sendMeetingStateMessage(meetingId: String, recorded: Boolean, userId: String, permissions: Permissions, muted: Boolean) {
     outGW.send(new MeetingState(meetingId, recorded, userId, permissions, muted))
+  }
+
+  def sendUserJoinedVoiceMessage(meetingId: String, recorded: Boolean, voiceBridge: String, user: UserVO) {
+    outGW.send(new UserJoinedVoice(mProps.meetingID, mProps.recorded, mProps.voiceBridge, user))
+  }
+
+  def sendStartRecordingVoiceConf(meetingId: String, recorded: Boolean, voiceBridge: String) {
+    outGW.send(new StartRecordingVoiceConf(meetingId, recorded, voiceBridge))
+  }
+
+  def sendUserVoiceMutedMessage(meetingId: String, recorded: Boolean, voiceBridge: String, user: UserVO) {
+    outGW.send(new UserVoiceMuted(meetingId, recorded, voiceBridge, user))
+  }
+
+  def sendUserVoiceTalkingMessage(meetingId: String, recorded: Boolean, voiceBridge: String, user: UserVO) {
+    outGW.send(new UserVoiceTalking(meetingId, recorded, voiceBridge, user))
+  }
+
+  def sendUserStatusChangeMessage(meetingId: String, recorded: Boolean, userId: String, isPresenter: Boolean) {
+    outGW.send(new UserStatusChange(meetingId, recorded, userId, "presenter", isPresenter: java.lang.Boolean))
+  }
+
+  def sendPresenterAssignedMessage(meetingId: String, recorded: Boolean, presenter: Presenter) {
+    outGW.send(new PresenterAssigned(mProps.meetingID, mProps.recorded, presenter))
   }
 }

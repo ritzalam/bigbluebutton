@@ -476,13 +476,12 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
         usersModel.addUser(uvo)
 
         log.info("User joined from phone.  meetingId=" + mProps.meetingID + " userId=" + uvo.userID + " user=" + uvo)
-
-        outGW.send(new UserJoined(mProps.meetingID, mProps.recorded, uvo))
-        outGW.send(new UserJoinedVoice(mProps.meetingID, mProps.recorded, mProps.voiceBridge, uvo))
+        sendUserJoinedMessage(mProps.meetingID, mProps.recorded, uvo)
+        sendUserJoinedVoiceMessage(mProps.meetingID, mProps.recorded, mProps.voiceBridge, uvo)
 
         if (meetingModel.isMeetingMuted()) {
-          outGW.send(new MuteVoiceUser(mProps.meetingID, mProps.recorded, uvo.userID, uvo.userID,
-            mProps.voiceBridge, vu.userId, meetingModel.isMeetingMuted()))
+          sendMuteVoiceUserMessage(mProps.meetingID, mProps.recorded, uvo.userID, uvo.userID,
+            vu.userId, mProps.voiceBridge, meetingModel.isMeetingMuted())
         }
       }
     }
@@ -492,7 +491,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     if (usersModel.numUsersInVoiceConference == 1 && mProps.recorded && !usersModel.isVoiceRecording) {
       usersModel.startRecordingVoice()
       log.info("Send START RECORDING voice conf. meetingId=" + mProps.meetingID + " voice conf=" + mProps.voiceBridge)
-      outGW.send(new StartRecordingVoiceConf(mProps.meetingID, mProps.recorded, mProps.voiceBridge))
+      sendStartRecordingVoiceConf(mProps.meetingID, mProps.recorded, mProps.voiceBridge)
     }
   }
 
@@ -510,12 +509,11 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
         usersModel.addUser(nu)
 
         log.info("User joined voice. meetingId=" + mProps.meetingID + " userId=" + user.userID + " user=" + nu)
-        outGW.send(new UserJoinedVoice(mProps.meetingID, mProps.recorded, mProps.voiceBridge, nu))
+        sendUserJoinedVoiceMessage(mProps.meetingID, mProps.recorded, mProps.voiceBridge, nu)
 
         if (meetingModel.isMeetingMuted()) {
-          outGW.send(new MuteVoiceUser(mProps.meetingID, mProps.recorded,
-            nu.userID, nu.userID, mProps.voiceBridge,
-            nu.voiceUser.userId, meetingModel.isMeetingMuted()))
+          sendMuteVoiceUserMessage(mProps.meetingID, mProps.recorded, nu.userID, nu.userID,
+            nu.voiceUser.userId, mProps.voiceBridge, meetingModel.isMeetingMuted())
         }
       }
       case None => {
@@ -540,12 +538,12 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
         usersModel.addUser(nu)
 
         log.info("User joined voice. meetingId=" + mProps.meetingID + " userId=" + user.userID + " user=" + nu)
-        outGW.send(new UserJoinedVoice(mProps.meetingID, mProps.recorded, mProps.voiceBridge, nu))
+
+        sendUserJoinedVoiceMessage(mProps.meetingID, mProps.recorded, mProps.voiceBridge, nu)
 
         if (meetingModel.isMeetingMuted() || previouslyMuted) {
-          outGW.send(new MuteVoiceUser(mProps.meetingID, mProps.recorded,
-            nu.userID, nu.userID, mProps.voiceBridge,
-            nu.voiceUser.userId, true))
+          sendMuteVoiceUserMessage(mProps.meetingID, mProps.recorded, nu.userID, nu.userID,
+            nu.voiceUser.userId, mProps.voiceBridge, true)
         }
 
         startRecordingVoiceConference()
@@ -601,8 +599,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       usersModel.addUser(nu)
 
       log.info("User muted in voice conf. meetingId=" + mProps.meetingID + " userId=" + nu.userID + " user=" + nu)
-
-      outGW.send(new UserVoiceMuted(mProps.meetingID, mProps.recorded, mProps.voiceBridge, nu))
+      sendUserVoiceMutedMessage(mProps.meetingID, mProps.recorded, mProps.voiceBridge, nu)
     }
   }
 
@@ -612,7 +609,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       val nu = user.copy(voiceUser = nv)
       usersModel.addUser(nu)
       //      println("Received voice talking=[" + msg.talking + "] wid=[" + msg.userId + "]" )
-      outGW.send(new UserVoiceTalking(mProps.meetingID, mProps.recorded, mProps.voiceBridge, nu))
+      sendUserVoiceTalkingMessage(mProps.meetingID, mProps.recorded, mProps.voiceBridge, nu)
     }
   }
 
@@ -629,7 +626,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       usersModel.getCurrentPresenter match {
         case Some(curPres) => {
           usersModel.unbecomePresenter(curPres.userID)
-          outGW.send(new UserStatusChange(mProps.meetingID, mProps.recorded, curPres.userID, "presenter", false: java.lang.Boolean))
+          sendUserStatusChangeMessage(mProps.meetingID, mProps.recorded, curPres.userID, false)
         }
         case None => // do nothing
       }
@@ -638,8 +635,8 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
         case Some(newPres) => {
           usersModel.becomePresenter(newPres.userID)
           usersModel.setCurrentPresenterInfo(new Presenter(newPresenterID, newPresenterName, assignedBy))
-          outGW.send(new PresenterAssigned(mProps.meetingID, mProps.recorded, new Presenter(newPresenterID, newPresenterName, assignedBy)))
-          outGW.send(new UserStatusChange(mProps.meetingID, mProps.recorded, newPresenterID, "presenter", true: java.lang.Boolean))
+          sendPresenterAssignedMessage(mProps.meetingID, mProps.recorded, new Presenter(newPresenterID, newPresenterName, assignedBy))
+          sendUserStatusChangeMessage(mProps.meetingID, mProps.recorded, newPresenterID, true)
         }
         case None => // do nothing
       }

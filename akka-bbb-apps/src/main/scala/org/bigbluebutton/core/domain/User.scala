@@ -46,10 +46,6 @@ case class Permissions(
   lockOnJoin: Boolean = false,
   lockOnJoinConfigurable: Boolean = false)
 
-sealed trait Presence
-case class FlashBrowserPresence(id: IntUserId, extId: ExtUserId, name: Name, sessionId: String) extends Presence
-case class FlashSipPresence(id: IntUserId, extId: ExtUserId, name: Name, sessionId: String) extends Presence
-
 /**
  *   Use Value Classes to help with type safety.
  *   https://ivanyu.me/blog/2014/12/14/value-classes-in-scala/

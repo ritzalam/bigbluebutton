@@ -1,9 +1,12 @@
 package org.bigbluebutton.core.models
 
 import java.util.concurrent.TimeUnit
-
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.util.RandomStringGenerator
+
+class RunningMeeting2x {
+
+}
 
 trait Meeting2x {
   val props: MeetingProperties

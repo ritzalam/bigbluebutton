@@ -4,6 +4,12 @@ import org.bigbluebutton.core.domain._
 
 import scala.collection.immutable.HashMap
 
+object UsersUtil {
+  def muteUser(user: User2x): Boolean = {
+    true
+  }
+}
+
 object Users2x {
 
   def apply(): Users2x = new Users2x()
@@ -17,7 +23,7 @@ object Users2x {
     presence: Set[Presence],
     permissions: UserPermissions): User2x = {
 
-    new User2x(id, extId, name, sessionId, roles, presence, permissions)
+    new User2x(id, extId, name, sessionId, roles, presence, permissions, Set.empty, Set.empty)
   }
 
   def findWithSessionId(sessionId: String, users: Vector[User2x]): Option[User2x] = users.find {

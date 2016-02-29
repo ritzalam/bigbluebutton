@@ -525,6 +525,7 @@ class MessageSenderActor(val service: MessageSender)
 
   private def handleUserRegistered(msg: UserRegistered) {
     val json = UsersMessageToJsonConverter.userRegisteredToJson(msg)
+    println("************** Publishing [" + json + "] *******************")
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, json)
   }
 
@@ -601,7 +602,7 @@ class MessageSenderActor(val service: MessageSender)
   private def handleValidateAuthTokenReply(msg: ValidateAuthTokenReply) {
     println("**** handleValidateAuthTokenReply *****")
     val json = UsersMessageToJsonConverter.validateAuthTokenReplyToJson(msg)
-    //println("************** Publishing [" + json + "] *******************")
+    println("************** Publishing [" + json + "] *******************")
     service.send(MessagingConstants.FROM_USERS_CHANNEL, json)
   }
 

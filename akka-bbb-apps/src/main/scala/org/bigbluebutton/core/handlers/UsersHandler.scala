@@ -94,7 +94,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
           val replyTo = mProps.id.value + '/' + msg.userId
 
           //send the reply
-          sendValidateAuthTokenReplyMessage(mProps.id, msg.userId, msg.token, true, msg.correlationId)
+          sendValidateAuthTokenReplyMessage(mProps.id, IntUserId(msg.userId), AuthToken(msg.token), true, msg.correlationId)
           log.info("ValidateToken success. meetingId=" + mProps.id + " userId=" + msg.userId)
 
           //join the user
@@ -103,7 +103,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
         }
       case None => {
         log.info("ValidateToken failed. meetingId=" + mProps.id + " userId=" + msg.userId)
-        sendValidateAuthTokenReplyMessage(mProps.id, msg.userId, msg.token, false, msg.correlationId)
+        sendValidateAuthTokenReplyMessage(mProps.id, IntUserId(msg.userId), AuthToken(msg.token), false, msg.correlationId)
       }
     }
 

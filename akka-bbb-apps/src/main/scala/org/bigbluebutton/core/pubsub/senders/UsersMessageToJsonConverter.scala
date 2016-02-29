@@ -173,9 +173,9 @@ object UsersMessageToJsonConverter {
 
   def userRegisteredToJson(msg: UserRegistered): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.USER, registeredUserToMap(msg.user))
-    payload.put(Constants.RECORDED, msg.recorded)
+    payload.put(Constants.RECORDED, msg.recorded.value)
 
     val header = Util.buildHeader(MessageNames.USER_REGISTERED, None)
     Util.buildJson(header, payload)
@@ -363,9 +363,9 @@ object UsersMessageToJsonConverter {
     val payload = new java.util.HashMap[String, Any]()
     payload.put(Constants.REPLY_TO, msg.correlationId)
     payload.put(Constants.VALID, msg.valid.toString)
-    payload.put(Constants.USER_ID, msg.requesterId)
-    payload.put(Constants.AUTH_TOKEN, msg.token)
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.USER_ID, msg.requesterId.value)
+    payload.put(Constants.AUTH_TOKEN, msg.token.value)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
 
     val header = Util.buildHeader(MessageNames.VALIDATE_AUTH_TOKEN_REPLY, None)
     Util.buildJson(header, payload)

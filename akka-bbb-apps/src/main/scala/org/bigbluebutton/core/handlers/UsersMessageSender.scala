@@ -26,13 +26,13 @@ trait UsersMessageSender {
     outGW.send(new MeetingMuted(meetingId.value, recorded.value, muted))
   }
 
-  def sendValidateAuthTokenReplyMessage(meetingId: IntMeetingId, userId: String, authToken: String,
+  def sendValidateAuthTokenReplyMessage(meetingId: IntMeetingId, userId: IntUserId, authToken: AuthToken,
     valid: Boolean, correlationId: String) {
-    outGW.send(new ValidateAuthTokenReply(meetingId.value, userId, authToken, valid, correlationId))
+    outGW.send(new ValidateAuthTokenReply(meetingId, userId, authToken, valid, correlationId))
   }
 
   def sendUserRegisteredMessage(meetingId: IntMeetingId, recorded: Recorded, regUser: RegisteredUser) {
-    outGW.send(new UserRegistered(meetingId.value, recorded.value, regUser))
+    outGW.send(new UserRegistered(meetingId, recorded, regUser))
   }
 
   def sendIsMeetingMutedReplyMessage(meetingId: IntMeetingId, recorded: Recorded, requesterId: String, muted: Boolean) {

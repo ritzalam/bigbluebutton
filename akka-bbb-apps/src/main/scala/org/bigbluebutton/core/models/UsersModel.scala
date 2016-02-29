@@ -142,7 +142,7 @@ class UsersModel {
   def removeRegUser(userID: String) {
     getRegisteredUserWithUserID(userID) match {
       case Some(ru) => {
-        regUsers -= ru.authToken
+        regUsers -= ru.authToken.value
       }
       case None =>
     }

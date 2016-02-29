@@ -12,18 +12,18 @@ trait ChatHandler {
 
   def handleGetChatHistoryRequest(msg: GetChatHistoryRequest) {
     val history = chatModel.getChatHistory()
-    outGW.send(new GetChatHistoryReply(mProps.meetingID, mProps.recorded, msg.requesterID, msg.replyTo, history))
+    outGW.send(new GetChatHistoryReply(mProps.id.value, mProps.recorded.value, msg.requesterID, msg.replyTo, history))
   }
 
   def handleSendPublicMessageRequest(msg: SendPublicMessageRequest) {
     chatModel.addNewChatMessage(msg.message.toMap)
     val pubMsg = msg.message.toMap
 
-    outGW.send(new SendPublicMessageEvent(mProps.meetingID, mProps.recorded, msg.requesterID, pubMsg))
+    outGW.send(new SendPublicMessageEvent(mProps.id.value, mProps.recorded.value, msg.requesterID, pubMsg))
   }
 
   def handleSendPrivateMessageRequest(msg: SendPrivateMessageRequest) {
     val privMsg = msg.message.toMap
-    outGW.send(new SendPrivateMessageEvent(mProps.meetingID, mProps.recorded, msg.requesterID, privMsg))
+    outGW.send(new SendPrivateMessageEvent(mProps.id.value, mProps.recorded.value, msg.requesterID, privMsg))
   }
 }

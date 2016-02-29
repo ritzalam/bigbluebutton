@@ -31,7 +31,7 @@ trait UsersHandlerFilter extends UsersHandler with DefaultAuthz {
   }
 
   abstract override def handleUserJoin(msg: UserJoining): Unit = {
-    log.debug("AuthorizationFilter: Received user joined meeting. metingId=" + mProps.meetingID + " userId=" + msg.userID)
+    log.debug("AuthorizationFilter: Received user joined meeting. metingId=" + mProps.id + " userId=" + msg.userID)
     super.handleUserJoin(msg)
   }
 }

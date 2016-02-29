@@ -1,10 +1,10 @@
 package org.bigbluebutton.core
 
-import org.bigbluebutton.core.models.Permissions
+import org.bigbluebutton.core.models._
 import java.util.concurrent.TimeUnit
 
 case object StopMeetingActor
-case class MeetingProperties(meetingID: String, externalMeetingID: String, meetingName: String, recorded: Boolean,
+case class MeetingProperties(id: IntMeetingId, extId: ExtMeetingId, name: Name, recorded: Recorded,
   voiceBridge: String, duration: Int, autoStartRecording: Boolean, allowStartStopRecording: Boolean,
   moderatorPass: String, viewerPass: String, createTime: Long, createDate: String, isBreakout: Boolean)
 

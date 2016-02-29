@@ -14,7 +14,7 @@ trait CaptionHandler {
   def handleSendCaptionHistoryRequest(msg: SendCaptionHistoryRequest) {
     var history = captionModel.getHistory()
 
-    outGW.send(new SendCaptionHistoryReply(mProps.meetingID, mProps.recorded, msg.requesterID, history))
+    outGW.send(new SendCaptionHistoryReply(mProps.id.value, mProps.recorded.value, msg.requesterID, history))
   }
 
   def handleUpdateCaptionOwnerRequest(msg: UpdateCaptionOwnerRequest) {
@@ -24,7 +24,7 @@ trait CaptionHandler {
         captionModel.changeTranscriptOwner(t, "")
 
         // send notification that owner has changed
-        outGW.send(new UpdateCaptionOwnerReply(mProps.meetingID, mProps.recorded, t, ""))
+        outGW.send(new UpdateCaptionOwnerReply(mProps.id.value, mProps.recorded.value, t, ""))
       })
     }
     // create the locale if it doesn't exist
@@ -34,7 +34,7 @@ trait CaptionHandler {
       captionModel.newTranscript(msg.locale, msg.ownerID)
     }
 
-    outGW.send(new UpdateCaptionOwnerReply(mProps.meetingID, mProps.recorded, msg.locale, msg.ownerID))
+    outGW.send(new UpdateCaptionOwnerReply(mProps.id.value, mProps.recorded.value, msg.locale, msg.ownerID))
   }
 
   def handleEditCaptionHistoryRequest(msg: EditCaptionHistoryRequest) {
@@ -42,7 +42,7 @@ trait CaptionHandler {
       if (t == msg.locale) {
         captionModel.editHistory(msg.startIndex, msg.endIndex, msg.locale, msg.text)
 
-        outGW.send(new EditCaptionHistoryReply(mProps.meetingID, mProps.recorded, msg.userID, msg.startIndex, msg.endIndex, msg.locale, msg.text))
+        outGW.send(new EditCaptionHistoryReply(mProps.id.value, mProps.recorded.value, msg.userID, msg.startIndex, msg.endIndex, msg.locale, msg.text))
       }
     })
   }
@@ -52,7 +52,7 @@ trait CaptionHandler {
       captionModel.changeTranscriptOwner(t, "")
 
       // send notification that owner has changed
-      outGW.send(new UpdateCaptionOwnerReply(mProps.meetingID, mProps.recorded, t, ""))
+      outGW.send(new UpdateCaptionOwnerReply(mProps.id.value, mProps.recorded.value, t, ""))
     })
   }
 }

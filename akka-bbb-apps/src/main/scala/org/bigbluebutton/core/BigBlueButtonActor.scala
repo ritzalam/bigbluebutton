@@ -87,17 +87,17 @@ class BigBlueButtonActor(val system: ActorSystem,
         meetings -= msg.meetingID
         log.info("Kick everyone out on meetingId={}", msg.meetingID)
         if (m.mProps.isBreakout) {
-          log.info("Informing parent meeting {} that a breakout room has been ended{}", m.mProps.externalMeetingID, m.mProps.meetingID)
-          eventBus.publish(BigBlueButtonEvent(m.mProps.externalMeetingID,
-            BreakoutRoomEnded(m.mProps.externalMeetingID, m.mProps.meetingID)))
+          log.info("Informing parent meeting {} that a breakout room has been ended{}", m.mProps.extId, m.mProps.id)
+          eventBus.publish(BigBlueButtonEvent(m.mProps.extId.value,
+            BreakoutRoomEnded(m.mProps.extId.value, m.mProps.id.value)))
         }
-        outGW.send(new EndAndKickAll(msg.meetingID, m.mProps.recorded))
+        outGW.send(new EndAndKickAll(msg.meetingID, m.mProps.recorded.value))
         outGW.send(new DisconnectAllUsers(msg.meetingID))
         log.info("Destroyed meetingId={}", msg.meetingID)
         outGW.send(new MeetingDestroyed(msg.meetingID))
 
         /** Unsubscribe to meeting and voice events. **/
-        eventBus.unsubscribe(m.actorRef, m.mProps.meetingID)
+        eventBus.unsubscribe(m.actorRef, m.mProps.id.value)
         eventBus.unsubscribe(m.actorRef, m.mProps.voiceBridge)
 
         // Stop the meeting actor.
@@ -109,23 +109,23 @@ class BigBlueButtonActor(val system: ActorSystem,
   private def handleCreateMeeting(msg: CreateMeeting): Unit = {
     meetings.get(msg.meetingID) match {
       case None => {
-        log.info("Create meeting request. meetingId={}", msg.mProps.meetingID)
+        log.info("Create meeting request. meetingId={}", msg.mProps.id)
 
         var m = RunningMeeting(msg.mProps, outGW, eventBus)
 
         /** Subscribe to meeting and voice events. **/
-        eventBus.subscribe(m.actorRef, m.mProps.meetingID)
+        eventBus.subscribe(m.actorRef, m.mProps.id.value)
         eventBus.subscribe(m.actorRef, m.mProps.voiceBridge)
 
-        meetings += m.mProps.meetingID -> m
-        outGW.send(new MeetingCreated(m.mProps.meetingID, m.mProps.externalMeetingID, m.mProps.recorded, m.mProps.meetingName,
+        meetings += m.mProps.id.value -> m
+        outGW.send(new MeetingCreated(m.mProps.id.value, m.mProps.extId.value, m.mProps.recorded.value, m.mProps.name.value,
           m.mProps.voiceBridge, msg.mProps.duration, msg.mProps.moderatorPass,
           msg.mProps.viewerPass, msg.mProps.createTime, msg.mProps.createDate))
 
-        m.actorRef ! new InitializeMeeting(m.mProps.meetingID, m.mProps.recorded)
+        m.actorRef ! new InitializeMeeting(m.mProps.id.value, m.mProps.recorded.value)
       }
       case Some(m) => {
-        log.info("Meeting already created. meetingID={}", msg.mProps.meetingID)
+        log.info("Meeting already created. meetingID={}", msg.mProps.id)
         // do nothing
       }
     }
@@ -145,11 +145,11 @@ class BigBlueButtonActor(val system: ActorSystem,
     for (i <- 0 until arr.length) {
       val id = arr(i)
       val duration = meetings.get(arr(i)).head.mProps.duration
-      val name = meetings.get(arr(i)).head.mProps.meetingName
+      val name = meetings.get(arr(i)).head.mProps.name
       val recorded = meetings.get(arr(i)).head.mProps.recorded
       val voiceBridge = meetings.get(arr(i)).head.mProps.voiceBridge
 
-      var info = new MeetingInfo(id, name, recorded, voiceBridge, duration)
+      var info = new MeetingInfo(id, name.value, recorded.value, voiceBridge, duration)
       resultArray(i) = info
 
       //send the users

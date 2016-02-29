@@ -29,7 +29,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
 
   def handleBreakoutRoomsList(msg: BreakoutRoomsListMessage) {
     val breakoutRooms = breakoutModel.getRooms().toVector map { r => new BreakoutRoomBody(r.name, r.id) }
-    outGW.send(new BreakoutRoomsListOutMessage(mProps.meetingID, breakoutRooms));
+    outGW.send(new BreakoutRoomsListOutMessage(mProps.id.value, breakoutRooms));
   }
 
   def handleCreateBreakoutRooms(msg: CreateBreakoutRooms) {
@@ -37,13 +37,13 @@ trait BreakoutRoomHandler extends SystemConfiguration {
     for (room <- msg.rooms) {
       i += 1
       val presURL = bbbWebDefaultPresentationURL
-      val breakoutMeetingId = BreakoutRoomsUtil.createMeetingId(mProps.meetingID, i)
+      val breakoutMeetingId = BreakoutRoomsUtil.createMeetingId(mProps.id.value, i)
       val voiceConfId = BreakoutRoomsUtil.createVoiceConfId(mProps.voiceBridge, i)
       val r = breakoutModel.createBreakoutRoom(breakoutMeetingId, room.name, voiceConfId, room.users, presURL)
-      val p = new BreakoutRoomOutPayload(r.id, r.name, mProps.meetingID,
+      val p = new BreakoutRoomOutPayload(r.id, r.name, mProps.id.value,
         r.voiceConfId, msg.durationInMinutes, bbbWebModeratorPassword, bbbWebViewerPassword,
         r.defaultPresentationURL)
-      outGW.send(new CreateBreakoutRoom(mProps.meetingID, mProps.recorded, p))
+      outGW.send(new CreateBreakoutRoom(mProps.id.value, mProps.recorded.value, p))
     }
   }
 
@@ -55,7 +55,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
       baseString = BreakoutRoomsUtil.createBaseString(params)
       checksum = BreakoutRoomsUtil.calculateChecksum(apiCall, baseString, bbbWebSharedSecret)
       joinURL = BreakoutRoomsUtil.createJoinURL(bbbWebAPI, apiCall, baseString, checksum)
-    } yield outGW.send(new BreakoutRoomJoinURLOutMessage(mProps.meetingID, mProps.recorded, breakoutId, userId, joinURL))
+    } yield outGW.send(new BreakoutRoomJoinURLOutMessage(mProps.id.value, mProps.recorded.value, breakoutId, userId, joinURL))
   }
 
   def handleRequestBreakoutJoinURL(msg: RequestBreakoutJoinURLInMessage) {
@@ -65,7 +65,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
   def handleBreakoutRoomCreated(msg: BreakoutRoomCreated) {
     val room = breakoutModel.getBreakoutRoom(msg.breakoutRoomId)
     room foreach { room =>
-      sendBreakoutRoomStarted(mProps.meetingID, room.name, room.id, room.voiceConfId)
+      sendBreakoutRoomStarted(mProps.id.value, room.name, room.id, room.voiceConfId)
     }
 
     breakoutModel.getAssignedUsers(msg.breakoutRoomId) foreach { users =>
@@ -77,7 +77,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
   }
 
   def sendBreakoutRoomStarted(meetingId: String, breakoutName: String, breakoutId: String, voiceConfId: String) {
-    outGW.send(new BreakoutRoomStartedOutMessage(meetingId, mProps.recorded, new BreakoutRoomBody(breakoutName, breakoutId)))
+    outGW.send(new BreakoutRoomStartedOutMessage(meetingId, mProps.recorded.value, new BreakoutRoomBody(breakoutName, breakoutId)))
   }
 
   def handleBreakoutRoomEnded(msg: BreakoutRoomEnded) {
@@ -87,15 +87,15 @@ trait BreakoutRoomHandler extends SystemConfiguration {
 
   def handleBreakoutRoomUsersUpdate(msg: BreakoutRoomUsersUpdate) {
     breakoutModel.updateBreakoutUsers(msg.breakoutId, msg.users) foreach { room =>
-      outGW.send(new UpdateBreakoutUsersOutMessage(mProps.meetingID, mProps.recorded, msg.breakoutId, room.users))
+      outGW.send(new UpdateBreakoutUsersOutMessage(mProps.id.value, mProps.recorded.value, msg.breakoutId, room.users))
     }
   }
 
   def handleSendBreakoutUsersUpdate(msg: SendBreakoutUsersUpdate) {
     val users = usersModel.getUsers().toVector
     val breakoutUsers = users map { u => new BreakoutUser(u.userID, u.name) }
-    eventBus.publish(BigBlueButtonEvent(mProps.externalMeetingID,
-      new BreakoutRoomUsersUpdate(mProps.externalMeetingID, mProps.meetingID, breakoutUsers)))
+    eventBus.publish(BigBlueButtonEvent(mProps.extId.value,
+      new BreakoutRoomUsersUpdate(mProps.extId.value, mProps.id.value, breakoutUsers)))
   }
 
   def handleTransferUserToMeeting(msg: TransferUserToMeetingRequest) {
@@ -125,7 +125,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
   }
 
   def handleEndAllBreakoutRooms(msg: EndAllBreakoutRooms) {
-    log.info("EndAllBreakoutRooms event received for meetingId={}", mProps.meetingID)
+    log.info("EndAllBreakoutRooms event received for meetingId={}", mProps.id.value)
     breakoutModel.getRooms().foreach { room =>
       outGW.send(new EndBreakoutRoom(room.id))
     }

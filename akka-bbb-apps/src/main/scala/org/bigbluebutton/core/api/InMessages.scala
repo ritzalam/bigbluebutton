@@ -1,10 +1,7 @@
 package org.bigbluebutton.core.api
 
-import org.bigbluebutton.core.models.AnnotationVO
-import org.bigbluebutton.core.models.Presentation
+import org.bigbluebutton.core.models._
 import org.bigbluebutton.core.MeetingProperties
-import org.bigbluebutton.core.models.BreakoutUser
-import org.bigbluebutton.core.models.Permissions
 import org.bigbluebutton.core.models.Role._
 import spray.json.JsObject
 
@@ -78,8 +75,8 @@ case class GetLockSettings(meetingID: String, userId: String) extends InMessage
 
 case class ValidateAuthToken(meetingID: String, userId: String, token: String,
   correlationId: String, sessionId: String) extends InMessage
-case class RegisterUser(meetingID: String, userID: String, name: String, role: Role,
-  extUserID: String, authToken: String) extends InMessage
+case class RegisterUser(meetingId: IntMeetingId, userId: IntUserId, name: Name, role: Role,
+  extUserId: ExtUserId, authToken: AuthToken) extends InMessage
 case class UserJoining(meetingID: String, userID: String, authToken: String) extends InMessage
 case class UserLeaving(meetingID: String, userID: String, sessionId: String) extends InMessage
 case class GetUsers(meetingID: String, requesterID: String) extends InMessage

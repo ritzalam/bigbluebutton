@@ -44,7 +44,7 @@ object UsersMessageToJsonConverter {
   private def registeredUserToMap(user: RegisteredUser): java.util.Map[String, Any] = {
     val wuser = new scala.collection.mutable.HashMap[String, Any]
     wuser += "userid" -> user.id
-    wuser += "extern_userid" -> user.externId
+    wuser += "extern_userid" -> user.extId
     wuser += "name" -> user.name
     wuser += "role" -> user.role.toString()
     wuser += "authToken" -> user.authToken

@@ -5,8 +5,6 @@ import org.bigbluebutton.core.api._
 import scala.collection.JavaConversions._
 import java.util.ArrayList
 import scala.collection.mutable.ArrayBuffer
-import org.bigbluebutton.core.models.Page
-import org.bigbluebutton.core.models.Presentation
 import akka.actor.ActorSystem
 import org.bigbluebutton.core.models.AnnotationVO
 import akka.pattern.{ ask, pipe }
@@ -22,8 +20,7 @@ import org.bigbluebutton.messages._
 import org.bigbluebutton.messages.payload._
 import akka.event.Logging
 import spray.json.JsonParser
-import org.bigbluebutton.core.models.Role
-import org.bigbluebutton.core.models.Permissions
+import org.bigbluebutton.core.models._
 
 class BigBlueButtonInGW(
     val system: ActorSystem,
@@ -58,10 +55,10 @@ class BigBlueButtonInGW(
 
       case msg: CreateMeetingRequest => {
         val mProps = new MeetingProperties(
-          msg.payload.id,
-          msg.payload.externalId,
-          msg.payload.name,
-          msg.payload.record,
+          IntMeetingId(msg.payload.id),
+          ExtMeetingId(msg.payload.externalId),
+          Name(msg.payload.name),
+          Recorded(msg.payload.record),
           msg.payload.voiceConfId,
           msg.payload.durationInMinutes,
           msg.payload.autoStartRecording,
@@ -139,9 +136,10 @@ class BigBlueButtonInGW(
     eventBus.publish(BigBlueButtonEvent(meetingId, new ValidateAuthToken(meetingId, userId, token, correlationId, sessionId)))
   }
 
-  def registerUser(meetingID: String, userID: String, name: String, role: String, extUserID: String, authToken: String): Unit = {
+  def registerUser(meetingId: String, userId: String, name: String, role: String, extUserId: String, authToken: String): Unit = {
     val userRole = if (role == "MODERATOR") Role.MODERATOR else Role.VIEWER
-    eventBus.publish(BigBlueButtonEvent(meetingID, new RegisterUser(meetingID, userID, name, userRole, extUserID, authToken)))
+    eventBus.publish(BigBlueButtonEvent(meetingId, new RegisterUser(IntMeetingId(meetingId),
+      IntUserId(userId), Name(name), userRole, ExtUserId(extUserId), AuthToken(authToken))))
   }
 
   def sendLockSettings(meetingID: String, userId: String, settings: java.util.Map[String, java.lang.Boolean]) {

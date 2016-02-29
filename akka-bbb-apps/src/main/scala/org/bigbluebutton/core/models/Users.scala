@@ -6,8 +6,6 @@ case class MeetingConfig(name: String, id: MeetingID, passwords: MeetingPassword
   welcomeMsg: String, logoutUrl: String, maxUsers: Int, record: Boolean = false,
   duration: MeetingDuration, defaultAvatarURL: String, defaultConfigToken: String)
 
-case class MeetingName(name: String)
-
 case class MeetingID(internal: String, external: String)
 
 case class VoiceConfig(telVoice: String, webVoice: String, dialNumber: String)
@@ -25,7 +23,7 @@ object Role extends Enumeration {
   val VIEWER = Value("VIEWER")
 }
 
-case class RegisteredUser(id: String, externId: String, name: String, role: Role.Role, authToken: String)
+case class RegisteredUser(id: IntUserId, extId: ExtUserId, name: Name, role: Role.Role, authToken: AuthToken)
 
 case class UserVO(userID: String, externUserID: String, name: String, role: Role.Role,
   emojiStatus: String, presenter: Boolean, hasStream: Boolean, locked: Boolean,

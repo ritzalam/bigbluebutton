@@ -13,13 +13,14 @@ trait UsersMessageSender {
     outGW.send(new UserLeft(meetingId.value, recorded.value, user))
   }
 
-  def sendUserListeningOnlyMessage(meetingId: IntMeetingId, recorded: Recorded, userId: String, listenOnly: Boolean) {
-    outGW.send(new UserListeningOnly(meetingId.value, recorded.value, userId, listenOnly))
+  def sendUserListeningOnlyMessage(meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId, listenOnly: ListenOnly) {
+    outGW.send(new UserListeningOnly(meetingId.value, recorded.value, userId.value, listenOnly.value))
   }
 
-  def sendMuteVoiceUserMessage(meetingId: IntMeetingId, recorded: Recorded, userId: String, requesterId: String,
-    voiceId: String, voiceBridge: String, mute: Boolean) {
-    outGW.send(new MuteVoiceUser(meetingId.value, recorded.value, requesterId, userId, voiceBridge, voiceId, mute))
+  def sendMuteVoiceUserMessage(meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId, requesterId: IntUserId,
+    voiceId: VoiceUserId, voiceBridge: VoiceConf, mute: Boolean) {
+    outGW.send(new MuteVoiceUser(meetingId.value, recorded.value, requesterId.value, userId.value,
+      voiceBridge.value, voiceId.value, mute))
   }
 
   def sendMeetingMutedMessage(meetingId: IntMeetingId, recorded: Recorded, muted: Boolean) {
@@ -39,25 +40,27 @@ trait UsersMessageSender {
     outGW.send(new IsMeetingMutedReply(meetingId.value, recorded.value, requesterId, muted))
   }
 
-  def sendEjectVoiceUserMessage(meetingId: IntMeetingId, recorded: Recorded, ejectedBy: String, userId: String,
-    voiceId: String, voiceBridge: String) {
-    outGW.send(new EjectVoiceUser(meetingId.value, recorded.value, ejectedBy, userId, voiceBridge, voiceId))
+  def sendEjectVoiceUserMessage(meetingId: IntMeetingId, recorded: Recorded, ejectedBy: IntUserId, userId: IntUserId,
+    voiceId: VoiceUserId, voiceConf: VoiceConf) {
+    outGW.send(new EjectVoiceUser(meetingId.value, recorded.value, ejectedBy.value,
+      userId.value, voiceConf.value, voiceId.value))
   }
 
   def sendNewPermissionsSettingMessage(meetingId: IntMeetingId, userId: String, permissions: Permissions, users: Array[UserVO]) {
     outGW.send(new NewPermissionsSetting(meetingId.value, userId, permissions, users))
   }
 
-  def sendUserLockedMessage(meetingId: IntMeetingId, userId: String, lock: Boolean) {
-    outGW.send(new UserLocked(meetingId.value, userId, lock))
+  def sendUserLockedMessage(meetingId: IntMeetingId, userId: IntUserId, lock: Locked) {
+    outGW.send(new UserLocked(meetingId.value, userId.value, lock.value))
   }
 
   def sendPermissionsSettingInitializedMessage(meetingId: IntMeetingId, permissions: Permissions, users: Array[UserVO]) {
     outGW.send(new PermissionsSettingInitialized(meetingId.value, permissions, users))
   }
 
-  def sendUserChangedEmojiStatusMessage(meetingId: IntMeetingId, recorded: Recorded, emojiStatus: String, userId: String) {
-    outGW.send(new UserChangedEmojiStatus(meetingId.value, recorded.value, emojiStatus, userId))
+  def sendUserChangedEmojiStatusMessage(meetingId: IntMeetingId, recorded: Recorded,
+    emojiStatus: EmojiStatus, userId: IntUserId) {
+    outGW.send(new UserChangedEmojiStatus(meetingId.value, recorded.value, emojiStatus.value, userId.value))
   }
 
   def sendUserEjectedFromMeetingMessage(meetingId: IntMeetingId, recorded: Recorded, userId: String, ejectedBy: String) {
@@ -72,16 +75,16 @@ trait UsersMessageSender {
     outGW.send(new UserLeft(meetingId.value, recorded.value, user))
   }
 
-  def sendUserSharedWebcamMessage(meetingId: IntMeetingId, recorded: Recorded, userId: String, stream: String) {
-    outGW.send(new UserSharedWebcam(meetingId.value, recorded.value, userId, stream))
+  def sendUserSharedWebcamMessage(meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId, stream: String) {
+    outGW.send(new UserSharedWebcam(meetingId.value, recorded.value, userId.value, stream))
   }
 
-  def sendUserUnsharedWebcamMessage(meetingId: IntMeetingId, recorded: Recorded, userId: String, stream: String) {
-    outGW.send(new UserUnsharedWebcam(meetingId.value, recorded.value, userId, stream))
+  def sendUserUnsharedWebcamMessage(meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId, stream: String) {
+    outGW.send(new UserUnsharedWebcam(meetingId.value, recorded.value, userId.value, stream))
   }
 
-  def sendUserStatusChangeMessage(meetingId: IntMeetingId, recorded: Recorded, userId: String, status: String, value: Object) {
-    outGW.send(new UserStatusChange(meetingId.value, recorded.value, userId, status, value))
+  def sendUserStatusChangeMessage(meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId, status: String, value: Object) {
+    outGW.send(new UserStatusChange(meetingId.value, recorded.value, userId.value, status, value))
   }
 
   def sendGetUsersReplyMessage(meetingId: IntMeetingId, requesterId: String, users: Array[UserVO]) {
@@ -89,31 +92,40 @@ trait UsersMessageSender {
   }
 
   def sendUserJoinedMessage(meetingId: IntMeetingId, recorded: Recorded, user: UserVO) {
-    outGW.send(new UserJoined(meetingId.value, recorded.value, user))
+    outGW.send(new UserJoined(meetingId, recorded, user))
   }
 
-  def sendMeetingStateMessage(meetingId: IntMeetingId, recorded: Recorded, userId: String, permissions: Permissions, muted: Boolean) {
-    outGW.send(new MeetingState(meetingId.value, recorded.value, userId, permissions, muted))
+  def sendMeetingStateMessage(meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId,
+    permissions: Permissions, muted: Muted) {
+    outGW.send(new MeetingState(meetingId.value, recorded.value, userId.value, permissions, muted.value))
   }
 
-  def sendUserJoinedVoiceMessage(meetingId: IntMeetingId, recorded: Recorded, voiceBridge: String, user: UserVO) {
-    outGW.send(new UserJoinedVoice(meetingId.value, recorded.value, mProps.voiceBridge, user))
+  def sendUserLeftVoiceMessage(meetingId: IntMeetingId, recorded: Recorded, voiceConf: VoiceConf, user: UserVO) {
+    outGW.send(new UserLeftVoice(meetingId.value, recorded.value, voiceConf.value, user))
   }
 
-  def sendStartRecordingVoiceConf(meetingId: IntMeetingId, recorded: Recorded, voiceBridge: String) {
-    outGW.send(new StartRecordingVoiceConf(meetingId.value, recorded.value, voiceBridge))
+  def sendUserJoinedVoiceMessage(meetingId: IntMeetingId, recorded: Recorded, voiceBridge: VoiceConf, user: UserVO) {
+    outGW.send(new UserJoinedVoice(meetingId.value, recorded.value, voiceBridge.value, user))
   }
 
-  def sendUserVoiceMutedMessage(meetingId: IntMeetingId, recorded: Recorded, voiceBridge: String, user: UserVO) {
-    outGW.send(new UserVoiceMuted(meetingId.value, recorded.value, voiceBridge, user))
+  def sendStartRecordingVoiceConf(meetingId: IntMeetingId, recorded: Recorded, voiceBridge: VoiceConf) {
+    outGW.send(new StartRecordingVoiceConf(meetingId.value, recorded.value, voiceBridge.value))
   }
 
-  def sendUserVoiceTalkingMessage(meetingId: IntMeetingId, recorded: Recorded, voiceBridge: String, user: UserVO) {
-    outGW.send(new UserVoiceTalking(meetingId.value, recorded.value, voiceBridge, user))
+  def sendStopRecordingVoiceConf(meetingId: IntMeetingId, recorded: Recorded, voiceConf: VoiceConf, recordingFile: String) {
+    outGW.send(new StopRecordingVoiceConf(meetingId.value, recorded.value, voiceConf.value, recordingFile))
   }
 
-  def sendUserStatusChangeMessage(meetingId: IntMeetingId, recorded: Recorded, userId: String, isPresenter: Boolean) {
-    outGW.send(new UserStatusChange(meetingId.value, recorded.value, userId, "presenter", isPresenter: java.lang.Boolean))
+  def sendUserVoiceMutedMessage(meetingId: IntMeetingId, recorded: Recorded, voiceBridge: VoiceConf, user: UserVO) {
+    outGW.send(new UserVoiceMuted(meetingId.value, recorded.value, voiceBridge.value, user))
+  }
+
+  def sendUserVoiceTalkingMessage(meetingId: IntMeetingId, recorded: Recorded, voiceBridge: VoiceConf, user: UserVO) {
+    outGW.send(new UserVoiceTalking(meetingId.value, recorded.value, voiceBridge.value, user))
+  }
+
+  def sendUserStatusChangeMessage(meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId, isPresenter: Boolean) {
+    outGW.send(new UserStatusChange(meetingId.value, recorded.value, userId.value, "presenter", isPresenter: java.lang.Boolean))
   }
 
   def sendPresenterAssignedMessage(meetingId: IntMeetingId, recorded: Recorded, presenter: Presenter) {

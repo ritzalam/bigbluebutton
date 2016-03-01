@@ -180,7 +180,7 @@ trait PollHandler {
     if (hasUser(msg.requesterId)) {
       getUser(msg.requesterId) match {
         case Some(user) => {
-          val responder = new Responder(user.userID, user.name)
+          val responder = new Responder(user.id.value, user.name.value)
           /*
            * Hardcode to zero as we are assuming the poll has only one question. 
            * Our data model supports multiple question polls but for this
@@ -191,7 +191,8 @@ trait PollHandler {
           pollModel.respondToQuestion(poll.id, questionId, msg.answerId, responder)
           usersModel.getCurrentPresenter foreach { cp =>
             pollModel.getSimplePollResult(poll.id) foreach { updatedPoll =>
-              outGW.send(new UserRespondedToPollMessage(mProps.id.value, mProps.recorded.value, cp.userID, msg.pollId, updatedPoll))
+              outGW.send(new UserRespondedToPollMessage(mProps.id.value, mProps.recorded.value,
+                cp.id.value, msg.pollId, updatedPoll))
             }
 
           }

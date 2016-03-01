@@ -185,15 +185,15 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   private def handleUserJoined(msg: UserJoined): Unit = {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val ev = new ParticipantJoinRecordEvent();
       ev.setTimestamp(TimestampGenerator.generateTimestamp);
-      ev.setUserId(msg.user.userID);
-      ev.setName(msg.user.name);
-      ev.setMeetingId(msg.meetingID);
+      ev.setUserId(msg.user.id.value);
+      ev.setName(msg.user.name.value);
+      ev.setMeetingId(msg.meetingId.value);
       ev.setRole(msg.user.role.toString());
 
-      recorder.record(msg.meetingID, ev);
+      recorder.record(msg.meetingId.value, ev);
     }
   }
 
@@ -227,8 +227,8 @@ class RecorderActor(val recorder: RecorderApplication)
       ev.setMeetingId(msg.meetingID);
       ev.setTimestamp(TimestampGenerator.generateTimestamp);
       ev.setBridge(msg.confNum);
-      ev.setParticipant(msg.user.voiceUser.userId);
-      ev.setMuted(msg.user.voiceUser.muted);
+      ev.setParticipant(msg.user.voiceUser.id.value);
+      ev.setMuted(msg.user.voiceUser.muted.value);
 
       recorder.record(msg.meetingID, ev);
     }
@@ -240,8 +240,8 @@ class RecorderActor(val recorder: RecorderApplication)
       evt.setMeetingId(msg.meetingID);
       evt.setTimestamp(TimestampGenerator.generateTimestamp);
       evt.setBridge(msg.confNum);
-      evt.setParticipant(msg.user.userID);
-      evt.setTalking(msg.user.voiceUser.talking);
+      evt.setParticipant(msg.user.id.value);
+      evt.setTalking(msg.user.voiceUser.talking.value);
 
       recorder.record(msg.meetingID, evt);
     }
@@ -253,11 +253,11 @@ class RecorderActor(val recorder: RecorderApplication)
       evt.setMeetingId(msg.meetingID);
       evt.setTimestamp(TimestampGenerator.generateTimestamp);
       evt.setBridge(msg.confNum);
-      evt.setParticipant(msg.user.voiceUser.userId);
-      evt.setCallerName(msg.user.voiceUser.callerName);
-      evt.setCallerNumber(msg.user.voiceUser.callerNum);
-      evt.setMuted(msg.user.voiceUser.muted);
-      evt.setTalking(msg.user.voiceUser.talking);
+      evt.setParticipant(msg.user.voiceUser.id.value);
+      evt.setCallerName(msg.user.voiceUser.callerId.name.value);
+      evt.setCallerNumber(msg.user.voiceUser.callerId.number.value);
+      evt.setMuted(msg.user.voiceUser.muted.value);
+      evt.setTalking(msg.user.voiceUser.talking.value);
 
       recorder.record(msg.meetingID, evt)
     }
@@ -269,7 +269,7 @@ class RecorderActor(val recorder: RecorderApplication)
       evt.setMeetingId(msg.meetingID);
       evt.setTimestamp(TimestampGenerator.generateTimestamp);
       evt.setBridge(msg.confNum);
-      evt.setParticipant(msg.user.voiceUser.userId);
+      evt.setParticipant(msg.user.voiceUser.id.value);
       recorder.record(msg.meetingID, evt);
     }
   }
@@ -290,7 +290,7 @@ class RecorderActor(val recorder: RecorderApplication)
     if (msg.recorded) {
       val ev = new ParticipantLeftRecordEvent();
       ev.setTimestamp(TimestampGenerator.generateTimestamp);
-      ev.setUserId(msg.user.userID);
+      ev.setUserId(msg.user.id.value);
       ev.setMeetingId(msg.meetingID);
 
       recorder.record(msg.meetingID, ev);

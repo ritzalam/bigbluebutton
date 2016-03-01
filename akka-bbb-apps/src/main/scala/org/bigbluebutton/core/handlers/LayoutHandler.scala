@@ -49,7 +49,7 @@ trait LayoutHandler {
     if (layoutModel.doesLayoutApplyToViewersOnly()) {
       val au = ArrayBuffer[UserVO]()
       usersModel.getUsers foreach { u =>
-        if (!u.presenter && u.role != Role.MODERATOR) {
+        if (!u.presenter.value && u.role != Role.MODERATOR) {
           au += u
         }
       }

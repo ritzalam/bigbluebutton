@@ -14,27 +14,27 @@ object UsersMessageToJsonConverter {
   private def userToMap(user: UserVO): java.util.Map[String, Any] = {
 
     val wuser = new scala.collection.mutable.HashMap[String, Any]
-    wuser += "userid" -> user.userID
-    wuser += "extern_userid" -> user.externUserID
-    wuser += "name" -> user.name
+    wuser += "userid" -> user.id.value
+    wuser += "extern_userid" -> user.extId.value
+    wuser += "name" -> user.name.value
     wuser += "role" -> user.role.toString()
-    wuser += "emoji_status" -> user.emojiStatus
-    wuser += "presenter" -> user.presenter
-    wuser += "has_stream" -> user.hasStream
-    wuser += "locked" -> user.locked
+    wuser += "emoji_status" -> user.emojiStatus.value
+    wuser += "presenter" -> user.presenter.value
+    wuser += "has_stream" -> user.hasStream.value
+    wuser += "locked" -> user.locked.value
     wuser += "webcam_stream" -> user.webcamStreams.toArray
-    wuser += "phone_user" -> user.phoneUser
-    wuser += "listenOnly" -> user.listenOnly
+    wuser += "phone_user" -> user.phoneUser.value
+    wuser += "listenOnly" -> user.listenOnly.value
 
     val vuser = new scala.collection.mutable.HashMap[String, Any]
-    vuser += "userid" -> user.voiceUser.userId
-    vuser += "web_userid" -> user.voiceUser.webUserId
-    vuser += "callername" -> user.voiceUser.callerName
-    vuser += "callernum" -> user.voiceUser.callerNum
-    vuser += "joined" -> user.voiceUser.joined
-    vuser += "locked" -> user.voiceUser.locked
-    vuser += "muted" -> user.voiceUser.muted
-    vuser += "talking" -> user.voiceUser.talking
+    vuser += "userid" -> user.voiceUser.id.value
+    vuser += "web_userid" -> user.voiceUser.webUserId.value
+    vuser += "callername" -> user.voiceUser.callerId.name.value
+    vuser += "callernum" -> user.voiceUser.callerId.number.value
+    vuser += "joined" -> user.voiceUser.joinedVoice.value
+    vuser += "locked" -> user.voiceUser.locked.value
+    vuser += "muted" -> user.voiceUser.muted.value
+    vuser += "talking" -> user.voiceUser.talking.value
 
     wuser.put("voiceUser", mapAsJavaMap(vuser))
 
@@ -43,11 +43,11 @@ object UsersMessageToJsonConverter {
 
   private def registeredUserToMap(user: RegisteredUser): java.util.Map[String, Any] = {
     val wuser = new scala.collection.mutable.HashMap[String, Any]
-    wuser += "userid" -> user.id
-    wuser += "extern_userid" -> user.extId
-    wuser += "name" -> user.name
+    wuser += "userid" -> user.id.value
+    wuser += "extern_userid" -> user.extId.value
+    wuser += "name" -> user.name.value
     wuser += "role" -> user.role.toString()
-    wuser += "authToken" -> user.authToken
+    wuser += "authToken" -> user.authToken.value
 
     mapAsJavaMap(wuser)
   }
@@ -231,7 +231,7 @@ object UsersMessageToJsonConverter {
 
     val users = new java.util.ArrayList[String];
     msg.applyTo.foreach(uvo => {
-      users.add(uvo.userID)
+      users.add(uvo.id.value)
     })
 
     payload.put(Constants.USERS, users)
@@ -385,7 +385,7 @@ object UsersMessageToJsonConverter {
 
   def userJoinedToJson(msg: UserJoined): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put("user", userToMap(msg.user))
 
     val header = Util.buildHeader(MessageNames.USER_JOINED, None)

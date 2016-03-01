@@ -49,7 +49,7 @@ case class EndAndKickAll(meetingID: String, recorded: Boolean) extends IOutMessa
 case class GetUsersReply(meetingID: String, requesterID: String, users: Array[UserVO]) extends IOutMessage
 case class ValidateAuthTokenTimedOut(meetingID: String, requesterId: String, token: String, valid: Boolean, correlationId: String) extends IOutMessage
 case class ValidateAuthTokenReply(meetingId: IntMeetingId, requesterId: IntUserId, token: AuthToken, valid: Boolean, correlationId: String) extends IOutMessage
-case class UserJoined(meetingID: String, recorded: Boolean, user: UserVO) extends IOutMessage
+case class UserJoined(meetingId: IntMeetingId, recorded: Recorded, user: UserVO) extends IOutMessage
 case class UserChangedEmojiStatus(meetingID: String, recorded: Boolean, emojiStatus: String, userID: String) extends IOutMessage
 case class UserListeningOnly(meetingID: String, recorded: Boolean, userID: String, listenOnly: Boolean) extends IOutMessage
 case class UserSharedWebcam(meetingID: String, recorded: Boolean, userID: String, stream: String) extends IOutMessage

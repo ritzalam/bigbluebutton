@@ -18,4 +18,10 @@ case class Locked(value: Boolean) extends AnyVal
 case class PhoneUser(value: Boolean) extends AnyVal
 case class ListenOnly(value: Boolean) extends AnyVal
 case class JoinedWeb(value: Boolean) extends AnyVal
+case class VoiceUserId(value: String) extends AnyVal
+case class CallerIdName(value: String) extends AnyVal
+case class CallerIdNum(value: String) extends AnyVal
+case class JoinedVoice(value: Boolean) extends AnyVal
+case class Muted(value: Boolean) extends AnyVal
+case class Talking(value: Boolean) extends AnyVal
 

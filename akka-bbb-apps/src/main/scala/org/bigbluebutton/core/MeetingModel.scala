@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
 
 case object StopMeetingActor
 case class MeetingProperties(id: IntMeetingId, extId: ExtMeetingId, name: Name, recorded: Recorded,
-  voiceBridge: String, duration: Int, autoStartRecording: Boolean, allowStartStopRecording: Boolean,
+  voiceBridge: VoiceConf, duration: Int, autoStartRecording: Boolean, allowStartStopRecording: Boolean,
   moderatorPass: String, viewerPass: String, createTime: Long, createDate: String, isBreakout: Boolean)
 
 case class MeetingExtensionProp(maxExtensions: Int = 2, numExtensions: Int = 0, extendByMinutes: Int = 20,

@@ -44,7 +44,7 @@ class UsersModel {
   }
 
   def addUser(uvo: UserVO) {
-    uservos += uvo.userID -> uvo
+    uservos += uvo.id.value -> uvo
   }
 
   def removeUser(userId: String): Option[UserVO] = {
@@ -71,20 +71,20 @@ class UsersModel {
   }
 
   def numUsersInVoiceConference: Int = {
-    val joinedUsers = uservos.values filter (u => u.voiceUser.joined)
+    val joinedUsers = uservos.values filter (u => u.voiceUser.joinedVoice.value)
     joinedUsers.size
   }
 
   def getUserWithExternalId(userID: String): Option[UserVO] = {
-    uservos.values find (u => u.externUserID == userID)
+    uservos.values find (u => u.extId.value == userID)
   }
 
   def getUserWithVoiceUserId(voiceUserId: String): Option[UserVO] = {
-    uservos.values find (u => u.voiceUser.userId == voiceUserId)
+    uservos.values find (u => u.voiceUser.id.value == voiceUserId)
   }
 
   def getUser(userID: String): Option[UserVO] = {
-    uservos.values find (u => u.userID == userID)
+    uservos.values find (u => u.id.value == userID)
   }
 
   def getUsers(): Array[UserVO] = {
@@ -110,8 +110,8 @@ class UsersModel {
   def unbecomePresenter(userID: String) = {
     uservos.get(userID) match {
       case Some(u) => {
-        val nu = u.copy(presenter = false)
-        uservos += nu.userID -> nu
+        val nu = u.copy(presenter = IsPresenter(false))
+        uservos += nu.id.value -> nu
       }
       case None => // do nothing	
     }
@@ -120,8 +120,8 @@ class UsersModel {
   def becomePresenter(userID: String) = {
     uservos.get(userID) match {
       case Some(u) => {
-        val nu = u.copy(presenter = true)
-        uservos += nu.userID -> nu
+        val nu = u.copy(presenter = IsPresenter(true))
+        uservos += nu.id.value -> nu
       }
       case None => // do nothing	
     }

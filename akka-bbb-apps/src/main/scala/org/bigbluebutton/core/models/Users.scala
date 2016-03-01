@@ -25,14 +25,16 @@ object Role extends Enumeration {
 
 case class RegisteredUser(id: IntUserId, extId: ExtUserId, name: Name, role: Role.Role, authToken: AuthToken)
 
-case class UserVO(userID: String, externUserID: String, name: String, role: Role.Role,
-  emojiStatus: String, presenter: Boolean, hasStream: Boolean, locked: Boolean,
-  webcamStreams: Set[String], phoneUser: Boolean, voiceUser: VoiceUser,
-  listenOnly: Boolean, joinedWeb: Boolean)
+case class UserVO(id: IntUserId, extId: ExtUserId, name: Name, role: Role.Role,
+  emojiStatus: EmojiStatus, presenter: IsPresenter, hasStream: HasStream, locked: Locked,
+  webcamStreams: Set[String], phoneUser: PhoneUser, voiceUser: VoiceUser,
+  listenOnly: ListenOnly, joinedWeb: JoinedWeb)
 
-case class VoiceUser(userId: String, webUserId: String, callerName: String,
-  callerNum: String, joined: Boolean, locked: Boolean, muted: Boolean,
-  talking: Boolean, listenOnly: Boolean)
+case class CallerId(name: CallerIdName, number: CallerIdNum)
+
+case class VoiceUser(id: VoiceUserId, webUserId: IntUserId, callerId: CallerId,
+  joinedVoice: JoinedVoice, locked: Locked, muted: Muted,
+  talking: Talking, listenOnly: ListenOnly)
 
 case class User2(id: String, extId: String, name: String, roles: Set[String],
   emojiStatus: String, presenter: Boolean, hasStream: Boolean, locked: Boolean,
@@ -48,8 +50,6 @@ case class Presenter(presenterID: String, presenterName: String, assignedBy: Str
 case class User(id: String, externId: String, name: String, moderator: Boolean,
   avatarUrl: String, logoutUrl: String, presenter: Boolean, callerId: CallerId,
   phoneCaller: Boolean, emojiStatus: String, muted: Boolean, talking: Boolean)
-
-case class CallerId(name: String, number: String)
 
 case class Permissions(disableCam: Boolean = false, disableMic: Boolean = false,
   disablePrivChat: Boolean = false, disablePubChat: Boolean = false,

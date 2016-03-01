@@ -88,7 +88,7 @@ class LiveMeeting(val mProps: MeetingProperties,
     if (usersModel.numWebUsers == 0 && meetingModel.lastWebUserLeftOn > 0) {
       if (timeNowInMinutes - meetingModel.lastWebUserLeftOn > 2) {
         log.info("Empty meeting. Ejecting all users from voice. meetingId={}", mProps.id)
-        outGW.send(new EjectAllVoiceUsers(mProps.id.value, mProps.recorded.value, mProps.voiceBridge))
+        outGW.send(new EjectAllVoiceUsers(mProps.id.value, mProps.recorded.value, mProps.voiceBridge.value))
       }
     }
   }
@@ -118,17 +118,19 @@ class LiveMeeting(val mProps: MeetingProperties,
 
   def handleEndMeeting(msg: EndMeeting) {
     meetingModel.meetingHasEnded
-    outGW.send(new MeetingEnded(msg.meetingId, mProps.recorded.value, mProps.voiceBridge))
+    outGW.send(new MeetingEnded(msg.meetingId, mProps.recorded.value, mProps.voiceBridge.value))
     outGW.send(new DisconnectAllUsers(msg.meetingId))
   }
 
   def handleVoiceConfRecordingStartedMessage(msg: VoiceConfRecordingStartedMessage) {
     if (msg.recording) {
       meetingModel.setVoiceRecordingFilename(msg.recordStream)
-      outGW.send(new VoiceRecordingStarted(mProps.id.value, mProps.recorded.value, msg.recordStream, msg.timestamp, mProps.voiceBridge))
+      outGW.send(new VoiceRecordingStarted(mProps.id.value, mProps.recorded.value,
+        msg.recordStream, msg.timestamp, mProps.voiceBridge.value))
     } else {
       meetingModel.setVoiceRecordingFilename("")
-      outGW.send(new VoiceRecordingStopped(mProps.id.value, mProps.recorded.value, msg.recordStream, msg.timestamp, mProps.voiceBridge))
+      outGW.send(new VoiceRecordingStopped(mProps.id.value, mProps.recorded.value,
+        msg.recordStream, msg.timestamp, mProps.voiceBridge.value))
     }
   }
 

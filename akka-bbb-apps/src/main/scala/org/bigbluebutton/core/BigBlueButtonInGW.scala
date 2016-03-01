@@ -59,7 +59,7 @@ class BigBlueButtonInGW(
           ExtMeetingId(msg.payload.externalId),
           Name(msg.payload.name),
           Recorded(msg.payload.record),
-          msg.payload.voiceConfId,
+          VoiceConf(msg.payload.voiceConfId),
           msg.payload.durationInMinutes,
           msg.payload.autoStartRecording,
           msg.payload.allowStartStopRecording,

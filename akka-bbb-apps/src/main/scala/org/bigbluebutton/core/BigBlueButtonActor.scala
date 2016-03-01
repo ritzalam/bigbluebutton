@@ -98,7 +98,7 @@ class BigBlueButtonActor(val system: ActorSystem,
 
         /** Unsubscribe to meeting and voice events. **/
         eventBus.unsubscribe(m.actorRef, m.mProps.id.value)
-        eventBus.unsubscribe(m.actorRef, m.mProps.voiceBridge)
+        eventBus.unsubscribe(m.actorRef, m.mProps.voiceBridge.value)
 
         // Stop the meeting actor.
         context.stop(m.actorRef)
@@ -115,11 +115,11 @@ class BigBlueButtonActor(val system: ActorSystem,
 
         /** Subscribe to meeting and voice events. **/
         eventBus.subscribe(m.actorRef, m.mProps.id.value)
-        eventBus.subscribe(m.actorRef, m.mProps.voiceBridge)
+        eventBus.subscribe(m.actorRef, m.mProps.voiceBridge.value)
 
         meetings += m.mProps.id.value -> m
         outGW.send(new MeetingCreated(m.mProps.id.value, m.mProps.extId.value, m.mProps.recorded.value, m.mProps.name.value,
-          m.mProps.voiceBridge, msg.mProps.duration, msg.mProps.moderatorPass,
+          m.mProps.voiceBridge.value, msg.mProps.duration, msg.mProps.moderatorPass,
           msg.mProps.viewerPass, msg.mProps.createTime, msg.mProps.createDate))
 
         m.actorRef ! new InitializeMeeting(m.mProps.id.value, m.mProps.recorded.value)
@@ -149,7 +149,7 @@ class BigBlueButtonActor(val system: ActorSystem,
       val recorded = meetings.get(arr(i)).head.mProps.recorded
       val voiceBridge = meetings.get(arr(i)).head.mProps.voiceBridge
 
-      var info = new MeetingInfo(id, name.value, recorded.value, voiceBridge, duration)
+      var info = new MeetingInfo(id, name.value, recorded.value, voiceBridge.value, duration)
       resultArray(i) = info
 
       //send the users

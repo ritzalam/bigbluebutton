@@ -38,7 +38,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
       i += 1
       val presURL = bbbWebDefaultPresentationURL
       val breakoutMeetingId = BreakoutRoomsUtil.createMeetingId(mProps.id.value, i)
-      val voiceConfId = BreakoutRoomsUtil.createVoiceConfId(mProps.voiceBridge, i)
+      val voiceConfId = BreakoutRoomsUtil.createVoiceConfId(mProps.voiceBridge.value, i)
       val r = breakoutModel.createBreakoutRoom(breakoutMeetingId, room.name, voiceConfId, room.users, presURL)
       val p = new BreakoutRoomOutPayload(r.id, r.name, mProps.id.value,
         r.voiceConfId, msg.durationInMinutes, bbbWebModeratorPassword, bbbWebViewerPassword,
@@ -51,7 +51,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
     for {
       user <- usersModel.getUser(userId)
       apiCall = "join"
-      params = BreakoutRoomsUtil.joinParams(user.name, true, breakoutId, bbbWebModeratorPassword, true)
+      params = BreakoutRoomsUtil.joinParams(user.name.value, true, breakoutId, bbbWebModeratorPassword, true)
       baseString = BreakoutRoomsUtil.createBaseString(params)
       checksum = BreakoutRoomsUtil.calculateChecksum(apiCall, baseString, bbbWebSharedSecret)
       joinURL = BreakoutRoomsUtil.createJoinURL(bbbWebAPI, apiCall, baseString, checksum)
@@ -93,7 +93,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
 
   def handleSendBreakoutUsersUpdate(msg: SendBreakoutUsersUpdate) {
     val users = usersModel.getUsers().toVector
-    val breakoutUsers = users map { u => new BreakoutUser(u.userID, u.name) }
+    val breakoutUsers = users map { u => new BreakoutUser(u.id.value, u.name.value) }
     eventBus.publish(BigBlueButtonEvent(mProps.extId.value,
       new BreakoutRoomUsersUpdate(mProps.extId.value, mProps.id.value, breakoutUsers)))
   }
@@ -110,14 +110,15 @@ trait BreakoutRoomHandler extends SystemConfiguration {
       }
     } // if it is a breakout room, the target voice bridge is the same after removing the last digit
     else {
-      targetVoiceBridge = mProps.voiceBridge.dropRight(1)
+      targetVoiceBridge = mProps.voiceBridge.value.dropRight(1)
     }
     // We check the iser from the mode
     usersModel.getUser(msg.userId) match {
       case Some(u) => {
-        if (u.voiceUser.joined) {
-          log.info("Transferring user userId=" + u.userID + " from voiceBridge=" + mProps.voiceBridge + " to targetVoiceConf=" + targetVoiceBridge)
-          outGW.send(new TransferUserToMeeting(mProps.voiceBridge, targetVoiceBridge, u.voiceUser.userId))
+        if (u.voiceUser.joinedVoice.value) {
+          log.info("Transferring user userId=" + u.id + " from voiceBridge=" + mProps.voiceBridge
+            + " to targetVoiceConf=" + targetVoiceBridge)
+          outGW.send(new TransferUserToMeeting(mProps.voiceBridge.value, targetVoiceBridge, u.voiceUser.id.value))
         }
       }
       case None => // do nothing

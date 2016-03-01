@@ -111,7 +111,7 @@ trait PresentationHandler {
     //      printPresentations
 
     usersModel.getCurrentPresenter() foreach { pres =>
-      handleStopPollRequest(StopPollRequest(mProps.id.value, pres.userID))
+      handleStopPollRequest(StopPollRequest(mProps.id.value, pres.id.value))
     }
 
   }

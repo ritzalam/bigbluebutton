@@ -464,7 +464,7 @@ class MessageSenderActor(val service: MessageSender)
       users.add(uvo.id.value)
     })
 
-    val evt = new LockLayoutMessage(msg.meetingID, msg.setById, msg.locked, users)
+    val evt = new LockLayoutMessage(msg.meetingId.value, msg.setById.value, msg.locked, users)
     service.send(MessagingConstants.FROM_USERS_CHANNEL, evt.toJson())
   }
 
@@ -474,12 +474,13 @@ class MessageSenderActor(val service: MessageSender)
       users.add(uvo.id.value)
     })
 
-    val evt = new BroadcastLayoutMessage(msg.meetingID, msg.setByUserID, msg.layoutID, msg.locked, users)
+    val evt = new BroadcastLayoutMessage(msg.meetingId.value, msg.setByUserId.value, msg.layoutID, msg.locked, users)
     service.send(MessagingConstants.FROM_USERS_CHANNEL, evt.toJson())
   }
 
   private def handleGetCurrentLayoutReply(msg: GetCurrentLayoutReply) {
-    val reply = new GetCurrentLayoutReplyMessage(msg.meetingID, msg.requesterID, msg.setByUserID, msg.layoutID, msg.locked)
+    val reply = new GetCurrentLayoutReplyMessage(msg.meetingId.value, msg.requesterId.value,
+      msg.setByUserId.value, msg.layoutID, msg.locked)
     service.send(MessagingConstants.FROM_USERS_CHANNEL, reply.toJson())
   }
 

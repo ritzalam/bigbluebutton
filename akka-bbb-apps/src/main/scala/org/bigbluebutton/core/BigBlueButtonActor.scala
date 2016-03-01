@@ -23,6 +23,7 @@ import org.bigbluebutton.core.service.recorder.RecorderApplication
 import scala.collection._
 import com.google.gson.Gson
 import org.bigbluebutton.core.models.MeetingInfo
+import org.bigbluebutton.core.models._
 
 object BigBlueButtonActor extends SystemConfiguration {
   def props(system: ActorSystem,
@@ -162,7 +163,7 @@ class BigBlueButtonActor(val system: ActorSystem,
       self ! (new GetChatHistoryRequest(id, "nodeJSapp", "nodeJSapp"))
 
       //send lock settings
-      self ! (new GetLockSettings(id, "nodeJSapp"))
+      self ! (new GetLockSettings(IntMeetingId(id), IntUserId("nodeJSapp")))
     }
 
     outGW.send(new GetAllMeetingsReply(resultArray))

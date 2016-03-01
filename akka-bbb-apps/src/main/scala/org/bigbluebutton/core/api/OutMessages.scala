@@ -35,7 +35,7 @@ case class BreakoutRoomEndedOutMessage(meetingId: String, breakoutId: String) ex
 
 // Permissions
 case class PermissionsSettingInitialized(meetingID: String, permissions: Permissions, applyTo: Array[UserVO]) extends IOutMessage
-case class NewPermissionsSetting(meetingID: String, setByUser: String, permissions: Permissions, applyTo: Array[UserVO]) extends IOutMessage
+case class NewPermissionsSetting(meetingId: IntMeetingId, setByUser: IntUserId, permissions: Permissions, applyTo: Array[UserVO]) extends IOutMessage
 case class UserLocked(meetingID: String, userId: String, lock: Boolean) extends IOutMessage
 case class GetPermissionsSettingReply(meetingID: String, userId: String) extends IOutMessage
 
@@ -81,11 +81,11 @@ case class SendPrivateMessageEvent(meetingID: String, recorded: Boolean, request
   message: Map[String, String]) extends IOutMessage
 
 // Layout
-case class GetCurrentLayoutReply(meetingID: String, recorded: Boolean, requesterID: String, layoutID: String,
-  locked: Boolean, setByUserID: String) extends IOutMessage
-case class BroadcastLayoutEvent(meetingID: String, recorded: Boolean, requesterID: String,
-  layoutID: String, locked: Boolean, setByUserID: String, applyTo: Array[UserVO]) extends IOutMessage
-case class LockLayoutEvent(meetingID: String, recorded: Boolean, setById: String, locked: Boolean,
+case class GetCurrentLayoutReply(meetingId: IntMeetingId, recorded: Recorded, requesterId: IntUserId, layoutID: String,
+  locked: Boolean, setByUserId: IntUserId) extends IOutMessage
+case class BroadcastLayoutEvent(meetingId: IntMeetingId, recorded: Recorded, requesterId: IntUserId,
+  layoutID: String, locked: Boolean, setByUserId: IntUserId, applyTo: Array[UserVO]) extends IOutMessage
+case class LockLayoutEvent(meetingId: IntMeetingId, recorded: Recorded, setById: IntUserId, locked: Boolean,
   applyTo: Array[UserVO]) extends IOutMessage
 
 // Presentation

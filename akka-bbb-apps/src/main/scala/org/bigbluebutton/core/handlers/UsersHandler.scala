@@ -194,7 +194,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     if (!meetingModel.permisionsInitialized()) {
       meetingModel.initializePermissions()
       newPermissions(msg.settings)
-      sendPermissionsSettingInitializedMessage(IntMeetingId(msg.meetingID), msg.settings, usersModel.getUsers)
+      sendPermissionsSettingInitializedMessage(msg.meetingId, msg.settings, usersModel.getUsers)
     }
   }
 

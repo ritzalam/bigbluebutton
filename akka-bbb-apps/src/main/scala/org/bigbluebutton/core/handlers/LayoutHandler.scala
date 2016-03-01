@@ -6,6 +6,7 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
 import org.bigbluebutton.core.models.UserVO
 import org.bigbluebutton.core.models.Role
+import org.bigbluebutton.core.models._
 
 trait LayoutHandler {
   this: LiveMeeting =>
@@ -13,7 +14,7 @@ trait LayoutHandler {
   val outGW: OutMessageGateway
 
   def handleGetCurrentLayoutRequest(msg: GetCurrentLayoutRequest) {
-    outGW.send(new GetCurrentLayoutReply(msg.meetingID, mProps.recorded.value, msg.requesterID,
+    outGW.send(new GetCurrentLayoutReply(msg.meetingId, mProps.recorded, msg.requesterId,
       layoutModel.getCurrentLayout(), meetingModel.getPermissions().lockedLayout, layoutModel.getLayoutSetter()))
   }
 
@@ -21,28 +22,28 @@ trait LayoutHandler {
     layoutModel.applyToViewersOnly(msg.viewersOnly)
     lockLayout(msg.lock)
 
-    outGW.send(new LockLayoutEvent(msg.meetingID, mProps.recorded.value, msg.setById, msg.lock, affectedUsers))
+    outGW.send(new LockLayoutEvent(msg.meetingId, mProps.recorded, msg.setById, msg.lock, affectedUsers))
 
     msg.layout foreach { l =>
       layoutModel.setCurrentLayout(l)
-      broadcastSyncLayout(msg.meetingID, msg.setById)
+      broadcastSyncLayout(msg.meetingId, msg.setById)
     }
   }
 
-  private def broadcastSyncLayout(meetingId: String, setById: String) {
-    outGW.send(new BroadcastLayoutEvent(meetingId, mProps.recorded.value, setById,
+  private def broadcastSyncLayout(meetingId: IntMeetingId, setById: IntUserId) {
+    outGW.send(new BroadcastLayoutEvent(meetingId, mProps.recorded, setById,
       layoutModel.getCurrentLayout(), meetingModel.getPermissions().lockedLayout, layoutModel.getLayoutSetter(), affectedUsers))
   }
 
   def handleBroadcastLayoutRequest(msg: BroadcastLayoutRequest) {
     layoutModel.setCurrentLayout(msg.layout)
-    broadcastSyncLayout(msg.meetingID, msg.requesterID)
+    broadcastSyncLayout(msg.meetingId, msg.requesterId)
   }
 
-  def handleLockLayout(lock: Boolean, setById: String) {
-    outGW.send(new LockLayoutEvent(mProps.id.value, mProps.recorded.value, setById, lock, affectedUsers))
+  def handleLockLayout(lock: Boolean, setById: IntUserId) {
+    outGW.send(new LockLayoutEvent(mProps.id, mProps.recorded, setById, lock, affectedUsers))
 
-    broadcastSyncLayout(mProps.id.value, setById)
+    broadcastSyncLayout(mProps.id, setById)
   }
 
   def affectedUsers(): Array[UserVO] = {

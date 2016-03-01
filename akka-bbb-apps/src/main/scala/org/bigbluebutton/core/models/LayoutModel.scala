@@ -1,7 +1,7 @@
 package org.bigbluebutton.core.models
 
 class LayoutModel {
-  private var setByUser: String = "system";
+  private var setByUser: IntUserId = IntUserId("system")
   private var currentLayout = "";
   private var layoutLocked = false
   private var affectViewersOnly = true
@@ -22,7 +22,7 @@ class LayoutModel {
     affectViewersOnly
   }
 
-  def getLayoutSetter(): String = {
+  def getLayoutSetter(): IntUserId = {
     setByUser
   }
 }

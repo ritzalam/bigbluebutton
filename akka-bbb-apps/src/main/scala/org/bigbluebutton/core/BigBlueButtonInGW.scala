@@ -164,7 +164,8 @@ class BigBlueButtonInGW(
       lockOnJoin = lockOnJoin,
       lockOnJoinConfigurable = lockOnJoinConfigurable)
 
-    eventBus.publish(BigBlueButtonEvent(meetingID, new SetLockSettings(meetingID, userId, permissions)))
+    eventBus.publish(BigBlueButtonEvent(meetingID,
+      new SetLockSettings(IntMeetingId(meetingID), IntUserId(userId), permissions)))
   }
 
   def initLockSettings(meetingID: String, settings: java.util.Map[String, java.lang.Boolean]) {
@@ -188,7 +189,8 @@ class BigBlueButtonInGW(
       lockOnJoin = lockOnJoin,
       lockOnJoinConfigurable = lockOnJoinConfigurable)
 
-    eventBus.publish(BigBlueButtonEvent(meetingID, new InitLockSettings(meetingID, permissions)))
+    eventBus.publish(BigBlueButtonEvent(meetingID,
+      new InitLockSettings(IntMeetingId(meetingID), permissions)))
   }
 
   def initAudioSettings(meetingID: String, requesterID: String, muted: java.lang.Boolean) {
@@ -196,7 +198,8 @@ class BigBlueButtonInGW(
   }
 
   def getLockSettings(meetingId: String, userId: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new GetLockSettings(meetingId, userId)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new GetLockSettings(IntMeetingId(meetingId), IntUserId(userId))))
   }
 
   def lockUser(meetingId: String, requesterID: String, lock: Boolean, userId: String) {
@@ -352,18 +355,22 @@ class BigBlueButtonInGW(
    */
 
   def getCurrentLayout(meetingID: String, requesterID: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new GetCurrentLayoutRequest(meetingID, requesterID)))
+    eventBus.publish(BigBlueButtonEvent(meetingID,
+      new GetCurrentLayoutRequest(IntMeetingId(meetingID), IntUserId(requesterID))))
   }
 
   def broadcastLayout(meetingID: String, requesterID: String, layout: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new BroadcastLayoutRequest(meetingID, requesterID, layout)))
+    eventBus.publish(BigBlueButtonEvent(meetingID,
+      new BroadcastLayoutRequest(IntMeetingId(meetingID), IntUserId(requesterID), layout)))
   }
 
   def lockLayout(meetingId: String, setById: String, lock: Boolean, viewersOnly: Boolean, layout: String) {
     if (layout != null) {
-      eventBus.publish(BigBlueButtonEvent(meetingId, new LockLayoutRequest(meetingId, setById, lock, viewersOnly, Some(layout))))
+      eventBus.publish(BigBlueButtonEvent(meetingId,
+        new LockLayoutRequest(IntMeetingId(meetingId), IntUserId(setById), lock, viewersOnly, Some(layout))))
     } else {
-      eventBus.publish(BigBlueButtonEvent(meetingId, new LockLayoutRequest(meetingId, setById, lock, viewersOnly, None)))
+      eventBus.publish(BigBlueButtonEvent(meetingId,
+        new LockLayoutRequest(IntMeetingId(meetingId), IntUserId(setById), lock, viewersOnly, None)))
     }
 
   }

@@ -138,7 +138,7 @@ object UsersMessageToJsonConverter {
 
   def newPermissionsSettingToJson(msg: NewPermissionsSetting): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.PERMISSIONS, buildPermissionsHashMap(msg.permissions))
 
     val users = new java.util.ArrayList[java.util.Map[String, Any]]
@@ -226,8 +226,8 @@ object UsersMessageToJsonConverter {
 
   def broadcastLayout(msg: BroadcastLayoutEvent): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.REQUESTER_ID, msg.requesterID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
 
     val users = new java.util.ArrayList[String];
     msg.applyTo.foreach(uvo => {

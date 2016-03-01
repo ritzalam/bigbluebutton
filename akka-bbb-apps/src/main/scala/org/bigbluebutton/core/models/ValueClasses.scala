@@ -25,3 +25,4 @@ case class JoinedVoice(value: Boolean) extends AnyVal
 case class Muted(value: Boolean) extends AnyVal
 case class Talking(value: Boolean) extends AnyVal
 
+case class BreakoutId(value: String) extends AnyVal

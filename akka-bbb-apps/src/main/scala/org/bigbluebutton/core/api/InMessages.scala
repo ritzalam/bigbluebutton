@@ -64,10 +64,10 @@ case class TransferUserToMeetingRequest(meetingId: String, targetMeetingId: Stri
 // Lock
 ///////////////////////////////////////////////////////////////////////////////////
 
-case class LockUser(meetingID: String, userId: String, lock: Boolean) extends InMessage
-case class InitLockSettings(meetingID: String, settings: Permissions) extends InMessage
-case class SetLockSettings(meetingID: String, setByUser: String, settings: Permissions) extends InMessage
-case class GetLockSettings(meetingID: String, userId: String) extends InMessage
+case class LockUser(meetingId: IntMeetingId, userId: IntUserId, lock: Boolean) extends InMessage
+case class InitLockSettings(meetingId: IntMeetingId, settings: Permissions) extends InMessage
+case class SetLockSettings(meetingId: IntMeetingId, setByUser: IntUserId, settings: Permissions) extends InMessage
+case class GetLockSettings(meetingId: IntMeetingId, userId: IntUserId) extends InMessage
 
 //////////////////////////////////////////////////////////////////////////////////
 // Users
@@ -105,11 +105,11 @@ case class UserDisconnectedFromGlobalAudio(meetingID: String, /** Not used. Just
 // Layout
 //////////////////////////////////////////////////////////////////////////////////////
 
-case class GetCurrentLayoutRequest(meetingID: String, requesterID: String) extends InMessage
-case class SetLayoutRequest(meetingID: String, requesterID: String, layoutID: String) extends InMessage
-case class LockLayoutRequest(meetingID: String, setById: String, lock: Boolean, viewersOnly: Boolean,
+case class GetCurrentLayoutRequest(meetingId: IntMeetingId, requesterId: IntUserId) extends InMessage
+case class SetLayoutRequest(meetingId: IntMeetingId, requesterId: IntUserId, layoutID: String) extends InMessage
+case class LockLayoutRequest(meetingId: IntMeetingId, setById: IntUserId, lock: Boolean, viewersOnly: Boolean,
   layout: Option[String]) extends InMessage
-case class BroadcastLayoutRequest(meetingID: String, requesterID: String, layout: String) extends InMessage
+case class BroadcastLayoutRequest(meetingId: IntMeetingId, requesterId: IntUserId, layout: String) extends InMessage
 
 //////////////////////////////////////////////////////////////////////////////////////
 // Presentation

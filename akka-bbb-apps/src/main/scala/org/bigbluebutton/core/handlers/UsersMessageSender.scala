@@ -46,8 +46,8 @@ trait UsersMessageSender {
       userId.value, voiceConf.value, voiceId.value))
   }
 
-  def sendNewPermissionsSettingMessage(meetingId: IntMeetingId, userId: String, permissions: Permissions, users: Array[UserVO]) {
-    outGW.send(new NewPermissionsSetting(meetingId.value, userId, permissions, users))
+  def sendNewPermissionsSettingMessage(meetingId: IntMeetingId, userId: IntUserId, permissions: Permissions, users: Array[UserVO]) {
+    outGW.send(new NewPermissionsSetting(meetingId, userId, permissions, users))
   }
 
   def sendUserLockedMessage(meetingId: IntMeetingId, userId: IntUserId, lock: Locked) {

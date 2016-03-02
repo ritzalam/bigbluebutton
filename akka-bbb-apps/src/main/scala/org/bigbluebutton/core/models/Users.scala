@@ -23,8 +23,6 @@ object Role extends Enumeration {
   val VIEWER = Value("VIEWER")
 }
 
-case class RegisteredUser(id: IntUserId, extId: ExtUserId, name: Name, role: Role.Role, authToken: AuthToken)
-
 case class UserVO(id: IntUserId, extId: ExtUserId, name: Name, role: Role.Role,
   emojiStatus: EmojiStatus, presenter: IsPresenter, hasStream: HasStream, locked: Locked,
   webcamStreams: Set[String], phoneUser: PhoneUser, voiceUser: VoiceUser,

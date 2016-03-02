@@ -8,7 +8,7 @@ import org.bigbluebutton.core.util.RandomStringGenerator
 class UsersModel {
   private var uservos = new collection.immutable.HashMap[String, UserVO]
 
-  private var regUsers = new collection.immutable.HashMap[String, RegisteredUser]
+  private val registeredUsers = new RegisteredUsers
 
   /* When reconnecting SIP global audio, users may receive the connection message
    * before the disconnection message.
@@ -22,20 +22,14 @@ class UsersModel {
 
   private var currentPresenter = new Presenter(IntUserId("system"), Name("system"), IntUserId("system"))
 
+  def getRegisteredUserWithToken(token: AuthToken): Option[RegisteredUser] = registeredUsers.findWithToken(token)
+
   def setCurrentPresenterInfo(pres: Presenter) {
     currentPresenter = pres
   }
 
   def getCurrentPresenterInfo(): Presenter = {
     currentPresenter
-  }
-
-  def addRegisteredUser(token: String, regUser: RegisteredUser) {
-    regUsers += token -> regUser
-  }
-
-  def getRegisteredUserWithToken(token: AuthToken): Option[RegisteredUser] = {
-    regUsers.get(token.value)
   }
 
   def generateWebUserId: IntUserId = {
@@ -133,19 +127,6 @@ class UsersModel {
 
   def getViewers(): Array[UserVO] = {
     uservos.values filter (u => u.role == VIEWER) toArray
-  }
-
-  def getRegisteredUserWithUserID(userId: IntUserId): Option[RegisteredUser] = {
-    regUsers.values find (ru => userId.value contains ru.id.value)
-  }
-
-  def removeRegUser(userId: IntUserId) {
-    getRegisteredUserWithUserID(userId) match {
-      case Some(ru) => {
-        regUsers -= ru.authToken.value
-      }
-      case None =>
-    }
   }
 
   def addGlobalAudioConnection(userId: IntUserId): Boolean = {

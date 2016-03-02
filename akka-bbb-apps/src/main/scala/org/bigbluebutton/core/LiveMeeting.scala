@@ -35,6 +35,8 @@ class LiveMeeting(val mProps: MeetingProperties,
 
   val log = Logging(context.system, getClass)
 
+  val registeredUsers = new RegisteredUsers
+
   def hasMeetingEnded(): Boolean = {
     meetingModel.hasMeetingEnded()
   }

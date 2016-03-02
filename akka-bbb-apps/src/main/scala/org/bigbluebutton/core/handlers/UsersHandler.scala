@@ -121,11 +121,10 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       log.info("Register user failed. Mmeeting has ended. meetingId=" + mProps.id + " userId=" + msg.userId)
       sendMeetingHasEnded(mProps.id, msg.userId)
     } else {
-      val regUser = new RegisteredUser(msg.userId, msg.extUserId, msg.name, msg.role, msg.authToken)
-      usersModel.addRegisteredUser(msg.authToken.value, regUser)
-
-      log.info("Register user success. meetingId=" + mProps.id + " userId=" + msg.userId + " user=" + regUser)
-      sendUserRegisteredMessage(mProps.id, mProps.recorded, regUser)
+      for {
+        regUser <- RegisteredUsers.create(msg.userId, msg.extUserId, msg.name, msg.role, msg.authToken)
+        ru <- registeredUsers.add(msg.authToken, regUser)
+      } yield sendUserRegisteredMessage(mProps.id, mProps.recorded, regUser)
     }
   }
 
@@ -235,7 +234,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       }
 
       usersModel.removeUser(msg.userId)
-      usersModel.removeRegUser(msg.userId)
+      registeredUsers.remove(msg.userId)
 
       log.info("Ejecting user from meeting.  meetingId=" + mProps.id + " userId=" + msg.userId)
       sendUserEjectedFromMeetingMessage(mProps.id, mProps.recorded, msg.userId, msg.ejectedBy)

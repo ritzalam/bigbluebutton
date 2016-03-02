@@ -89,10 +89,10 @@ case class LockLayoutEvent(meetingId: IntMeetingId, recorded: Recorded, setById:
   applyTo: Array[UserVO]) extends IOutMessage
 
 // Presentation
-case class ClearPresentationOutMsg(meetingID: String, recorded: Boolean) extends IOutMessage
-case class RemovePresentationOutMsg(meetingID: String, recorded: Boolean, presentationID: String) extends IOutMessage
-case class GetPresentationInfoOutMsg(meetingID: String, recorded: Boolean, requesterID: String,
-  info: CurrentPresentationInfo, replyTo: String) extends IOutMessage
+case class ClearPresentationOutMsg(meetingId: IntMeetingId, recorded: Recorded) extends IOutMessage
+case class RemovePresentationOutMsg(meetingId: IntMeetingId, recorded: Recorded, presentationId: PresentationId) extends IOutMessage
+case class GetPresentationInfoOutMsg(meetingId: IntMeetingId, recorded: Recorded, requesterId: IntUserId,
+  info: CurrentPresentationInfo, replyTo: ReplyTo) extends IOutMessage
 case class SendCursorUpdateOutMsg(meetingID: String, recorded: Boolean, xPercent: Double, yPercent: Double) extends IOutMessage
 case class ResizeAndMoveSlideOutMsg(meetingID: String, recorded: Boolean, page: Page) extends IOutMessage
 case class GotoSlideOutMsg(meetingID: String, recorded: Boolean, page: Page) extends IOutMessage

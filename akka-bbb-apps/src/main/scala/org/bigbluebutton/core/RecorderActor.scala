@@ -86,7 +86,7 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   private def handleClearPresentationOutMsg(msg: ClearPresentationOutMsg) {
-
+    println("                  handleClearPresentationOutMsg ")
   }
 
   private def handlePresentationConversionDone(msg: PresentationConversionDone) {
@@ -142,12 +142,12 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   private def handleRemovePresentationOutMsg(msg: RemovePresentationOutMsg) {
-    if (msg.recorded) {
-      val event = new RemovePresentationPresentationRecordEvent();
-      event.setMeetingId(msg.meetingID);
-      event.setTimestamp(TimestampGenerator.generateTimestamp);
-      event.setPresentationName(msg.presentationID);
-      recorder.record(msg.meetingID, event);
+    if (msg.recorded.value) {
+      val event = new RemovePresentationPresentationRecordEvent()
+      event.setMeetingId(msg.meetingId.value)
+      event.setTimestamp(TimestampGenerator.generateTimestamp())
+      event.setPresentationName(msg.presentationId.value)
+      recorder.record(msg.meetingId.value, event)
     }
   }
 

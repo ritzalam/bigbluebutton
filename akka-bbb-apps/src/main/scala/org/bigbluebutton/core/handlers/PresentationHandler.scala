@@ -4,11 +4,9 @@ import org.bigbluebutton.core.api._
 import com.google.gson.Gson
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
-import org.bigbluebutton.core.models.CursorLocation
-import org.bigbluebutton.core.models.CurrentPresenter
-import org.bigbluebutton.core.models.CurrentPresentationInfo
+import org.bigbluebutton.core.models._
 
-trait PresentationHandler {
+trait PresentationHandler extends PresentationMessageSender {
   this: LiveMeeting =>
 
   val outGW: OutMessageGateway
@@ -30,7 +28,7 @@ trait PresentationHandler {
   }
 
   def handleClearPresentation(msg: ClearPresentation) {
-    outGW.send(new ClearPresentationOutMsg(mProps.id.value, mProps.recorded.value))
+    sendClearPresentation(IntMeetingId(mProps.id.value), Recorded(mProps.recorded.value))
   }
 
   def handlePresentationConversionUpdate(msg: PresentationConversionUpdate) {
@@ -73,8 +71,7 @@ trait PresentationHandler {
       }
     })
 
-    outGW.send(new RemovePresentationOutMsg(msg.meetingID, mProps.recorded.value, msg.presentationID))
-
+    sendRemovePresentation(IntMeetingId(msg.meetingID), Recorded(mProps.recorded.value), PresentationId(msg.presentationID))
   }
 
   def handleGetPresentationInfo(msg: GetPresentationInfo) {
@@ -84,7 +81,8 @@ trait PresentationHandler {
     val presenter = new CurrentPresenter(curPresenter.presenterID, curPresenter.presenterName, curPresenter.assignedBy)
     val presentations = presModel.getPresentations
     val presentationInfo = new CurrentPresentationInfo(presenter, presentations)
-    outGW.send(new GetPresentationInfoOutMsg(mProps.id.value, mProps.recorded.value, msg.requesterID, presentationInfo, msg.replyTo))
+    sendGetPresentationInfo(IntMeetingId(mProps.id.value), Recorded(mProps.recorded.value),
+      IntUserId(msg.requesterID), presentationInfo, ReplyTo(msg.replyTo))
   }
 
   def handleSendCursorUpdate(msg: SendCursorUpdate) {

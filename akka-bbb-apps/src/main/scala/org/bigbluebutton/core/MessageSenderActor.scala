@@ -14,11 +14,9 @@ import org.bigbluebutton.core.pubsub.senders.PesentationMessageToJsonConverter
 import org.bigbluebutton.core.pubsub.senders.CaptionMessageToJsonConverter
 import org.bigbluebutton.common.messages.GetPresentationInfoReplyMessage
 import org.bigbluebutton.common.messages.PresentationRemovedMessage
-import org.bigbluebutton.core.models.Page
+import org.bigbluebutton.core.models.{ IntMeetingId, Page, SimplePollResultOutVO, SimplePollOutVO }
 import collection.JavaConverters._
 import scala.collection.JavaConversions._
-import org.bigbluebutton.core.models.SimplePollResultOutVO
-import org.bigbluebutton.core.models.SimplePollOutVO
 import org.bigbluebutton.core.pubsub.senders.UsersMessageToJsonConverter
 import org.bigbluebutton.common.messages.GetUsersFromVoiceConfRequestMessage
 import org.bigbluebutton.common.messages.MuteUserInVoiceConfRequestMessage
@@ -261,7 +259,7 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handleRemovePresentationOutMsg(msg: RemovePresentationOutMsg) {
-    val m = new PresentationRemovedMessage(msg.meetingID, msg.presentationID)
+    val m = new PresentationRemovedMessage(msg.meetingId.value, msg.presentationId.value)
     service.send(MessagingConstants.FROM_PRESENTATION_CHANNEL, m.toJson())
   }
 
@@ -292,7 +290,7 @@ class MessageSenderActor(val service: MessageSender)
       presentations.add(presentation);
     }
 
-    val reply = new GetPresentationInfoReplyMessage(msg.meetingID, msg.requesterID, presenter, presentations)
+    val reply = new GetPresentationInfoReplyMessage(msg.meetingId.value, msg.requesterId.value, presenter, presentations)
 
     val json = PesentationMessageToJsonConverter.getPresentationInfoOutMsgToJson(msg)
     service.send(MessagingConstants.FROM_PRESENTATION_CHANNEL, json)

@@ -24,5 +24,7 @@ case class CallerIdNum(value: String) extends AnyVal
 case class JoinedVoice(value: Boolean) extends AnyVal
 case class Muted(value: Boolean) extends AnyVal
 case class Talking(value: Boolean) extends AnyVal
+case class PresentationId(value: String) extends AnyVal
+case class ReplyTo(value: String) extends AnyVal //TODO can we use IntUserId here?
 
 case class BreakoutId(value: String) extends AnyVal

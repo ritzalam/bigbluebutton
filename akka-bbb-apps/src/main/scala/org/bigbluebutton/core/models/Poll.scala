@@ -134,7 +134,7 @@ case class AnswerVO(val id: Int, val key: String, val text: Option[String], val 
 case class QuestionVO(val id: Int, val questionType: String, val multiResponse: Boolean, val questionText: Option[String], val answers: Option[Array[AnswerVO]])
 case class PollVO(val id: String, val questions: Array[QuestionVO], val title: Option[String], val started: Boolean, val stopped: Boolean, val showResult: Boolean)
 
-case class Responder(val userId: String, name: String)
+case class Responder(val userId: IntUserId, name: Name)
 
 case class ResponseOutVO(id: String, text: String, responders: Array[Responder] = Array[Responder]())
 case class QuestionOutVO(id: String, multiResponse: Boolean, question: String, responses: Array[ResponseOutVO])

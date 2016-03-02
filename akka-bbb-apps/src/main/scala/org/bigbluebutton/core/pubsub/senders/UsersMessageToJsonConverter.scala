@@ -110,8 +110,8 @@ object UsersMessageToJsonConverter {
 
   def disconnectUserToJson(msg: DisconnectUser): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.USER_ID, msg.userId)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.USER_ID, msg.userId.value)
 
     val header = Util.buildHeader(MessageNames.DISCONNECT_USER, None)
     Util.buildJson(header, payload)
@@ -119,9 +119,9 @@ object UsersMessageToJsonConverter {
 
   def sendUserEjectedFromMeetingToJson(msg: UserEjectedFromMeeting) {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.USER_ID, msg.userId)
-    payload.put(Constants.EJECTED_BY, msg.ejectedBy)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.USER_ID, msg.userId.value)
+    payload.put(Constants.EJECTED_BY, msg.ejectedBy.value)
 
     val header = Util.buildHeader(MessageNames.USER_EJECTED_FROM_MEETING, None)
     Util.buildJson(header, payload)
@@ -394,7 +394,7 @@ object UsersMessageToJsonConverter {
 
   def userLeftToJson(msg: UserLeft): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put("user", userToMap(msg.user))
 
     val header = Util.buildHeader(MessageNames.USER_LEFT, None)
@@ -403,11 +403,11 @@ object UsersMessageToJsonConverter {
 
   def presenterAssignedToJson(msg: PresenterAssigned): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.NEW_PRESENTER_ID, msg.presenter.presenterID);
-    payload.put(Constants.NEW_PRESENTER_NAME, msg.presenter.presenterName);
-    payload.put(Constants.ASSIGNED_BY, msg.presenter.assignedBy);
-    payload.put(Constants.RECORDED, msg.recorded)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.NEW_PRESENTER_ID, msg.presenter.id.value);
+    payload.put(Constants.NEW_PRESENTER_NAME, msg.presenter.name.value);
+    payload.put(Constants.ASSIGNED_BY, msg.presenter.assignedBy.value);
+    payload.put(Constants.RECORDED, msg.recorded.value)
 
     val header = Util.buildHeader(MessageNames.PRESENTER_ASSIGNED, None)
     Util.buildJson(header, payload)

@@ -1,6 +1,6 @@
 package org.bigbluebutton.core.models
 
-case class CurrentPresenter(userId: String, name: String, assignedBy: String)
+case class CurrentPresenter(id: IntUserId, name: Name, assignedBy: IntUserId)
 case class CurrentPresentationInfo(presenter: CurrentPresenter, presentations: Seq[Presentation])
 case class CursorLocation(xPercent: Double = 0D, yPercent: Double = 0D)
 case class Presentation(id: String, name: String, current: Boolean = false,

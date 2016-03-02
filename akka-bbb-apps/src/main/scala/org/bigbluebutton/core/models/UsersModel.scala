@@ -20,7 +20,7 @@ class UsersModel {
   private var meetingMuted = false
   private var recordingVoice = false
 
-  private var currentPresenter = new Presenter("system", "system", "system")
+  private var currentPresenter = new Presenter(IntUserId("system"), Name("system"), IntUserId("system"))
 
   def setCurrentPresenterInfo(pres: Presenter) {
     currentPresenter = pres
@@ -34,12 +34,12 @@ class UsersModel {
     regUsers += token -> regUser
   }
 
-  def getRegisteredUserWithToken(token: String): Option[RegisteredUser] = {
-    regUsers.get(token)
+  def getRegisteredUserWithToken(token: AuthToken): Option[RegisteredUser] = {
+    regUsers.get(token.value)
   }
 
-  def generateWebUserId: String = {
-    val webUserId = RandomStringGenerator.randomAlphanumericString(6)
+  def generateWebUserId: IntUserId = {
+    val webUserId = IntUserId(RandomStringGenerator.randomAlphanumericString(6))
     if (!hasUser(webUserId)) webUserId else generateWebUserId
   }
 
@@ -47,9 +47,9 @@ class UsersModel {
     uservos += uvo.id.value -> uvo
   }
 
-  def removeUser(userId: String): Option[UserVO] = {
-    val user = uservos get (userId)
-    user foreach (u => uservos -= userId)
+  def removeUser(userId: IntUserId): Option[UserVO] = {
+    val user = uservos get (userId.value)
+    user foreach (u => uservos -= userId.value)
 
     user
   }
@@ -58,8 +58,8 @@ class UsersModel {
     uservos.contains(sessionId)
   }
 
-  def hasUser(userID: String): Boolean = {
-    uservos.contains(userID)
+  def hasUser(userId: IntUserId): Boolean = {
+    uservos.contains(userId.value)
   }
 
   def numUsers(): Int = {
@@ -79,12 +79,12 @@ class UsersModel {
     uservos.values find (u => u.extId.value == userID)
   }
 
-  def getUserWithVoiceUserId(voiceUserId: String): Option[UserVO] = {
-    uservos.values find (u => u.voiceUser.id.value == voiceUserId)
+  def getUserWithVoiceUserId(voiceUserId: VoiceUserId): Option[UserVO] = {
+    uservos.values find (u => u.voiceUser.id.value == voiceUserId.value)
   }
 
-  def getUser(userID: String): Option[UserVO] = {
-    uservos.values find (u => u.id.value == userID)
+  def getUser(userId: IntUserId): Option[UserVO] = {
+    uservos.values find (u => u.id.value == userId.value)
   }
 
   def getUsers(): Array[UserVO] = {
@@ -117,8 +117,8 @@ class UsersModel {
     }
   }
 
-  def becomePresenter(userID: String) = {
-    uservos.get(userID) match {
+  def becomePresenter(userId: IntUserId) = {
+    uservos.get(userId.value) match {
       case Some(u) => {
         val nu = u.copy(presenter = IsPresenter(true))
         uservos += nu.id.value -> nu
@@ -135,12 +135,12 @@ class UsersModel {
     uservos.values filter (u => u.role == VIEWER) toArray
   }
 
-  def getRegisteredUserWithUserID(userID: String): Option[RegisteredUser] = {
-    regUsers.values find (ru => userID contains ru.id)
+  def getRegisteredUserWithUserID(userId: IntUserId): Option[RegisteredUser] = {
+    regUsers.values find (ru => userId.value contains ru.id.value)
   }
 
-  def removeRegUser(userID: String) {
-    getRegisteredUserWithUserID(userID) match {
+  def removeRegUser(userId: IntUserId) {
+    getRegisteredUserWithUserID(userId) match {
       case Some(ru) => {
         regUsers -= ru.authToken.value
       }
@@ -148,27 +148,27 @@ class UsersModel {
     }
   }
 
-  def addGlobalAudioConnection(userID: String): Boolean = {
-    globalAudioConnectionCounter.get(userID) match {
+  def addGlobalAudioConnection(userId: IntUserId): Boolean = {
+    globalAudioConnectionCounter.get(userId.value) match {
       case Some(vc) => {
-        globalAudioConnectionCounter += userID -> (vc + 1)
+        globalAudioConnectionCounter += userId.value -> (vc + 1)
         false
       }
       case None => {
-        globalAudioConnectionCounter += userID -> 1
+        globalAudioConnectionCounter += userId.value -> 1
         true
       }
     }
   }
 
-  def removeGlobalAudioConnection(userID: String): Boolean = {
-    globalAudioConnectionCounter.get(userID) match {
+  def removeGlobalAudioConnection(userId: IntUserId): Boolean = {
+    globalAudioConnectionCounter.get(userId.value) match {
       case Some(vc) => {
         if (vc == 1) {
-          globalAudioConnectionCounter -= userID
+          globalAudioConnectionCounter -= userId.value
           true
         } else {
-          globalAudioConnectionCounter += userID -> (vc - 1)
+          globalAudioConnectionCounter += userId.value -> (vc - 1)
           false
         }
       }

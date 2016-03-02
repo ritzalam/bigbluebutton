@@ -51,7 +51,7 @@ class BigBlueButtonActor(val system: ActorSystem,
   }
 
   private def handleValidateAuthToken(msg: ValidateAuthToken) {
-    meetings.get(msg.meetingID) foreach { m =>
+    meetings.get(msg.meetingId.value) foreach { m =>
       m.actorRef ! msg
 
       //      val future = m.actorRef.ask(msg)(5 seconds)

@@ -51,9 +51,9 @@ object PesentationMessageToJsonConverter {
 
     // Create a map for our current presenter
     val presenter = new java.util.HashMap[String, String]()
-    presenter.put(Constants.USER_ID, info.presenter.userId)
-    presenter.put(Constants.NAME, info.presenter.name)
-    presenter.put(Constants.ASSIGNED_BY, info.presenter.assignedBy)
+    presenter.put(Constants.USER_ID, info.presenter.id.value)
+    presenter.put(Constants.NAME, info.presenter.name.value)
+    presenter.put(Constants.ASSIGNED_BY, info.presenter.assignedBy.value)
 
     payload.put(Constants.PRESENTER, presenter)
 

@@ -133,7 +133,8 @@ class BigBlueButtonInGW(
    * ***********************************************************
    */
   def validateAuthToken(meetingId: String, userId: String, token: String, correlationId: String, sessionId: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new ValidateAuthToken(meetingId, userId, token, correlationId, sessionId)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new ValidateAuthToken(IntMeetingId(meetingId), IntUserId(userId), AuthToken(token), correlationId, sessionId)))
   }
 
   def registerUser(meetingId: String, userId: String, name: String, role: String, extUserId: String, authToken: String): Unit = {
@@ -202,8 +203,9 @@ class BigBlueButtonInGW(
       new GetLockSettings(IntMeetingId(meetingId), IntUserId(userId))))
   }
 
-  def lockUser(meetingId: String, requesterID: String, lock: Boolean, userId: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new LockUserRequest(meetingId, requesterID, userId, lock)))
+  def lockUser(meetingId: String, requesterId: String, lock: Boolean, userId: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new LockUserRequest(IntMeetingId(meetingId), IntUserId(requesterId), IntUserId(userId), lock)))
   }
 
   def setRecordingStatus(meetingId: String, userId: String, recording: java.lang.Boolean) {
@@ -216,55 +218,66 @@ class BigBlueButtonInGW(
 
   // Users
   def userEmojiStatus(meetingId: String, userId: String, emojiStatus: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new UserEmojiStatus(meetingId, userId, emojiStatus)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new UserEmojiStatus(IntMeetingId(meetingId), IntUserId(userId), EmojiStatus(emojiStatus))))
   }
 
   def ejectUserFromMeeting(meetingId: String, userId: String, ejectedBy: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new EjectUserFromMeeting(meetingId, userId, ejectedBy)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new EjectUserFromMeeting(IntMeetingId(meetingId), IntUserId(userId), IntUserId(ejectedBy))))
   }
 
   def shareWebcam(meetingId: String, userId: String, stream: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new UserShareWebcam(meetingId, userId, stream)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new UserShareWebcam(IntMeetingId(meetingId), IntUserId(userId), stream)))
   }
 
   def unshareWebcam(meetingId: String, userId: String, stream: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new UserUnshareWebcam(meetingId, userId, stream)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new UserUnshareWebcam(IntMeetingId(meetingId), IntUserId(userId), stream)))
   }
 
-  def setUserStatus(meetingID: String, userID: String, status: String, value: Object) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new ChangeUserStatus(meetingID, userID, status, value)))
+  def setUserStatus(meetingId: String, userId: String, status: String, value: Object) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new ChangeUserStatus(IntMeetingId(meetingId), IntUserId(userId), status, value)))
   }
 
   def getUsers(meetingID: String, requesterID: String) {
     eventBus.publish(BigBlueButtonEvent(meetingID, new GetUsers(meetingID, requesterID)))
   }
 
-  def userLeft(meetingID: String, userID: String, sessionId: String): Unit = {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new UserLeaving(meetingID, userID, sessionId)))
+  def userLeft(meetingId: String, userId: String, sessionId: String): Unit = {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new UserLeaving(IntMeetingId(meetingId), IntUserId(userId), sessionId)))
   }
 
-  def userJoin(meetingID: String, userID: String, authToken: String): Unit = {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new UserJoining(meetingID, userID, authToken)))
+  def userJoin(meetingId: String, userId: String, authToken: String): Unit = {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new UserJoining(IntMeetingId(meetingId), IntUserId(userId), AuthToken(authToken))))
   }
 
-  def assignPresenter(meetingID: String, newPresenterID: String, newPresenterName: String, assignedBy: String): Unit = {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new AssignPresenter(meetingID, newPresenterID, newPresenterName, assignedBy)))
+  def assignPresenter(meetingId: String, newPresenterId: String, newPresenterName: String, assignedBy: String): Unit = {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new AssignPresenter(IntMeetingId(meetingId), IntUserId(newPresenterId),
+        Name(newPresenterName), IntUserId(assignedBy))))
   }
 
   def getCurrentPresenter(meetingID: String, requesterID: String): Unit = {
     // do nothing
   }
 
-  def userConnectedToGlobalAudio(voiceConf: String, userid: String, name: String) {
+  def userConnectedToGlobalAudio(voiceConf: String, userId: String, name: String) {
     // we are required to pass the meeting_id as first parameter (just to satisfy trait)
     // but it's not used anywhere. That's why we pass voiceConf twice instead
-    eventBus.publish(BigBlueButtonEvent(voiceConf, new UserConnectedToGlobalAudio(voiceConf, voiceConf, userid, name)))
+    eventBus.publish(BigBlueButtonEvent(voiceConf,
+      new UserConnectedToGlobalAudio(IntMeetingId(voiceConf), voiceConf, IntUserId(userId), Name(name))))
   }
 
-  def userDisconnectedFromGlobalAudio(voiceConf: String, userid: String, name: String) {
+  def userDisconnectedFromGlobalAudio(voiceConf: String, userId: String, name: String) {
     // we are required to pass the meeting_id as first parameter (just to satisfy trait)
     // but it's not used anywhere. That's why we pass voiceConf twice instead
-    eventBus.publish(BigBlueButtonEvent(voiceConf, new UserDisconnectedFromGlobalAudio(voiceConf, voiceConf, userid, name)))
+    eventBus.publish(BigBlueButtonEvent(voiceConf,
+      new UserDisconnectedFromGlobalAudio(IntMeetingId(voiceConf), voiceConf, IntUserId(userId), Name(name))))
   }
 
   /**
@@ -464,42 +477,53 @@ class BigBlueButtonInGW(
     eventBus.publish(BigBlueButtonEvent(meetingID, new IsMeetingMutedRequest(meetingID, requesterID)))
   }
 
-  def muteUser(meetingID: String, requesterID: String, userID: String, mute: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new MuteUserRequest(meetingID, requesterID, userID, mute)))
+  def muteUser(meetingId: String, requesterId: String, userId: String, mute: java.lang.Boolean) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new MuteUserRequest(IntMeetingId(meetingId), IntUserId(requesterId), IntUserId(userId), mute)))
   }
 
-  def lockMuteUser(meetingID: String, requesterID: String, userID: String, lock: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new LockUserRequest(meetingID, requesterID, userID, lock)))
+  def lockMuteUser(meetingId: String, requesterId: String, userId: String, lock: java.lang.Boolean) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new LockUserRequest(IntMeetingId(meetingId), IntUserId(requesterId), IntUserId(userId), lock)))
   }
 
   def ejectUserFromVoice(meetingId: String, userId: String, ejectedBy: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new EjectUserFromVoiceRequest(meetingId, userId, ejectedBy)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new EjectUserFromVoiceRequest(IntMeetingId(meetingId), IntUserId(userId), IntUserId(ejectedBy))))
   }
 
   def voiceUserJoined(voiceConfId: String, voiceUserId: String, userId: String, callerIdName: String,
     callerIdNum: String, muted: java.lang.Boolean, talking: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(voiceConfId, new UserJoinedVoiceConfMessage(voiceConfId, voiceUserId, userId, userId, callerIdName,
-      callerIdNum, muted, talking, false /*hardcode listenOnly to false as the message for listenOnly is ConnectedToGlobalAudio*/ )))
+    val callerId = CallerId(CallerIdName(callerIdName), CallerIdNum(callerIdNum))
+    eventBus.publish(BigBlueButtonEvent(voiceConfId,
+      new UserJoinedVoiceConfMessage(VoiceConf(voiceConfId), VoiceUserId(voiceUserId),
+        IntUserId(userId), ExtUserId(userId), callerId,
+        Muted(muted), Talking(talking), ListenOnly(false) /*hardcode listenOnly to false as the message for listenOnly is ConnectedToGlobalAudio*/ )))
   }
 
   def voiceUserLeft(voiceConfId: String, voiceUserId: String) {
-    eventBus.publish(BigBlueButtonEvent(voiceConfId, new UserLeftVoiceConfMessage(voiceConfId, voiceUserId)))
+    eventBus.publish(BigBlueButtonEvent(voiceConfId,
+      new UserLeftVoiceConfMessage(VoiceConf(voiceConfId), VoiceUserId(voiceUserId))))
   }
 
   def voiceUserLocked(voiceConfId: String, voiceUserId: String, locked: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(voiceConfId, new UserLockedInVoiceConfMessage(voiceConfId, voiceUserId, locked)))
+    eventBus.publish(BigBlueButtonEvent(voiceConfId,
+      new UserLockedInVoiceConfMessage(VoiceConf(voiceConfId), VoiceUserId(voiceUserId), locked)))
   }
 
   def voiceUserMuted(voiceConfId: String, voiceUserId: String, muted: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(voiceConfId, new UserMutedInVoiceConfMessage(voiceConfId, voiceUserId, muted)))
+    eventBus.publish(BigBlueButtonEvent(voiceConfId,
+      new UserMutedInVoiceConfMessage(VoiceConf(voiceConfId), VoiceUserId(voiceUserId), muted)))
   }
 
   def voiceUserTalking(voiceConfId: String, voiceUserId: String, talking: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(voiceConfId, new UserTalkingInVoiceConfMessage(voiceConfId, voiceUserId, talking)))
+    eventBus.publish(BigBlueButtonEvent(voiceConfId,
+      new UserTalkingInVoiceConfMessage(VoiceConf(voiceConfId), VoiceUserId(voiceUserId), talking)))
   }
 
   def voiceRecording(voiceConfId: String, recordingFile: String, timestamp: String, recording: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(voiceConfId, new VoiceConfRecordingStartedMessage(voiceConfId, recordingFile, recording, timestamp)))
+    eventBus.publish(BigBlueButtonEvent(voiceConfId,
+      new VoiceConfRecordingStartedMessage(VoiceConf(voiceConfId), recordingFile, recording, timestamp)))
   }
 
   /**
@@ -509,7 +533,8 @@ class BigBlueButtonInGW(
    */
 
   def votePoll(meetingId: String, userId: String, pollId: String, questionId: Integer, answerId: Integer) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new RespondToPollRequest(meetingId, userId, pollId, questionId, answerId)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new RespondToPollRequest(IntMeetingId(meetingId), IntUserId(userId), pollId, questionId, answerId)))
   }
 
   def startPoll(meetingId: String, requesterId: String, pollId: String, pollType: String) {
@@ -517,7 +542,8 @@ class BigBlueButtonInGW(
   }
 
   def stopPoll(meetingId: String, userId: String, pollId: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new StopPollRequest(meetingId, userId)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new StopPollRequest(IntMeetingId(meetingId), IntUserId(userId))))
   }
 
   def showPollResult(meetingId: String, requesterId: String, pollId: String, show: java.lang.Boolean) {

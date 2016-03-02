@@ -10,7 +10,7 @@ import java.net.URLEncoder
 import org.bigbluebutton.core.bus.IncomingEventBus
 import org.bigbluebutton.core.bus.BigBlueButtonEvent
 import org.bigbluebutton.core.LiveMeeting
-import org.bigbluebutton.core.models.BreakoutUser
+import org.bigbluebutton.core.models._
 
 trait BreakoutRoomHandler extends SystemConfiguration {
   this: LiveMeeting =>
@@ -49,7 +49,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
 
   def sendJoinURL(userId: String, breakoutId: String) {
     for {
-      user <- usersModel.getUser(userId)
+      user <- usersModel.getUser(IntUserId(userId))
       apiCall = "join"
       params = BreakoutRoomsUtil.joinParams(user.name.value, true, breakoutId, bbbWebModeratorPassword, true)
       baseString = BreakoutRoomsUtil.createBaseString(params)
@@ -113,7 +113,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
       targetVoiceBridge = mProps.voiceBridge.value.dropRight(1)
     }
     // We check the iser from the mode
-    usersModel.getUser(msg.userId) match {
+    usersModel.getUser(IntUserId(msg.userId)) match {
       case Some(u) => {
         if (u.voiceUser.joinedVoice.value) {
           log.info("Transferring user userId=" + u.id + " from voiceBridge=" + mProps.voiceBridge

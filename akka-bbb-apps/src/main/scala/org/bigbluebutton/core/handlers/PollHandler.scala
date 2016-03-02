@@ -125,7 +125,7 @@ trait PollHandler {
     cpoll match {
       case Some(poll) => {
         pollModel.stopPoll(poll.id)
-        outGW.send(new PollStoppedMessage(mProps.id.value, mProps.recorded.value, msg.requesterId, poll.id))
+        outGW.send(new PollStoppedMessage(mProps.id, mProps.recorded, msg.requesterId, poll.id))
       }
       case None => {
 
@@ -180,7 +180,7 @@ trait PollHandler {
     if (hasUser(msg.requesterId)) {
       getUser(msg.requesterId) match {
         case Some(user) => {
-          val responder = new Responder(user.id.value, user.name.value)
+          val responder = new Responder(user.id, user.name)
           /*
            * Hardcode to zero as we are assuming the poll has only one question. 
            * Our data model supports multiple question polls but for this

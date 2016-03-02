@@ -7,15 +7,15 @@ import org.bigbluebutton.core.models._
 trait UsersApp {
   this: LiveMeeting =>
 
-  def findRegisteredUserWithToken(authToken: String): Option[RegisteredUser] = {
+  def findRegisteredUserWithToken(authToken: AuthToken): Option[RegisteredUser] = {
     usersModel.getRegisteredUserWithToken(authToken)
   }
 
-  def findUser(userId: String): Option[UserVO] = {
+  def findUser(userId: IntUserId): Option[UserVO] = {
     usersModel.getUser(userId)
   }
 
-  def becomePresenterIfOnlyModerator(userId: String, name: String, role: Role.Role) {
+  def becomePresenterIfOnlyModerator(userId: IntUserId, name: Name, role: Role.Role) {
     if ((usersModel.numModerators == 1) || (usersModel.noPresenter())) {
       if (role == Role.MODERATOR) {
         assignNewPresenter(userId, name, userId)
@@ -23,10 +23,10 @@ trait UsersApp {
     }
   }
 
-  def changeUserEmojiStatus(userId: String, emojiStatus: String): Option[UserVO] = {
+  def changeUserEmojiStatus(userId: IntUserId, emojiStatus: EmojiStatus): Option[UserVO] = {
     val vu = for {
       user <- usersModel.getUser(userId)
-      uvo = user.copy(emojiStatus = EmojiStatus(emojiStatus))
+      uvo = user.copy(emojiStatus = emojiStatus)
     } yield uvo
 
     vu foreach { u =>
@@ -36,12 +36,12 @@ trait UsersApp {
     vu
   }
 
-  def createNewUser(userId: String, externId: String,
-    name: String, role: Role.Role,
+  def createNewUser(userId: IntUserId, externId: ExtUserId,
+    name: Name, role: Role.Role,
     voiceUser: VoiceUser, locked: Boolean): UserVO = {
     // Initialize the newly joined user copying voice status in case this
     // join is due to a reconnect.
-    val uvo = new UserVO(IntUserId(userId), ExtUserId(externId), Name(name),
+    val uvo = new UserVO(userId, externId, name,
       role, emojiStatus = EmojiStatus("none"), presenter = IsPresenter(false),
       hasStream = HasStream(false), locked = Locked(locked),
       webcamStreams = new ListSet[String](), phoneUser = PhoneUser(false), voiceUser,
@@ -50,7 +50,7 @@ trait UsersApp {
     uvo
   }
 
-  def initializeVoice(userId: String, username: String): VoiceUser = {
+  def initializeVoice(userId: IntUserId, username: Name): VoiceUser = {
     val wUser = usersModel.getUser(userId)
 
     val vu = wUser match {
@@ -62,16 +62,16 @@ trait UsersApp {
         } else {
           // User is not joined in voice conference. Initialize user and copy status
           // as user maybe joined listenOnly.
-          val callerId = CallerId(CallerIdName(username), CallerIdNum(username))
-          new VoiceUser(u.voiceUser.id, IntUserId(userId), callerId,
+          val callerId = CallerId(CallerIdName(username.value), CallerIdNum(username.value))
+          new VoiceUser(u.voiceUser.id, userId, callerId,
             joinedVoice = JoinedVoice(false), locked = Locked(false), muted = Muted(false),
             talking = Talking(false), listenOnly = u.listenOnly)
         }
       }
       case None => {
         // New user. Initialize voice status.
-        val callerId = CallerId(CallerIdName(username), CallerIdNum(username))
-        new VoiceUser(VoiceUserId(userId), IntUserId(userId), callerId,
+        val callerId = CallerId(CallerIdName(username.value), CallerIdNum(username.value))
+        new VoiceUser(VoiceUserId(userId.value), userId, callerId,
           joinedVoice = JoinedVoice(false), locked = Locked(false),
           muted = Muted(false), talking = Talking(false), listenOnly = ListenOnly(false))
       }

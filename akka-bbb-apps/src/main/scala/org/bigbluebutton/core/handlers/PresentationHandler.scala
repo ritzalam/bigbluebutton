@@ -81,7 +81,7 @@ trait PresentationHandler {
     //      println("PresentationApp : handleGetPresentationInfo GetPresentationInfo for meeting [" + msg.meetingID + "] [" + msg.requesterID + "]" )
 
     val curPresenter = usersModel.getCurrentPresenterInfo();
-    val presenter = new CurrentPresenter(curPresenter.presenterID, curPresenter.presenterName, curPresenter.assignedBy)
+    val presenter = new CurrentPresenter(curPresenter.id, curPresenter.name, curPresenter.assignedBy)
     val presentations = presModel.getPresentations
     val presentationInfo = new CurrentPresentationInfo(presenter, presentations)
     outGW.send(new GetPresentationInfoOutMsg(mProps.id.value, mProps.recorded.value, msg.requesterID, presentationInfo, msg.replyTo))
@@ -111,7 +111,7 @@ trait PresentationHandler {
     //      printPresentations
 
     usersModel.getCurrentPresenter() foreach { pres =>
-      handleStopPollRequest(StopPollRequest(mProps.id.value, pres.id.value))
+      handleStopPollRequest(StopPollRequest(mProps.id, pres.id))
     }
 
   }

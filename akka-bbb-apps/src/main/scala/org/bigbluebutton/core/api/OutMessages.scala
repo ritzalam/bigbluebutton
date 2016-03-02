@@ -11,10 +11,10 @@ case class MeetingCreated(meetingID: String, externalMeetingID: String, recorded
 case class MeetingMuted(meetingID: String, recorded: Boolean, meetingMuted: Boolean) extends IOutMessage
 case class MeetingEnded(meetingID: String, recorded: Boolean, voiceBridge: String) extends IOutMessage
 case class MeetingState(meetingID: String, recorded: Boolean, userId: String, permissions: Permissions, meetingMuted: Boolean) extends IOutMessage
-case class MeetingHasEnded(meetingID: String, userId: String) extends IOutMessage
+case class MeetingHasEnded(meetingID: String, userId: IntUserId) extends IOutMessage
 case class MeetingDestroyed(meetingID: String) extends IOutMessage
 case class DisconnectAllUsers(meetingID: String) extends IOutMessage
-case class DisconnectUser(meetingID: String, userId: String) extends IOutMessage
+case class DisconnectUser(meetingId: IntMeetingId, userId: IntUserId) extends IOutMessage
 case class KeepAliveMessageReply(aliveID: String) extends IOutMessage
 case class PubSubPong(system: String, timestamp: Long) extends IOutMessage
 case object IsAliveMessage extends IOutMessage
@@ -41,9 +41,10 @@ case class GetPermissionsSettingReply(meetingID: String, userId: String) extends
 
 // Users
 case class UserRegistered(meetingId: IntMeetingId, recorded: Recorded, user: RegisteredUser) extends IOutMessage
-case class UserLeft(meetingID: String, recorded: Boolean, user: UserVO) extends IOutMessage
-case class UserEjectedFromMeeting(meetingID: String, recorded: Boolean, userId: String, ejectedBy: String) extends IOutMessage
-case class PresenterAssigned(meetingID: String, recorded: Boolean, presenter: Presenter) extends IOutMessage
+case class UserLeft(meetingId: IntMeetingId, recorded: Recorded, user: UserVO) extends IOutMessage
+case class UserEjectedFromMeeting(meetingId: IntMeetingId, recorded: Recorded,
+  userId: IntUserId, ejectedBy: IntUserId) extends IOutMessage
+case class PresenterAssigned(meetingId: IntMeetingId, recorded: Recorded, presenter: Presenter) extends IOutMessage
 case class EjectAllVoiceUsers(meetingID: String, recorded: Boolean, voiceBridge: String) extends IOutMessage
 case class EndAndKickAll(meetingID: String, recorded: Boolean) extends IOutMessage
 case class GetUsersReply(meetingID: String, requesterID: String, users: Array[UserVO]) extends IOutMessage
@@ -116,7 +117,8 @@ case class PageChanged(meetingID: String, page: Page) extends IOutMessage
 //case class PollCreatedMessage(meetingID: String, recorded: Boolean, requesterId: String, pollId: String, poll: PollVO) extends IOutMessage
 //case class CreatePollReplyMessage(meetingID: String, recorded: Boolean, result: RequestResult, requesterId: String, pollId: String, pollType: String) extends IOutMessage
 case class PollStartedMessage(meetingID: String, recorded: Boolean, requesterId: String, pollId: String, poll: SimplePollOutVO) extends IOutMessage
-case class PollStoppedMessage(meetingID: String, recorded: Boolean, requesterId: String, pollId: String) extends IOutMessage
+case class PollStoppedMessage(meetingId: IntMeetingId, recorded: Recorded,
+  requesterId: IntUserId, pollId: String) extends IOutMessage
 case class PollShowResultMessage(meetingID: String, recorded: Boolean, requesterId: String, pollId: String, poll: SimplePollResultOutVO) extends IOutMessage
 case class PollHideResultMessage(meetingID: String, recorded: Boolean, requesterId: String, pollId: String) extends IOutMessage
 case class UserRespondedToPollMessage(meetingID: String, recorded: Boolean, presenterId: String, pollId: String, poll: SimplePollResultOutVO) extends IOutMessage

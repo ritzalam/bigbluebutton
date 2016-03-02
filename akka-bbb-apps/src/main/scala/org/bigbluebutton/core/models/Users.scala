@@ -45,7 +45,7 @@ case class VoiceUser2(id: String, webId: String, callerName: String,
   callerNum: String, joined: Boolean, locked: Boolean, muted: Boolean,
   talking: Boolean, listenOnly: Boolean)
 
-case class Presenter(presenterID: String, presenterName: String, assignedBy: String)
+case class Presenter(id: IntUserId, name: Name, assignedBy: IntUserId)
 
 case class User(id: String, externId: String, name: String, moderator: Boolean,
   avatarUrl: String, logoutUrl: String, presenter: Boolean, callerId: CallerId,

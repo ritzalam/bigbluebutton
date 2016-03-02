@@ -73,19 +73,20 @@ case class GetLockSettings(meetingId: IntMeetingId, userId: IntUserId) extends I
 // Users
 /////////////////////////////////////////////////////////////////////////////////
 
-case class ValidateAuthToken(meetingID: String, userId: String, token: String,
+case class ValidateAuthToken(meetingId: IntMeetingId, userId: IntUserId, token: AuthToken,
   correlationId: String, sessionId: String) extends InMessage
 case class RegisterUser(meetingId: IntMeetingId, userId: IntUserId, name: Name, role: Role,
   extUserId: ExtUserId, authToken: AuthToken) extends InMessage
-case class UserJoining(meetingID: String, userID: String, authToken: String) extends InMessage
-case class UserLeaving(meetingID: String, userID: String, sessionId: String) extends InMessage
+case class UserJoining(meetingId: IntMeetingId, userId: IntUserId, token: AuthToken) extends InMessage
+case class UserLeaving(meetingId: IntMeetingId, userId: IntUserId, sessionId: String) extends InMessage
 case class GetUsers(meetingID: String, requesterID: String) extends InMessage
-case class UserEmojiStatus(meetingID: String, userId: String, emojiStatus: String) extends InMessage
-case class EjectUserFromMeeting(meetingID: String, userId: String, ejectedBy: String) extends InMessage
-case class UserShareWebcam(meetingID: String, userId: String, stream: String) extends InMessage
-case class UserUnshareWebcam(meetingID: String, userId: String, stream: String) extends InMessage
-case class ChangeUserStatus(meetingID: String, userID: String, status: String, value: Object) extends InMessage
-case class AssignPresenter(meetingID: String, newPresenterID: String, newPresenterName: String, assignedBy: String) extends InMessage
+case class UserEmojiStatus(meetingId: IntMeetingId, userId: IntUserId, emojiStatus: EmojiStatus) extends InMessage
+case class EjectUserFromMeeting(meetingId: IntMeetingId, userId: IntUserId, ejectedBy: IntUserId) extends InMessage
+case class UserShareWebcam(meetingId: IntMeetingId, userId: IntUserId, stream: String) extends InMessage
+case class UserUnshareWebcam(meetingId: IntMeetingId, userId: IntUserId, stream: String) extends InMessage
+case class ChangeUserStatus(meetingId: IntMeetingId, userId: IntUserId, status: String, value: Object) extends InMessage
+case class AssignPresenter(meetingId: IntMeetingId, newPresenterId: IntUserId,
+  newPresenterName: Name, assignedBy: IntUserId) extends InMessage
 case class SetRecordingStatus(meetingID: String, userId: String, recording: Boolean) extends InMessage
 case class GetRecordingStatus(meetingID: String, userId: String) extends InMessage
 
@@ -96,10 +97,14 @@ case class GetRecordingStatus(meetingID: String, userId: String) extends InMessa
 case class GetChatHistoryRequest(meetingID: String, requesterID: String, replyTo: String) extends InMessage
 case class SendPublicMessageRequest(meetingID: String, requesterID: String, message: Map[String, String]) extends InMessage
 case class SendPrivateMessageRequest(meetingID: String, requesterID: String, message: Map[String, String]) extends InMessage
-case class UserConnectedToGlobalAudio(meetingID: String, /** Not used. Just to satisfy trait **/ voiceConf: String,
-  userid: String, name: String) extends InMessage
-case class UserDisconnectedFromGlobalAudio(meetingID: String, /** Not used. Just to satisfy trait **/ voiceConf: String,
-  userid: String, name: String) extends InMessage
+case class UserConnectedToGlobalAudio(meetingId: IntMeetingId,
+  /** Not used. Just to satisfy trait **/
+  voiceConf: String,
+  userId: IntUserId, name: Name) extends InMessage
+case class UserDisconnectedFromGlobalAudio(meetingId: IntMeetingId,
+  /** Not used. Just to satisfy trait **/
+  voiceConf: String,
+  userId: IntUserId, name: Name) extends InMessage
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Layout
@@ -141,10 +146,11 @@ case class PresentationConversionCompleted(meetingID: String, messageKey: String
 //case class CreatePollRequest(meetingID: String, requesterId: String, pollId: String, pollType: String) extends InMessage
 case class StartCustomPollRequest(meetingID: String, requesterId: String, pollType: String, answers: Seq[String]) extends InMessage
 case class StartPollRequest(meetingID: String, requesterId: String, pollType: String) extends InMessage
-case class StopPollRequest(meetingID: String, requesterId: String) extends InMessage
+case class StopPollRequest(meetingId: IntMeetingId, requesterId: IntUserId) extends InMessage
 case class ShowPollResultRequest(meetingID: String, requesterId: String, pollId: String) extends InMessage
 case class HidePollResultRequest(meetingID: String, requesterId: String, pollId: String) extends InMessage
-case class RespondToPollRequest(meetingID: String, requesterId: String, pollId: String, questionId: Int, answerId: Int) extends InMessage
+case class RespondToPollRequest(meetingId: IntMeetingId, requesterId: IntUserId,
+  pollId: String, questionId: Int, answerId: Int) extends InMessage
 case class GetPollRequest(meetingID: String, requesterId: String, pollId: String) extends InMessage
 case class GetCurrentPollRequest(meetingID: String, requesterId: String) extends InMessage
 
@@ -157,18 +163,20 @@ case class SendVoiceUsersRequest(meetingID: String, requesterID: String) extends
 case class MuteAllExceptPresenterRequest(meetingID: String, requesterID: String, mute: Boolean) extends InMessage
 case class MuteMeetingRequest(meetingID: String, requesterID: String, mute: Boolean) extends InMessage
 case class IsMeetingMutedRequest(meetingID: String, requesterID: String) extends InMessage
-case class MuteUserRequest(meetingID: String, requesterID: String, userID: String, mute: Boolean) extends InMessage
-case class LockUserRequest(meetingID: String, requesterID: String, userID: String, lock: Boolean) extends InMessage
-case class EjectUserFromVoiceRequest(meetingID: String, userId: String, ejectedBy: String) extends InMessage
+case class MuteUserRequest(meetingId: IntMeetingId, requesterId: IntUserId,
+  userId: IntUserId, mute: Boolean) extends InMessage
+case class LockUserRequest(meetingId: IntMeetingId, requesterId: IntUserId, userId: IntUserId, lock: Boolean) extends InMessage
+case class EjectUserFromVoiceRequest(meetingId: IntMeetingId, userId: IntUserId, ejectedBy: IntUserId) extends InMessage
 case class VoiceUserJoinedMessage(meetingID: String, user: String, voiceConfId: String,
   callerIdNum: String, callerIdName: String, muted: Boolean, talking: Boolean) extends InMessage
-case class UserJoinedVoiceConfMessage(voiceConfId: String, voiceUserId: String, userId: String, externUserId: String,
-  callerIdName: String, callerIdNum: String, muted: Boolean, talking: Boolean, listenOnly: Boolean) extends InMessage
-case class UserLeftVoiceConfMessage(voiceConfId: String, voiceUserId: String) extends InMessage
-case class UserLockedInVoiceConfMessage(voiceConfId: String, voiceUserId: String, locked: Boolean) extends InMessage
-case class UserMutedInVoiceConfMessage(voiceConfId: String, voiceUserId: String, muted: Boolean) extends InMessage
-case class UserTalkingInVoiceConfMessage(voiceConfId: String, voiceUserId: String, talking: Boolean) extends InMessage
-case class VoiceConfRecordingStartedMessage(voiceConfId: String, recordStream: String, recording: Boolean, timestamp: String) extends InMessage
+case class UserJoinedVoiceConfMessage(voiceConfId: VoiceConf, voiceUserId: VoiceUserId,
+  userId: IntUserId, externUserId: ExtUserId, callerId: CallerId,
+  muted: Muted, talking: Talking, listenOnly: ListenOnly) extends InMessage
+case class UserLeftVoiceConfMessage(voiceConfId: VoiceConf, voiceUserId: VoiceUserId) extends InMessage
+case class UserLockedInVoiceConfMessage(voiceConfId: VoiceConf, voiceUserId: VoiceUserId, locked: Boolean) extends InMessage
+case class UserMutedInVoiceConfMessage(voiceConfId: VoiceConf, voiceUserId: VoiceUserId, muted: Boolean) extends InMessage
+case class UserTalkingInVoiceConfMessage(voiceConfId: VoiceConf, voiceUserId: VoiceUserId, talking: Boolean) extends InMessage
+case class VoiceConfRecordingStartedMessage(voiceConfId: VoiceConf, recordStream: String, recording: Boolean, timestamp: String) extends InMessage
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Whiteboard

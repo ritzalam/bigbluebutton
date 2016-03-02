@@ -132,7 +132,7 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handleUserEjectedFromMeeting(msg: UserEjectedFromMeeting) {
-    val m = new UserEjectedFromMeetingMessage(msg.meetingID, msg.userId, msg.ejectedBy)
+    val m = new UserEjectedFromMeetingMessage(msg.meetingId.value, msg.userId.value, msg.ejectedBy.value)
     service.send(MessagingConstants.FROM_USERS_CHANNEL, m.toJson)
   }
 
@@ -268,9 +268,9 @@ class MessageSenderActor(val service: MessageSender)
   private def handleGetPresentationInfoOutMsg(msg: GetPresentationInfoOutMsg) {
     // Create a map for our current presenter
     val presenter = new java.util.HashMap[String, Object]()
-    presenter.put(Constants.USER_ID, msg.info.presenter.userId)
-    presenter.put(Constants.NAME, msg.info.presenter.name)
-    presenter.put(Constants.ASSIGNED_BY, msg.info.presenter.assignedBy)
+    presenter.put(Constants.USER_ID, msg.info.presenter.id.value)
+    presenter.put(Constants.NAME, msg.info.presenter.name.value)
+    presenter.put(Constants.ASSIGNED_BY, msg.info.presenter.assignedBy.value)
 
     // Create an array for our presentations
     val presentations = new java.util.ArrayList[java.util.Map[String, Object]]
@@ -417,7 +417,7 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def pollStoppedMessageToJson(msg: PollStoppedMessage): String = {
-    val psm = new org.bigbluebutton.common.messages.PollStoppedMessage(msg.meetingID, msg.requesterId, msg.pollId)
+    val psm = new org.bigbluebutton.common.messages.PollStoppedMessage(msg.meetingId.value, msg.requesterId.value, msg.pollId)
     psm.toJson
   }
 

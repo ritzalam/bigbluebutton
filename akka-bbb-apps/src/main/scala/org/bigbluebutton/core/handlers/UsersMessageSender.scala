@@ -10,7 +10,7 @@ trait UsersMessageSender {
   val outGW: OutMessageGateway
 
   def sendUerLeftMessage(meetingId: IntMeetingId, recorded: Recorded, user: UserVO) {
-    outGW.send(new UserLeft(meetingId.value, recorded.value, user))
+    outGW.send(new UserLeft(meetingId, recorded, user))
   }
 
   def sendUserListeningOnlyMessage(meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId, listenOnly: ListenOnly) {
@@ -63,16 +63,17 @@ trait UsersMessageSender {
     outGW.send(new UserChangedEmojiStatus(meetingId.value, recorded.value, emojiStatus.value, userId.value))
   }
 
-  def sendUserEjectedFromMeetingMessage(meetingId: IntMeetingId, recorded: Recorded, userId: String, ejectedBy: String) {
-    outGW.send(new UserEjectedFromMeeting(meetingId.value, recorded.value, userId, ejectedBy))
+  def sendUserEjectedFromMeetingMessage(meetingId: IntMeetingId, recorded: Recorded,
+    userId: IntUserId, ejectedBy: IntUserId) {
+    outGW.send(new UserEjectedFromMeeting(meetingId, recorded, userId, ejectedBy))
   }
 
-  def sendDisconnectUserMessage(meetingId: IntMeetingId, userId: String) {
-    outGW.send(new DisconnectUser(meetingId.value, userId))
+  def sendDisconnectUserMessage(meetingId: IntMeetingId, userId: IntUserId) {
+    outGW.send(new DisconnectUser(meetingId, userId))
   }
 
   def sendUserLeftMessage(meetingId: IntMeetingId, recorded: Recorded, user: UserVO) {
-    outGW.send(new UserLeft(meetingId.value, recorded.value, user))
+    outGW.send(new UserLeft(meetingId, recorded, user))
   }
 
   def sendUserSharedWebcamMessage(meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId, stream: String) {
@@ -129,11 +130,11 @@ trait UsersMessageSender {
   }
 
   def sendPresenterAssignedMessage(meetingId: IntMeetingId, recorded: Recorded, presenter: Presenter) {
-    outGW.send(new PresenterAssigned(meetingId.value, recorded.value, presenter))
+    outGW.send(new PresenterAssigned(meetingId, recorded, presenter))
   }
 
-  def sendMeetingHasEnded(meetingId: IntMeetingId, userId: String) {
+  def sendMeetingHasEnded(meetingId: IntMeetingId, userId: IntUserId) {
     outGW.send(new MeetingHasEnded(meetingId.value, userId))
-    outGW.send(new DisconnectUser(meetingId.value, userId))
+    outGW.send(new DisconnectUser(meetingId, userId))
   }
 }

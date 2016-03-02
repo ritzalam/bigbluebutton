@@ -287,13 +287,13 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   private def handleUserLeft(msg: UserLeft): Unit = {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val ev = new ParticipantLeftRecordEvent();
       ev.setTimestamp(TimestampGenerator.generateTimestamp);
       ev.setUserId(msg.user.id.value);
-      ev.setMeetingId(msg.meetingID);
+      ev.setMeetingId(msg.meetingId.value);
 
-      recorder.record(msg.meetingID, ev);
+      recorder.record(msg.meetingId.value, ev);
     }
 
   }
@@ -339,15 +339,15 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   private def handleAssignPresenter(msg: PresenterAssigned): Unit = {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val event = new AssignPresenterRecordEvent();
-      event.setMeetingId(msg.meetingID);
+      event.setMeetingId(msg.meetingId.value);
       event.setTimestamp(TimestampGenerator.generateTimestamp);
-      event.setUserId(msg.presenter.presenterID);
-      event.setName(msg.presenter.presenterName);
-      event.setAssignedBy(msg.presenter.assignedBy);
+      event.setUserId(msg.presenter.id.value);
+      event.setName(msg.presenter.name.value);
+      event.setAssignedBy(msg.presenter.assignedBy.value);
 
-      recorder.record(msg.meetingID, event);
+      recorder.record(msg.meetingId.value, event);
     }
 
   }

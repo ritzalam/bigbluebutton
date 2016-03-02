@@ -68,7 +68,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
 
     sendMeetingMutedMessage(mProps.id, mProps.recorded, meetingModel.isMeetingMuted())
     usersWhoAreNotPresenter foreach { u =>
-      sendMuteVoiceUserMessage(mProps.id, mProps.recorded, u.id, IntUserId(msg.requesterID),
+      sendMuteVoiceUserMessage(mProps.id, mProps.recorded, u.id, msg.requesterId,
         u.voiceUser.id, mProps.voiceBridge, msg.mute)
     }
   }
@@ -81,7 +81,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     }
     sendMeetingMutedMessage(mProps.id, mProps.recorded, meetingModel.isMeetingMuted())
     usersModel.getUsers foreach { u =>
-      sendMuteVoiceUserMessage(mProps.id, mProps.recorded, u.id, IntUserId(msg.requesterID),
+      sendMuteVoiceUserMessage(mProps.id, mProps.recorded, u.id, msg.requesterId,
         u.voiceUser.id, mProps.voiceBridge, msg.mute)
     }
   }
@@ -130,7 +130,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
   }
 
   def handleIsMeetingMutedRequest(msg: IsMeetingMutedRequest) {
-    sendIsMeetingMutedReplyMessage(mProps.id, mProps.recorded, msg.requesterID, meetingModel.isMeetingMuted())
+    sendIsMeetingMutedReplyMessage(mProps.id, mProps.recorded, msg.requesterId, meetingModel.isMeetingMuted())
   }
 
   def handleMuteUserRequest(msg: MuteUserRequest) {
@@ -203,7 +203,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       meetingModel.initializeAudioSettings()
 
       if (meetingModel.isMeetingMuted() != msg.muted) {
-        handleMuteAllExceptPresenterRequest(new MuteAllExceptPresenterRequest(mProps.id.value, msg.requesterID, msg.muted));
+        handleMuteAllExceptPresenterRequest(new MuteAllExceptPresenterRequest(mProps.id, msg.requesterId, msg.muted));
       }
     }
   }
@@ -275,7 +275,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
   }
 
   def handleGetUsers(msg: GetUsers): Unit = {
-    sendGetUsersReplyMessage(IntMeetingId(msg.meetingID), msg.requesterID, usersModel.getUsers)
+    sendGetUsersReplyMessage(msg.meetingId, msg.requesterId, usersModel.getUsers)
   }
 
   def sendUserLeftEvent(user: UserVO) {

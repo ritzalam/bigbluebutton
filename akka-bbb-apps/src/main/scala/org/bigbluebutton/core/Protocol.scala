@@ -2,6 +2,7 @@ package org.bigbluebutton.core
 
 import spray.json.{ DefaultJsonProtocol, JsValue, JsString, DeserializationException, JsonFormat }
 import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.models._
 
 object UserMessagesProtocol extends DefaultJsonProtocol {
   /*  
@@ -24,6 +25,8 @@ object UserMessagesProtocol extends DefaultJsonProtocol {
     }
   }
 
+  implicit val intMeetingIdFormat = jsonFormat1(IntMeetingId)
+  implicit val intUserIdFormat = jsonFormat1(IntUserId)
   implicit val breakoutRoomInPayloadFormat = jsonFormat2(BreakoutRoomInPayload)
   implicit val createBreakoutRoomsFormat = jsonFormat3(CreateBreakoutRooms)
   implicit val breakoutRoomsListMessageFormat = jsonFormat1(BreakoutRoomsListMessage)

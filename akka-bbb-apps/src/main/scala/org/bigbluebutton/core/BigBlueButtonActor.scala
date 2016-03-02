@@ -81,21 +81,21 @@ class BigBlueButtonActor(val system: ActorSystem,
   }
 
   private def handleDestroyMeeting(msg: DestroyMeeting) {
-    log.info("Received DestroyMeeting message for meetingId={}", msg.meetingID)
-    meetings.get(msg.meetingID) match {
-      case None => log.info("Could not find meetingId={}", msg.meetingID)
+    log.info("Received DestroyMeeting message for meetingId={}", msg.meetingId)
+    meetings.get(msg.meetingId.value) match {
+      case None => log.info("Could not find meetingId={}", msg.meetingId.value)
       case Some(m) => {
-        meetings -= msg.meetingID
-        log.info("Kick everyone out on meetingId={}", msg.meetingID)
+        meetings -= msg.meetingId.value
+        log.info("Kick everyone out on meetingId={}", msg.meetingId)
         if (m.mProps.isBreakout) {
           log.info("Informing parent meeting {} that a breakout room has been ended{}", m.mProps.extId, m.mProps.id)
           eventBus.publish(BigBlueButtonEvent(m.mProps.extId.value,
             BreakoutRoomEnded(m.mProps.extId.value, m.mProps.id.value)))
         }
-        outGW.send(new EndAndKickAll(msg.meetingID, m.mProps.recorded.value))
-        outGW.send(new DisconnectAllUsers(msg.meetingID))
-        log.info("Destroyed meetingId={}", msg.meetingID)
-        outGW.send(new MeetingDestroyed(msg.meetingID))
+        outGW.send(new EndAndKickAll(msg.meetingId, m.mProps.recorded))
+        outGW.send(new DisconnectAllUsers(msg.meetingId))
+        log.info("Destroyed meetingId={}", msg.meetingId)
+        outGW.send(new MeetingDestroyed(msg.meetingId))
 
         /** Unsubscribe to meeting and voice events. **/
         eventBus.unsubscribe(m.actorRef, m.mProps.id.value)
@@ -108,7 +108,7 @@ class BigBlueButtonActor(val system: ActorSystem,
   }
 
   private def handleCreateMeeting(msg: CreateMeeting): Unit = {
-    meetings.get(msg.meetingID) match {
+    meetings.get(msg.meetingId.value) match {
       case None => {
         log.info("Create meeting request. meetingId={}", msg.mProps.id)
 
@@ -119,11 +119,11 @@ class BigBlueButtonActor(val system: ActorSystem,
         eventBus.subscribe(m.actorRef, m.mProps.voiceBridge.value)
 
         meetings += m.mProps.id.value -> m
-        outGW.send(new MeetingCreated(m.mProps.id.value, m.mProps.extId.value, m.mProps.recorded.value, m.mProps.name.value,
+        outGW.send(new MeetingCreated(m.mProps.id, m.mProps.extId, m.mProps.recorded, m.mProps.name.value,
           m.mProps.voiceBridge.value, msg.mProps.duration, msg.mProps.moderatorPass,
           msg.mProps.viewerPass, msg.mProps.createTime, msg.mProps.createDate))
 
-        m.actorRef ! new InitializeMeeting(m.mProps.id.value, m.mProps.recorded.value)
+        m.actorRef ! new InitializeMeeting(m.mProps.id, m.mProps.recorded)
       }
       case Some(m) => {
         log.info("Meeting already created. meetingID={}", msg.mProps.id)
@@ -154,13 +154,13 @@ class BigBlueButtonActor(val system: ActorSystem,
       resultArray(i) = info
 
       //send the users
-      self ! (new GetUsers(id, "nodeJSapp"))
+      self ! (new GetUsers(IntMeetingId(id), IntUserId("nodeJSapp")))
 
       //send the presentation
-      self ! (new GetPresentationInfo(id, "nodeJSapp", "nodeJSapp"))
+      self ! (new GetPresentationInfo(IntMeetingId(id), IntUserId("nodeJSapp"), "nodeJSapp"))
 
       //send chat history
-      self ! (new GetChatHistoryRequest(id, "nodeJSapp", "nodeJSapp"))
+      self ! (new GetChatHistoryRequest(IntMeetingId(id), IntUserId("nodeJSapp"), "nodeJSapp"))
 
       //send lock settings
       self ! (new GetLockSettings(IntMeetingId(id), IntUserId("nodeJSapp")))

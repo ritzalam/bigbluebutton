@@ -73,15 +73,15 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   private def handleSendPublicMessageEvent(msg: SendPublicMessageEvent) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val message = mapAsJavaMap(msg.message)
       val ev = new PublicChatRecordEvent();
       ev.setTimestamp(TimestampGenerator.generateTimestamp);
-      ev.setMeetingId(msg.meetingID);
+      ev.setMeetingId(msg.meetingId.value);
       ev.setSender(message.get("fromUsername"));
       ev.setMessage(message.get("message"));
       ev.setColor(message.get("fromColor"));
-      recorder.record(msg.meetingID, ev);
+      recorder.record(msg.meetingId.value, ev);
     }
   }
 
@@ -90,21 +90,21 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   private def handlePresentationConversionDone(msg: PresentationConversionDone) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val event = new ConversionCompletedPresentationRecordEvent();
-      event.setMeetingId(msg.meetingID);
+      event.setMeetingId(msg.meetingId.value);
       event.setTimestamp(TimestampGenerator.generateTimestamp);
       event.setPresentationName(msg.presentation.id);
       event.setOriginalFilename(msg.presentation.name);
-      recorder.record(msg.meetingID, event);
+      recorder.record(msg.meetingId.value, event);
     }
 
   }
 
   private def handleGotoSlideOutMsg(msg: GotoSlideOutMsg) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val event = new GotoSlidePresentationRecordEvent();
-      event.setMeetingId(msg.meetingID);
+      event.setMeetingId(msg.meetingId.value);
       event.setTimestamp(TimestampGenerator.generateTimestamp);
       event.setSlide(msg.page.num);
       event.setId(msg.page.id);
@@ -117,14 +117,14 @@ class RecorderActor(val recorder: RecorderApplication)
       event.setYOffset(msg.page.yOffset);
       event.setWidthRatio(msg.page.widthRatio);
       event.setHeightRatio(msg.page.heightRatio);
-      recorder.record(msg.meetingID, event);
+      recorder.record(msg.meetingId.value, event);
     }
   }
 
   private def handleResizeAndMoveSlideOutMsg(msg: ResizeAndMoveSlideOutMsg) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val event = new ResizeAndMoveSlidePresentationRecordEvent();
-      event.setMeetingId(msg.meetingID);
+      event.setMeetingId(msg.meetingId.value);
       event.setTimestamp(TimestampGenerator.generateTimestamp);
       event.setId(msg.page.id);
       event.setNum(msg.page.num);
@@ -137,7 +137,7 @@ class RecorderActor(val recorder: RecorderApplication)
       event.setWidthRatio(msg.page.widthRatio);
       event.setHeightRatio(msg.page.heightRatio);
 
-      recorder.record(msg.meetingID, event);
+      recorder.record(msg.meetingId.value, event);
     }
   }
 
@@ -152,35 +152,35 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   private def handleSharePresentationOutMsg(msg: SharePresentationOutMsg) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val event = new SharePresentationPresentationRecordEvent();
-      event.setMeetingId(msg.meetingID);
+      event.setMeetingId(msg.meetingId.value);
       event.setTimestamp(TimestampGenerator.generateTimestamp);
       event.setPresentationName(msg.presentation.id);
       event.setOriginalFilename(msg.presentation.name);
       event.setShare(true);
-      recorder.record(msg.meetingID, event);
+      recorder.record(msg.meetingId.value, event);
     }
   }
 
   private def handleSendCursorUpdateOutMsg(msg: SendCursorUpdateOutMsg) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val event = new CursorUpdateRecordEvent();
-      event.setMeetingId(msg.meetingID);
+      event.setMeetingId(msg.meetingId.value);
       event.setTimestamp(TimestampGenerator.generateTimestamp);
       event.setXPercent(msg.xPercent);
       event.setYPercent(msg.yPercent);
 
-      recorder.record(msg.meetingID, event);
+      recorder.record(msg.meetingId.value, event);
     }
   }
 
   private def handleEndAndKickAll(msg: EndAndKickAll): Unit = {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val ev = new ParticipantEndAndKickAllRecordEvent();
       ev.setTimestamp(TimestampGenerator.generateTimestamp);
-      ev.setMeetingId(msg.meetingID);
-      recorder.record(msg.meetingID, ev);
+      ev.setMeetingId(msg.meetingId.value);
+      recorder.record(msg.meetingId.value, ev);
     }
   }
 
@@ -198,91 +198,91 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   def handleVoiceRecordingStarted(msg: VoiceRecordingStarted) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val evt = new StartRecordingVoiceRecordEvent(true);
-      evt.setMeetingId(msg.meetingID);
+      evt.setMeetingId(msg.meetingId.value);
       evt.setTimestamp(TimestampGenerator.generateTimestamp);
       evt.setBridge(msg.confNum);
       evt.setRecordingTimestamp(msg.timestamp);
       evt.setFilename(msg.recordingFile);
-      recorder.record(msg.meetingID, evt);
+      recorder.record(msg.meetingId.value, evt);
     }
   }
 
   def handleVoiceRecordingStopped(msg: VoiceRecordingStopped) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val evt = new StartRecordingVoiceRecordEvent(false);
-      evt.setMeetingId(msg.meetingID);
+      evt.setMeetingId(msg.meetingId.value);
       evt.setTimestamp(TimestampGenerator.generateTimestamp);
       evt.setBridge(msg.confNum);
       evt.setRecordingTimestamp(msg.timestamp);
       evt.setFilename(msg.recordingFile);
-      recorder.record(msg.meetingID, evt);
+      recorder.record(msg.meetingId.value, evt);
     }
   }
 
   def handleUserVoiceMuted(msg: UserVoiceMuted) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val ev = new ParticipantMutedVoiceRecordEvent()
-      ev.setMeetingId(msg.meetingID);
+      ev.setMeetingId(msg.meetingId.value);
       ev.setTimestamp(TimestampGenerator.generateTimestamp);
-      ev.setBridge(msg.confNum);
+      ev.setBridge(msg.confNum.value);
       ev.setParticipant(msg.user.voiceUser.id.value);
       ev.setMuted(msg.user.voiceUser.muted.value);
 
-      recorder.record(msg.meetingID, ev);
+      recorder.record(msg.meetingId.value, ev);
     }
   }
 
   def handleUserVoiceTalking(msg: UserVoiceTalking) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val evt = new ParticipantTalkingVoiceRecordEvent();
-      evt.setMeetingId(msg.meetingID);
+      evt.setMeetingId(msg.meetingId.value);
       evt.setTimestamp(TimestampGenerator.generateTimestamp);
-      evt.setBridge(msg.confNum);
+      evt.setBridge(msg.confNum.value);
       evt.setParticipant(msg.user.id.value);
       evt.setTalking(msg.user.voiceUser.talking.value);
 
-      recorder.record(msg.meetingID, evt);
+      recorder.record(msg.meetingId.value, evt);
     }
   }
 
   def handleUserJoinedVoice(msg: UserJoinedVoice) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val evt = new ParticipantJoinedVoiceRecordEvent();
-      evt.setMeetingId(msg.meetingID);
+      evt.setMeetingId(msg.meetingId.value);
       evt.setTimestamp(TimestampGenerator.generateTimestamp);
-      evt.setBridge(msg.confNum);
+      evt.setBridge(msg.confNum.value);
       evt.setParticipant(msg.user.voiceUser.id.value);
       evt.setCallerName(msg.user.voiceUser.callerId.name.value);
       evt.setCallerNumber(msg.user.voiceUser.callerId.number.value);
       evt.setMuted(msg.user.voiceUser.muted.value);
       evt.setTalking(msg.user.voiceUser.talking.value);
 
-      recorder.record(msg.meetingID, evt)
+      recorder.record(msg.meetingId.value, evt)
     }
   }
 
   def handleUserLeftVoice(msg: UserLeftVoice) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val evt = new ParticipantLeftVoiceRecordEvent();
-      evt.setMeetingId(msg.meetingID);
+      evt.setMeetingId(msg.meetingId.value);
       evt.setTimestamp(TimestampGenerator.generateTimestamp);
-      evt.setBridge(msg.confNum);
+      evt.setBridge(msg.confNum.value);
       evt.setParticipant(msg.user.voiceUser.id.value);
-      recorder.record(msg.meetingID, evt);
+      recorder.record(msg.meetingId.value, evt);
     }
   }
 
   def handleRecordingStatusChanged(msg: RecordingStatusChanged) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val evt = new RecordStatusRecordEvent();
-      evt.setMeetingId(msg.meetingID);
+      evt.setMeetingId(msg.meetingId.value);
       evt.setTimestamp(TimestampGenerator.generateTimestamp);
-      evt.setUserId(msg.userId);
+      evt.setUserId(msg.userId.value);
       evt.setRecordingStatus(msg.recording.toString);
 
-      recorder.record(msg.meetingID, evt);
+      recorder.record(msg.meetingId.value, evt);
     }
   }
 
@@ -299,42 +299,42 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   private def handleChangedUserEmojiStatus(msg: UserChangedEmojiStatus) {
-    if (msg.recorded) {
-      val status = UserStatusChange(msg.meetingID, msg.recorded,
-        msg.userID, "emojiStatus", msg.emojiStatus)
+    if (msg.recorded.value) {
+      val status = UserStatusChange(msg.meetingId, msg.recorded,
+        msg.userId, "emojiStatus", msg.emojiStatus.value)
       handleUserStatusChange(status)
     }
 
   }
 
   private def handleUserSharedWebcam(msg: UserSharedWebcam) {
-    if (msg.recorded) {
-      val status = UserStatusChange(msg.meetingID, msg.recorded,
-        msg.userID, "hasStream", "true,stream=" + msg.stream)
+    if (msg.recorded.value) {
+      val status = UserStatusChange(msg.meetingId, msg.recorded,
+        msg.userId, "hasStream", "true,stream=" + msg.stream)
       handleUserStatusChange(status)
     }
 
   }
 
   private def handleUserUnsharedWebcam(msg: UserUnsharedWebcam) {
-    if (msg.recorded) {
-      val status = UserStatusChange(msg.meetingID, msg.recorded,
-        msg.userID, "hasStream", "false,stream=" + msg.stream)
+    if (msg.recorded.value) {
+      val status = UserStatusChange(msg.meetingId, msg.recorded,
+        msg.userId, "hasStream", "false,stream=" + msg.stream)
       handleUserStatusChange(status)
     }
 
   }
 
   private def handleUserStatusChange(msg: UserStatusChange): Unit = {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val ev = new ParticipantStatusChangeRecordEvent();
       ev.setTimestamp(TimestampGenerator.generateTimestamp);
-      ev.setUserId(msg.userID);
-      ev.setMeetingId(msg.meetingID);
+      ev.setUserId(msg.userId.value);
+      ev.setMeetingId(msg.meetingId.value);
       ev.setStatus(msg.status);
       ev.setValue(msg.value.toString());
 
-      recorder.record(msg.meetingID, ev);
+      recorder.record(msg.meetingId.value, ev);
     }
   }
 
@@ -376,77 +376,77 @@ class RecorderActor(val recorder: RecorderApplication)
   }
 
   private def handleSendWhiteboardAnnotationEvent(msg: SendWhiteboardAnnotationEvent) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       if ((msg.shape.shapeType == WhiteboardKeyUtil.TEXT_TYPE) && (msg.shape.status != WhiteboardKeyUtil.TEXT_CREATED_STATUS)) {
 
         val event = new ModifyTextWhiteboardRecordEvent()
-        event.setMeetingId(msg.meetingID)
+        event.setMeetingId(msg.meetingId.value)
         event.setTimestamp(TimestampGenerator.generateTimestamp)
         event.setPresentation(getPresentationId(msg.whiteboardId))
         event.setPageNumber(getPageNum(msg.whiteboardId))
         event.setWhiteboardId(msg.whiteboardId)
         event.addAnnotation(mapAsJavaMap(msg.shape.shape))
-        recorder.record(msg.meetingID, event)
+        recorder.record(msg.meetingId.value, event)
       } else if ((msg.shape.shapeType == WhiteboardKeyUtil.POLL_RESULT_TYPE)) {
         val event = new AddShapeWhiteboardRecordEvent()
-        event.setMeetingId(msg.meetingID)
+        event.setMeetingId(msg.meetingId.value)
         event.setTimestamp(TimestampGenerator.generateTimestamp)
         event.setPresentation(getPresentationId(msg.whiteboardId))
         event.setPageNumber(getPageNum(msg.whiteboardId))
         event.setWhiteboardId(msg.whiteboardId);
         event.addAnnotation(mapAsJavaMap(msg.shape.shape))
-        recorder.record(msg.meetingID, event)
+        recorder.record(msg.meetingId.value, event)
       } else {
         val event = new AddShapeWhiteboardRecordEvent()
-        event.setMeetingId(msg.meetingID)
+        event.setMeetingId(msg.meetingId.value)
         event.setTimestamp(TimestampGenerator.generateTimestamp)
         event.setPresentation(getPresentationId(msg.whiteboardId))
         event.setPageNumber(getPageNum(msg.whiteboardId))
         event.setWhiteboardId(msg.whiteboardId);
         event.addAnnotation(mapAsJavaMap(msg.shape.shape))
-        recorder.record(msg.meetingID, event)
+        recorder.record(msg.meetingId.value, event)
       }
     }
 
   }
 
   private def handleClearWhiteboardEvent(msg: ClearWhiteboardEvent) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val event = new ClearPageWhiteboardRecordEvent()
-      event.setMeetingId(msg.meetingID)
+      event.setMeetingId(msg.meetingId.value)
       event.setTimestamp(TimestampGenerator.generateTimestamp)
       event.setPresentation(getPresentationId(msg.whiteboardId))
       event.setPageNumber(getPageNum(msg.whiteboardId))
       event.setWhiteboardId(msg.whiteboardId)
-      recorder.record(msg.meetingID, event)
+      recorder.record(msg.meetingId.value, event)
     }
 
   }
 
   private def handleUndoWhiteboardEvent(msg: UndoWhiteboardEvent) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val event = new UndoShapeWhiteboardRecordEvent()
-      event.setMeetingId(msg.meetingID)
+      event.setMeetingId(msg.meetingId.value)
       event.setTimestamp(TimestampGenerator.generateTimestamp)
       event.setPresentation(getPresentationId(msg.whiteboardId))
       event.setPageNumber(getPageNum(msg.whiteboardId))
       event.setWhiteboardId(msg.whiteboardId)
       event.setShapeId(msg.shapeId);
-      recorder.record(msg.meetingID, event)
+      recorder.record(msg.meetingId.value, event)
     }
 
   }
 
   private def handleEditCaptionHistoryReply(msg: EditCaptionHistoryReply) {
-    if (msg.recorded) {
+    if (msg.recorded.value) {
       val ev = new EditCaptionHistoryRecordEvent();
       ev.setTimestamp(TimestampGenerator.generateTimestamp);
-      ev.setMeetingId(msg.meetingID);
+      ev.setMeetingId(msg.meetingId.value);
       ev.setStartIndex(msg.startIndex.toString());
       ev.setEndIndex(msg.endIndex.toString());
       ev.setLocale(msg.locale);
       ev.setText(msg.text);
-      recorder.record(msg.meetingID, ev);
+      recorder.record(msg.meetingId.value, ev);
     }
   }
 }

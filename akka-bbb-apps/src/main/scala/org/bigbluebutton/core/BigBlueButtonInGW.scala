@@ -37,20 +37,13 @@ class BigBlueButtonInGW(
   def handleBigBlueButtonMessage(message: IBigBlueButtonMessage) {
     message match {
       case msg: StartCustomPollRequestMessage => {
-        eventBus.publish(
-          BigBlueButtonEvent(
-            "meeting-manager",
-            new StartCustomPollRequest(
-              msg.payload.meetingId,
-              msg.payload.requesterId,
-              msg.payload.pollType,
-              msg.payload.answers)))
+        eventBus.publish(BigBlueButtonEvent("meeting-manager",
+          new StartCustomPollRequest(IntMeetingId(msg.payload.meetingId),
+            IntUserId(msg.payload.requesterId), msg.payload.pollType, msg.payload.answers)))
       }
       case msg: PubSubPingMessage => {
-        eventBus.publish(
-          BigBlueButtonEvent(
-            "meeting-manager",
-            new PubSubPing(msg.payload.system, msg.payload.timestamp)))
+        eventBus.publish(BigBlueButtonEvent("meeting-manager",
+          new PubSubPing(msg.payload.system, msg.payload.timestamp)))
       }
 
       case msg: CreateMeetingRequest => {
@@ -69,10 +62,8 @@ class BigBlueButtonInGW(
           msg.payload.createDate,
           msg.payload.isBreakout)
 
-        eventBus.publish(
-          BigBlueButtonEvent(
-            "meeting-manager",
-            new CreateMeeting(msg.payload.id, mProps)))
+        eventBus.publish(BigBlueButtonEvent("meeting-manager",
+          new CreateMeeting(IntMeetingId(msg.payload.id), mProps)))
       }
     }
   }
@@ -89,22 +80,20 @@ class BigBlueButtonInGW(
       case m: BreakoutRoomsListMessage => eventBus.publish(BigBlueButtonEvent(m.meetingId, m))
       case m: CreateBreakoutRooms => eventBus.publish(BigBlueButtonEvent(m.meetingId, m))
       case m: RequestBreakoutJoinURLInMessage => eventBus.publish(BigBlueButtonEvent(m.meetingId, m))
-      case m: TransferUserToMeetingRequest => eventBus.publish(BigBlueButtonEvent(m.meetingId, m))
+      case m: TransferUserToMeetingRequest => eventBus.publish(BigBlueButtonEvent(m.meetingId.value, m))
       case m: EndAllBreakoutRooms => eventBus.publish(BigBlueButtonEvent(m.meetingId, m))
       case _ => log.error("Unhandled message: {}", msg)
     }
   }
 
-  def destroyMeeting(meetingID: String) {
+  def destroyMeeting(meetingId: String) {
     eventBus.publish(
-      BigBlueButtonEvent(
-        "meeting-manager",
-        new DestroyMeeting(
-          meetingID)))
+      BigBlueButtonEvent("meeting-manager",
+        new DestroyMeeting(IntMeetingId(meetingId))))
   }
 
   def getAllMeetings(meetingID: String) {
-    eventBus.publish(BigBlueButtonEvent("meeting-manager", new GetAllMeetingsRequest("meetingId")))
+    eventBus.publish(BigBlueButtonEvent("meeting-manager", new GetAllMeetingsRequest(IntMeetingId("meetingId"))))
   }
 
   def isAliveAudit(aliveId: String) {
@@ -120,7 +109,8 @@ class BigBlueButtonInGW(
   }
 
   def endMeeting(meetingId: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new EndMeeting(meetingId)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new EndMeeting(IntMeetingId(meetingId))))
   }
 
   def endAllMeetings() {
@@ -194,8 +184,9 @@ class BigBlueButtonInGW(
       new InitLockSettings(IntMeetingId(meetingID), permissions)))
   }
 
-  def initAudioSettings(meetingID: String, requesterID: String, muted: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new InitAudioSettings(meetingID, requesterID, muted.booleanValue())))
+  def initAudioSettings(meetingId: String, requesterId: String, muted: java.lang.Boolean) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new InitAudioSettings(IntMeetingId(meetingId), IntUserId(requesterId), muted.booleanValue())))
   }
 
   def getLockSettings(meetingId: String, userId: String) {
@@ -209,11 +200,13 @@ class BigBlueButtonInGW(
   }
 
   def setRecordingStatus(meetingId: String, userId: String, recording: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new SetRecordingStatus(meetingId, userId, recording.booleanValue())))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new SetRecordingStatus(IntMeetingId(meetingId), IntUserId(userId), recording.booleanValue())))
   }
 
   def getRecordingStatus(meetingId: String, userId: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new GetRecordingStatus(meetingId, userId)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new GetRecordingStatus(IntMeetingId(meetingId), IntUserId(userId))))
   }
 
   // Users
@@ -242,8 +235,9 @@ class BigBlueButtonInGW(
       new ChangeUserStatus(IntMeetingId(meetingId), IntUserId(userId), status, value)))
   }
 
-  def getUsers(meetingID: String, requesterID: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new GetUsers(meetingID, requesterID)))
+  def getUsers(meetingId: String, requesterId: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new GetUsers(IntMeetingId(meetingId), IntUserId(requesterId))))
   }
 
   def userLeft(meetingId: String, userId: String, sessionId: String): Unit = {
@@ -286,23 +280,34 @@ class BigBlueButtonInGW(
    * ************************************************************************************
    */
 
-  def clear(meetingID: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new ClearPresentation(meetingID)))
+  def clear(meetingId: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new ClearPresentation(IntMeetingId(meetingId))))
   }
 
-  def sendConversionUpdate(messageKey: String, meetingId: String, code: String, presentationId: String, presName: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new PresentationConversionUpdate(meetingId, messageKey, code, presentationId, presName)))
+  def sendConversionUpdate(messageKey: String, meetingId: String, code: String,
+    presentationId: String, presName: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new PresentationConversionUpdate(IntMeetingId(meetingId), messageKey,
+        code, PresentationId(presentationId), presName)))
   }
 
-  def sendPageCountError(messageKey: String, meetingId: String, code: String, presentationId: String, numberOfPages: Int, maxNumberPages: Int, presName: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new PresentationPageCountError(meetingId, messageKey, code, presentationId, numberOfPages, maxNumberPages, presName)))
+  def sendPageCountError(messageKey: String, meetingId: String, code: String,
+    presentationId: String, numberOfPages: Int, maxNumberPages: Int, presName: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new PresentationPageCountError(IntMeetingId(meetingId), messageKey, code,
+        PresentationId(presentationId), numberOfPages, maxNumberPages, presName)))
   }
 
-  def sendSlideGenerated(messageKey: String, meetingId: String, code: String, presentationId: String, numberOfPages: Int, pagesCompleted: Int, presName: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new PresentationSlideGenerated(meetingId, messageKey, code, presentationId, numberOfPages, pagesCompleted, presName)))
+  def sendSlideGenerated(messageKey: String, meetingId: String, code: String,
+    presentationId: String, numberOfPages: Int, pagesCompleted: Int, presName: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new PresentationSlideGenerated(IntMeetingId(meetingId), messageKey, code,
+        PresentationId(presentationId), numberOfPages, pagesCompleted, presName)))
   }
 
-  def generatePresentationPages(presId: String, numPages: Int, presBaseUrl: String): scala.collection.immutable.HashMap[String, Page] = {
+  def generatePresentationPages(presId: String, numPages: Int,
+    presBaseUrl: String): scala.collection.immutable.HashMap[String, Page] = {
     var pages = new scala.collection.immutable.HashMap[String, Page]
     val baseUrl =
       for (i <- 1 to numPages) {
@@ -324,41 +329,51 @@ class BigBlueButtonInGW(
     pages
   }
 
-  def sendConversionCompleted(messageKey: String, meetingId: String, code: String, presentationId: String, numPages: Int, presName: String, presBaseUrl: String) {
+  def sendConversionCompleted(messageKey: String, meetingId: String, code: String,
+    presentationId: String, numPages: Int, presName: String, presBaseUrl: String) {
 
     val pages = generatePresentationPages(presentationId, numPages, presBaseUrl)
     val presentation = new Presentation(id = presentationId, name = presName, pages = pages)
-    eventBus.publish(BigBlueButtonEvent(meetingId, new PresentationConversionCompleted(meetingId, messageKey, code, presentation)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new PresentationConversionCompleted(IntMeetingId(meetingId), messageKey, code, presentation)))
 
   }
 
-  def removePresentation(meetingID: String, presentationID: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new RemovePresentation(meetingID, presentationID)))
+  def removePresentation(meetingId: String, presentationId: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new RemovePresentation(IntMeetingId(meetingId), PresentationId(presentationId))))
   }
 
-  def getPresentationInfo(meetingID: String, requesterID: String, replyTo: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new GetPresentationInfo(meetingID, requesterID, replyTo)))
+  def getPresentationInfo(meetingId: String, requesterId: String, replyTo: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new GetPresentationInfo(IntMeetingId(meetingId), IntUserId(requesterId), replyTo)))
   }
 
-  def sendCursorUpdate(meetingID: String, xPercent: Double, yPercent: Double) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new SendCursorUpdate(meetingID, xPercent, yPercent)))
+  def sendCursorUpdate(meetingId: String, xPercent: Double, yPercent: Double) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new SendCursorUpdate(IntMeetingId(meetingId), xPercent, yPercent)))
   }
 
-  def resizeAndMoveSlide(meetingID: String, xOffset: Double, yOffset: Double, widthRatio: Double, heightRatio: Double) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new ResizeAndMoveSlide(meetingID, xOffset, yOffset, widthRatio, heightRatio)))
+  def resizeAndMoveSlide(meetingId: String, xOffset: Double, yOffset: Double,
+    widthRatio: Double, heightRatio: Double) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new ResizeAndMoveSlide(IntMeetingId(meetingId), xOffset, yOffset, widthRatio, heightRatio)))
   }
 
-  def gotoSlide(meetingID: String, pageId: String) {
+  def gotoSlide(meetingId: String, pageId: String) {
     //	  println("**** Forwarding GotoSlide for meeting[" + meetingID + "] ****")
-    eventBus.publish(BigBlueButtonEvent(meetingID, new GotoSlide(meetingID, pageId)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new GotoSlide(IntMeetingId(meetingId), pageId)))
   }
 
-  def sharePresentation(meetingID: String, presentationID: String, share: Boolean) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new SharePresentation(meetingID, presentationID, share)))
+  def sharePresentation(meetingId: String, presentationId: String, share: Boolean) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new SharePresentation(IntMeetingId(meetingId), PresentationId(presentationId), share)))
   }
 
-  def getSlideInfo(meetingID: String, requesterID: String, replyTo: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new GetSlideInfo(meetingID, requesterID, replyTo)))
+  def getSlideInfo(meetingId: String, requesterId: String, replyTo: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new GetSlideInfo(IntMeetingId(meetingId), IntUserId(requesterId), replyTo)))
   }
 
   /**
@@ -394,17 +409,20 @@ class BigBlueButtonInGW(
    * *****************************************************************
    */
 
-  def getChatHistory(meetingID: String, requesterID: String, replyTo: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new GetChatHistoryRequest(meetingID, requesterID, replyTo)))
+  def getChatHistory(meetingId: String, requesterId: String, replyTo: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new GetChatHistoryRequest(IntMeetingId(meetingId), IntUserId(requesterId), replyTo)))
   }
 
-  def sendPublicMessage(meetingID: String, requesterID: String, message: java.util.Map[String, String]) {
+  def sendPublicMessage(meetingId: String, requesterId: String, message: java.util.Map[String, String]) {
     // Convert java Map to Scala Map, then convert Mutable map to immutable map
-    eventBus.publish(BigBlueButtonEvent(meetingID, new SendPublicMessageRequest(meetingID, requesterID, mapAsScalaMap(message).toMap)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new SendPublicMessageRequest(IntMeetingId(meetingId), IntUserId(requesterId), mapAsScalaMap(message).toMap)))
   }
 
-  def sendPrivateMessage(meetingID: String, requesterID: String, message: java.util.Map[String, String]) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new SendPrivateMessageRequest(meetingID, requesterID, mapAsScalaMap(message).toMap)))
+  def sendPrivateMessage(meetingId: String, requesterId: String, message: java.util.Map[String, String]) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new SendPrivateMessageRequest(IntMeetingId(meetingId), IntUserId(requesterId), mapAsScalaMap(message).toMap)))
   }
 
   /**
@@ -428,35 +446,41 @@ class BigBlueButtonInGW(
     shape
   }
 
-  def sendWhiteboardAnnotation(meetingID: String, requesterID: String, annotation: java.util.Map[String, Object]) {
+  def sendWhiteboardAnnotation(meetingId: String, requesterId: String, annotation: java.util.Map[String, Object]) {
     val ann: scala.collection.mutable.Map[String, Object] = mapAsScalaMap(annotation)
 
     buildAnnotation(ann) match {
       case Some(shape) => {
-        eventBus.publish(BigBlueButtonEvent(meetingID, new SendWhiteboardAnnotationRequest(meetingID, requesterID, shape)))
+        eventBus.publish(BigBlueButtonEvent(meetingId,
+          new SendWhiteboardAnnotationRequest(IntMeetingId(meetingId), IntUserId(requesterId), shape)))
       }
       case None => // do nothing
     }
   }
 
-  def requestWhiteboardAnnotationHistory(meetingID: String, requesterID: String, whiteboardId: String, replyTo: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new GetWhiteboardShapesRequest(meetingID, requesterID, whiteboardId, replyTo)))
+  def requestWhiteboardAnnotationHistory(meetingId: String, requesterId: String, whiteboardId: String, replyTo: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new GetWhiteboardShapesRequest(IntMeetingId(meetingId), IntUserId(requesterId), whiteboardId, replyTo)))
   }
 
-  def clearWhiteboard(meetingID: String, requesterID: String, whiteboardId: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new ClearWhiteboardRequest(meetingID, requesterID, whiteboardId)))
+  def clearWhiteboard(meetingId: String, requesterId: String, whiteboardId: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new ClearWhiteboardRequest(IntMeetingId(meetingId), IntUserId(requesterId), whiteboardId)))
   }
 
-  def undoWhiteboard(meetingID: String, requesterID: String, whiteboardId: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new UndoWhiteboardRequest(meetingID, requesterID, whiteboardId)))
+  def undoWhiteboard(meetingId: String, requesterId: String, whiteboardId: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new UndoWhiteboardRequest(IntMeetingId(meetingId), IntUserId(requesterId), whiteboardId)))
   }
 
-  def enableWhiteboard(meetingID: String, requesterID: String, enable: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new EnableWhiteboardRequest(meetingID, requesterID, enable)))
+  def enableWhiteboard(meetingId: String, requesterId: String, enable: java.lang.Boolean) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new EnableWhiteboardRequest(IntMeetingId(meetingId), IntUserId(requesterId), enable)))
   }
 
-  def isWhiteboardEnabled(meetingID: String, requesterID: String, replyTo: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new IsWhiteboardEnabledRequest(meetingID, requesterID, replyTo)))
+  def isWhiteboardEnabled(meetingId: String, requesterId: String, replyTo: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new IsWhiteboardEnabledRequest(IntMeetingId(meetingId), IntUserId(requesterId), replyTo)))
   }
 
   /**
@@ -465,16 +489,19 @@ class BigBlueButtonInGW(
    * *****************************************************************
    */
 
-  def muteAllExceptPresenter(meetingID: String, requesterID: String, mute: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new MuteAllExceptPresenterRequest(meetingID, requesterID, mute)))
+  def muteAllExceptPresenter(meetingId: String, requesterId: String, mute: java.lang.Boolean) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new MuteAllExceptPresenterRequest(IntMeetingId(meetingId), IntUserId(requesterId), mute)))
   }
 
-  def muteAllUsers(meetingID: String, requesterID: String, mute: java.lang.Boolean) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new MuteMeetingRequest(meetingID, requesterID, mute)))
+  def muteAllUsers(meetingId: String, requesterId: String, mute: java.lang.Boolean) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new MuteMeetingRequest(IntMeetingId(meetingId), IntUserId(requesterId), mute)))
   }
 
-  def isMeetingMuted(meetingID: String, requesterID: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new IsMeetingMutedRequest(meetingID, requesterID)))
+  def isMeetingMuted(meetingId: String, requesterId: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new IsMeetingMutedRequest(IntMeetingId(meetingId), IntUserId(requesterId))))
   }
 
   def muteUser(meetingId: String, requesterId: String, userId: String, mute: java.lang.Boolean) {
@@ -538,7 +565,8 @@ class BigBlueButtonInGW(
   }
 
   def startPoll(meetingId: String, requesterId: String, pollId: String, pollType: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new StartPollRequest(meetingId, requesterId, pollType)))
+    eventBus.publish(BigBlueButtonEvent(meetingId,
+      new StartPollRequest(IntMeetingId(meetingId), IntUserId(requesterId), pollType)))
   }
 
   def stopPoll(meetingId: String, userId: String, pollId: String) {
@@ -548,9 +576,11 @@ class BigBlueButtonInGW(
 
   def showPollResult(meetingId: String, requesterId: String, pollId: String, show: java.lang.Boolean) {
     if (show) {
-      eventBus.publish(BigBlueButtonEvent(meetingId, new ShowPollResultRequest(meetingId, requesterId, pollId)))
+      eventBus.publish(BigBlueButtonEvent(meetingId,
+        new ShowPollResultRequest(IntMeetingId(meetingId), IntUserId(requesterId), pollId)))
     } else {
-      eventBus.publish(BigBlueButtonEvent(meetingId, new HidePollResultRequest(meetingId, requesterId, pollId)))
+      eventBus.publish(BigBlueButtonEvent(meetingId,
+        new HidePollResultRequest(IntMeetingId(meetingId), IntUserId(requesterId), pollId)))
     }
   }
 
@@ -560,15 +590,15 @@ class BigBlueButtonInGW(
    * *****************************************************************
    */
 
-  def sendCaptionHistory(meetingID: String, requesterID: String) {
-    bbbActor ! new SendCaptionHistoryRequest(meetingID, requesterID)
+  def sendCaptionHistory(meetingId: String, requesterId: String) {
+    bbbActor ! new SendCaptionHistoryRequest(IntMeetingId(meetingId), IntUserId(requesterId))
   }
 
-  def updateCaptionOwner(meetingID: String, locale: String, ownerID: String) {
-    bbbActor ! new UpdateCaptionOwnerRequest(meetingID, locale, ownerID)
+  def updateCaptionOwner(meetingId: String, locale: String, ownerID: String) {
+    bbbActor ! new UpdateCaptionOwnerRequest(IntMeetingId(meetingId), locale, ownerID)
   }
 
-  def editCaptionHistory(meetingID: String, userID: String, startIndex: Integer, endIndex: Integer, locale: String, text: String) {
-    bbbActor ! new EditCaptionHistoryRequest(meetingID, userID, startIndex, endIndex, locale, text)
+  def editCaptionHistory(meetingId: String, userID: String, startIndex: Integer, endIndex: Integer, locale: String, text: String) {
+    bbbActor ! new EditCaptionHistoryRequest(IntMeetingId(meetingId), userID, startIndex, endIndex, locale, text)
   }
 }

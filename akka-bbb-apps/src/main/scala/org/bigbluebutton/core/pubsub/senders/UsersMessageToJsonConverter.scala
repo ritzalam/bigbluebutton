@@ -66,7 +66,7 @@ object UsersMessageToJsonConverter {
 
   def meetingState(msg: MeetingState): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.PERMISSIONS, buildPermissionsHashMap(msg.permissions))
     payload.put(Constants.MEETING_MUTED, msg.meetingMuted: java.lang.Boolean);
     payload.put(Constants.USER_ID, msg.userId);
@@ -77,7 +77,7 @@ object UsersMessageToJsonConverter {
 
   def meetingMuted(msg: MeetingMuted): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.MEETING_MUTED, msg.meetingMuted: java.lang.Boolean);
 
     val header = Util.buildHeader(MessageNames.MEETING_MUTED, None)
@@ -86,7 +86,7 @@ object UsersMessageToJsonConverter {
 
   def meetingHasEnded(msg: MeetingHasEnded): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
 
     val header = Util.buildHeader(MessageNames.MEETING_HAS_ENDED, None)
     Util.buildJson(header, payload)
@@ -94,7 +94,7 @@ object UsersMessageToJsonConverter {
 
   def meetingEnded(msg: MeetingEnded): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
 
     val header = Util.buildHeader(MessageNames.MEETING_ENDED, None)
     Util.buildJson(header, payload)
@@ -102,7 +102,7 @@ object UsersMessageToJsonConverter {
 
   def disconnectAllUsersToJson(msg: DisconnectAllUsers): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
 
     val header = Util.buildHeader(MessageNames.DISCONNECT_ALL_USERS, None)
     Util.buildJson(header, payload)
@@ -129,7 +129,7 @@ object UsersMessageToJsonConverter {
 
   def permissionsSettingInitializedToJson(msg: PermissionsSettingInitialized): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.SETTINGS, msg.permissions.toString()) //#todo not tested
 
     val header = Util.buildHeader(MessageNames.PERMISSION_SETTING_INITIALIZED, None)
@@ -154,7 +154,7 @@ object UsersMessageToJsonConverter {
 
   def userLockedToJson(msg: UserLocked): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.USER_ID, msg.userId)
     payload.put(Constants.LOCKED, msg.lock)
 
@@ -164,7 +164,7 @@ object UsersMessageToJsonConverter {
 
   def getPermissionsSettingReplyToJson(msg: GetPermissionsSettingReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.USER_ID, msg.userId)
 
     val header = Util.buildHeader(MessageNames.GET_PERMISSION_SETTINGS_REPLY, None)
@@ -183,9 +183,9 @@ object UsersMessageToJsonConverter {
 
   def userChangedEmojiStatusToJson(msg: UserChangedEmojiStatus): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.EMOJI_STATUS, msg.emojiStatus)
-    payload.put(Constants.USER_ID, msg.userID)
+    payload.put(Constants.USER_ID, msg.userId.value)
 
     val header = Util.buildHeader(MessageNames.USER_EMOJI_STATUS, None)
     Util.buildJson(header, payload)
@@ -193,8 +193,8 @@ object UsersMessageToJsonConverter {
 
   def userStatusChangeToJson(msg: UserStatusChange): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.USER_ID, msg.userID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.USER_ID, msg.userId.value)
     payload.put(Constants.STATUS, msg.status)
     payload.put(Constants.VALUE, msg.value.toString)
 
@@ -204,9 +204,9 @@ object UsersMessageToJsonConverter {
 
   def userSharedWebcamToJson(msg: UserSharedWebcam): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.RECORDED, msg.recorded)
-    payload.put(Constants.USER_ID, msg.userID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.RECORDED, msg.recorded.value)
+    payload.put(Constants.USER_ID, msg.userId.value)
     payload.put(Constants.STREAM, msg.stream)
 
     val header = Util.buildHeader(MessageNames.USER_SHARED_WEBCAM, None)
@@ -215,9 +215,9 @@ object UsersMessageToJsonConverter {
 
   def userUnsharedWebcamToJson(msg: UserUnsharedWebcam): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.RECORDED, msg.recorded)
-    payload.put(Constants.USER_ID, msg.userID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.RECORDED, msg.recorded.value)
+    payload.put(Constants.USER_ID, msg.userId.value)
     payload.put(Constants.STREAM, msg.stream)
 
     val header = Util.buildHeader(MessageNames.USER_UNSHARED_WEBCAM, None)
@@ -242,8 +242,8 @@ object UsersMessageToJsonConverter {
 
   def getUsersReplyToJson(msg: GetUsersReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.REQUESTER_ID, msg.requesterID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
 
     val users = new java.util.ArrayList[java.util.Map[String, Any]];
     msg.users.foreach(uvo => {
@@ -258,8 +258,8 @@ object UsersMessageToJsonConverter {
 
   def userJoinedVoice(msg: UserJoinedVoice): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.RECORDED, msg.recorded)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.RECORDED, msg.recorded.value)
     payload.put(Constants.USER, userToMap(msg.user))
     payload.put(Constants.VOICE_CONF, msg.confNum)
 
@@ -269,8 +269,8 @@ object UsersMessageToJsonConverter {
 
   def userVoiceMuted(msg: UserVoiceMuted): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.RECORDED, msg.recorded)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.RECORDED, msg.recorded.value)
     payload.put(Constants.USER, userToMap(msg.user))
     payload.put(Constants.VOICE_CONF, msg.confNum)
 
@@ -280,10 +280,10 @@ object UsersMessageToJsonConverter {
 
   def userVoiceTalking(msg: UserVoiceTalking): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.RECORDED, msg.recorded)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.RECORDED, msg.recorded.value)
     payload.put(Constants.USER, userToMap(msg.user))
-    payload.put(Constants.VOICE_CONF, msg.confNum)
+    payload.put(Constants.VOICE_CONF, msg.confNum.value)
 
     val header = Util.buildHeader(MessageNames.USER_VOICE_TALKING, None)
     Util.buildJson(header, payload)
@@ -291,12 +291,12 @@ object UsersMessageToJsonConverter {
 
   def muteVoiceUserToJson(msg: MuteVoiceUser): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.MUTE, msg.mute)
-    payload.put(Constants.USER_ID, msg.userId)
-    payload.put(Constants.REQUESTER_ID, msg.requesterID)
-    payload.put(Constants.VOICE_CONF_ID, msg.voiceConfId)
-    payload.put(Constants.VOICE_USER_ID, msg.voiceUserId)
+    payload.put(Constants.USER_ID, msg.userId.value)
+    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
+    payload.put(Constants.VOICE_CONF_ID, msg.voiceConfId.value)
+    payload.put(Constants.VOICE_USER_ID, msg.voiceUserId.value)
 
     val header = Util.buildHeader(MessageNames.EJECT_VOICE_USER, None)
     Util.buildJson(header, payload)
@@ -304,12 +304,12 @@ object UsersMessageToJsonConverter {
 
   def ejectVoiceUserToJson(msg: EjectVoiceUser): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.RECORDED, msg.recorded)
-    payload.put(Constants.USER_ID, msg.userId)
-    payload.put(Constants.REQUESTER_ID, msg.requesterID)
-    payload.put(Constants.VOICE_CONF_ID, msg.voiceConfId)
-    payload.put(Constants.VOICE_USER_ID, msg.voiceUserId)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.RECORDED, msg.recorded.value)
+    payload.put(Constants.USER_ID, msg.userId.value)
+    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
+    payload.put(Constants.VOICE_CONF_ID, msg.voiceConfId.value)
+    payload.put(Constants.VOICE_USER_ID, msg.voiceUserId.value)
 
     val header = Util.buildHeader(MessageNames.EJECT_VOICE_USER, None)
     Util.buildJson(header, payload)
@@ -317,7 +317,7 @@ object UsersMessageToJsonConverter {
 
   def userLeftVoiceToJson(msg: UserLeftVoice): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.RECORDED, msg.recorded)
     payload.put(Constants.USER, userToMap(msg.user))
     payload.put(Constants.VOICE_CONF, msg.confNum)
@@ -328,9 +328,9 @@ object UsersMessageToJsonConverter {
 
   def isMeetingMutedReplyToJson(msg: IsMeetingMutedReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.RECORDED, msg.recorded)
-    payload.put(Constants.REQUESTER_ID, msg.requesterID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.RECORDED, msg.recorded.value)
+    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
     payload.put(Constants.MUTED, msg.meetingMuted)
 
     val header = Util.buildHeader(MessageNames.IS_MEETING_MUTED_REPLY, None)
@@ -339,9 +339,9 @@ object UsersMessageToJsonConverter {
 
   def recordingStatusChangedToJson(msg: RecordingStatusChanged): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.RECORDED, msg.recorded)
-    payload.put(Constants.USER_ID, msg.userId)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.RECORDED, msg.recorded.value)
+    payload.put(Constants.USER_ID, msg.userId.value)
     payload.put(Constants.RECORDING, msg.recording)
 
     val header = Util.buildHeader(MessageNames.RECORDING_STATUS_CHANGED, None)
@@ -350,9 +350,9 @@ object UsersMessageToJsonConverter {
 
   def getRecordingStatusReplyToJson(msg: GetRecordingStatusReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.RECORDED, msg.recorded)
-    payload.put(Constants.USER_ID, msg.userId)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.RECORDED, msg.recorded.value)
+    payload.put(Constants.USER_ID, msg.userId.value)
     payload.put(Constants.RECORDING, msg.recording)
 
     val header = Util.buildHeader(MessageNames.GET_RECORDING_STATUS_REPLY, None)
@@ -377,7 +377,7 @@ object UsersMessageToJsonConverter {
     payload.put(Constants.VALID, msg.valid.toString)
     payload.put(Constants.AUTH_TOKEN, msg.token)
     payload.put(Constants.USER_ID, msg.requesterId)
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
 
     val header = Util.buildHeader(MessageNames.VALIDATE_AUTH_TOKEN_TIMEOUT, None)
     Util.buildJson(header, payload)
@@ -415,7 +415,7 @@ object UsersMessageToJsonConverter {
 
   def endAndKickAllToJson(msg: EndAndKickAll): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.RECORDED, msg.recorded)
 
     val header = Util.buildHeader(MessageNames.END_AND_KICK_ALL, None)
@@ -424,8 +424,8 @@ object UsersMessageToJsonConverter {
 
   def userListeningOnlyToJson(msg: UserListeningOnly): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.USER_ID, msg.userID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.USER_ID, msg.userId.value)
     payload.put(Constants.LISTEN_ONLY, msg.listenOnly)
 
     val header = Util.buildHeader(MessageNames.USER_LISTEN_ONLY, None)

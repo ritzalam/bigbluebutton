@@ -32,7 +32,7 @@ class MeetingActorInternal(val mProps: MeetingProperties,
   context.system.scheduler.schedule(2 seconds, 30 seconds, self, "MonitorNumberOfWebUsers")
 
   // Query to get voice conference users
-  outGW.send(new GetUsersInVoiceConference(mProps.id.value, mProps.recorded.value, mProps.voiceBridge.value))
+  outGW.send(new GetUsersInVoiceConference(mProps.id, mProps.recorded, mProps.voiceBridge))
 
   if (mProps.isBreakout) {
     // This is a breakout room. Inform our parent meeting that we have been successfully created.
@@ -46,14 +46,17 @@ class MeetingActorInternal(val mProps: MeetingProperties,
   }
 
   def handleMonitorNumberOfWebUsers() {
-    eventBus.publish(BigBlueButtonEvent(mProps.id.value, MonitorNumberOfUsers(mProps.id.value)))
+    eventBus.publish(BigBlueButtonEvent(mProps.id.value,
+      MonitorNumberOfUsers(mProps.id)))
 
     // Trigger updating users of time remaining on meeting.
-    eventBus.publish(BigBlueButtonEvent(mProps.id.value, SendTimeRemainingUpdate(mProps.id.value)))
+    eventBus.publish(BigBlueButtonEvent(mProps.id.value,
+      SendTimeRemainingUpdate(mProps.id)))
 
     if (mProps.isBreakout) {
       // This is a breakout room. Update the main meeting with list of users in this breakout room.
-      eventBus.publish(BigBlueButtonEvent(mProps.id.value, SendBreakoutUsersUpdate(mProps.id.value)))
+      eventBus.publish(BigBlueButtonEvent(mProps.id.value,
+        SendBreakoutUsersUpdate(mProps.id)))
     }
 
   }

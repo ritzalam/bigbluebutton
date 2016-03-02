@@ -41,21 +41,21 @@ class PresentationModel {
     } yield curPage
   }
 
-  def remove(presId: String): Option[Presentation] = {
-    val pres = presentations.get(presId)
+  def remove(presId: PresentationId): Option[Presentation] = {
+    val pres = presentations.get(presId.value)
     pres foreach (p => presentations -= p.id)
     pres
   }
 
-  def sharePresentation(presId: String): Option[Presentation] = {
+  def sharePresentation(presId: PresentationId): Option[Presentation] = {
     getCurrentPresentation foreach (curPres => {
-      if (curPres.id != presId) {
+      if (curPres.id != presId.value) {
         val newPres = curPres.copy(current = false)
         savePresentation(newPres)
       }
     })
 
-    presentations.get(presId) match {
+    presentations.get(presId.value) match {
       case Some(pres) => {
         val cp = pres.copy(current = true)
         savePresentation(cp)

@@ -150,12 +150,12 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handleStartRecordingVoiceConf(msg: StartRecordingVoiceConf) {
-    val m = new StartRecordingVoiceConfRequestMessage(msg.meetingID, msg.voiceConfId)
+    val m = new StartRecordingVoiceConfRequestMessage(msg.meetingId.value, msg.voiceConfId.value)
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
   private def handleStopRecordingVoiceConf(msg: StopRecordingVoiceConf) {
-    val m = new StopRecordingVoiceConfRequestMessage(msg.meetingID, msg.voiceConfId, msg.recordedStream)
+    val m = new StopRecordingVoiceConfRequestMessage(msg.meetingId.value, msg.voiceConfId.value, msg.recordedStream)
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
@@ -410,7 +410,7 @@ class MessageSenderActor(val service: MessageSender)
 
   private def pollStartedMessageToJson(msg: PollStartedMessage): String = {
     val pollVO = pollVOtoMap(msg.poll)
-    val psm = new org.bigbluebutton.common.messages.PollStartedMessage(msg.meetingID, msg.requesterId, pollVO)
+    val psm = new org.bigbluebutton.common.messages.PollStartedMessage(msg.meetingId.value, msg.requesterId.value, pollVO)
     psm.toJson
   }
 
@@ -441,18 +441,18 @@ class MessageSenderActor(val service: MessageSender)
   private def pollShowResultMessageToJson(msg: PollShowResultMessage): String = {
     val pollResultVO = pollResultVOtoMap(msg.poll)
 
-    val psm = new org.bigbluebutton.common.messages.PollShowResultMessage(msg.meetingID, pollResultVO)
+    val psm = new org.bigbluebutton.common.messages.PollShowResultMessage(msg.meetingId.value, pollResultVO)
     psm.toJson
   }
 
   private def pollHideResultMessageToJson(msg: PollHideResultMessage): String = {
-    val psm = new org.bigbluebutton.common.messages.PollHideResultMessage(msg.meetingID, msg.pollId)
+    val psm = new org.bigbluebutton.common.messages.PollHideResultMessage(msg.meetingId.value, msg.pollId)
     psm.toJson
   }
 
   private def UserRespondedToPollMessageTpJson(msg: UserRespondedToPollMessage): String = {
     val pollResultVO = pollResultVOtoMap(msg.poll)
-    val psm = new org.bigbluebutton.common.messages.UserVotedPollMessage(msg.meetingID, msg.presenterId, pollResultVO)
+    val psm = new org.bigbluebutton.common.messages.UserVotedPollMessage(msg.meetingId.value, msg.pollId, pollResultVO)
     psm.toJson
   }
 
@@ -569,22 +569,22 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handleMuteVoiceUser(msg: MuteVoiceUser) {
-    val m = new MuteUserInVoiceConfRequestMessage(msg.meetingID, msg.voiceConfId, msg.voiceUserId, msg.mute)
+    val m = new MuteUserInVoiceConfRequestMessage(msg.meetingId.value, msg.voiceConfId.value, msg.voiceUserId.value, msg.mute)
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
   private def handleGetUsersFromVoiceConference(msg: GetUsersInVoiceConference) {
-    val m = new GetUsersFromVoiceConfRequestMessage(msg.meetingID, msg.voiceConfId)
+    val m = new GetUsersFromVoiceConfRequestMessage(msg.meetingId.value, msg.voiceConfId.value)
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
   private def handleEjectVoiceUser(msg: EjectVoiceUser) {
-    val m = new EjectUserFromVoiceConfRequestMessage(msg.meetingID, msg.voiceConfId, msg.voiceUserId)
+    val m = new EjectUserFromVoiceConfRequestMessage(msg.meetingId.value, msg.voiceConfId.value, msg.voiceUserId.value)
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
   private def handleTransferUserToMeeting(msg: TransferUserToMeeting) {
-    val m = new TransferUserToVoiceConfRequestMessage(msg.voiceConfId, msg.targetVoiceConfId, msg.userId);
+    val m = new TransferUserToVoiceConfRequestMessage(msg.voiceConfId.value, msg.targetVoiceConfId.value, msg.userId.value);
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 

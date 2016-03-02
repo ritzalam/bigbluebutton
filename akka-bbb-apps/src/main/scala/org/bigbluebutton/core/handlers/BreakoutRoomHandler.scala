@@ -28,8 +28,8 @@ trait BreakoutRoomHandler extends SystemConfiguration {
   }
 
   def handleBreakoutRoomsList(msg: BreakoutRoomsListMessage) {
-    val breakoutRooms = breakoutModel.getRooms().toVector map { r => new BreakoutRoomBody(r.name, r.id) }
-    outGW.send(new BreakoutRoomsListOutMessage(mProps.id.value, breakoutRooms));
+    val breakoutRooms = breakoutModel.getRooms().toVector map { r => new BreakoutRoomBody(r.name, IntMeetingId(r.id)) }
+    outGW.send(new BreakoutRoomsListOutMessage(mProps.id, breakoutRooms));
   }
 
   def handleCreateBreakoutRooms(msg: CreateBreakoutRooms) {
@@ -40,10 +40,10 @@ trait BreakoutRoomHandler extends SystemConfiguration {
       val breakoutMeetingId = BreakoutRoomsUtil.createMeetingId(mProps.id.value, i)
       val voiceConfId = BreakoutRoomsUtil.createVoiceConfId(mProps.voiceBridge.value, i)
       val r = breakoutModel.createBreakoutRoom(breakoutMeetingId, room.name, voiceConfId, room.users, presURL)
-      val p = new BreakoutRoomOutPayload(r.id, r.name, mProps.id.value,
-        r.voiceConfId, msg.durationInMinutes, bbbWebModeratorPassword, bbbWebViewerPassword,
+      val p = new BreakoutRoomOutPayload(IntMeetingId(r.id), Name(r.name), mProps.id,
+        VoiceConf(r.voiceConfId), msg.durationInMinutes, bbbWebModeratorPassword, bbbWebViewerPassword,
         r.defaultPresentationURL)
-      outGW.send(new CreateBreakoutRoom(mProps.id.value, mProps.recorded.value, p))
+      outGW.send(new CreateBreakoutRoom(mProps.id, mProps.recorded, p))
     }
   }
 
@@ -55,7 +55,8 @@ trait BreakoutRoomHandler extends SystemConfiguration {
       baseString = BreakoutRoomsUtil.createBaseString(params)
       checksum = BreakoutRoomsUtil.calculateChecksum(apiCall, baseString, bbbWebSharedSecret)
       joinURL = BreakoutRoomsUtil.createJoinURL(bbbWebAPI, apiCall, baseString, checksum)
-    } yield outGW.send(new BreakoutRoomJoinURLOutMessage(mProps.id.value, mProps.recorded.value, breakoutId, userId, joinURL))
+    } yield outGW.send(new BreakoutRoomJoinURLOutMessage(mProps.id, mProps.recorded,
+      IntMeetingId(breakoutId), IntUserId(userId), joinURL))
   }
 
   def handleRequestBreakoutJoinURL(msg: RequestBreakoutJoinURLInMessage) {
@@ -77,17 +78,18 @@ trait BreakoutRoomHandler extends SystemConfiguration {
   }
 
   def sendBreakoutRoomStarted(meetingId: String, breakoutName: String, breakoutId: String, voiceConfId: String) {
-    outGW.send(new BreakoutRoomStartedOutMessage(meetingId, mProps.recorded.value, new BreakoutRoomBody(breakoutName, breakoutId)))
+    outGW.send(new BreakoutRoomStartedOutMessage(IntMeetingId(meetingId), mProps.recorded,
+      new BreakoutRoomBody(breakoutName, IntMeetingId(breakoutId))))
   }
 
   def handleBreakoutRoomEnded(msg: BreakoutRoomEnded) {
     breakoutModel.remove(msg.breakoutRoomId)
-    outGW.send(new BreakoutRoomEndedOutMessage(msg.meetingId, msg.breakoutRoomId))
+    outGW.send(new BreakoutRoomEndedOutMessage(IntMeetingId(msg.meetingId), IntMeetingId(msg.breakoutRoomId)))
   }
 
   def handleBreakoutRoomUsersUpdate(msg: BreakoutRoomUsersUpdate) {
     breakoutModel.updateBreakoutUsers(msg.breakoutId, msg.users) foreach { room =>
-      outGW.send(new UpdateBreakoutUsersOutMessage(mProps.id.value, mProps.recorded.value, msg.breakoutId, room.users))
+      outGW.send(new UpdateBreakoutUsersOutMessage(mProps.id, mProps.recorded, IntMeetingId(msg.breakoutId), room.users))
     }
   }
 
@@ -99,10 +101,10 @@ trait BreakoutRoomHandler extends SystemConfiguration {
   }
 
   def handleTransferUserToMeeting(msg: TransferUserToMeetingRequest) {
-    var targetVoiceBridge: String = msg.targetMeetingId
+    var targetVoiceBridge: String = msg.targetMeetingId.value
     // If the current room is a parent room we fetch the voice bridge from the breakout room
     if (!mProps.isBreakout) {
-      breakoutModel.getBreakoutRoom(msg.targetMeetingId) match {
+      breakoutModel.getBreakoutRoom(msg.targetMeetingId.value) match {
         case Some(b) => {
           targetVoiceBridge = b.voiceConfId;
         }
@@ -113,12 +115,12 @@ trait BreakoutRoomHandler extends SystemConfiguration {
       targetVoiceBridge = mProps.voiceBridge.value.dropRight(1)
     }
     // We check the iser from the mode
-    usersModel.getUser(IntUserId(msg.userId)) match {
+    usersModel.getUser(msg.userId) match {
       case Some(u) => {
         if (u.voiceUser.joinedVoice.value) {
           log.info("Transferring user userId=" + u.id + " from voiceBridge=" + mProps.voiceBridge
             + " to targetVoiceConf=" + targetVoiceBridge)
-          outGW.send(new TransferUserToMeeting(mProps.voiceBridge.value, targetVoiceBridge, u.voiceUser.id.value))
+          outGW.send(new TransferUserToMeeting(mProps.voiceBridge, VoiceConf(targetVoiceBridge), u.voiceUser.id))
         }
       }
       case None => // do nothing
@@ -128,7 +130,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
   def handleEndAllBreakoutRooms(msg: EndAllBreakoutRooms) {
     log.info("EndAllBreakoutRooms event received for meetingId={}", mProps.id.value)
     breakoutModel.getRooms().foreach { room =>
-      outGW.send(new EndBreakoutRoom(room.id))
+      outGW.send(new EndBreakoutRoom(IntMeetingId(room.id)))
     }
   }
 

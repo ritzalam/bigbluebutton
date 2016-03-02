@@ -29,13 +29,13 @@ trait PollHandler {
     poll match {
       case Some(p) => {
         if (p.started && p.stopped && p.showResult) {
-          outGW.send(new GetCurrentPollReplyMessage(mProps.id.value, mProps.recorded.value, msg.requesterId, true, Some(p)))
+          outGW.send(new GetCurrentPollReplyMessage(mProps.id, mProps.recorded, msg.requesterId, true, Some(p)))
         } else {
-          outGW.send(new GetCurrentPollReplyMessage(mProps.id.value, mProps.recorded.value, msg.requesterId, false, None))
+          outGW.send(new GetCurrentPollReplyMessage(mProps.id, mProps.recorded, msg.requesterId, false, None))
         }
       }
       case None => {
-        outGW.send(new GetCurrentPollReplyMessage(mProps.id.value, mProps.recorded.value, msg.requesterId, false, None))
+        outGW.send(new GetCurrentPollReplyMessage(mProps.id, mProps.recorded, msg.requesterId, false, None))
       }
     }
   }
@@ -55,7 +55,7 @@ trait PollHandler {
     pollModel.getPoll(msg.pollId) match {
       case Some(poll) => {
         pollModel.hidePollResult(msg.pollId)
-        outGW.send(new PollHideResultMessage(mProps.id.value, mProps.recorded.value, msg.requesterId, msg.pollId))
+        outGW.send(new PollHideResultMessage(mProps.id, mProps.recorded, msg.requesterId, msg.pollId))
       }
       case None => {
 
@@ -105,9 +105,9 @@ trait PollHandler {
         for {
           page <- presModel.getCurrentPage()
           annotation = new AnnotationVO(poll.id, WhiteboardKeyUtil.DRAW_END_STATUS, WhiteboardKeyUtil.POLL_RESULT_TYPE, shape, page.id)
-        } handleSendWhiteboardAnnotationRequest(new SendWhiteboardAnnotationRequest(mProps.id.value, msg.requesterId, annotation))
+        } handleSendWhiteboardAnnotationRequest(new SendWhiteboardAnnotationRequest(mProps.id, msg.requesterId, annotation))
 
-        outGW.send(new PollShowResultMessage(mProps.id.value, mProps.recorded.value, msg.requesterId, msg.pollId, poll))
+        outGW.send(new PollShowResultMessage(mProps.id, mProps.recorded, msg.requesterId, msg.pollId, poll))
 
       }
       case None => {
@@ -145,7 +145,7 @@ trait PollHandler {
       pollModel.getSimplePoll(pollId) match {
         case Some(poll) => {
           pollModel.startPoll(poll.id)
-          outGW.send(new PollStartedMessage(mProps.id.value, mProps.recorded.value, msg.requesterId, pollId, poll))
+          outGW.send(new PollStartedMessage(mProps.id, mProps.recorded, msg.requesterId, pollId, poll))
         }
         case None => {
 
@@ -166,7 +166,7 @@ trait PollHandler {
       pollModel.getSimplePoll(pollId) match {
         case Some(poll) => {
           pollModel.startPoll(poll.id)
-          outGW.send(new PollStartedMessage(mProps.id.value, mProps.recorded.value, msg.requesterId, pollId, poll))
+          outGW.send(new PollStartedMessage(mProps.id, mProps.recorded, msg.requesterId, pollId, poll))
         }
         case None => {
 
@@ -191,8 +191,8 @@ trait PollHandler {
           pollModel.respondToQuestion(poll.id, questionId, msg.answerId, responder)
           usersModel.getCurrentPresenter foreach { cp =>
             pollModel.getSimplePollResult(poll.id) foreach { updatedPoll =>
-              outGW.send(new UserRespondedToPollMessage(mProps.id.value, mProps.recorded.value,
-                cp.id.value, msg.pollId, updatedPoll))
+              outGW.send(new UserRespondedToPollMessage(mProps.id, mProps.recorded,
+                cp.id, msg.pollId, updatedPoll))
             }
 
           }

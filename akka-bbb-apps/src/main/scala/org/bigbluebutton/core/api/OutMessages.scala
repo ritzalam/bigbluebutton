@@ -60,6 +60,8 @@ case class UpdateBreakoutUsersOutMessage(
   meetingId: IntMeetingId, recorded: Recorded, breakoutId: IntMeetingId, users: Vector[BreakoutUser]) extends IOutMessage
 case class MeetingTimeRemainingUpdate(
   meetingId: IntMeetingId, recorded: Recorded, timeRemaining: Int) extends IOutMessage
+case class BreakoutRoomsTimeRemainingUpdateOutMessage(
+  meetingId: IntMeetingId, recorded: Recorded, timeRemaining: Int) extends IOutMessage
 case class BreakoutRoomEndedOutMessage(
   meetingId: IntMeetingId, breakoutId: IntMeetingId) extends IOutMessage
 

@@ -75,8 +75,6 @@ trait PresentationHandler extends PresentationMessageSender {
   }
 
   def handleGetPresentationInfo(msg: GetPresentationInfo) {
-    //      println("PresentationApp : handleGetPresentationInfo GetPresentationInfo for meeting [" + msg.meetingID + "] [" + msg.requesterID + "]" )
-
     val curPresenter = usersModel.getCurrentPresenterInfo();
     val presenter = new CurrentPresenter(curPresenter.id, curPresenter.name, curPresenter.assignedBy)
     val presentations = presModel.getPresentations

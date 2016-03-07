@@ -45,6 +45,8 @@ trait BreakoutRoomHandler extends SystemConfiguration {
         r.defaultPresentationURL)
       outGW.send(new CreateBreakoutRoom(mProps.id, mProps.recorded, p))
     }
+    meetingModel.breakoutRoomsdurationInMinutes = msg.durationInMinutes;
+    meetingModel.breakoutRoomsStartedOn = timeNowInSeconds;
   }
 
   def sendJoinURL(userId: String, breakoutId: String) {

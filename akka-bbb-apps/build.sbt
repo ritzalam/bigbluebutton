@@ -38,7 +38,7 @@ testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/sc
 libraryDependencies ++= {
   val akkaVersion  = "2.3.14"
   val akkaStreamV = "1.0"
-  val scalaTestV  = "2.2.4"
+  val scalaTestV  = "2.2.6"
   Seq(
     "com.typesafe.akka"        %%  "akka-actor"                           % akkaVersion,
     "com.typesafe.akka"        %%  "akka-testkit"                         % akkaVersion    % "test",

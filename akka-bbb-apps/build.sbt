@@ -59,7 +59,8 @@ libraryDependencies ++= {
     "redis.clients"             %  "jedis"                                % "2.7.2",
     "org.apache.commons"        %  "commons-lang3"                        % "3.2",
     "org.bigbluebutton"         %  "bbb-common-message"                   % "0.0.17-SNAPSHOT",
-    "io.spray"                 %%  "spray-json"                           % "1.3.2"
+    "io.spray"                 %%  "spray-json"                           % "1.3.2",
+    "com.softwaremill.quicklens" %% "quicklens"                           % "1.4.6"
   )}
 
 seq(Revolver.settings: _*)

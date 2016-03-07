@@ -88,7 +88,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
 
   def handleValidateAuthToken(msg: ValidateAuthToken) {
     log.info("Got ValidateAuthToken message. meetingId=" + msg.meetingId + " userId=" + msg.userId)
-    usersModel.getRegisteredUserWithToken(msg.token) match {
+    registeredUsers.findWithToken(msg.token) match {
       case Some(u) =>
         {
           val replyTo = mProps.id.value + '/' + msg.userId
@@ -123,7 +123,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     } else {
       for {
         regUser <- RegisteredUsers.create(msg.userId, msg.extUserId, msg.name, msg.role, msg.authToken)
-        ru <- registeredUsers.add(msg.authToken, regUser)
+        rusers = registeredUsers.add(msg.authToken, regUser)
       } yield sendUserRegisteredMessage(mProps.id, mProps.recorded, regUser)
     }
   }

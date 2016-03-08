@@ -10,10 +10,8 @@ import java.util.concurrent.TimeUnit
 import org.bigbluebutton.core.util._
 import scala.concurrent.duration._
 import org.bigbluebutton.core.handlers.{ PollHandler, UsersHandler, PresentationHandler, LayoutHandler, ChatHandler, WhiteboardHandler, CaptionHandler }
-import org.bigbluebutton.core.models.{ ChatModel, LayoutModel, UsersModel, PollModel, WhiteboardModel, CaptionModel }
-import org.bigbluebutton.core.models.PresentationModel
+import org.bigbluebutton.core.models._
 import org.bigbluebutton.core.handlers.BreakoutRoomHandler
-import org.bigbluebutton.core.models.BreakoutRoomModel
 
 object MeetingActorInternal {
   def props(mProps: MeetingProperties,
@@ -76,8 +74,6 @@ class MeetingActor(val mProps: MeetingProperties,
 
   val chatModel = new ChatModel()
   val layoutModel = new LayoutModel()
-  val meetingModel = new MeetingModel()
-  val usersModel = new UsersModel()
   val pollModel = new PollModel()
   val wbModel = new WhiteboardModel()
   val presModel = new PresentationModel()
@@ -87,7 +83,7 @@ class MeetingActor(val mProps: MeetingProperties,
   // We extract the meeting handlers into this class so it is
   // easy to test.
   val liveMeeting = new LiveMeeting(mProps, eventBus, outGW,
-    chatModel, layoutModel, meetingModel, usersModel, pollModel,
+    chatModel, layoutModel, pollModel,
     wbModel, presModel, breakoutModel, captionModel)
 
   /**

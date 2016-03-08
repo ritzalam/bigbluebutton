@@ -56,25 +56,3 @@ case class Permissions(disableCam: Boolean = false, disableMic: Boolean = false,
 case class Voice(id: String, webId: String, callId: CallerId, phoningIn: Boolean,
   joined: Boolean, locked: Boolean, muted: Boolean, talking: Boolean)
 
-class Users2 {
-  var users = new collection.immutable.HashMap[String, User2]
-
-  def add(uvo: User2) {
-    users += uvo.id -> uvo
-  }
-
-  def remove(id: String): Option[User2] = {
-    val user = users get (id)
-    user foreach (u => users -= id)
-    user
-  }
-
-  def generateWebUserId(): String = {
-    val webUserId = RandomStringGenerator.randomAlphanumericString(6)
-    if (!hasUser(webUserId)) webUserId else generateWebUserId
-  }
-
-  def hasUser(userId: String): Boolean = {
-    users.contains(userId)
-  }
-}

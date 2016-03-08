@@ -45,13 +45,13 @@ trait BreakoutRoomHandler extends SystemConfiguration {
         r.defaultPresentationURL)
       outGW.send(new CreateBreakoutRoom(mProps.id, mProps.recorded, p))
     }
-    meetingModel.breakoutRoomsdurationInMinutes = msg.durationInMinutes;
-    meetingModel.breakoutRoomsStartedOn = timeNowInSeconds;
+    meeting.breakoutRoomsdurationInMinutes = msg.durationInMinutes;
+    meeting.breakoutRoomsStartedOn = timeNowInSeconds;
   }
 
   def sendJoinURL(userId: String, breakoutId: String) {
     for {
-      user <- usersModel.getUser(IntUserId(userId))
+      user <- meeting.getUser(IntUserId(userId))
       apiCall = "join"
       params = BreakoutRoomsUtil.joinParams(user.name.value, true, breakoutId, bbbWebModeratorPassword, true)
       baseString = BreakoutRoomsUtil.createBaseString(params)
@@ -96,7 +96,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
   }
 
   def handleSendBreakoutUsersUpdate(msg: SendBreakoutUsersUpdate) {
-    val users = usersModel.getUsers().toVector
+    val users = meeting.getUsers().toVector
     val breakoutUsers = users map { u => new BreakoutUser(u.id.value, u.name.value) }
     eventBus.publish(BigBlueButtonEvent(mProps.extId.value,
       new BreakoutRoomUsersUpdate(mProps.extId.value, mProps.id.value, breakoutUsers)))
@@ -117,7 +117,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
       targetVoiceBridge = mProps.voiceBridge.value.dropRight(1)
     }
     // We check the iser from the mode
-    usersModel.getUser(msg.userId) match {
+    meeting.getUser(msg.userId) match {
       case Some(u) => {
         if (u.voiceUser.joinedVoice.value) {
           log.info("Transferring user userId=" + u.id + " from voiceBridge=" + mProps.voiceBridge

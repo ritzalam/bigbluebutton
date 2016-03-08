@@ -20,7 +20,7 @@ trait UsersHandlerFilter extends UsersHandler with DefaultAuthz {
 
   abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeeting) {
     for {
-      user <- usersModel.getUser(msg.userId)
+      user <- meeting.getUser(msg.userId)
       // if user can ejectUser {
       //     // forward message to handler to process
       //     super.handleEjectUserFromMeeting(msg)

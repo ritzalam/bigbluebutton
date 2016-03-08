@@ -139,7 +139,7 @@ trait PollHandler {
     presModel.getCurrentPage() foreach { page =>
       val pollId = page.id + "/" + System.currentTimeMillis()
 
-      val numRespondents = usersModel.numUsers() - 1 // subtract the presenter
+      val numRespondents = meeting.numUsers() - 1 // subtract the presenter
       PollFactory.createPoll(pollId, msg.pollType, numRespondents, Some(msg.answers)) foreach (poll => pollModel.addPoll(poll))
 
       pollModel.getSimplePoll(pollId) match {
@@ -160,7 +160,7 @@ trait PollHandler {
     presModel.getCurrentPage() foreach { page =>
       val pollId = page.id + "/" + System.currentTimeMillis()
 
-      val numRespondents = usersModel.numUsers() - 1 // subtract the presenter
+      val numRespondents = meeting.numUsers() - 1 // subtract the presenter
       PollFactory.createPoll(pollId, msg.pollType, numRespondents, None) foreach (poll => pollModel.addPoll(poll))
 
       pollModel.getSimplePoll(pollId) match {
@@ -177,8 +177,8 @@ trait PollHandler {
   }
 
   private def handleRespondToPoll(poll: SimplePollResultOutVO, msg: RespondToPollRequest) {
-    if (hasUser(msg.requesterId)) {
-      getUser(msg.requesterId) match {
+    if (meeting.hasUser(msg.requesterId)) {
+      meeting.getUser(msg.requesterId) match {
         case Some(user) => {
           val responder = new Responder(user.id, user.name)
           /*
@@ -189,7 +189,7 @@ trait PollHandler {
            */
           val questionId = 0
           pollModel.respondToQuestion(poll.id, questionId, msg.answerId, responder)
-          usersModel.getCurrentPresenter foreach { cp =>
+          meeting.getCurrentPresenter foreach { cp =>
             pollModel.getSimplePollResult(poll.id) foreach { updatedPoll =>
               outGW.send(new UserRespondedToPollMessage(mProps.id, mProps.recorded,
                 cp.id, msg.pollId, updatedPoll))

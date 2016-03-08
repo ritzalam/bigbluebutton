@@ -8,15 +8,15 @@ trait UsersApp {
   this: LiveMeeting =>
 
   def findRegisteredUserWithToken(authToken: AuthToken): Option[RegisteredUser] = {
-    usersModel.getRegisteredUserWithToken(authToken)
+    meeting.findWithToken(authToken)
   }
 
   def findUser(userId: IntUserId): Option[UserVO] = {
-    usersModel.getUser(userId)
+    meeting.getUser(userId)
   }
 
   def becomePresenterIfOnlyModerator(userId: IntUserId, name: Name, role: Role.Role) {
-    if ((usersModel.numModerators == 1) || (usersModel.noPresenter())) {
+    if ((meeting.numModerators == 1) || (meeting.noPresenter())) {
       if (role == Role.MODERATOR) {
         assignNewPresenter(userId, name, userId)
       }
@@ -25,12 +25,12 @@ trait UsersApp {
 
   def changeUserEmojiStatus(userId: IntUserId, emojiStatus: EmojiStatus): Option[UserVO] = {
     val vu = for {
-      user <- usersModel.getUser(userId)
+      user <- meeting.getUser(userId)
       uvo = user.copy(emojiStatus = emojiStatus)
     } yield uvo
 
     vu foreach { u =>
-      usersModel.addUser(u)
+      meeting.addUser(u)
     }
 
     vu
@@ -46,12 +46,12 @@ trait UsersApp {
       hasStream = HasStream(false), locked = Locked(locked),
       webcamStreams = new ListSet[String](), phoneUser = PhoneUser(false), voiceUser,
       listenOnly = voiceUser.listenOnly, joinedWeb = JoinedWeb(true))
-    usersModel.addUser(uvo)
+    meeting.addUser(uvo)
     uvo
   }
 
   def initializeVoice(userId: IntUserId, username: Name): VoiceUser = {
-    val wUser = usersModel.getUser(userId)
+    val wUser = meeting.getUser(userId)
 
     val vu = wUser match {
       case Some(u) => {

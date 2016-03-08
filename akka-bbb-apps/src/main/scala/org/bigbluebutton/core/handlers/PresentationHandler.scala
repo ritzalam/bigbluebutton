@@ -75,7 +75,7 @@ trait PresentationHandler extends PresentationMessageSender {
   }
 
   def handleGetPresentationInfo(msg: GetPresentationInfo) {
-    val curPresenter = usersModel.getCurrentPresenterInfo();
+    val curPresenter = meeting.getCurrentPresenterInfo();
     val presenter = new CurrentPresenter(curPresenter.id, curPresenter.name, curPresenter.assignedBy)
     val presentations = presModel.getPresentations
     val presentationInfo = new CurrentPresentationInfo(presenter, presentations)
@@ -106,7 +106,7 @@ trait PresentationHandler extends PresentationMessageSender {
     //      println("*** After change page ****")
     //      printPresentations
 
-    usersModel.getCurrentPresenter() foreach { pres =>
+    meeting.getCurrentPresenter() foreach { pres =>
       handleStopPollRequest(StopPollRequest(mProps.id, pres.id))
     }
 

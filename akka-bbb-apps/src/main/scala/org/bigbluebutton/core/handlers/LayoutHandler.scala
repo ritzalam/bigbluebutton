@@ -15,7 +15,7 @@ trait LayoutHandler {
 
   def handleGetCurrentLayoutRequest(msg: GetCurrentLayoutRequest) {
     outGW.send(new GetCurrentLayoutReply(msg.meetingId, mProps.recorded, msg.requesterId,
-      layoutModel.getCurrentLayout(), meetingModel.getPermissions().lockedLayout, layoutModel.getLayoutSetter()))
+      layoutModel.getCurrentLayout(), meeting.getPermissions().lockedLayout, layoutModel.getLayoutSetter()))
   }
 
   def handleLockLayoutRequest(msg: LockLayoutRequest) {
@@ -32,7 +32,7 @@ trait LayoutHandler {
 
   private def broadcastSyncLayout(meetingId: IntMeetingId, setById: IntUserId) {
     outGW.send(new BroadcastLayoutEvent(meetingId, mProps.recorded, setById,
-      layoutModel.getCurrentLayout(), meetingModel.getPermissions().lockedLayout, layoutModel.getLayoutSetter(), affectedUsers))
+      layoutModel.getCurrentLayout(), meeting.getPermissions().lockedLayout, layoutModel.getLayoutSetter(), affectedUsers))
   }
 
   def handleBroadcastLayoutRequest(msg: BroadcastLayoutRequest) {
@@ -49,14 +49,14 @@ trait LayoutHandler {
   def affectedUsers(): Array[UserVO] = {
     if (layoutModel.doesLayoutApplyToViewersOnly()) {
       val au = ArrayBuffer[UserVO]()
-      usersModel.getUsers foreach { u =>
+      meeting.getUsers foreach { u =>
         if (!u.presenter.value && u.role != Role.MODERATOR) {
           au += u
         }
       }
       au.toArray
     } else {
-      usersModel.getUsers
+      meeting.getUsers
     }
 
   }

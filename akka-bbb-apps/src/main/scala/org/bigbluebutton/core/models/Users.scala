@@ -34,15 +34,6 @@ case class VoiceUser(id: VoiceUserId, webUserId: IntUserId, callerId: CallerId,
   joinedVoice: JoinedVoice, locked: Locked, muted: Muted,
   talking: Talking, listenOnly: ListenOnly)
 
-case class User2(id: String, extId: String, name: String, roles: Set[String],
-  emojiStatus: String, presenter: Boolean, hasStream: Boolean, locked: Boolean,
-  webcamStreams: Set[String], phoneUser: Boolean, voiceUser: VoiceUser2,
-  listenOnly: Boolean, joinedWeb: Boolean)
-
-case class VoiceUser2(id: String, webId: String, callerName: String,
-  callerNum: String, joined: Boolean, locked: Boolean, muted: Boolean,
-  talking: Boolean, listenOnly: Boolean)
-
 case class Presenter(id: IntUserId, name: Name, assignedBy: IntUserId)
 
 case class User(id: String, externId: String, name: String, moderator: Boolean,

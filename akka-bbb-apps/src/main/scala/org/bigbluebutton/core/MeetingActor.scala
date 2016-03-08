@@ -30,7 +30,7 @@ class MeetingActorInternal(val mProps: MeetingProperties,
   context.system.scheduler.schedule(2 seconds, 30 seconds, self, "MonitorNumberOfWebUsers")
 
   // Query to get voice conference users
-  outGW.send(new GetUsersInVoiceConference(mProps.id, mProps.recorded, mProps.voiceBridge))
+  outGW.send(new GetUsersInVoiceConference(mProps.id, mProps.recorded, mProps.voiceConf))
 
   if (mProps.isBreakout) {
     // This is a breakout room. Inform our parent meeting that we have been successfully created.

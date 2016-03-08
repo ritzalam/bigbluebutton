@@ -18,7 +18,7 @@ import akka.event.Logging
 import org.bigbluebutton.core.handlers.CaptionHandler
 import org.bigbluebutton.core.filters.UsersHandlerFilter
 
-class LiveMeeting(val mProps: MeetingProperties,
+class LiveMeeting(val props: MeetingProperties,
   val eventBus: IncomingEventBus,
   val outGW: OutMessageGateway,
   val chatModel: ChatModel,
@@ -36,12 +36,6 @@ class LiveMeeting(val mProps: MeetingProperties,
 
   object Meeting extends Meeting
   val meeting = Meeting
-  //  object RegisteredUsers extends RegisteredUsers
-  //  val registeredUsers = RegisteredUsers
-
-  def hasMeetingEnded(): Boolean = {
-    meeting.hasMeetingEnded()
-  }
 
   def webUserJoined() {
     if (meeting.numWebUsers > 0) {
@@ -50,32 +44,32 @@ class LiveMeeting(val mProps: MeetingProperties,
   }
 
   def startRecordingIfAutoStart() {
-    if (mProps.recorded.value && !meeting.isRecording() && mProps.autoStartRecording && meeting.numWebUsers == 1) {
-      log.info("Auto start recording. meetingId={}", mProps.id)
+    if (props.recorded.value && !meeting.isRecording() && props.autoStartRecording && meeting.numWebUsers == 1) {
+      log.info("Auto start recording. meetingId={}", props.id)
       meeting.recordingStarted()
-      outGW.send(new RecordingStatusChanged(mProps.id, mProps.recorded, IntUserId("system"), meeting.isRecording()))
+      outGW.send(new RecordingStatusChanged(props.id, props.recorded, IntUserId("system"), meeting.isRecording()))
     }
   }
 
   def stopAutoStartedRecording() {
-    if (mProps.recorded.value && meeting.isRecording() && mProps.autoStartRecording && meeting.numWebUsers == 0) {
-      log.info("Last web user left. Auto stopping recording. meetingId={}", mProps.id)
+    if (props.recorded.value && meeting.isRecording() && props.autoStartRecording && meeting.numWebUsers == 0) {
+      log.info("Last web user left. Auto stopping recording. meetingId={}", props.id)
       meeting.recordingStopped()
-      outGW.send(new RecordingStatusChanged(mProps.id, mProps.recorded, IntUserId("system"), meeting.isRecording()))
+      outGW.send(new RecordingStatusChanged(props.id, props.recorded, IntUserId("system"), meeting.isRecording()))
     }
   }
 
   def startCheckingIfWeNeedToEndVoiceConf() {
     if (meeting.numWebUsers == 0) {
       meeting.lastWebUserLeft()
-      log.debug("MonitorNumberOfWebUsers started for meeting [" + mProps.id + "]")
+      log.debug("MonitorNumberOfWebUsers started for meeting [" + props.id + "]")
     }
   }
 
   def sendTimeRemainingNotice() {
     val now = timeNowInSeconds
 
-    if (mProps.duration > 0 && (((meeting.startedOn + mProps.duration) - now) < 15)) {
+    if (props.duration > 0 && (((meeting.startedOn + props.duration) - now) < 15)) {
       //  log.warning("MEETING WILL END IN 15 MINUTES!!!!")
     }
   }
@@ -83,23 +77,23 @@ class LiveMeeting(val mProps: MeetingProperties,
   def handleMonitorNumberOfWebUsers(msg: MonitorNumberOfUsers) {
     if (meeting.numWebUsers == 0 && meeting.lastWebUserLeftOn > 0) {
       if (timeNowInMinutes - meeting.lastWebUserLeftOn > 2) {
-        log.info("Empty meeting. Ejecting all users from voice. meetingId={}", mProps.id)
-        outGW.send(new EjectAllVoiceUsers(mProps.id, mProps.recorded, mProps.voiceBridge))
+        log.info("Empty meeting. Ejecting all users from voice. meetingId={}", props.id)
+        outGW.send(new EjectAllVoiceUsers(props.id, props.recorded, props.voiceConf))
       }
     }
   }
 
   def handleSendTimeRemainingUpdate(msg: SendTimeRemainingUpdate) {
-    if (mProps.duration > 0) {
-      val endMeetingTime = meeting.startedOn + (mProps.duration * 60)
+    if (props.duration > 0) {
+      val endMeetingTime = meeting.startedOn + (props.duration * 60)
       val timeRemaining = endMeetingTime - timeNowInSeconds
-      outGW.send(new MeetingTimeRemainingUpdate(mProps.id, mProps.recorded, timeRemaining.toInt))
+      outGW.send(new MeetingTimeRemainingUpdate(props.id, props.recorded, timeRemaining.toInt))
     }
-    if (!mProps.isBreakout && breakoutModel.getRooms().length > 0) {
+    if (!props.isBreakout && breakoutModel.getRooms().length > 0) {
       val room = breakoutModel.getRooms()(0);
       val endMeetingTime = meeting.breakoutRoomsStartedOn + (meeting.breakoutRoomsdurationInMinutes * 60)
       val timeRemaining = endMeetingTime - timeNowInSeconds
-      outGW.send(new BreakoutRoomsTimeRemainingUpdateOutMessage(mProps.id, mProps.recorded, timeRemaining.toInt))
+      outGW.send(new BreakoutRoomsTimeRemainingUpdateOutMessage(props.id, props.recorded, timeRemaining.toInt))
     } else if (meeting.breakoutRoomsStartedOn != 0) {
       meeting.breakoutRoomsdurationInMinutes = 0;
       meeting.breakoutRoomsStartedOn = 0;
@@ -120,37 +114,37 @@ class LiveMeeting(val mProps: MeetingProperties,
 
   def handleEndMeeting(msg: EndMeeting) {
     meeting.meetingHasEnded
-    outGW.send(new MeetingEnded(msg.meetingId, mProps.recorded, mProps.voiceBridge.value))
+    outGW.send(new MeetingEnded(msg.meetingId, props.recorded, props.voiceConf.value))
     outGW.send(new DisconnectAllUsers(msg.meetingId))
   }
 
   def handleVoiceConfRecordingStartedMessage(msg: VoiceConfRecordingStartedMessage) {
     if (msg.recording) {
       meeting.setVoiceRecordingFilename(msg.recordStream)
-      outGW.send(new VoiceRecordingStarted(mProps.id, mProps.recorded,
-        msg.recordStream, msg.timestamp, mProps.voiceBridge.value))
+      outGW.send(new VoiceRecordingStarted(props.id, props.recorded,
+        msg.recordStream, msg.timestamp, props.voiceConf.value))
     } else {
       meeting.setVoiceRecordingFilename("")
-      outGW.send(new VoiceRecordingStopped(mProps.id, mProps.recorded,
-        msg.recordStream, msg.timestamp, mProps.voiceBridge.value))
+      outGW.send(new VoiceRecordingStopped(props.id, props.recorded,
+        msg.recordStream, msg.timestamp, props.voiceConf.value))
     }
   }
 
   def handleSetRecordingStatus(msg: SetRecordingStatus) {
-    log.info("Change recording status. meetingId=" + mProps.id + " recording=" + msg.recording)
-    if (mProps.allowStartStopRecording && meeting.isRecording() != msg.recording) {
+    log.info("Change recording status. meetingId=" + props.id + " recording=" + msg.recording)
+    if (props.allowStartStopRecording && meeting.isRecording() != msg.recording) {
       if (msg.recording) {
         meeting.recordingStarted()
       } else {
         meeting.recordingStopped()
       }
 
-      outGW.send(new RecordingStatusChanged(mProps.id, mProps.recorded, msg.userId, msg.recording))
+      outGW.send(new RecordingStatusChanged(props.id, props.recorded, msg.userId, msg.recording))
     }
   }
 
   def handleGetRecordingStatus(msg: GetRecordingStatus) {
-    outGW.send(new GetRecordingStatusReply(mProps.id, mProps.recorded, msg.userId, meeting.isRecording().booleanValue()))
+    outGW.send(new GetRecordingStatusReply(props.id, props.recorded, msg.userId, meeting.isRecording().booleanValue()))
   }
 
   def lockLayout(lock: Boolean) {

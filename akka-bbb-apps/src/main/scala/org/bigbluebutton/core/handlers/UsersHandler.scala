@@ -23,7 +23,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       if (meeting.addGlobalAudioConnection(msg.userId)) {
         val vu = u.voiceUser.copy(joinedVoice = JoinedVoice(false), talking = Talking(false))
         val uvo = u.copy(listenOnly = ListenOnly(true), voiceUser = vu)
-        meeting.addUser(uvo)
+        meeting.saveUser(uvo)
         log.info("UserConnectedToGlobalAudio: meetingId=" + props.id + " userId=" + uvo.id + " user=" + uvo)
         sendUserListeningOnlyMessage(props.id, props.recorded, uvo.id, uvo.listenOnly)
       }
@@ -43,7 +43,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
         } else {
           val vu = u.voiceUser.copy(joinedVoice = JoinedVoice(false))
           val uvo = u.copy(listenOnly = ListenOnly(false), voiceUser = vu)
-          meeting.addUser(uvo)
+          meeting.saveUser(uvo)
           log.info("UserDisconnectedToGlobalAudio: meetingId=" + props.id + " userId=" + uvo.id + " user=" + uvo)
           sendUserListeningOnlyMessage(props.id, props.recorded, uvo.id, uvo.listenOnly)
         }
@@ -170,7 +170,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     meeting.getUser(msg.userId) match {
       case Some(u) => {
         val uvo = u.copy(locked = Locked(msg.lock))
-        meeting.addUser(uvo)
+        meeting.saveUser(uvo)
 
         log.info("Lock user.  meetingId=" + props.id + " userId=" + u.id + " lock=" + msg.lock)
         sendUserLockedMessage(props.id, u.id, uvo.locked)
@@ -239,7 +239,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     meeting.getUser(msg.userId) foreach { user =>
       val streams = user.webcamStreams + msg.stream
       val uvo = user.copy(hasStream = HasStream(true), webcamStreams = streams)
-      meeting.addUser(uvo)
+      meeting.saveUser(uvo)
       log.info("User shared webcam.  meetingId=" + props.id + " userId=" + uvo.id
         + " stream=" + msg.stream + " streams=" + streams)
       sendUserSharedWebcamMessage(props.id, props.recorded, uvo.id, msg.stream)
@@ -251,7 +251,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       val streamName = user.webcamStreams find (w => w == msg.stream) foreach { streamName =>
         val streams = user.webcamStreams - streamName
         val uvo = user.copy(hasStream = HasStream((!streams.isEmpty)), webcamStreams = streams)
-        meeting.addUser(uvo)
+        meeting.saveUser(uvo)
         log.info("User unshared webcam.  meetingId=" + props.id + " userId=" + uvo.id
           + " stream=" + msg.stream + " streams=" + streams)
         sendUserUnsharedWebcamMessage(props.id, props.recorded, uvo.id, msg.stream)
@@ -277,8 +277,8 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
   def handleUserJoin(msg: UserJoining): Unit = {
     log.debug("Received user joined meeting. metingId=" + props.id + " userId=" + msg.userId)
 
-    val regUser = findRegisteredUserWithToken(msg.token)
-    val webUser = findUser(msg.userId)
+    val regUser = meeting.findWithToken(msg.token)
+    val webUser = meeting.getUser(msg.userId)
     webUser foreach { wu =>
       if (!wu.joinedWeb.value) {
         /**
@@ -370,7 +370,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
         webcamStreams = new ListSet[String](), phoneUser = PhoneUser(false), vu,
         listenOnly = vu.listenOnly, joinedWeb = JoinedWeb(true))
 
-      meeting.addUser(uvo)
+      meeting.saveUser(uvo)
 
       log.info("User joined meeting. metingId=" + props.id + " userId=" + uvo.id + " user=" + uvo)
 
@@ -470,7 +470,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
           phoneUser = PhoneUser(!(msg.listenOnly.value)), vu, listenOnly = msg.listenOnly,
           joinedWeb = JoinedWeb(false))
 
-        meeting.addUser(uvo)
+        meeting.saveUser(uvo)
 
         log.info("User joined from phone.  meetingId=" + props.id + " userId=" + uvo.id + " user=" + uvo)
         sendUserJoinedMessage(props.id, props.recorded, uvo)
@@ -503,7 +503,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
           joinedVoice = JoinedVoice(true), locked = Locked(false),
           muted = msg.muted, talking = msg.talking, listenOnly = msg.listenOnly)
         val nu = user.copy(voiceUser = vu, listenOnly = msg.listenOnly)
-        meeting.addUser(nu)
+        meeting.saveUser(nu)
 
         log.info("User joined voice. meetingId=" + props.id + " userId=" + user.id + " user=" + nu)
         sendUserJoinedVoiceMessage(props.id, props.recorded, props.voiceConf, nu)
@@ -532,7 +532,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
           joinedVoice = JoinedVoice(true), locked = Locked(false),
           muted = msg.muted, talking = msg.talking, listenOnly = msg.listenOnly)
         val nu = user.copy(voiceUser = vu, listenOnly = msg.listenOnly)
-        meeting.addUser(nu)
+        meeting.saveUser(nu)
 
         log.info("User joined voice. meetingId=" + props.id + " userId=" + user.id + " user=" + nu)
 
@@ -574,7 +574,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
         joinedVoice = JoinedVoice(false), locked = Locked(false),
         muted = Muted(false), talking = Talking(false), listenOnly = ListenOnly(false))
       val nu = user.copy(voiceUser = vu, phoneUser = PhoneUser(false), listenOnly = ListenOnly(false))
-      meeting.addUser(nu)
+      meeting.saveUser(nu)
 
       log.info("User left voice conf. meetingId=" + props.id + " userId=" + nu.id + " user=" + nu)
 
@@ -595,7 +595,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       val talking: Boolean = if (msg.muted) false else user.voiceUser.talking.value
       val nv = user.voiceUser.copy(muted = Muted(msg.muted), talking = Talking(talking))
       val nu = user.copy(voiceUser = nv)
-      meeting.addUser(nu)
+      meeting.saveUser(nu)
 
       log.info("User muted in voice conf. meetingId=" + props.id + " userId=" + nu.id + " user=" + nu)
       sendUserVoiceMutedMessage(props.id, props.recorded, props.voiceConf, nu)
@@ -606,7 +606,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     meeting.getUserWithVoiceUserId(msg.voiceUserId) foreach { user =>
       val nv = user.voiceUser.copy(talking = Talking(msg.talking))
       val nu = user.copy(voiceUser = nv)
-      meeting.addUser(nu)
+      meeting.saveUser(nu)
       //      println("Received voice talking=[" + msg.talking + "] wid=[" + msg.userId + "]" )
       sendUserVoiceTalkingMessage(props.id, props.recorded, props.voiceConf, nu)
     }

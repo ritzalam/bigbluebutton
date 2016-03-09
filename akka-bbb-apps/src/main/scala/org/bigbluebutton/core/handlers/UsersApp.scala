@@ -7,14 +7,6 @@ import org.bigbluebutton.core.models._
 trait UsersApp {
   this: LiveMeeting =>
 
-  def findRegisteredUserWithToken(authToken: AuthToken): Option[RegisteredUser] = {
-    meeting.findWithToken(authToken)
-  }
-
-  def findUser(userId: IntUserId): Option[UserVO] = {
-    meeting.getUser(userId)
-  }
-
   def becomePresenterIfOnlyModerator(userId: IntUserId, name: Name, role: Role.Role) {
     if ((meeting.numModerators == 1) || (meeting.noPresenter())) {
       if (role == Role.MODERATOR) {
@@ -30,7 +22,7 @@ trait UsersApp {
     } yield uvo
 
     vu foreach { u =>
-      meeting.addUser(u)
+      meeting.saveUser(u)
     }
 
     vu
@@ -46,7 +38,7 @@ trait UsersApp {
       hasStream = HasStream(false), locked = Locked(locked),
       webcamStreams = new ListSet[String](), phoneUser = PhoneUser(false), voiceUser,
       listenOnly = voiceUser.listenOnly, joinedWeb = JoinedWeb(true))
-    meeting.addUser(uvo)
+    meeting.saveUser(uvo)
     uvo
   }
 

@@ -34,7 +34,7 @@ trait RegisteredUsers {
 trait Users {
   private var users = new collection.immutable.HashMap[String, UserVO]
 
-  def addUser(uvo: UserVO): Array[UserVO] = {
+  def saveUser(uvo: UserVO): Array[UserVO] = {
     users += uvo.id.value -> uvo
     users.values.toArray
   }
@@ -78,7 +78,7 @@ trait Users {
   }
 
   def numWebUsers(): Int = {
-    users.values filter (u => u.phoneUser == false) size
+    users.values filter (u => u.phoneUser.value == false) size
   }
 
   def numUsersInVoiceConference: Int = {

@@ -1,6 +1,6 @@
 package org.bigbluebutton.core.api
 
-import org.bigbluebutton.core.models._
+import org.bigbluebutton.core.domain._
 
 case class VoiceRecordingStarted(
   meetingId: IntMeetingId, recorded: Recorded,

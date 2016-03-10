@@ -3,24 +3,14 @@ package org.bigbluebutton.core
 import org.bigbluebutton.core.bus._
 import org.bigbluebutton.core.api._
 import scala.collection.JavaConversions._
-import java.util.ArrayList
-import scala.collection.mutable.ArrayBuffer
 import akka.actor.ActorSystem
-import org.bigbluebutton.core.models.AnnotationVO
-import akka.pattern.{ ask, pipe }
-import akka.util.Timeout
-import scala.concurrent.duration._
-import scala.util.Success
-import scala.util.Failure
-import org.bigbluebutton.core.service.recorder.RecorderApplication
+import org.bigbluebutton.core.domain.AnnotationVO
 import org.bigbluebutton.common.messages.IBigBlueButtonMessage
 import org.bigbluebutton.common.messages.StartCustomPollRequestMessage
 import org.bigbluebutton.common.messages.PubSubPingMessage
 import org.bigbluebutton.messages._
-import org.bigbluebutton.messages.payload._
 import akka.event.Logging
-import spray.json.JsonParser
-import org.bigbluebutton.core.models._
+import org.bigbluebutton.core.domain._
 
 class BigBlueButtonInGW(
     val system: ActorSystem,
@@ -36,17 +26,15 @@ class BigBlueButtonInGW(
 
   def handleBigBlueButtonMessage(message: IBigBlueButtonMessage) {
     message match {
-      case msg: StartCustomPollRequestMessage => {
+      case msg: StartCustomPollRequestMessage =>
         eventBus.publish(BigBlueButtonEvent("meeting-manager",
           new StartCustomPollRequest(IntMeetingId(msg.payload.meetingId),
             IntUserId(msg.payload.requesterId), msg.payload.pollType, msg.payload.answers)))
-      }
-      case msg: PubSubPingMessage => {
+      case msg: PubSubPingMessage =>
         eventBus.publish(BigBlueButtonEvent("meeting-manager",
           new PubSubPing(msg.payload.system, msg.payload.timestamp)))
-      }
 
-      case msg: CreateMeetingRequest => {
+      case msg: CreateMeetingRequest =>
         val mProps = new MeetingProperties(
           IntMeetingId(msg.payload.id),
           ExtMeetingId(msg.payload.externalId),
@@ -64,7 +52,6 @@ class BigBlueButtonInGW(
 
         eventBus.publish(BigBlueButtonEvent("meeting-manager",
           new CreateMeeting(IntMeetingId(msg.payload.id), mProps)))
-      }
     }
   }
 
@@ -144,8 +131,8 @@ class BigBlueButtonInGW(
     val disablePrivChat = s.getOrElse("disablePrivateChat", false)
     val disablePubChat = s.getOrElse("disablePublicChat", false)
     val lockedLayout = s.getOrElse("lockedLayout", false)
-    var lockOnJoin = s.getOrElse("lockOnJoin", false)
-    var lockOnJoinConfigurable = s.getOrElse("lockOnJoinConfigurable", false)
+    val lockOnJoin = s.getOrElse("lockOnJoin", false)
+    val lockOnJoinConfigurable = s.getOrElse("lockOnJoinConfigurable", false)
 
     val permissions = new Permissions(disableCam = disableCam,
       disableMic = disableMic,
@@ -309,22 +296,21 @@ class BigBlueButtonInGW(
   def generatePresentationPages(presId: String, numPages: Int,
     presBaseUrl: String): scala.collection.immutable.HashMap[String, Page] = {
     var pages = new scala.collection.immutable.HashMap[String, Page]
-    val baseUrl =
-      for (i <- 1 to numPages) {
-        val id = presId + "/" + i
-        val num = i;
-        val current = if (i == 1) true else false
-        val thumbnail = presBaseUrl + "/thumbnail/" + i
-        val swfUri = presBaseUrl + "/slide/" + i
+    for (i <- 1 to numPages) {
+      val id = presId + "/" + i
+      val num = i
+      val current = if (i == 1) true else false
+      val thumbnail = presBaseUrl + "/thumbnail/" + i
+      val swfUri = presBaseUrl + "/slide/" + i
 
-        val txtUri = presBaseUrl + "/textfiles/" + i
-        val svgUri = presBaseUrl + "/svg/" + i
+      val txtUri = presBaseUrl + "/textfiles/" + i
+      val svgUri = presBaseUrl + "/svg/" + i
 
-        val p = new Page(id = id, num = num, thumbUri = thumbnail, swfUri = swfUri,
-          txtUri = txtUri, svgUri = svgUri,
-          current = current)
-        pages += (p.id -> p)
-      }
+      val p = new Page(id = id, num = num, thumbUri = thumbnail, swfUri = swfUri,
+        txtUri = txtUri, svgUri = svgUri,
+        current = current)
+      pages += (p.id -> p)
+    }
 
     pages
   }
@@ -450,10 +436,9 @@ class BigBlueButtonInGW(
     val ann: scala.collection.mutable.Map[String, Object] = mapAsScalaMap(annotation)
 
     buildAnnotation(ann) match {
-      case Some(shape) => {
+      case Some(shape) =>
         eventBus.publish(BigBlueButtonEvent(meetingId,
           new SendWhiteboardAnnotationRequest(IntMeetingId(meetingId), IntUserId(requesterId), shape)))
-      }
       case None => // do nothing
     }
   }

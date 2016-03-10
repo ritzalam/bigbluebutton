@@ -1,6 +1,6 @@
 package org.bigbluebutton.core
 
-import org.bigbluebutton.core.models._
+import org.bigbluebutton.core.domain._
 
 trait AppsTestFixtures {
 

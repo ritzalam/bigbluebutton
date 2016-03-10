@@ -1,12 +1,10 @@
 package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.domain.{ Role, UserVO, IntUserId, IntMeetingId }
 import scala.collection.mutable.ArrayBuffer
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
-import org.bigbluebutton.core.models.UserVO
-import org.bigbluebutton.core.models.Role
-import org.bigbluebutton.core.models._
 
 trait LayoutHandler {
   this: LiveMeeting =>
@@ -15,7 +13,7 @@ trait LayoutHandler {
 
   def handleGetCurrentLayoutRequest(msg: GetCurrentLayoutRequest) {
     outGW.send(new GetCurrentLayoutReply(msg.meetingId, props.recorded, msg.requesterId,
-      layoutModel.getCurrentLayout(), meeting.getPermissions().lockedLayout, layoutModel.getLayoutSetter()))
+      layoutModel.getCurrentLayout(), meeting.getPermissions.lockedLayout, layoutModel.getLayoutSetter()))
   }
 
   def handleLockLayoutRequest(msg: LockLayoutRequest) {
@@ -32,7 +30,7 @@ trait LayoutHandler {
 
   private def broadcastSyncLayout(meetingId: IntMeetingId, setById: IntUserId) {
     outGW.send(new BroadcastLayoutEvent(meetingId, props.recorded, setById,
-      layoutModel.getCurrentLayout(), meeting.getPermissions().lockedLayout, layoutModel.getLayoutSetter(), affectedUsers))
+      layoutModel.getCurrentLayout(), meeting.getPermissions.lockedLayout, layoutModel.getLayoutSetter(), affectedUsers))
   }
 
   def handleBroadcastLayoutRequest(msg: BroadcastLayoutRequest) {

@@ -1,14 +1,11 @@
 package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.domain._
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.immutable.ListSet
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
-import org.bigbluebutton.core.models._
-import org.bigbluebutton.core.models.VoiceUser
-import org.bigbluebutton.core.models.UserVO
-import org.bigbluebutton.core.models.RegisteredUser
 
 trait UsersHandler extends UsersApp with UsersMessageSender {
   this: LiveMeeting =>
@@ -58,7 +55,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       meeting.unmuteMeeting()
     }
 
-    sendMeetingMutedMessage(props.id, props.recorded, meeting.isMeetingMuted())
+    sendMeetingMutedMessage(props.id, props.recorded, meeting.isMeetingMuted)
     usersWhoAreNotPresenter foreach { u =>
       sendMuteVoiceUserMessage(props.id, props.recorded, u.id, msg.requesterId,
         u.voiceUser.id, props.voiceConf, msg.mute)
@@ -71,7 +68,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     } else {
       meeting.unmuteMeeting()
     }
-    sendMeetingMutedMessage(props.id, props.recorded, meeting.isMeetingMuted())
+    sendMeetingMutedMessage(props.id, props.recorded, meeting.isMeetingMuted)
     meeting.getUsers foreach { u =>
       sendMuteVoiceUserMessage(props.id, props.recorded, u.id, msg.requesterId,
         u.voiceUser.id, props.voiceConf, msg.mute)
@@ -108,7 +105,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
   }
 
   def handleRegisterUser(msg: RegisterUser) {
-    if (meeting.hasMeetingEnded()) {
+    if (meeting.hasMeetingEnded) {
       // Check first if the meeting has ended and the user refreshed the client to re-connect.
       log.info("Register user failed. Mmeeting has ended. meetingId=" + props.id + " userId=" + msg.userId)
       sendMeetingHasEnded(props.id, msg.userId)
@@ -121,7 +118,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
   }
 
   def handleIsMeetingMutedRequest(msg: IsMeetingMutedRequest) {
-    sendIsMeetingMutedReplyMessage(props.id, props.recorded, msg.requesterId, meeting.isMeetingMuted())
+    sendIsMeetingMutedReplyMessage(props.id, props.recorded, msg.requesterId, meeting.isMeetingMuted)
   }
 
   def handleMuteUserRequest(msg: MuteUserRequest) {
@@ -155,13 +152,13 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
   def handleGetLockSettings(msg: GetLockSettings) {
     //println("*************** Reply with current lock settings ********************")
     //reusing the existing handle for NewPermissionsSettings to reply to the GetLockSettings request
-    sendNewPermissionsSettingMessage(props.id, msg.userId, meeting.getPermissions(), meeting.getUsers)
+    sendNewPermissionsSettingMessage(props.id, msg.userId, meeting.getPermissions, meeting.getUsers)
   }
 
   def handleSetLockSettings(msg: SetLockSettings) {
     if (!permissionsEqual(msg.settings)) {
       newPermissions(msg.settings)
-      sendNewPermissionsSettingMessage(props.id, msg.setByUser, meeting.getPermissions(), meeting.getUsers)
+      sendNewPermissionsSettingMessage(props.id, msg.setByUser, meeting.getPermissions, meeting.getUsers)
       handleLockLayout(msg.settings.lockedLayout, msg.setByUser)
     }
   }
@@ -193,7 +190,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     if (!meeting.audioSettingsInitialized()) {
       meeting.initializeAudioSettings()
 
-      if (meeting.isMeetingMuted() != msg.muted) {
+      if (meeting.isMeetingMuted != msg.muted) {
         handleMuteAllExceptPresenterRequest(new MuteAllExceptPresenterRequest(props.id, msg.requesterId, msg.muted));
       }
     }
@@ -297,8 +294,8 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       log.info("User joined meeting. metingId=" + props.id + " userId=" + uvo.id + " user=" + uvo)
 
       sendUserJoinedMessage(props.id, props.recorded, uvo)
-      sendMeetingStateMessage(props.id, props.recorded, uvo.id, meeting.getPermissions(),
-        Muted(meeting.isMeetingMuted()))
+      sendMeetingStateMessage(props.id, props.recorded, uvo.id, meeting.getPermissions,
+        Muted(meeting.isMeetingMuted))
 
       becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.role)
     }
@@ -376,7 +373,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
 
       sendUserJoinedMessage(props.id, props.recorded, uvo)
       sendMeetingStateMessage(props.id, props.recorded, uvo.id,
-        meeting.getPermissions(), Muted(meeting.isMeetingMuted()))
+        meeting.getPermissions, Muted(meeting.isMeetingMuted))
 
       // Become presenter if the only moderator		
       if ((meeting.numModerators == 1) || (meeting.noPresenter())) {
@@ -431,7 +428,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
   }
 
   def getInitialLockStatus(role: Role.Role): Boolean = {
-    meeting.getPermissions().lockOnJoin && !role.equals(Role.MODERATOR)
+    meeting.getPermissions.lockOnJoin && !role.equals(Role.MODERATOR)
   }
 
   def handleUserJoinedVoiceFromPhone(msg: UserJoinedVoiceConfMessage) = {
@@ -476,9 +473,9 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
         sendUserJoinedMessage(props.id, props.recorded, uvo)
         sendUserJoinedVoiceMessage(props.id, props.recorded, props.voiceConf, uvo)
 
-        if (meeting.isMeetingMuted()) {
+        if (meeting.isMeetingMuted) {
           sendMuteVoiceUserMessage(props.id, props.recorded, uvo.id, uvo.id,
-            vu.id, props.voiceConf, meeting.isMeetingMuted())
+            vu.id, props.voiceConf, meeting.isMeetingMuted)
         }
       }
     }
@@ -508,9 +505,9 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
         log.info("User joined voice. meetingId=" + props.id + " userId=" + user.id + " user=" + nu)
         sendUserJoinedVoiceMessage(props.id, props.recorded, props.voiceConf, nu)
 
-        if (meeting.isMeetingMuted()) {
+        if (meeting.isMeetingMuted) {
           sendMuteVoiceUserMessage(props.id, props.recorded, nu.id, nu.id,
-            nu.voiceUser.id, props.voiceConf, meeting.isMeetingMuted())
+            nu.voiceUser.id, props.voiceConf, meeting.isMeetingMuted)
         }
       }
       case None => {
@@ -538,7 +535,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
 
         sendUserJoinedVoiceMessage(props.id, props.recorded, props.voiceConf, nu)
 
-        if (meeting.isMeetingMuted() || previouslyMuted.value) {
+        if (meeting.isMeetingMuted || previouslyMuted.value) {
           sendMuteVoiceUserMessage(props.id, props.recorded, nu.id, nu.id,
             nu.voiceUser.id, props.voiceConf, true)
         }
@@ -557,7 +554,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       meeting.stopRecordingVoice()
       log.info("Send STOP RECORDING voice conf. meetingId=" + props.id + " voice conf=" + props.voiceConf)
       sendStopRecordingVoiceConf(props.id, props.recorded,
-        props.voiceConf, meeting.getVoiceRecordingFilename())
+        props.voiceConf, meeting.getVoiceRecordingFilename)
     }
   }
 

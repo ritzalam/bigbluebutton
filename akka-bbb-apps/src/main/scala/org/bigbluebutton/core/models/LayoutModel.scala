@@ -1,5 +1,7 @@
 package org.bigbluebutton.core.models
 
+import org.bigbluebutton.core.domain.IntUserId
+
 class LayoutModel {
   private var setByUser: IntUserId = IntUserId("system")
   private var currentLayout = "";

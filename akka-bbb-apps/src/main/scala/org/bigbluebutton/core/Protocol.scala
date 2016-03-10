@@ -1,8 +1,8 @@
 package org.bigbluebutton.core
 
+import org.bigbluebutton.core.domain.{ IntMeetingId, IntUserId }
 import spray.json.{ DefaultJsonProtocol, JsValue, JsString, DeserializationException, JsonFormat }
 import org.bigbluebutton.core.api._
-import org.bigbluebutton.core.models._
 
 object UserMessagesProtocol extends DefaultJsonProtocol {
   /*  

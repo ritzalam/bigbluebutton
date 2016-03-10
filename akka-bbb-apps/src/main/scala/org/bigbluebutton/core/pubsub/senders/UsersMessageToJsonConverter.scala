@@ -2,13 +2,11 @@ package org.bigbluebutton.core.pubsub.senders
 
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.common.messages.MessagingConstants
+import org.bigbluebutton.core.domain.{ Permissions, RegisteredUser, UserVO }
 import org.bigbluebutton.core.messaging.Util
 import com.google.gson.Gson
-import org.bigbluebutton.core.models.UserVO
 import collection.JavaConverters._
 import scala.collection.JavaConversions._
-import org.bigbluebutton.core.models.RegisteredUser
-import org.bigbluebutton.core.models.Permissions
 
 object UsersMessageToJsonConverter {
   private def userToMap(user: UserVO): java.util.Map[String, Any] = {
@@ -53,14 +51,14 @@ object UsersMessageToJsonConverter {
   }
 
   private def buildPermissionsHashMap(perms: Permissions): java.util.HashMap[String, java.lang.Boolean] = {
-    val args = new java.util.HashMap[String, java.lang.Boolean]();
-    args.put("disableCam", perms.disableCam: java.lang.Boolean);
-    args.put("disableMic", perms.disableMic: java.lang.Boolean);
-    args.put("disablePrivateChat", perms.disablePrivChat: java.lang.Boolean);
-    args.put("disablePublicChat", perms.disablePubChat: java.lang.Boolean);
-    args.put("lockedLayout", perms.lockedLayout: java.lang.Boolean);
-    args.put("lockOnJoin", perms.lockOnJoin: java.lang.Boolean);
-    args.put("lockOnJoinConfigurable", perms.lockOnJoinConfigurable: java.lang.Boolean);
+    val args = new java.util.HashMap[String, java.lang.Boolean]()
+    args.put("disableCam", perms.disableCam: java.lang.Boolean)
+    args.put("disableMic", perms.disableMic: java.lang.Boolean)
+    args.put("disablePrivateChat", perms.disablePrivChat: java.lang.Boolean)
+    args.put("disablePublicChat", perms.disablePubChat: java.lang.Boolean)
+    args.put("lockedLayout", perms.lockedLayout: java.lang.Boolean)
+    args.put("lockOnJoin", perms.lockOnJoin: java.lang.Boolean)
+    args.put("lockOnJoinConfigurable", perms.lockOnJoinConfigurable: java.lang.Boolean)
     args
   }
 
@@ -68,8 +66,8 @@ object UsersMessageToJsonConverter {
     val payload = new java.util.HashMap[String, Any]()
     payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.PERMISSIONS, buildPermissionsHashMap(msg.permissions))
-    payload.put(Constants.MEETING_MUTED, msg.meetingMuted: java.lang.Boolean);
-    payload.put(Constants.USER_ID, msg.userId);
+    payload.put(Constants.MEETING_MUTED, msg.meetingMuted: java.lang.Boolean)
+    payload.put(Constants.USER_ID, msg.userId)
 
     val header = Util.buildHeader(MessageNames.MEETING_STATE, None)
     Util.buildJson(header, payload)
@@ -78,7 +76,7 @@ object UsersMessageToJsonConverter {
   def meetingMuted(msg: MeetingMuted): String = {
     val payload = new java.util.HashMap[String, Any]()
     payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.MEETING_MUTED, msg.meetingMuted: java.lang.Boolean);
+    payload.put(Constants.MEETING_MUTED, msg.meetingMuted: java.lang.Boolean)
 
     val header = Util.buildHeader(MessageNames.MEETING_MUTED, None)
     Util.buildJson(header, payload)
@@ -229,7 +227,7 @@ object UsersMessageToJsonConverter {
     payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
 
-    val users = new java.util.ArrayList[String];
+    val users = new java.util.ArrayList[String]
     msg.applyTo.foreach(uvo => {
       users.add(uvo.id.value)
     })
@@ -245,7 +243,7 @@ object UsersMessageToJsonConverter {
     payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
 
-    val users = new java.util.ArrayList[java.util.Map[String, Any]];
+    val users = new java.util.ArrayList[java.util.Map[String, Any]]
     msg.users.foreach(uvo => {
       users.add(userToMap(uvo))
     })
@@ -404,9 +402,9 @@ object UsersMessageToJsonConverter {
   def presenterAssignedToJson(msg: PresenterAssigned): String = {
     val payload = new java.util.HashMap[String, Any]()
     payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.NEW_PRESENTER_ID, msg.presenter.id.value);
-    payload.put(Constants.NEW_PRESENTER_NAME, msg.presenter.name.value);
-    payload.put(Constants.ASSIGNED_BY, msg.presenter.assignedBy.value);
+    payload.put(Constants.NEW_PRESENTER_ID, msg.presenter.id.value)
+    payload.put(Constants.NEW_PRESENTER_NAME, msg.presenter.name.value)
+    payload.put(Constants.ASSIGNED_BY, msg.presenter.assignedBy.value)
     payload.put(Constants.RECORDED, msg.recorded.value)
 
     val header = Util.buildHeader(MessageNames.PRESENTER_ASSIGNED, None)

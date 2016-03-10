@@ -1,7 +1,7 @@
 package org.bigbluebutton.core.api
 
-import org.bigbluebutton.core.models._
-import org.bigbluebutton.core.models.Role._
+import org.bigbluebutton.core.domain._
+import org.bigbluebutton.core.domain.Role._
 import spray.json.JsObject
 
 case class InMessageHeader(name: String)

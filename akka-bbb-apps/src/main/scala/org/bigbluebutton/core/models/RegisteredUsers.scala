@@ -1,6 +1,6 @@
 package org.bigbluebutton.core.models
 
-case class RegisteredUser(id: IntUserId, extId: ExtUserId, name: Name, role: Role.Role, authToken: AuthToken)
+import org.bigbluebutton.core.domain._
 
 trait RegisteredUsers {
   private var regUsers = new collection.immutable.HashMap[String, RegisteredUser]

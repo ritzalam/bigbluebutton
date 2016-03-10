@@ -1,7 +1,7 @@
 package org.bigbluebutton.core.models
 
 import org.bigbluebutton.core.UnitSpec
-import org.bigbluebutton.core.models._
+import org.bigbluebutton.core.domain._
 
 class RegisteredUsersTests extends UnitSpec {
   val ru1 = RegisteredUser(IntUserId("u1"), ExtUserId("eu1"), Name("Rody"), Role.MODERATOR, AuthToken("au1"))

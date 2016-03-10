@@ -1,8 +1,5 @@
 package org.bigbluebutton.core
 
-import scala.util.Success
-import scala.util.Failure
-import org.scalatest._
 import org.bigbluebutton.core.api.CreateBreakoutRooms
 
 class JsonMessageDecoderTests extends UnitSpec with JsonMessageFixtures {

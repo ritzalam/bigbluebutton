@@ -1,17 +1,13 @@
 package org.bigbluebutton.core
 
 import akka.actor.Actor
-import akka.actor.ActorRef
 import akka.actor.ActorLogging
 import akka.actor.Props
 import org.bigbluebutton.core.bus._
 import org.bigbluebutton.core.api._
-import java.util.concurrent.TimeUnit
-import org.bigbluebutton.core.util._
 import scala.concurrent.duration._
-import org.bigbluebutton.core.handlers.{ PollHandler, UsersHandler, PresentationHandler, LayoutHandler, ChatHandler, WhiteboardHandler, CaptionHandler }
+import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.models._
-import org.bigbluebutton.core.handlers.BreakoutRoomHandler
 
 object MeetingActorInternal {
   def props(mProps: MeetingProperties,

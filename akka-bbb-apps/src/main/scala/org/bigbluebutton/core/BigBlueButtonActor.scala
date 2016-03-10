@@ -2,28 +2,12 @@ package org.bigbluebutton.core
 
 import akka.actor._
 import akka.actor.ActorLogging
-import akka.pattern.{ ask, pipe }
 import akka.util.Timeout
 import scala.concurrent.duration._
-import scala.collection.mutable.HashMap
 import org.bigbluebutton.core.bus._
 import org.bigbluebutton.core.api._
-import org.bigbluebutton.core.util._
-import org.bigbluebutton.core.api.ValidateAuthTokenTimedOut
-import scala.util.Success
-import scala.util.Failure
 import org.bigbluebutton.SystemConfiguration
-import org.bigbluebutton.core.recorders.events.VoiceUserJoinedRecordEvent
-import org.bigbluebutton.core.recorders.events.VoiceUserLeftRecordEvent
-import org.bigbluebutton.core.recorders.events.VoiceUserLockedRecordEvent
-import org.bigbluebutton.core.recorders.events.VoiceUserMutedRecordEvent
-import org.bigbluebutton.core.recorders.events.VoiceStartRecordingRecordEvent
-import org.bigbluebutton.core.recorders.events.VoiceUserTalkingRecordEvent
-import org.bigbluebutton.core.service.recorder.RecorderApplication
-import scala.collection._
-import com.google.gson.Gson
-import org.bigbluebutton.core.models.MeetingInfo
-import org.bigbluebutton.core.models._
+import org.bigbluebutton.core.domain._
 
 object BigBlueButtonActor extends SystemConfiguration {
   def props(system: ActorSystem,
@@ -109,7 +93,7 @@ class BigBlueButtonActor(val system: ActorSystem,
 
   private def handleCreateMeeting(msg: CreateMeeting): Unit = {
     meetings.get(msg.meetingId.value) match {
-      case None => {
+      case None =>
         log.info("Create meeting request. meetingId={}", msg.mProps.id)
 
         var m = RunningMeeting(msg.mProps, outGW, eventBus)
@@ -124,11 +108,11 @@ class BigBlueButtonActor(val system: ActorSystem,
           msg.mProps.viewerPass, msg.mProps.createTime, msg.mProps.createDate))
 
         m.actorRef ! new InitializeMeeting(m.mProps.id, m.mProps.recorded)
-      }
-      case Some(m) => {
+
+      case Some(m) =>
         log.info("Meeting already created. meetingID={}", msg.mProps.id)
-        // do nothing
-      }
+      // do nothing
+
     }
   }
 
@@ -154,16 +138,16 @@ class BigBlueButtonActor(val system: ActorSystem,
       resultArray(i) = info
 
       //send the users
-      self ! (new GetUsers(IntMeetingId(id), IntUserId("nodeJSapp")))
+      self ! new GetUsers(IntMeetingId(id), IntUserId("nodeJSapp"))
 
       //send the presentation
-      self ! (new GetPresentationInfo(IntMeetingId(id), IntUserId("nodeJSapp"), "nodeJSapp"))
+      self ! new GetPresentationInfo(IntMeetingId(id), IntUserId("nodeJSapp"), "nodeJSapp")
 
       //send chat history
-      self ! (new GetChatHistoryRequest(IntMeetingId(id), IntUserId("nodeJSapp"), "nodeJSapp"))
+      self ! new GetChatHistoryRequest(IntMeetingId(id), IntUserId("nodeJSapp"), "nodeJSapp")
 
       //send lock settings
-      self ! (new GetLockSettings(IntMeetingId(id), IntUserId("nodeJSapp")))
+      self ! new GetLockSettings(IntMeetingId(id), IntUserId("nodeJSapp"))
     }
 
     outGW.send(new GetAllMeetingsReply(resultArray))

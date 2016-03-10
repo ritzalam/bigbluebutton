@@ -6,6 +6,7 @@ import akka.actor.ActorLogging
 import akka.actor.Props
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.common.messages.MessagingConstants
+import org.bigbluebutton.core.domain.{ SimplePollResultOutVO, SimplePollOutVO, Page }
 import org.bigbluebutton.core.pubsub.senders.ChatMessageToJsonConverter
 import org.bigbluebutton.common.messages.StartRecordingVoiceConfRequestMessage
 import org.bigbluebutton.common.messages.StopRecordingVoiceConfRequestMessage
@@ -14,8 +15,6 @@ import org.bigbluebutton.core.pubsub.senders.PesentationMessageToJsonConverter
 import org.bigbluebutton.core.pubsub.senders.CaptionMessageToJsonConverter
 import org.bigbluebutton.common.messages.GetPresentationInfoReplyMessage
 import org.bigbluebutton.common.messages.PresentationRemovedMessage
-import org.bigbluebutton.core.models.{ IntMeetingId, Page, SimplePollResultOutVO, SimplePollOutVO }
-import collection.JavaConverters._
 import scala.collection.JavaConversions._
 import org.bigbluebutton.core.pubsub.senders.UsersMessageToJsonConverter
 import org.bigbluebutton.common.messages.GetUsersFromVoiceConfRequestMessage
@@ -458,7 +457,7 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handleLockLayoutEvent(msg: LockLayoutEvent) {
-    val users = new java.util.ArrayList[String];
+    val users = new java.util.ArrayList[String]
     msg.applyTo.foreach(uvo => {
       users.add(uvo.id.value)
     })
@@ -468,7 +467,7 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handleBroadcastLayoutEvent(msg: BroadcastLayoutEvent) {
-    val users = new java.util.ArrayList[String];
+    val users = new java.util.ArrayList[String]
     msg.applyTo.foreach(uvo => {
       users.add(uvo.id.value)
     })

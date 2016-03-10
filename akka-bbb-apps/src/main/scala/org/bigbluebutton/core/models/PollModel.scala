@@ -1,5 +1,7 @@
 package org.bigbluebutton.core.models
 
+import org.bigbluebutton.core.domain.{ PollVO, SimplePollResultOutVO, SimplePollOutVO, Responder }
+
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.HashMap
 

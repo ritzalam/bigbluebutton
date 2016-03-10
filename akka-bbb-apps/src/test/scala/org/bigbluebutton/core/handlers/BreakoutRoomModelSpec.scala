@@ -1,7 +1,6 @@
 package org.bigbluebutton.core.handlers
 
 import collection.mutable.Stack
-import org.scalatest._
 import org.bigbluebutton.core.UnitSpec
 
 class BreakoutRoomModelSpec extends UnitSpec {

@@ -1,11 +1,6 @@
 package org.bigbluebutton.core.models
 
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.immutable.HashMap
-
-case class BreakoutUser(id: String, name: String)
-case class BreakoutRoom(id: String, name: String, voiceConfId: String,
-  assignedUsers: Vector[String], users: Vector[BreakoutUser], defaultPresentationURL: String)
+import org.bigbluebutton.core.domain.{ BreakoutUser, BreakoutRoom }
 
 class BreakoutRoomModel {
   private var rooms = new collection.immutable.HashMap[String, BreakoutRoom]

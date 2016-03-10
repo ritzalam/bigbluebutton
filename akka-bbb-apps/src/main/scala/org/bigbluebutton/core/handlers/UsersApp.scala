@@ -1,8 +1,8 @@
 package org.bigbluebutton.core.handlers
 
+import org.bigbluebutton.core.domain._
 import scala.collection.immutable.ListSet
 import org.bigbluebutton.core.LiveMeeting
-import org.bigbluebutton.core.models._
 
 trait UsersApp {
   this: LiveMeeting =>

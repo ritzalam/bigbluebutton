@@ -1,7 +1,7 @@
 package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
-import scala.collection.mutable.HashMap
+import org.bigbluebutton.core.domain.{ AnnotationVO, SimplePollResultOutVO, Responder }
 import scala.collection.mutable.ArrayBuffer
 import org.bigbluebutton.core.service.whiteboard.WhiteboardKeyUtil
 import com.google.gson.Gson

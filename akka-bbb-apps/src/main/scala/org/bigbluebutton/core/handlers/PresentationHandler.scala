@@ -1,10 +1,9 @@
 package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
-import com.google.gson.Gson
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
-import org.bigbluebutton.core.models._
+import org.bigbluebutton.core.domain._
 
 trait PresentationHandler extends PresentationMessageSender {
   this: LiveMeeting =>

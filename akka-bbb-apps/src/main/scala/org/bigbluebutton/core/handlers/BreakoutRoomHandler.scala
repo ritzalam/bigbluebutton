@@ -4,6 +4,7 @@ import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.SystemConfiguration
 import org.apache.commons.codec.digest.DigestUtils
+import org.bigbluebutton.core.domain._
 import scala.collection._
 import scala.collection.SortedSet
 import java.net.URLEncoder

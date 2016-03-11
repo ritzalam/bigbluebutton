@@ -90,7 +90,7 @@ case class ValidateAuthToken(
   meetingId: IntMeetingId, userId: IntUserId, token: AuthToken,
   correlationId: String, sessionId: String) extends InMessage
 case class RegisterUser(
-  meetingId: IntMeetingId, userId: IntUserId, name: Name, role: Role,
+  meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[String],
   extUserId: ExtUserId, authToken: AuthToken) extends InMessage
 case class UserJoining(
   meetingId: IntMeetingId, userId: IntUserId, token: AuthToken) extends InMessage

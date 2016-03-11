@@ -191,7 +191,7 @@ class RecorderActor(val recorder: RecorderApplication)
       ev.setUserId(msg.user.id.value);
       ev.setName(msg.user.name.value);
       ev.setMeetingId(msg.meetingId.value);
-      ev.setRole(msg.user.role.toString());
+      ev.setRole(msg.user.roles.toArray.toString);
 
       recorder.record(msg.meetingId.value, ev);
     }

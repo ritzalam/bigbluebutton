@@ -2,11 +2,47 @@ package org.bigbluebutton.core.models
 
 import org.bigbluebutton.core.domain._
 
+import scala.collection.immutable.HashMap
+
+object RegisteredUsers2 {
+  def apply(): RegisteredUsers2 = new RegisteredUsers2()
+
+  def create(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[String], token: AuthToken): RegisteredUser = {
+    new RegisteredUser(userId, extId, name, roles, token)
+  }
+
+}
+
+class RegisteredUsers2 {
+  private var regUsers = new collection.immutable.HashMap[String, RegisteredUser]
+
+  def toArray: Array[RegisteredUser] = regUsers.values.toArray
+
+  def add(user: RegisteredUser): Vector[RegisteredUser] = {
+    regUsers += user.authToken.value -> user
+    regUsers.values.toVector
+  }
+
+  def findWithToken(token: AuthToken): Option[RegisteredUser] = {
+    regUsers.get(token.value)
+  }
+
+  def findWithUserId(id: IntUserId): Option[RegisteredUser] = {
+    regUsers.values find (ru => id.value == ru.id.value)
+  }
+
+  def remove(id: IntUserId): Option[RegisteredUser] = {
+    val ru = regUsers.get(id.value)
+    ru foreach { u => regUsers -= u.authToken.value }
+    ru
+  }
+}
+
 trait RegisteredUsers {
   private var regUsers = new collection.immutable.HashMap[String, RegisteredUser]
 
-  def createRegisteredUser(userId: IntUserId, extId: ExtUserId, name: Name, role: Role.Role, token: AuthToken): Option[RegisteredUser] = {
-    Some(new RegisteredUser(userId, extId, name, role, token))
+  def createRegisteredUser(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[String], token: AuthToken): Option[RegisteredUser] = {
+    Some(new RegisteredUser(userId, extId, name, roles, token))
   }
 
   def toArray: Array[RegisteredUser] = regUsers.values.toArray
@@ -29,6 +65,44 @@ trait RegisteredUsers {
     ru foreach { u => regUsers -= u.authToken.value }
     ru
   }
+}
+
+object Users2 {
+
+  def apply(): Users2 = new Users2()
+
+  def findWithSessionId(sessionId: String, users: Vector[User2]): Option[User2] = users.find {
+    u => u.sessionId.value == sessionId
+  }
+
+  def findWithId(id: IntUserId, users: Vector[User2]): Option[User2] = users.find {
+    u => u.id.value == id.value
+  }
+
+  def findWithExtId(id: ExtUserId, users: Vector[User2]): Option[User2] = users.find {
+    u => u.extId.value == id.value
+  }
+
+  def findModerator(users: Vector[User2]): Option[User2] = users.find {
+    u => u.roles.contains(Role.MODERATOR)
+  }
+}
+
+class Users2 {
+  private var users = new HashMap[String, User2]
+
+  def save(user: User2): Vector[User2] = {
+    users += user.id.value -> user
+    users.values.toVector
+  }
+
+  def remove(id: IntUserId): Option[User2] = {
+    val user = users.get(id.value)
+    user foreach (u => users -= id.value)
+    user
+  }
+
+  def toVector: Vector[User2] = users.values.toVector
 }
 
 trait Users {
@@ -107,7 +181,7 @@ trait Users {
   }
 
   def findAModerator(): Option[UserVO] = {
-    users.values find (u => u.role == Role.MODERATOR)
+    users.values find (u => u.roles.contains(Role.MODERATOR))
   }
 
   def noPresenter(): Boolean = {
@@ -139,11 +213,11 @@ trait Users {
   }
 
   def getModerators(): Array[UserVO] = {
-    users.values filter (u => u.role == Role.MODERATOR) toArray
+    users.values filter (u => u.roles.contains(Role.MODERATOR)) toArray
   }
 
   def getViewers(): Array[UserVO] = {
-    users.values filter (u => u.role == Role.VIEWER) toArray
+    users.values filter (u => u.roles.contains(Role.VIEWER)) toArray
   }
 
   def addGlobalAudioConnection(userId: IntUserId): Boolean = {

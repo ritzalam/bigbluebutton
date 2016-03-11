@@ -48,7 +48,7 @@ trait LayoutHandler {
     if (layoutModel.doesLayoutApplyToViewersOnly()) {
       val au = ArrayBuffer[UserVO]()
       meeting.getUsers foreach { u =>
-        if (!u.presenter.value && u.role != Role.MODERATOR) {
+        if (!u.presenter.value && !u.roles.contains(Role.MODERATOR)) {
           au += u
         }
       }

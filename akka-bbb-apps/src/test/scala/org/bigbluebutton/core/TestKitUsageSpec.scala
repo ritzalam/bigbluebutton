@@ -1,20 +1,13 @@
 package org.bigbluebutton.core
 
-import scala.util.Random
+import akka.actor.{ Actor, ActorRef, ActorSystem, Props }
+import akka.testkit.{ DefaultTimeout, ImplicitSender, TestKit }
 import com.typesafe.config.ConfigFactory
-import akka.actor.Actor
-import akka.actor.ActorRef
-import akka.actor.ActorSystem
-import akka.actor.Props
-import akka.testkit.DefaultTimeout
-import akka.testkit.ImplicitSender
-import akka.testkit.TestKit
-import scala.concurrent.duration._
+import org.scalatest.{ BeforeAndAfterAll, Matchers, WordSpecLike }
+
 import scala.collection.immutable
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.WordSpecLike
-import org.scalatest.BeforeAndAfterAll
-import org.scalatest.Matchers
+import scala.concurrent.duration._
+import scala.util.Random
 
 /**
  * a Test to show some TestKit examples

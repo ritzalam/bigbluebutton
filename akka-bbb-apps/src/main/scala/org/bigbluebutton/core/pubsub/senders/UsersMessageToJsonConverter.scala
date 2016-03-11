@@ -15,7 +15,7 @@ object UsersMessageToJsonConverter {
     wuser += "userid" -> user.id.value
     wuser += "extern_userid" -> user.extId.value
     wuser += "name" -> user.name.value
-    wuser += "role" -> user.role.toString()
+    wuser += "role" -> user.roles.toString()
     wuser += "emoji_status" -> user.emojiStatus.value
     wuser += "presenter" -> user.presenter.value
     wuser += "has_stream" -> user.hasStream.value
@@ -44,7 +44,7 @@ object UsersMessageToJsonConverter {
     wuser += "userid" -> user.id.value
     wuser += "extern_userid" -> user.extId.value
     wuser += "name" -> user.name.value
-    wuser += "role" -> user.role.toString()
+    wuser += "role" -> user.roles.toArray
     wuser += "authToken" -> user.authToken.value
 
     mapAsJavaMap(wuser)

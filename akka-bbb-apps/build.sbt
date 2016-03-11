@@ -35,6 +35,9 @@ testOptions in Test += Tests.Argument(TestFrameworks.Specs2, "html", "console", 
 
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/scalatest-reports")
 
+/**
+  * Install Scalatest (http://www.scalatest.org/install). Need to add ~/.sbt/0.13/global.sbt
+  */
 libraryDependencies ++= {
   val akkaVersion  = "2.3.14"
   val akkaStreamV = "1.0"
@@ -48,7 +51,8 @@ libraryDependencies ++= {
     "com.typesafe.akka"        %%  "akka-http-experimental"               % akkaStreamV,
     "com.typesafe.akka"        %%  "akka-http-spray-json-experimental"    % akkaStreamV,
     "com.typesafe.akka"        %%  "akka-http-testkit-experimental"       % akkaStreamV,
-    "org.scalatest"            %   "scalatest_2.11"                       % scalaTestV     % "test",
+    "org.scalactic"            %%   "scalactic"                            % scalaTestV,
+    "org.scalatest"            %%   "scalatest"                            % scalaTestV     % "test",
     "ch.qos.logback"           %   "logback-classic"                      % "1.0.13"       % "runtime",
     "org.pegdown"              %   "pegdown"                              % "1.4.0",
     "junit"                    %   "junit"                                % "4.11",

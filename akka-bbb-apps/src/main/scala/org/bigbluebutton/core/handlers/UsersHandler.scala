@@ -1,7 +1,9 @@
 package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.domain.Role
 import org.bigbluebutton.core.domain._
+import org.bigbluebutton.core.models.RegisteredUsers2
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.immutable.ListSet
 import org.bigbluebutton.core.OutMessageGateway
@@ -105,16 +107,9 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
   }
 
   def handleRegisterUser(msg: RegisterUser) {
-    if (meeting.hasMeetingEnded) {
-      // Check first if the meeting has ended and the user refreshed the client to re-connect.
-      log.info("Register user failed. Mmeeting has ended. meetingId=" + props.id + " userId=" + msg.userId)
-      sendMeetingHasEnded(props.id, msg.userId)
-    } else {
-      for {
-        regUser <- meeting.createRegisteredUser(msg.userId, msg.extUserId, msg.name, msg.role, msg.authToken)
-        rusers = meeting.addRegisteredUser(msg.authToken, regUser)
-      } yield sendUserRegisteredMessage(props.id, props.recorded, regUser)
-    }
+      val regUser = RegisteredUsers2.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
+      val rusers = meeting.addRegisteredUser(msg.authToken, regUser)
+      sendUserRegisteredMessage(props.id, props.recorded, regUser)
   }
 
   def handleIsMeetingMutedRequest(msg: IsMeetingMutedRequest) {
@@ -288,8 +283,8 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
 
     regUser foreach { ru =>
       val voiceUser = initializeVoice(msg.userId, ru.name)
-      val locked = getInitialLockStatus(ru.role)
-      val uvo = createNewUser(msg.userId, ru.extId, ru.name, ru.role, voiceUser, getInitialLockStatus(ru.role))
+      val locked = getInitialLockStatus(ru.roles)
+      val uvo = createNewUser(msg.userId, ru.extId, ru.name, ru.roles, voiceUser, getInitialLockStatus(ru.roles))
 
       log.info("User joined meeting. metingId=" + props.id + " userId=" + uvo.id + " user=" + uvo)
 
@@ -297,7 +292,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       sendMeetingStateMessage(props.id, props.recorded, uvo.id, meeting.getPermissions,
         Muted(meeting.isMeetingMuted))
 
-      becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.role)
+      becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
     }
 
     webUserJoined
@@ -362,8 +357,8 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
        * join is due to a reconnect.
        */
       val uvo = new UserVO(msg.userId, ru.extId, ru.name,
-        ru.role, emojiStatus = EmojiStatus("none"), presenter = IsPresenter(false),
-        hasStream = HasStream(false), locked = Locked(getInitialLockStatus(ru.role)),
+        ru.roles, emojiStatus = EmojiStatus("none"), presenter = IsPresenter(false),
+        hasStream = HasStream(false), locked = Locked(getInitialLockStatus(ru.roles)),
         webcamStreams = new ListSet[String](), phoneUser = PhoneUser(false), vu,
         listenOnly = vu.listenOnly, joinedWeb = JoinedWeb(true))
 
@@ -377,7 +372,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
 
       // Become presenter if the only moderator		
       if ((meeting.numModerators == 1) || (meeting.noPresenter())) {
-        if (ru.role == Role.MODERATOR) {
+        if (ru.roles.contains(Role.MODERATOR)) {
           assignNewPresenter(msg.userId, ru.name, msg.userId)
         }
       }
@@ -427,8 +422,8 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     }
   }
 
-  def getInitialLockStatus(role: Role.Role): Boolean = {
-    meeting.getPermissions.lockOnJoin && !role.equals(Role.MODERATOR)
+  def getInitialLockStatus(roles: Set[String]): Boolean = {
+    meeting.getPermissions.lockOnJoin && !(roles.contains(Role.MODERATOR))
   }
 
   def handleUserJoinedVoiceFromPhone(msg: UserJoinedVoiceConfMessage) = {
@@ -461,8 +456,8 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
          * So we call him "phoneUser".
          */
         val uvo = new UserVO(webUserId, msg.externUserId, Name(msg.callerId.name.value),
-          Role.VIEWER, emojiStatus = EmojiStatus("none"), presenter = IsPresenter(false),
-          hasStream = HasStream(false), locked = Locked(getInitialLockStatus(Role.VIEWER)),
+          Set(Role.VIEWER), emojiStatus = EmojiStatus("none"), presenter = IsPresenter(false),
+          hasStream = HasStream(false), locked = Locked(getInitialLockStatus(Set(Role.VIEWER))),
           webcamStreams = new ListSet[String](),
           phoneUser = PhoneUser(!(msg.listenOnly.value)), vu, listenOnly = msg.listenOnly,
           joinedWeb = JoinedWeb(false))
@@ -495,7 +490,7 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
       + " userId=" + msg.userId + " extUserId=" + msg.externUserId)
 
     meeting.getUser(msg.userId) match {
-      case Some(user) => {
+      case Some(user) =>
         val vu = new VoiceUser(msg.voiceUserId, msg.userId, msg.callerId,
           joinedVoice = JoinedVoice(true), locked = Locked(false),
           muted = msg.muted, talking = msg.talking, listenOnly = msg.listenOnly)
@@ -509,10 +504,10 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
           sendMuteVoiceUserMessage(props.id, props.recorded, nu.id, nu.id,
             nu.voiceUser.id, props.voiceConf, meeting.isMeetingMuted)
         }
-      }
-      case None => {
+
+      case None =>
         handleUserJoinedVoiceFromPhone(msg)
-      }
+
     }
   }
 

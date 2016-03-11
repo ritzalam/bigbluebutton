@@ -117,7 +117,7 @@ class BigBlueButtonInGW(
   def registerUser(meetingId: String, userId: String, name: String, role: String, extUserId: String, authToken: String): Unit = {
     val userRole = if (role == "MODERATOR") Role.MODERATOR else Role.VIEWER
     eventBus.publish(BigBlueButtonEvent(meetingId, new RegisterUser(IntMeetingId(meetingId),
-      IntUserId(userId), Name(name), userRole, ExtUserId(extUserId), AuthToken(authToken))))
+      IntUserId(userId), Name(name), Set(userRole), ExtUserId(extUserId), AuthToken(authToken))))
   }
 
   def sendLockSettings(meetingID: String, userId: String, settings: java.util.Map[String, java.lang.Boolean]) {

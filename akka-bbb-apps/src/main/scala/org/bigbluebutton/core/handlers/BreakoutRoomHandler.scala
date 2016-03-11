@@ -30,7 +30,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
 
   def handleBreakoutRoomsList(msg: BreakoutRoomsListMessage) {
     val breakoutRooms = breakoutModel.getRooms().toVector map { r => new BreakoutRoomBody(r.name, IntMeetingId(r.id)) }
-    outGW.send(new BreakoutRoomsListOutMessage(props.id, breakoutRooms));
+    outGW.send(new BreakoutRoomsListOutMessage(props.id, breakoutRooms))
   }
 
   def handleCreateBreakoutRooms(msg: CreateBreakoutRooms) {
@@ -46,8 +46,8 @@ trait BreakoutRoomHandler extends SystemConfiguration {
         r.defaultPresentationURL)
       outGW.send(new CreateBreakoutRoom(props.id, props.recorded, p))
     }
-    meeting.breakoutRoomsdurationInMinutes = msg.durationInMinutes;
-    meeting.breakoutRoomsStartedOn = timeNowInSeconds;
+    meeting.breakoutRoomsdurationInMinutes = msg.durationInMinutes
+    meeting.breakoutRoomsStartedOn = timeNowInSeconds
   }
 
   def sendJoinURL(userId: String, breakoutId: String) {
@@ -74,7 +74,7 @@ trait BreakoutRoomHandler extends SystemConfiguration {
 
     breakoutModel.getAssignedUsers(msg.breakoutRoomId) foreach { users =>
       users.foreach { u =>
-        log.debug("## Sending Join URL for users: {}", u);
+        log.debug("## Sending Join URL for users: {}", u)
         sendJoinURL(u, msg.breakoutRoomId)
       }
     }
@@ -108,9 +108,9 @@ trait BreakoutRoomHandler extends SystemConfiguration {
     // If the current room is a parent room we fetch the voice bridge from the breakout room
     if (!props.isBreakout) {
       breakoutModel.getBreakoutRoom(msg.targetMeetingId.value) match {
-        case Some(b) => {
-          targetVoiceBridge = b.voiceConfId;
-        }
+        case Some(b) =>
+          targetVoiceBridge = b.voiceConfId
+
         case None => // do nothing
       }
     } // if it is a breakout room, the target voice bridge is the same after removing the last digit
@@ -119,13 +119,13 @@ trait BreakoutRoomHandler extends SystemConfiguration {
     }
     // We check the iser from the mode
     meeting.getUser(msg.userId) match {
-      case Some(u) => {
+      case Some(u) =>
         if (u.voiceUser.joinedVoice.value) {
           log.info("Transferring user userId=" + u.id + " from voiceBridge=" + props.voiceConf
             + " to targetVoiceConf=" + targetVoiceBridge)
           outGW.send(new TransferUserToMeeting(props.voiceConf, VoiceConf(targetVoiceBridge), u.voiceUser.id))
         }
-      }
+
       case None => // do nothing
     }
   }
@@ -141,11 +141,11 @@ trait BreakoutRoomHandler extends SystemConfiguration {
 
 object BreakoutRoomsUtil {
   def createMeetingId(id: String, index: Int): String = {
-    id.concat("-").concat(index.toString())
+    id.concat("-").concat(index.toString)
   }
 
   def createVoiceConfId(id: String, index: Int): String = {
-    id.concat(index.toString())
+    id.concat(index.toString)
   }
 
   def fromSWFtoPDF(swfURL: String): String = {
@@ -161,7 +161,7 @@ object BreakoutRoomsUtil {
   //checksum() -- Return a checksum based on SHA-1 digest
   //
   def checksum(s: String): String = {
-    DigestUtils.sha1Hex(s);
+    DigestUtils.sha1Hex(s)
   }
 
   def calculateChecksum(apiCall: String, baseString: String, sharedSecret: String): String = {
@@ -172,10 +172,10 @@ object BreakoutRoomsUtil {
     password: String, redirect: Boolean): mutable.Map[String, String] = {
     val params = new collection.mutable.HashMap[String, String]
     params += "fullName" -> urlEncode(username)
-    params += "isBreakout" -> urlEncode(isBreakout.toString())
+    params += "isBreakout" -> urlEncode(isBreakout.toString)
     params += "meetingID" -> urlEncode(breakoutId)
     params += "password" -> urlEncode(password)
-    params += "redirect" -> urlEncode(redirect.toString())
+    params += "redirect" -> urlEncode(redirect.toString)
 
     params
   }
@@ -190,26 +190,26 @@ object BreakoutRoomsUtil {
     val csbuf = new StringBuffer()
     val keys = sortParams(params)
 
-    var first = true;
+    var first = true
     for (key <- keys) {
       for (value <- params.get(key)) {
         if (first) {
-          first = false;
+          first = false
         } else {
-          csbuf.append("&");
+          csbuf.append("&")
         }
 
-        csbuf.append(key);
-        csbuf.append("=");
-        csbuf.append(value);
+        csbuf.append(key)
+        csbuf.append("=")
+        csbuf.append(value)
       }
     }
 
-    return csbuf.toString();
+    return csbuf.toString
   }
 
   def urlEncode(s: String): String = {
-    URLEncoder.encode(s, "UTF-8");
+    URLEncoder.encode(s, "UTF-8")
   }
 
   //

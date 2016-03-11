@@ -4,9 +4,9 @@ import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core.domain._
 
 class RegisteredUsersTests extends UnitSpec {
-  val ru1 = RegisteredUser(IntUserId("u1"), ExtUserId("eu1"), Name("Rody"), Role.MODERATOR, AuthToken("au1"))
-  val ru2 = RegisteredUser(IntUserId("u2"), ExtUserId("eu2"), Name("Grace"), Role.MODERATOR, AuthToken("au2"))
-  val ru3 = RegisteredUser(IntUserId("u3"), ExtUserId("eu3"), Name("Mar"), Role.MODERATOR, AuthToken("au3"))
+  val ru1 = RegisteredUser(IntUserId("u1"), ExtUserId("eu1"), Name("Rody"), Set(Role.MODERATOR), AuthToken("au1"))
+  val ru2 = RegisteredUser(IntUserId("u2"), ExtUserId("eu2"), Name("Grace"), Set(Role.MODERATOR), AuthToken("au2"))
+  val ru3 = RegisteredUser(IntUserId("u3"), ExtUserId("eu3"), Name("Mar"), Set(Role.MODERATOR), AuthToken("au3"))
 
   it should "add a registered user" in {
     object RegisteredUsers extends RegisteredUsers

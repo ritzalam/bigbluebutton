@@ -7,9 +7,9 @@ import org.bigbluebutton.core.LiveMeeting
 trait UsersApp {
   this: LiveMeeting =>
 
-  def becomePresenterIfOnlyModerator(userId: IntUserId, name: Name, role: Role.Role) {
+  def becomePresenterIfOnlyModerator(userId: IntUserId, name: Name, roles: Set[String]) {
     if ((meeting.numModerators == 1) || (meeting.noPresenter())) {
-      if (role == Role.MODERATOR) {
+      if (roles.contains(Role.MODERATOR)) {
         assignNewPresenter(userId, name, userId)
       }
     }
@@ -29,12 +29,12 @@ trait UsersApp {
   }
 
   def createNewUser(userId: IntUserId, externId: ExtUserId,
-    name: Name, role: Role.Role,
+    name: Name, roles: Set[String],
     voiceUser: VoiceUser, locked: Boolean): UserVO = {
     // Initialize the newly joined user copying voice status in case this
     // join is due to a reconnect.
     val uvo = new UserVO(userId, externId, name,
-      role, emojiStatus = EmojiStatus("none"), presenter = IsPresenter(false),
+      roles, emojiStatus = EmojiStatus("none"), presenter = IsPresenter(false),
       hasStream = HasStream(false), locked = Locked(locked),
       webcamStreams = new ListSet[String](), phoneUser = PhoneUser(false), voiceUser,
       listenOnly = voiceUser.listenOnly, joinedWeb = JoinedWeb(true))

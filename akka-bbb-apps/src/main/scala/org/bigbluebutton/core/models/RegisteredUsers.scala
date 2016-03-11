@@ -4,8 +4,8 @@ import org.bigbluebutton.core.domain._
 
 import scala.collection.immutable.HashMap
 
-object RegisteredUsers2 {
-  def apply(): RegisteredUsers2 = new RegisteredUsers2()
+object RegisteredUsers2x {
+  def apply(): RegisteredUsers2x = new RegisteredUsers2x()
 
   def create(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[String], token: AuthToken): RegisteredUser = {
     new RegisteredUser(userId, extId, name, roles, token)
@@ -13,7 +13,7 @@ object RegisteredUsers2 {
 
 }
 
-class RegisteredUsers2 {
+class RegisteredUsers2x {
   private var regUsers = new collection.immutable.HashMap[String, RegisteredUser]
 
   def toArray: Array[RegisteredUser] = regUsers.values.toArray
@@ -67,42 +67,42 @@ trait RegisteredUsers {
   }
 }
 
-object Users2 {
+object Users2x {
 
-  def apply(): Users2 = new Users2()
+  def apply(): Users2x = new Users2x()
 
-  def findWithSessionId(sessionId: String, users: Vector[User2]): Option[User2] = users.find {
+  def findWithSessionId(sessionId: String, users: Vector[User2x]): Option[User2x] = users.find {
     u => u.sessionId.value == sessionId
   }
 
-  def findWithId(id: IntUserId, users: Vector[User2]): Option[User2] = users.find {
+  def findWithId(id: IntUserId, users: Vector[User2x]): Option[User2x] = users.find {
     u => u.id.value == id.value
   }
 
-  def findWithExtId(id: ExtUserId, users: Vector[User2]): Option[User2] = users.find {
+  def findWithExtId(id: ExtUserId, users: Vector[User2x]): Option[User2x] = users.find {
     u => u.extId.value == id.value
   }
 
-  def findModerator(users: Vector[User2]): Option[User2] = users.find {
+  def findModerator(users: Vector[User2x]): Option[User2x] = users.find {
     u => u.roles.contains(Role.MODERATOR)
   }
 }
 
-class Users2 {
-  private var users = new HashMap[String, User2]
+class Users2x {
+  private var users = new HashMap[String, User2x]
 
-  def save(user: User2): Vector[User2] = {
+  def save(user: User2x): Vector[User2x] = {
     users += user.id.value -> user
     users.values.toVector
   }
 
-  def remove(id: IntUserId): Option[User2] = {
+  def remove(id: IntUserId): Option[User2x] = {
     val user = users.get(id.value)
     user foreach (u => users -= id.value)
     user
   }
 
-  def toVector: Vector[User2] = users.values.toVector
+  def toVector: Vector[User2x] = users.values.toVector
 }
 
 trait Users {

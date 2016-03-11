@@ -3,7 +3,7 @@ package org.bigbluebutton.core.handlers
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain.Role
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.models.RegisteredUsers2
+import org.bigbluebutton.core.models.RegisteredUsers2x
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.immutable.ListSet
 import org.bigbluebutton.core.OutMessageGateway
@@ -106,10 +106,17 @@ trait UsersHandler extends UsersApp with UsersMessageSender {
     //sender ! new ValidateAuthTokenReply(mProps.meetingID, msg.userId, msg.token, false, msg.correlationId)
   }
 
-  def handleRegisterUser(msg: RegisterUser) {
-      val regUser = RegisteredUsers2.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
-      val rusers = meeting.addRegisteredUser(msg.authToken, regUser)
-      sendUserRegisteredMessage(props.id, props.recorded, regUser)
+  def handleRegisterUser(msg: RegisterUser): Unit = {
+    if (meeting.hasMeetingEnded) {
+      // Check first is the meeting has ended and the user refreshed the client to reconnect.
+      log.info("Register user failed. Meeting has ended. meetingId=" + props.id + " userId=" + msg.userId)
+      sendMeetingHasEnded(props.id, msg.userId)
+    } else {
+      for {
+        regUser <- meeting.createRegisteredUser(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
+        rUsers = meeting.addRegisteredUser(msg.authToken, regUser)
+      } yield sendUserRegisteredMessage(props.id, props.recorded, regUser)
+    }
   }
 
   def handleIsMeetingMutedRequest(msg: IsMeetingMutedRequest) {

@@ -4,11 +4,11 @@ import java.net.InetSocketAddress
 
 import redis.actors.RedisSubscriberActor
 import redis.api.pubsub.{Message, PMessage}
-
 import akka.actor.Props
+
 import scala.concurrent.duration._
 import org.bigbluebutton.SystemConfiguration
-import org.bigbluebutton.pubsub.receivers.PresentationReceiver
+import org.bigbluebutton.pubsub.PresentationReceiver
 import redis.api.servers.ClientSetname
 
 object AppsRedisSubscriberActor extends SystemConfiguration {

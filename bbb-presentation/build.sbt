@@ -42,7 +42,8 @@ libraryDependencies ++= {
     "com.google.code.gson"      %  "gson"              % "1.7.1",
     "redis.clients"             %  "jedis"             % "2.7.2",
     "com.etaty.rediscala"      %%  "rediscala"         % "1.4.0",
-    "ch.qos.logback"            %  "logback-classic"   % "1.0.13" % "runtime"
+    "ch.qos.logback"            %  "logback-classic"   % "1.0.13" % "runtime",
+    "org.bigbluebutton"         %  "bbb-common-message"% "0.0.16"
   )}
 
 //seq(Revolver.settings: _*)

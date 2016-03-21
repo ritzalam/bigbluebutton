@@ -1,4 +1,4 @@
-package org.bigbluebutton.pubsub.receivers
+package org.bigbluebutton.pubsub
 
 import com.google.gson.{JsonObject, JsonParser}
 

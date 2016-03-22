@@ -6,7 +6,6 @@ import redis.actors.RedisSubscriberActor
 import redis.api.pubsub.{Message, PMessage}
 import akka.actor.Props
 
-import scala.concurrent.duration._
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.pubsub.PresentationReceiver
 import redis.api.servers.ClientSetname

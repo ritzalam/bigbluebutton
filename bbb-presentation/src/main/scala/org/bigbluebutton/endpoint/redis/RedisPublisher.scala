@@ -1,10 +1,7 @@
 package org.bigbluebutton.endpoint.redis
 
 import akka.actor.ActorSystem
-import scala.concurrent.duration._
 import redis.RedisClient
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Await
 import org.bigbluebutton.SystemConfiguration
 
 class RedisPublisher(val system: ActorSystem) extends SystemConfiguration {

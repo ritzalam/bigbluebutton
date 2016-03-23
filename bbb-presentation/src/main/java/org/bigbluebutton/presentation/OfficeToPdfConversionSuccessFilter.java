@@ -1,7 +1,7 @@
 /**
  * BigBlueButton open source conferencing system - http://www.bigbluebutton.org/
  * <p>
- * Copyright (c) 2012 BigBlueButton Inc. and by respective authors (see below).
+ * Copyright (c) 2016 BigBlueButton Inc. and by respective authors (see below).
  * <p>
  * This program is free software; you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -19,8 +19,8 @@
 package org.bigbluebutton.presentation;
 
 import com.google.gson.Gson;
-import org.bigbluebutton.api.messaging.MessagingConstants;
-import org.bigbluebutton.api.messaging.MessagingService;
+//import org.bigbluebutton.api.messaging.MessagingConstants;
+//import org.bigbluebutton.api.messaging.MessagingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,11 +30,11 @@ import java.util.Map;
 public class OfficeToPdfConversionSuccessFilter {
     private static Logger log = LoggerFactory.getLogger(OfficeToPdfConversionSuccessFilter.class);
 
-    private final MessagingService messagingService;
+//    private final MessagingService messagingService;
 
-    public OfficeToPdfConversionSuccessFilter(MessagingService m) {
-        messagingService = m;
-    }
+//    public OfficeToPdfConversionSuccessFilter(MessagingService m) {
+//        messagingService = m;
+//    }
 
     public boolean didConversionSucceed(UploadedPresentation pres) {
         notifyProgressListener(pres);
@@ -64,13 +64,13 @@ public class OfficeToPdfConversionSuccessFilter {
     }
 
     private void sendNotification(Map<String, Object> msg) {
-        if (messagingService != null) {
-            Gson gson = new Gson();
-            String updateMsg = gson.toJson(msg);
-            log.debug("sending: " + updateMsg);
-            messagingService.send(MessagingConstants.TO_PRESENTATION_CHANNEL, updateMsg);
-        } else {
-            log.warn("MessagingService has not been set!.");
-        }
+//        if (messagingService != null) {
+//            Gson gson = new Gson();
+//            String updateMsg = gson.toJson(msg);
+//            log.debug("sending: " + updateMsg);
+//            messagingService.send(MessagingConstants.TO_PRESENTATION_CHANNEL, updateMsg);
+//        } else {
+//            log.warn("MessagingService has not been set!.");
+//        }
     }
 }

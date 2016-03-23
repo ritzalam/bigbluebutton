@@ -29,7 +29,6 @@ public final class UploadedPresentation {
     private int numberOfPages = 0;
     private boolean lastStepSuccessful = false;
     private final String baseUrl;
-    private String uploadedFilePath = "unknown";
 
     public UploadedPresentation(String meetingId, String id,
                                 String name,
@@ -46,14 +45,6 @@ public final class UploadedPresentation {
 
     public void setUploadedFile(File uploadedFile) {
         this.uploadedFile = uploadedFile;
-    }
-
-    public void setUploadedFilePath(String uploadedFilePath) {
-        this.uploadedFilePath = uploadedFilePath;
-    }
-
-    public String getUploadedFilePath() {
-        return uploadedFilePath;
     }
 
     public String getMeetingId() {

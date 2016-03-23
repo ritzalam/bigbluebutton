@@ -19,37 +19,26 @@
 package org.bigbluebutton.presentation;
 
 import com.google.gson.Gson;
-//import org.bigbluebutton.api.messaging.MessagingConstants;
-//import org.bigbluebutton.api.messaging.MessagingService;
+
 import org.apache.commons.io.FilenameUtils;
 import org.bigbluebutton.presentation.ConversionUpdateMessage.MessageBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-
 public class SupportedDocumentFilter {
     private static Logger log = LoggerFactory.getLogger(SupportedDocumentFilter.class);
 
-//    private final MessagingService messagingService;
-
-//    public SupportedDocumentFilter(MessagingService m) {
-//        messagingService = m;
-//    }
-
     public boolean isSupported(UploadedPresentation pres) {
-//        File presentationFile = pres.getUploadedFile();
-        String ext = FilenameUtils.getExtension(pres.getUploadedFilePath());
+        String ext = FilenameUtils.getExtension(pres.getUploadedFile().getPath());
+//todo revert this
 
-//        /* Get file extension - Perhaps try to rely on a more accurate method than an extension type ? */
+
         log.info("_____::isSupported name = " + pres.getName());
         log.info("_____::isSupported ext = " + ext);
-//        int fileExtIndex = presentationFile.getName().lastIndexOf('.') + 1;
-//        String ext = presentationFile.getName().toLowerCase().substring(fileExtIndex);
         boolean supported = SupportedFileTypes.isFileSupported(ext);
         notifyProgressListener(supported, pres);
         if (supported) {
-            log.info("Received supported file " + pres.getUploadedFilePath());
+            log.info("Received supported file " + pres.getUploadedFile().getAbsolutePath());
             pres.setFileType(ext);
         }
         return supported;
@@ -65,6 +54,7 @@ public class SupportedDocumentFilter {
         }
 
         log.info("____SupportedDocumentFilter::notifyProgressListener " + pres.getName());
+        //TODO
 //        if (messagingService != null) {
 //            Gson gson = new Gson();
 //            String updateMsg = gson.toJson(builder.build().getMessage());

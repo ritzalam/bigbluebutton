@@ -1,10 +1,10 @@
 package org.bigbluebutton.presentation;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.httpcomponents.httpclient.HttpClient;
-import org.apache.httpcomponents.httpclient.HttpException;
-import org.apache.httpcomponents.httpclient.HttpStatus;
-import org.apache.httpcomponents.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

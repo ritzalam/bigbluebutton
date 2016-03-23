@@ -1,7 +1,7 @@
 /**
  * BigBlueButton open source conferencing system - http://www.bigbluebutton.org/
  * <p>
- * Copyright (c) 2012 BigBlueButton Inc. and by respective authors (see below).
+ * Copyright (c) 2016 BigBlueButton Inc. and by respective authors (see below).
  * <p>
  * This program is free software; you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free Software
@@ -19,8 +19,8 @@
 package org.bigbluebutton.presentation.imp;
 
 import com.google.gson.Gson;
-import org.bigbluebutton.api.messaging.MessagingConstants;
-import org.bigbluebutton.api.messaging.MessagingService;
+//import org.bigbluebutton.api.messaging.MessagingConstants;
+//import org.bigbluebutton.api.messaging.MessagingService;
 import org.bigbluebutton.presentation.ConversionMessageConstants;
 import org.bigbluebutton.presentation.ConversionUpdateMessage;
 import org.bigbluebutton.presentation.ConversionUpdateMessage.MessageBuilder;
@@ -34,18 +34,18 @@ import java.util.Map;
 public class SwfSlidesGenerationProgressNotifier {
     private static Logger log = LoggerFactory.getLogger(SwfSlidesGenerationProgressNotifier.class);
 
-    private MessagingService messagingService;
+//    private MessagingService messagingService;
 
     private GeneratedSlidesInfoHelper generatedSlidesInfoHelper;
 
     private void notifyProgressListener(Map<String, Object> msg) {
-        if (messagingService != null) {
-            Gson gson = new Gson();
-            String updateMsg = gson.toJson(msg);
-            messagingService.send(MessagingConstants.TO_PRESENTATION_CHANNEL, updateMsg);
-        } else {
-            log.warn("MessagingService has not been set");
-        }
+//        if (messagingService != null) {
+//            Gson gson = new Gson();
+//            String updateMsg = gson.toJson(msg);
+//            messagingService.send(MessagingConstants.TO_PRESENTATION_CHANNEL, updateMsg);
+//        } else {
+//            log.warn("MessagingService has not been set");
+//        }
     }
 
     public void sendConversionUpdateMessage(Map<String, Object> message) {
@@ -79,9 +79,9 @@ public class SwfSlidesGenerationProgressNotifier {
         notifyProgressListener(builder.build().getMessage());
     }
 
-    public void setMessagingService(MessagingService m) {
-        messagingService = m;
-    }
+//    public void setMessagingService(MessagingService m) {
+//        messagingService = m;
+//    }
 
     public void setGeneratedSlidesInfoHelper(GeneratedSlidesInfoHelper helper) {
         generatedSlidesInfoHelper = helper;

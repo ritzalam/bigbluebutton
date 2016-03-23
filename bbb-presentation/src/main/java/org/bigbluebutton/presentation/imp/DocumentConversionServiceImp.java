@@ -26,11 +26,18 @@ import org.slf4j.LoggerFactory;
 public class DocumentConversionServiceImp implements DocumentConversionService {
     private static Logger log = LoggerFactory.getLogger(DocumentConversionServiceImp.class);
 
-//    private MessagingService messagingService;
     private OfficeToPdfConversionService officeToPdfConversionService;
-//    private PdfToSwfSlidesGenerationService pdfToSwfSlidesGenerationService;
-//    private ImageToSwfSlidesGenerationService imageToSwfSlidesGenerationService;
+    private PdfToSwfSlidesGenerationService pdfToSwfSlidesGenerationService;
+    private ImageToSwfSlidesGenerationService imageToSwfSlidesGenerationService;
 
+    public DocumentConversionServiceImp(OfficeToPdfConversionService officeToPdfConversionService,
+                                     PdfToSwfSlidesGenerationService pdfToSwfSlidesGenerationService,
+                                     ImageToSwfSlidesGenerationService imageToSwfSlidesGenerationService ) {
+        this.officeToPdfConversionService = officeToPdfConversionService;
+        this.imageToSwfSlidesGenerationService = imageToSwfSlidesGenerationService;
+        this.pdfToSwfSlidesGenerationService = pdfToSwfSlidesGenerationService;
+
+    }
     public void processDocument(UploadedPresentation pres) {
         log.info("____________DocumentConversionServiceImp::processDocument");
         SupportedDocumentFilter sdf = new SupportedDocumentFilter();
@@ -41,21 +48,24 @@ public class DocumentConversionServiceImp implements DocumentConversionService {
             String fileType = pres.getFileType();
 
             log.info("___________DocumentConversionServiceImp::processDocument part 2");
-//            if (SupportedFileTypes.isOfficeFile(fileType)) {
-//                officeToPdfConversionService.convertOfficeToPdf(pres);
-//                OfficeToPdfConversionSuccessFilter ocsf = new OfficeToPdfConversionSuccessFilter(messagingService);
-//                if (ocsf.didConversionSucceed(pres)) {
-//                    // Successfully converted to pdf. Call the process again, this time it should be handled by
-//                    // the PDF conversion service.
-//                    processDocument(pres);
-//                }
-//            } else if (SupportedFileTypes.isPdfFile(fileType)) {
-//                pdfToSwfSlidesGenerationService.generateSlides(pres);
-//            } else if (SupportedFileTypes.isImageFile(fileType)) {
-//                imageToSwfSlidesGenerationService.generateSlides(pres);
-//            } else {
-//
-//            }
+            if (SupportedFileTypes.isOfficeFile(fileType)) {
+                log.info("_____DocumentConversionServiceImp::processDocument case OFFICE ");
+                officeToPdfConversionService.convertOfficeToPdf(pres);
+                OfficeToPdfConversionSuccessFilter ocsf = new OfficeToPdfConversionSuccessFilter();
+                if (ocsf.didConversionSucceed(pres)) {
+                    // Successfully converted to pdf. Call the process again, this time it should be handled by
+                    // the PDF conversion service.
+                    processDocument(pres);
+                }
+            } else if (SupportedFileTypes.isPdfFile(fileType)) {
+                log.info("_____DocumentConversionServiceImp::processDocument case PDF ");
+                pdfToSwfSlidesGenerationService.generateSlides(pres);
+            } else if (SupportedFileTypes.isImageFile(fileType)) {
+                log.info("_____DocumentConversionServiceImp::processDocument case IMAGE ");
+                imageToSwfSlidesGenerationService.generateSlides(pres);
+            } else {
+
+            }
 
         } else {
             // TODO: error log
@@ -64,20 +74,4 @@ public class DocumentConversionServiceImp implements DocumentConversionService {
         log.info("End presentation conversion. meetingId=" + pres.getMeetingId() + " presId=" + pres.getId() + " name=" + pres.getName());
 
     }
-//
-//    public void setMessagingService(MessagingService m) {
-//        messagingService = m;
-//    }
-//
-//    public void setOfficeToPdfConversionService(OfficeToPdfConversionService s) {
-//        officeToPdfConversionService = s;
-//    }
-//
-//    public void setPdfToSwfSlidesGenerationService(PdfToSwfSlidesGenerationService s) {
-//        pdfToSwfSlidesGenerationService = s;
-//    }
-//
-//    public void setImageToSwfSlidesGenerationService(ImageToSwfSlidesGenerationService s) {
-//        imageToSwfSlidesGenerationService = s;
-//    }
 }

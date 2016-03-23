@@ -23,6 +23,7 @@ import org.bigbluebutton.web.services.PresentationService
 import org.bigbluebutton.presentation.UploadedPresentation
 import org.bigbluebutton.api.MeetingService;
 import org.bigbluebutton.api.Util;
+import org.bigbluebutton.common.messages.MessagingConstants;
 
 class PresentationController {
   MeetingService meetingService
@@ -65,6 +66,7 @@ class PresentationController {
 
   def upload = {
 
+      log.info("_____::UPLOAD")
     def meetingId = params.conference
     def meeting = meetingService.getNotEndedMeetingWithId(meetingId);
     if (meeting == null) {
@@ -87,13 +89,15 @@ class PresentationController {
       File uploadDir = Util.createPresentationDirectory(meetingId, presentationDir, presId)
       if (uploadDir != null) {
         def newFilename = Util.createNewFilename(presId, filenameExt)
-        def pres = new File(uploadDir.absolutePath + File.separatorChar + newFilename)
+        def fileCompletePath = uploadDir.absolutePath + File.separatorChar + newFilename;
+        def pres = new File(fileCompletePath)
+        //save it to the shared dir then send a message to the standalone app with dir
+
+        meetingService.sendUploadPresentation(meetingId, presId, presFilename,
+                presentationBaseUrl, fileCompletePath)
         file.transferTo(pres)
 
         def presentationBaseUrl = presentationService.presentationBaseUrl
-        UploadedPresentation uploadedPres = new UploadedPresentation(meetingId, presId, presFilename, presentationBaseUrl);
-        uploadedPres.setUploadedFile(pres);
-        presentationService.processUploadedPresentation(uploadedPres)
 
         response.addHeader("Cache-Control", "no-cache")
         response.contentType = 'plain/text'

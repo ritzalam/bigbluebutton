@@ -119,6 +119,23 @@ public class RedisMessagingService implements MessagingService {
 		sender.send(MessagingConstants.TO_POLLING_CHANNEL, gson.toJson(map));		
 	}
 
+    public void sendUploadPresentation(String meetingId, String presId, String presFilename,
+                                              String presentationBaseUrl, String fileCompletePath) {
+        log.info("_______::sendUploadPresentationRequest");
+        Gson gson = new Gson();
+
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("messageId", "upload_presentation_message");
+//        map.put("messageId", MessagingConstants.UPLOAD_PRESENTATION_EVENT);//TODO
+        map.put("meetingId", meetingId);
+        map.put("presId", presId);
+        map.put("presFilename", presFilename);
+        map.put("presentationBaseUrl", presentationBaseUrl);
+        map.put("fileCompletePath", fileCompletePath);
+
+        sender.send(MessagingConstants.TO_PRESENTATION_CHANNEL, gson.toJson(map));
+    }
+
 	public void setMessageSender(MessageSender sender) {
 		this.sender = sender;
 	}

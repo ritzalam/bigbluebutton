@@ -457,6 +457,11 @@ public class MeetingService implements MessageListener {
         messagingService.sendPolls(meetingId, title, question, questionType,
                 answers);
     }
+    public void sendUploadPresentation(String meetingId, String presId, String presFilename,
+                                       String presentationBaseUrl, String fileCompletePath) {
+        messagingService.sendUploadPresentation(meetingId, presId, presFilename,
+                presentationBaseUrl, fileCompletePath);
+    }
 
     public void endMeeting(String meetingId) {
         handle(new EndMeeting(meetingId));

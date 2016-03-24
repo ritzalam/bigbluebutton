@@ -1,3 +1,5 @@
+enablePlugins(JavaServerAppPackaging)
+
 name := "bbb-presentation"
 organization := "org.bigbluebutton"
 
@@ -42,23 +44,19 @@ libraryDependencies ++= {
     "com.google.code.gson"      %  "gson"              % "1.7.1",
     "redis.clients"             %  "jedis"             % "2.7.2",
     "com.etaty.rediscala"      %%  "rediscala"         % "1.4.0",
-    "org.apache.commons"        %  "commons-pool2"     % "2.3", //TODO check for later?
-    "org.apache.commons"        %  "commons-lang3"     % "3.4",
-//    "org.apache.commons-codec"  %  "commons-codec"     % "1.3",
     "commons-io"                %  "commons-io"        % "2.4",
+    "commons-codec"             %  "commons-codec"     % "1.9",
+    "commons-httpclient"        %  "commons-httpclient"% "3.1",
     "com.artofsolving"          %  "jodconverter"      % "2.2.1",
-
-    //"org.apache.httpcomponents" %  "httpclient"        % "4.5.2", // instead of commons-httpclient
-    "commons-httpclient"        %  "commons-httpclient" % "3.1", //?
     "com.zaxxer"                %  "nuprocess"         % "1.0.4",
     "org.freemarker"            %  "freemarker"        % "2.3.23",
     "ch.qos.logback"            %  "logback-classic"   % "1.0.13" % "runtime",
     "org.bigbluebutton"         %  "bbb-common-message"% "0.0.16"
   )}
 
-//seq(Revolver.settings: _*)
-//
-//scalariformSettings
+seq(Revolver.settings: _*)
+
+scalariformSettings
 
 
 //-----------
@@ -70,7 +68,7 @@ libraryDependencies ++= {
 //-----------
 mainClass := Some("org.bigbluebutton.Boot")
 
-/*
+
 maintainer in Linux := "Richard Alam <ritzalam@gmail.com>"
 
 packageSummary in Linux := "BigBlueButton Presentation Conversion (Akka)"
@@ -91,12 +89,10 @@ mappings in Universal <+= (packageBin in Compile, sourceDirectory ) map { (_, sr
   appConf -> "conf/application.conf"
 }
 
-mappings in Universal <+= (packageBin in Compile, sourceDirectory ) map { (_, src) =>
-  // Move logback.xml so the user can override settings here
-  val logConf = src / "main" / "resources" / "logback.xml"
-  logConf -> "conf/logback.xml"
-}
+//mappings in Universal <+= (packageBin in Compile, sourceDirectory ) map { (_, src) =>
+//  // Move logback.xml so the user can override settings here
+//  val logConf = src / "main" / "resources" / "logback.xml"
+//  logConf -> "conf/logback.xml"
+//}
 
 debianPackageDependencies in Debian ++= Seq("java8-runtime-headless", "bash")
-
-*/

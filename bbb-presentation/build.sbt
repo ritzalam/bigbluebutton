@@ -1,6 +1,6 @@
 enablePlugins(JavaServerAppPackaging)
 
-name := "bbb-presentation"
+name := "bbb-pres-conversion-akka"
 organization := "org.bigbluebutton"
 
 version := "0.0.1"
@@ -74,8 +74,8 @@ maintainer in Linux := "Richard Alam <ritzalam@gmail.com>"
 packageSummary in Linux := "BigBlueButton Presentation Conversion (Akka)"
 packageDescription := """BigBlueButton Presentation Conversion (Akka)"""
 
-val user = "bigbluebutton"
-val group = "bigbluebutton"
+val user = "tomcat7"
+val group = "tomcat7"
 
 // user which will execute the application
 daemonUser in Linux := user

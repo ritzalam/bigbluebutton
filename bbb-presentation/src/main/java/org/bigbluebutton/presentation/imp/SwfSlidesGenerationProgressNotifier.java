@@ -19,13 +19,13 @@
 package org.bigbluebutton.presentation.imp;
 
 import com.google.gson.Gson;
-//import org.bigbluebutton.api.messaging.MessagingConstants;
-//import org.bigbluebutton.api.messaging.MessagingService;
 import org.bigbluebutton.presentation.ConversionMessageConstants;
 import org.bigbluebutton.presentation.ConversionUpdateMessage;
 import org.bigbluebutton.presentation.ConversionUpdateMessage.MessageBuilder;
 import org.bigbluebutton.presentation.GeneratedSlidesInfoHelper;
 import org.bigbluebutton.presentation.UploadedPresentation;
+import org.bigbluebutton.pubsub.MessageSender;
+import org.bigbluebutton.common.messages.MessagingConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,18 +34,19 @@ import java.util.Map;
 public class SwfSlidesGenerationProgressNotifier {
     private static Logger log = LoggerFactory.getLogger(SwfSlidesGenerationProgressNotifier.class);
 
-//    private MessagingService messagingService;
+    private MessageSender messageSender;
 
     private GeneratedSlidesInfoHelper generatedSlidesInfoHelper;
 
     private void notifyProgressListener(Map<String, Object> msg) {
-//        if (messagingService != null) {
-//            Gson gson = new Gson();
-//            String updateMsg = gson.toJson(msg);
-//            messagingService.send(MessagingConstants.TO_PRESENTATION_CHANNEL, updateMsg);
-//        } else {
-//            log.warn("MessagingService has not been set");
-//        }
+
+        if (messageSender != null) {
+            Gson gson = new Gson();
+            String updateMsg = gson.toJson(msg);
+            messageSender.send(MessagingConstants.TO_PRESENTATION_CHANNEL, updateMsg);
+        } else {
+            log.warn("MessageSender has not been set");
+        }
     }
 
     public void sendConversionUpdateMessage(Map<String, Object> message) {
@@ -79,9 +80,9 @@ public class SwfSlidesGenerationProgressNotifier {
         notifyProgressListener(builder.build().getMessage());
     }
 
-//    public void setMessagingService(MessagingService m) {
-//        messagingService = m;
-//    }
+    public void setMessageSender(MessageSender m) {
+        messageSender = m;
+    }
 
     public void setGeneratedSlidesInfoHelper(GeneratedSlidesInfoHelper helper) {
         generatedSlidesInfoHelper = helper;

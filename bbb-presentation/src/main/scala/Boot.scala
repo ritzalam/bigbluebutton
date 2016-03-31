@@ -2,18 +2,16 @@
 package org.bigbluebutton
 
 import akka.actor.ActorSystem
-import org.bigbluebutton.endpoint.redis.{AppsRedisSubscriberActor, KeepAliveRedisPublisher, RedisPublisher}
+import org.bigbluebutton.endpoint.redis.{ AppsRedisSubscriberActor, KeepAliveRedisPublisher, RedisPublisher }
 import org.bigbluebutton.presentation.imp._
-import org.bigbluebutton.pubsub.{MessageSender, PresentationReceiver}
+import org.bigbluebutton.pubsub.{ MessageSender, PresentationReceiver }
 
 object Boot extends App with SystemConfiguration {
 
   implicit val system = ActorSystem("bbb-presentation-conversion-system")
 
-
   val redisPublisher = new RedisPublisher(system)
   val msgSender = new MessageSender(redisPublisher)
-
 
   val officeToPdfConversionService = new OfficeToPdfConversionService()
 
@@ -66,7 +64,7 @@ object Boot extends App with SystemConfiguration {
 
   val swfSlidesGenerationProgressNotifier = new SwfSlidesGenerationProgressNotifier()
   swfSlidesGenerationProgressNotifier.setGeneratedSlidesInfoHelper(generatedSlidesInfoHelper)
-  // TODO make sure you have removed all the messagingService stuff
+  swfSlidesGenerationProgressNotifier.setMessageSender(msgSender)
 
   val imageToSwfSlidesGenerationService = new ImageToSwfSlidesGenerationService()
   imageToSwfSlidesGenerationService.setPngPageConverter(png2SwfConverter)
@@ -91,9 +89,11 @@ object Boot extends App with SystemConfiguration {
   pdfToSwfSlidesGenerationService.setSwfSlidesGenerationProgressNotifier(swfSlidesGenerationProgressNotifier)
   pdfToSwfSlidesGenerationService.setSvgImagesRequired(svgImagesRequired)
 
-
-  val documentConversionService = new DocumentConversionServiceImp(officeToPdfConversionService,
-    pdfToSwfSlidesGenerationService, imageToSwfSlidesGenerationService) //TODO
+  val documentConversionService = new DocumentConversionServiceImp()
+  documentConversionService.setMessageSender(msgSender)
+  documentConversionService.setOfficeToPdfConversionService(officeToPdfConversionService)
+  documentConversionService.setPdfToSwfSlidesGenerationService(pdfToSwfSlidesGenerationService)
+  documentConversionService.setImageToSwfSlidesGenerationService(imageToSwfSlidesGenerationService)
 
   val presentationManager = new PresentationManager(system, msgSender, documentConversionService)
   val redisMsgReceiver = new PresentationReceiver(presentationManager)

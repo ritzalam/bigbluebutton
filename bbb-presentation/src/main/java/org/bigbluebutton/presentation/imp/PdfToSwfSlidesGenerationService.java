@@ -46,7 +46,6 @@ public class PdfToSwfSlidesGenerationService {
     private int MAX_SWF_FILE_SIZE;
     private boolean svgImagesRequired;
     private final long CONVERSION_TIMEOUT = 20000000000L; // 20s
-    private int NUM_CONVERSION_THREADS = 2;
 
     public PdfToSwfSlidesGenerationService(int numConversionThreads) {
         executor = Executors.newFixedThreadPool(numConversionThreads);

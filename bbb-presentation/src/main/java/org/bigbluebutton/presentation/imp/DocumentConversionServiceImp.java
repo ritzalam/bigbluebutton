@@ -18,8 +18,8 @@
 
 package org.bigbluebutton.presentation.imp;
 
-//import org.bigbluebutton.api.messaging.MessagingService;
 import org.bigbluebutton.presentation.*;
+import org.bigbluebutton.pubsub.MessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,39 +29,28 @@ public class DocumentConversionServiceImp implements DocumentConversionService {
     private OfficeToPdfConversionService officeToPdfConversionService;
     private PdfToSwfSlidesGenerationService pdfToSwfSlidesGenerationService;
     private ImageToSwfSlidesGenerationService imageToSwfSlidesGenerationService;
+    private MessageSender messageSender;
 
-    public DocumentConversionServiceImp(OfficeToPdfConversionService officeToPdfConversionService,
-                                     PdfToSwfSlidesGenerationService pdfToSwfSlidesGenerationService,
-                                     ImageToSwfSlidesGenerationService imageToSwfSlidesGenerationService ) {
-        this.officeToPdfConversionService = officeToPdfConversionService;
-        this.imageToSwfSlidesGenerationService = imageToSwfSlidesGenerationService;
-        this.pdfToSwfSlidesGenerationService = pdfToSwfSlidesGenerationService;
-
-    }
     public void processDocument(UploadedPresentation pres) {
-        log.info("____________DocumentConversionServiceImp::processDocument");
         SupportedDocumentFilter sdf = new SupportedDocumentFilter();
+        sdf.setMessageSender(messageSender);
         log.info("Start presentation conversion. meetingId=" + pres.getMeetingId() +
                 " presId=" + pres.getId() + " name=" + pres.getName());
 
         if (sdf.isSupported(pres)) {
             String fileType = pres.getFileType();
 
-            log.info("___________DocumentConversionServiceImp::processDocument part 2");
             if (SupportedFileTypes.isOfficeFile(fileType)) {
-                log.info("_____DocumentConversionServiceImp::processDocument case OFFICE ");
                 officeToPdfConversionService.convertOfficeToPdf(pres);
-                OfficeToPdfConversionSuccessFilter ocsf = new OfficeToPdfConversionSuccessFilter();
+                OfficeToPdfConversionSuccessFilter ocsf = new OfficeToPdfConversionSuccessFilter(messageSender);
                 if (ocsf.didConversionSucceed(pres)) {
                     // Successfully converted to pdf. Call the process again, this time it should be handled by
                     // the PDF conversion service.
                     processDocument(pres);
                 }
             } else if (SupportedFileTypes.isPdfFile(fileType)) {
-                log.info("_____DocumentConversionServiceImp::processDocument case PDF ");
                 pdfToSwfSlidesGenerationService.generateSlides(pres);
             } else if (SupportedFileTypes.isImageFile(fileType)) {
-                log.info("_____DocumentConversionServiceImp::processDocument case IMAGE ");
                 imageToSwfSlidesGenerationService.generateSlides(pres);
             } else {
 
@@ -71,7 +60,24 @@ public class DocumentConversionServiceImp implements DocumentConversionService {
             // TODO: error log
         }
 
-        log.info("End presentation conversion. meetingId=" + pres.getMeetingId() + " presId=" + pres.getId() + " name=" + pres.getName());
+        log.info("End presentation conversion. meetingId=" + pres.getMeetingId() + " presId=" +
+                pres.getId() + " name=" + pres.getName());
 
+    }
+
+    public void setMessageSender(MessageSender m) {
+        this.messageSender = m;
+    }
+
+    public void setOfficeToPdfConversionService(OfficeToPdfConversionService o) {
+        this.officeToPdfConversionService = o;
+    }
+
+    public void setImageToSwfSlidesGenerationService(ImageToSwfSlidesGenerationService i) {
+        this.imageToSwfSlidesGenerationService = i;
+    }
+
+    public void setPdfToSwfSlidesGenerationService(PdfToSwfSlidesGenerationService p) {
+        this.pdfToSwfSlidesGenerationService = p;
     }
 }

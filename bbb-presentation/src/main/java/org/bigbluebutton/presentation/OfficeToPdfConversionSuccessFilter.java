@@ -19,8 +19,8 @@
 package org.bigbluebutton.presentation;
 
 import com.google.gson.Gson;
-//import org.bigbluebutton.api.messaging.MessagingConstants;
-//import org.bigbluebutton.api.messaging.MessagingService;
+import org.bigbluebutton.common.messages.MessagingConstants;
+import org.bigbluebutton.pubsub.MessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,11 +30,11 @@ import java.util.Map;
 public class OfficeToPdfConversionSuccessFilter {
     private static Logger log = LoggerFactory.getLogger(OfficeToPdfConversionSuccessFilter.class);
 
-//    private final MessagingService messagingService;
+    private final MessageSender messageSender;
 
-//    public OfficeToPdfConversionSuccessFilter(MessagingService m) {
-//        messagingService = m;
-//    }
+    public OfficeToPdfConversionSuccessFilter(MessageSender m) {
+        messageSender = m;
+    }
 
     public boolean didConversionSucceed(UploadedPresentation pres) {
         notifyProgressListener(pres);
@@ -64,13 +64,13 @@ public class OfficeToPdfConversionSuccessFilter {
     }
 
     private void sendNotification(Map<String, Object> msg) {
-//        if (messagingService != null) {
-//            Gson gson = new Gson();
-//            String updateMsg = gson.toJson(msg);
-//            log.debug("sending: " + updateMsg);
-//            messagingService.send(MessagingConstants.TO_PRESENTATION_CHANNEL, updateMsg);
-//        } else {
-//            log.warn("MessagingService has not been set!.");
-//        }
+        if (messageSender != null) {
+            Gson gson = new Gson();
+            String updateMsg = gson.toJson(msg);
+            log.debug("sending: " + updateMsg);
+            messageSender.send(MessagingConstants.TO_PRESENTATION_CHANNEL, updateMsg);
+        } else {
+            log.warn("MessageSender has not been set!.");
+        }
     }
 }

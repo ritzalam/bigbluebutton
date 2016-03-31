@@ -26,7 +26,6 @@ trait SystemConfiguration {
   lazy val BLANK_THUMBNAIL = Try(config.getString("BLANK_THUMBNAIL")).getOrElse("/var/bigbluebutton/blank/blank-thumb.png")
   lazy val MAX_SWF_FILE_SIZE = Try(config.getInt("MAX_SWF_FILE_SIZE")).getOrElse(500000)
 
-
   lazy val redisHost = Try(config.getString("redis.host")).getOrElse("127.0.0.1")
   lazy val redisPort = Try(config.getInt("redis.port")).getOrElse(6379)
   lazy val redisPassword = Try(config.getString("redis.password")).getOrElse("")

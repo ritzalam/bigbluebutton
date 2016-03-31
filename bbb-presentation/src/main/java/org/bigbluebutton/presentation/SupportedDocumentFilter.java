@@ -34,8 +34,6 @@ public class SupportedDocumentFilter {
     public boolean isSupported(UploadedPresentation pres) {
         String ext = FilenameUtils.getExtension(pres.getUploadedFile().getPath());
 
-        log.info("_____::isSupported name = " + pres.getName());
-        log.info("_____::isSupported ext = " + ext);
         boolean supported = SupportedFileTypes.isFileSupported(ext);
         notifyProgressListener(supported, pres);
         if (supported) {
@@ -54,11 +52,10 @@ public class SupportedDocumentFilter {
             builder.messageKey(ConversionMessageConstants.UNSUPPORTED_DOCUMENT_KEY);
         }
 
-        log.info("____SupportedDocumentFilter::notifyProgressListener " + pres.getName());
         if (messageSender != null) {
             Gson gson = new Gson();
             String updateMsg = gson.toJson(builder.build().getMessage());
-            log.debug("sending: " + updateMsg);
+//            log.debug("sending: " + updateMsg);
             messageSender.send(MessagingConstants.TO_PRESENTATION_CHANNEL, updateMsg);
         } else {
             log.warn("MessageSender has not been set!");

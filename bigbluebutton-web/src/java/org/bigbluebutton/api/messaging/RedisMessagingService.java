@@ -121,12 +121,10 @@ public class RedisMessagingService implements MessagingService {
 
     public void sendUploadPresentation(String meetingId, String presId, String presFilename,
                                               String presentationBaseUrl, String fileCompletePath) {
-        log.info("_______::sendUploadPresentationRequest");
         Gson gson = new Gson();
 
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("messageId", "upload_presentation_message");
-//        map.put("messageId", MessagingConstants.UPLOAD_PRESENTATION_EVENT);//TODO
+        map.put("messageId", MessagingConstants.UPLOAD_PRESENTATION_EVENT);
         map.put("meetingId", meetingId);
         map.put("presId", presId);
         map.put("presFilename", presFilename);

@@ -1,12 +1,13 @@
 package org.bigbluebutton.pubsub
 
-import com.google.gson.{JsonObject, JsonParser}
+import com.google.gson.{ JsonObject, JsonParser }
 import org.bigbluebutton.PresentationManager
+import org.bigbluebutton.common.messages.MessagingConstants
 
 class PresentationReceiver(presentationManager: PresentationManager) {
 
   def handleMessage(pattern: String, channel: String, message: String) {
-    if (channel.equalsIgnoreCase("bigbluebutton:to-bbb-apps:presentation")) { //TODO
+    if (channel.equalsIgnoreCase(MessagingConstants.TO_PRESENTATION_CHANNEL)) {
 
       println("got message:" + message)
       //TODO consider making the messages follow the proper header/payload format
@@ -14,20 +15,11 @@ class PresentationReceiver(presentationManager: PresentationManager) {
       val parser: JsonParser = new JsonParser
       val obj: JsonObject = parser.parse(message).asInstanceOf[JsonObject]
       if (obj.has("header") && obj.has("payload")) {
-//        val header: JsonObject = obj.get("header").asInstanceOf[JsonObject]
-//        if (header.has("name")) {
-//          val messageName: String = header.get("name").getAsString
-//          println("PresentationReceiver got a messageName " + messageName)
-////          if (GetChatHistoryRequestMessage.GET_CHAT_HISTORY_REQUEST == messageName) {
-////            val msg: GetChatHistoryRequestMessage = GetChatHistoryRequestMessage.fromJson(message)
-////            bbbGW.getChatHistory(msg.meetingId, msg.requesterId, msg.replyTo)
-////          }
-//        }
-      }
-      else {
+        // TODO for the moment the messages exchanged are not of the same type as bbb-common-mesages
+      } else {
         if (obj.has("messageId")) {
           val messageId: String = obj.get("messageId").getAsString
-          if("upload_presentation_message" == messageId) {
+          if ("upload_presentation_message" == messageId) {
             val meetingId = obj.get("meetingId").getAsString
             val presId = obj.get("presId").getAsString
             val presFilename = obj.get("presFilename").getAsString

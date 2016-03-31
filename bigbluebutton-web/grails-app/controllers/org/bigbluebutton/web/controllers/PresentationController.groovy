@@ -66,7 +66,6 @@ class PresentationController {
 
   def upload = {
 
-      log.info("_____::UPLOAD")
     def meetingId = params.conference
     def meeting = meetingService.getNotEndedMeetingWithId(meetingId);
     if (meeting == null) {
@@ -87,17 +86,17 @@ class PresentationController {
       String presentationDir = presentationService.getPresentationDir()
       def presId = Util.generatePresentationId(presFilename)
       File uploadDir = Util.createPresentationDirectory(meetingId, presentationDir, presId)
+      uploadDir.setWritable(true)
       if (uploadDir != null) {
         def newFilename = Util.createNewFilename(presId, filenameExt)
         def fileCompletePath = uploadDir.absolutePath + File.separatorChar + newFilename;
         def pres = new File(fileCompletePath)
+        def presentationBaseUrl = presentationService.presentationBaseUrl
         //save it to the shared dir then send a message to the standalone app with dir
 
         meetingService.sendUploadPresentation(meetingId, presId, presFilename,
-                presentationBaseUrl, fileCompletePath)
+             presentationBaseUrl, fileCompletePath)
         file.transferTo(pres)
-
-        def presentationBaseUrl = presentationService.presentationBaseUrl
 
         response.addHeader("Cache-Control", "no-cache")
         response.contentType = 'plain/text'

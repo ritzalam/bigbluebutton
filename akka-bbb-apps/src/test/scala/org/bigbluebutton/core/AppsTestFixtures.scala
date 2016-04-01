@@ -1,5 +1,7 @@
 package org.bigbluebutton.core
 
+import org.bigbluebutton.core.domain._
+
 trait AppsTestFixtures {
 
   val meetingId = "testMeetingId"
@@ -16,12 +18,9 @@ trait AppsTestFixtures {
   val createDate = "Oct 26, 2015"
   val isBreakout = false
 
-  val mProps = new MeetingProperties(meetingId, externalMeetingId,
-    meetingName, record,
-    voiceConfId,
-    durationInMinutes,
-    autoStartRecording, allowStartStopRecording,
-    moderatorPassword, viewerPassword,
+  val mProps = new MeetingProperties(IntMeetingId(meetingId), ExtMeetingId(externalMeetingId),
+    Name(meetingName), Recorded(record), VoiceConf(voiceConfId), durationInMinutes,
+    autoStartRecording, allowStartStopRecording, moderatorPassword, viewerPassword,
     createTime, createDate, isBreakout)
 
 }

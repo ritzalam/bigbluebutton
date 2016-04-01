@@ -1,9 +1,8 @@
 package org.bigbluebutton.core.pubsub.senders
 
 import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.domain.Page
 import org.bigbluebutton.core.messaging.Util
-import org.bigbluebutton.core.apps.Page
-import collection.JavaConverters._
 import scala.collection.JavaConversions._
 
 object PesentationMessageToJsonConverter {
@@ -26,7 +25,7 @@ object PesentationMessageToJsonConverter {
 
   def clearPresentationOutMsgToJson(msg: ClearPresentationOutMsg): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
 
     val header = Util.buildHeader(MessageNames.PRESENTATION_CLEARED, None)
     Util.buildJson(header, payload)
@@ -34,8 +33,8 @@ object PesentationMessageToJsonConverter {
 
   def removePresentationOutMsgToJson(msg: RemovePresentationOutMsg): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.PRESENTATION_ID, msg.presentationID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.PRESENTATION_ID, msg.presentationId.value)
 
     val header = Util.buildHeader(MessageNames.PRESENTATION_REMOVED, None)
     Util.buildJson(header, payload)
@@ -43,17 +42,17 @@ object PesentationMessageToJsonConverter {
 
   def getPresentationInfoOutMsgToJson(msg: GetPresentationInfoOutMsg): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.PRESENTATION_INFO, msg.info)
-    payload.put(Constants.REQUESTER_ID, msg.requesterID)
+    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
 
     val info = msg.info
 
     // Create a map for our current presenter
     val presenter = new java.util.HashMap[String, String]()
-    presenter.put(Constants.USER_ID, info.presenter.userId)
-    presenter.put(Constants.NAME, info.presenter.name)
-    presenter.put(Constants.ASSIGNED_BY, info.presenter.assignedBy)
+    presenter.put(Constants.USER_ID, info.presenter.id.value)
+    presenter.put(Constants.NAME, info.presenter.name.value)
+    presenter.put(Constants.ASSIGNED_BY, info.presenter.assignedBy.value)
 
     payload.put(Constants.PRESENTER, presenter)
 
@@ -80,13 +79,13 @@ object PesentationMessageToJsonConverter {
     // add the presentation to our map to complete our json
     payload.put(Constants.PRESENTATIONS, presentations)
 
-    val header = Util.buildHeader(MessageNames.GET_PRESENTATION_INFO_REPLY, Some(msg.replyTo))
+    val header = Util.buildHeader(MessageNames.GET_PRESENTATION_INFO_REPLY, Some(msg.replyTo.value))
     Util.buildJson(header, payload)
   }
 
   def sendCursorUpdateOutMsgToJson(msg: SendCursorUpdateOutMsg): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.X_PERCENT, msg.xPercent)
     payload.put(Constants.Y_PERCENT, msg.yPercent)
 
@@ -96,7 +95,7 @@ object PesentationMessageToJsonConverter {
 
   def resizeAndMoveSlideOutMsgToJson(msg: ResizeAndMoveSlideOutMsg): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.PAGE, pageToMap(msg.page))
 
     val header = Util.buildHeader(MessageNames.PRESENTATION_PAGE_RESIZED, None)
@@ -105,7 +104,7 @@ object PesentationMessageToJsonConverter {
 
   def gotoSlideOutMsgToJson(msg: GotoSlideOutMsg): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.PAGE, pageToMap(msg.page))
 
     val header = Util.buildHeader(MessageNames.PRESENTATION_PAGE_CHANGED, None)
@@ -114,7 +113,7 @@ object PesentationMessageToJsonConverter {
 
   def sharePresentationOutMsgToJson(msg: SharePresentationOutMsg): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
 
     val presentation = new java.util.HashMap[String, Object]();
     presentation.put(Constants.ID, msg.presentation.id)
@@ -138,8 +137,8 @@ object PesentationMessageToJsonConverter {
 
   def getSlideInfoOutMsgToJson(msg: GetSlideInfoOutMsg): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
-    payload.put(Constants.REQUESTER_ID, msg.requesterID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
     payload.put(Constants.PAGE, pageToMap(msg.page))
 
     val header = Util.buildHeader(MessageNames.GET_SLIDE_INFO_REPLY, None)
@@ -148,7 +147,7 @@ object PesentationMessageToJsonConverter {
 
   def getPreuploadedPresentationsOutMsgToJson(msg: GetPreuploadedPresentationsOutMsg): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
 
     val header = Util.buildHeader(MessageNames.GET_PREUPLOADED_PRESENTATIONS, None)
     Util.buildJson(header, payload)
@@ -156,10 +155,10 @@ object PesentationMessageToJsonConverter {
 
   def presentationConversionProgressToJson(msg: PresentationConversionProgress): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.MESSAGE_KEY, msg.messageKey)
     payload.put(Constants.CODE, msg.code)
-    payload.put(Constants.PRESENTATION_ID, msg.presentationId)
+    payload.put(Constants.PRESENTATION_ID, msg.presentationId.value)
     payload.put(Constants.PRESENTATION_NAME, msg.presentationName)
 
     val header = Util.buildHeader(MessageNames.PRESENTATION_CONVERSION_PROGRESS, None)
@@ -168,10 +167,10 @@ object PesentationMessageToJsonConverter {
 
   def presentationConversionErrorToJson(msg: PresentationConversionError): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.MESSAGE_KEY, msg.messageKey)
     payload.put(Constants.CODE, msg.code)
-    payload.put(Constants.PRESENTATION_ID, msg.presentationId)
+    payload.put(Constants.PRESENTATION_ID, msg.presentationId.value)
     payload.put(Constants.PRESENTATION_NAME, msg.presentationName)
     payload.put(Constants.NUM_PAGES, msg.numberOfPages)
     payload.put(Constants.MAX_NUM_PAGES, msg.maxNumberPages)
@@ -182,10 +181,10 @@ object PesentationMessageToJsonConverter {
 
   def presentationPageGenerated(msg: PresentationPageGenerated): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.MESSAGE_KEY, msg.messageKey)
     payload.put(Constants.CODE, msg.code)
-    payload.put(Constants.PRESENTATION_ID, msg.presentationId)
+    payload.put(Constants.PRESENTATION_ID, msg.presentationId.value)
     payload.put(Constants.PRESENTATION_NAME, msg.presentationName)
     payload.put(Constants.NUM_PAGES, msg.numberOfPages)
     payload.put(Constants.PAGES_COMPLETED, msg.pagesCompleted)
@@ -196,7 +195,7 @@ object PesentationMessageToJsonConverter {
 
   def presentationConversionDoneToJson(msg: PresentationConversionDone): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.MESSAGE_KEY, msg.messageKey)
     payload.put(Constants.CODE, msg.code)
 
@@ -220,7 +219,7 @@ object PesentationMessageToJsonConverter {
 
   def presentationChangedToJson(msg: PresentationChanged): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     val presentation = new java.util.HashMap[String, Object]();
     presentation.put(Constants.ID, msg.presentation.id)
     presentation.put(Constants.NAME, msg.presentation.name)
@@ -240,7 +239,7 @@ object PesentationMessageToJsonConverter {
 
   def getPresentationStatusReplyToJson(msg: GetPresentationStatusReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     val presentation = new java.util.HashMap[String, Object]();
 
     presentation.put(Constants.ID, msg.current.id)
@@ -263,7 +262,7 @@ object PesentationMessageToJsonConverter {
 
   def presentationRemovedToJson(msg: PresentationRemoved): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.PRESENTATION_ID, msg.presentationId)
 
     val header = Util.buildHeader(MessageNames.PRESENTATION_REMOVED, None)
@@ -272,7 +271,7 @@ object PesentationMessageToJsonConverter {
 
   def pageChangedToJson(msg: PageChanged): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.PAGE, pageToMap(msg.page))
 
     val header = Util.buildHeader(MessageNames.PRESENTATION_PAGE_CHANGED, None)

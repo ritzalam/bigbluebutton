@@ -35,10 +35,13 @@ testOptions in Test += Tests.Argument(TestFrameworks.Specs2, "html", "console", 
 
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/scalatest-reports")
 
+/**
+  * Install Scalatest (http://www.scalatest.org/install). Need to add ~/.sbt/0.13/global.sbt
+  */
 libraryDependencies ++= {
   val akkaVersion  = "2.3.14"
   val akkaStreamV = "1.0"
-  val scalaTestV  = "2.2.4"
+  val scalaTestV  = "2.2.6"
   Seq(
     "com.typesafe.akka"        %%  "akka-actor"                           % akkaVersion,
     "com.typesafe.akka"        %%  "akka-testkit"                         % akkaVersion    % "test",
@@ -48,7 +51,8 @@ libraryDependencies ++= {
     "com.typesafe.akka"        %%  "akka-http-experimental"               % akkaStreamV,
     "com.typesafe.akka"        %%  "akka-http-spray-json-experimental"    % akkaStreamV,
     "com.typesafe.akka"        %%  "akka-http-testkit-experimental"       % akkaStreamV,
-    "org.scalatest"            %   "scalatest_2.11"                       % scalaTestV     % "test",
+    "org.scalactic"            %%   "scalactic"                            % scalaTestV,
+    "org.scalatest"            %%   "scalatest"                            % scalaTestV     % "test",
     "ch.qos.logback"           %   "logback-classic"                      % "1.0.13"       % "runtime",
     "org.pegdown"              %   "pegdown"                              % "1.4.0",
     "junit"                    %   "junit"                                % "4.11",
@@ -59,7 +63,8 @@ libraryDependencies ++= {
     "redis.clients"             %  "jedis"                                % "2.7.2",
     "org.apache.commons"        %  "commons-lang3"                        % "3.2",
     "org.bigbluebutton"         %  "bbb-common-message"                   % "0.0.17-SNAPSHOT",
-    "io.spray"                 %%  "spray-json"                           % "1.3.2"
+    "io.spray"                 %%  "spray-json"                           % "1.3.2",
+    "com.softwaremill.quicklens" %% "quicklens"                           % "1.4.6"
   )}
 
 seq(Revolver.settings: _*)

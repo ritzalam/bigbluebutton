@@ -6,6 +6,7 @@ import akka.actor.ActorLogging
 import akka.actor.Props
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.common.messages.MessagingConstants
+import org.bigbluebutton.core.domain.{ SimplePollResultOutVO, SimplePollOutVO, Page }
 import org.bigbluebutton.core.pubsub.senders.ChatMessageToJsonConverter
 import org.bigbluebutton.common.messages.StartRecordingVoiceConfRequestMessage
 import org.bigbluebutton.common.messages.StopRecordingVoiceConfRequestMessage
@@ -14,11 +15,7 @@ import org.bigbluebutton.core.pubsub.senders.PesentationMessageToJsonConverter
 import org.bigbluebutton.core.pubsub.senders.CaptionMessageToJsonConverter
 import org.bigbluebutton.common.messages.GetPresentationInfoReplyMessage
 import org.bigbluebutton.common.messages.PresentationRemovedMessage
-import org.bigbluebutton.core.apps.Page
-import collection.JavaConverters._
 import scala.collection.JavaConversions._
-import org.bigbluebutton.core.apps.SimplePollResultOutVO
-import org.bigbluebutton.core.apps.SimplePollOutVO
 import org.bigbluebutton.core.pubsub.senders.UsersMessageToJsonConverter
 import org.bigbluebutton.common.messages.GetUsersFromVoiceConfRequestMessage
 import org.bigbluebutton.common.messages.MuteUserInVoiceConfRequestMessage
@@ -124,6 +121,7 @@ class MessageSenderActor(val service: MessageSender)
     case msg: BreakoutRoomJoinURLOutMessage => handleBreakoutRoomJoinURLOutMessage(msg)
     case msg: UpdateBreakoutUsersOutMessage => handleUpdateBreakoutUsersOutMessage(msg)
     case msg: MeetingTimeRemainingUpdate => handleMeetingTimeRemainingUpdate(msg)
+    case msg: BreakoutRoomsTimeRemainingUpdateOutMessage => handleBreakoutRoomsTimeRemainingUpdate(msg)
 
     case msg: SendCaptionHistoryReply => handleSendCaptionHistoryReply(msg)
     case msg: UpdateCaptionOwnerReply => handleUpdateCaptionOwnerReply(msg)
@@ -132,7 +130,7 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handleUserEjectedFromMeeting(msg: UserEjectedFromMeeting) {
-    val m = new UserEjectedFromMeetingMessage(msg.meetingID, msg.userId, msg.ejectedBy)
+    val m = new UserEjectedFromMeetingMessage(msg.meetingId.value, msg.userId.value, msg.ejectedBy.value)
     service.send(MessagingConstants.FROM_USERS_CHANNEL, m.toJson)
   }
 
@@ -152,12 +150,12 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handleStartRecordingVoiceConf(msg: StartRecordingVoiceConf) {
-    val m = new StartRecordingVoiceConfRequestMessage(msg.meetingID, msg.voiceConfId)
+    val m = new StartRecordingVoiceConfRequestMessage(msg.meetingId.value, msg.voiceConfId.value)
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
   private def handleStopRecordingVoiceConf(msg: StopRecordingVoiceConf) {
-    val m = new StopRecordingVoiceConfRequestMessage(msg.meetingID, msg.voiceConfId, msg.recordedStream)
+    val m = new StopRecordingVoiceConfRequestMessage(msg.meetingId.value, msg.voiceConfId.value, msg.recordedStream)
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
@@ -261,16 +259,16 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handleRemovePresentationOutMsg(msg: RemovePresentationOutMsg) {
-    val m = new PresentationRemovedMessage(msg.meetingID, msg.presentationID)
+    val m = new PresentationRemovedMessage(msg.meetingId.value, msg.presentationId.value)
     service.send(MessagingConstants.FROM_PRESENTATION_CHANNEL, m.toJson())
   }
 
   private def handleGetPresentationInfoOutMsg(msg: GetPresentationInfoOutMsg) {
     // Create a map for our current presenter
     val presenter = new java.util.HashMap[String, Object]()
-    presenter.put(Constants.USER_ID, msg.info.presenter.userId)
-    presenter.put(Constants.NAME, msg.info.presenter.name)
-    presenter.put(Constants.ASSIGNED_BY, msg.info.presenter.assignedBy)
+    presenter.put(Constants.USER_ID, msg.info.presenter.id.value)
+    presenter.put(Constants.NAME, msg.info.presenter.name.value)
+    presenter.put(Constants.ASSIGNED_BY, msg.info.presenter.assignedBy.value)
 
     // Create an array for our presentations
     val presentations = new java.util.ArrayList[java.util.Map[String, Object]]
@@ -292,7 +290,7 @@ class MessageSenderActor(val service: MessageSender)
       presentations.add(presentation);
     }
 
-    val reply = new GetPresentationInfoReplyMessage(msg.meetingID, msg.requesterID, presenter, presentations)
+    val reply = new GetPresentationInfoReplyMessage(msg.meetingId.value, msg.requesterId.value, presenter, presentations)
 
     val json = PesentationMessageToJsonConverter.getPresentationInfoOutMsgToJson(msg)
     service.send(MessagingConstants.FROM_PRESENTATION_CHANNEL, json)
@@ -412,12 +410,12 @@ class MessageSenderActor(val service: MessageSender)
 
   private def pollStartedMessageToJson(msg: PollStartedMessage): String = {
     val pollVO = pollVOtoMap(msg.poll)
-    val psm = new org.bigbluebutton.common.messages.PollStartedMessage(msg.meetingID, msg.requesterId, pollVO)
+    val psm = new org.bigbluebutton.common.messages.PollStartedMessage(msg.meetingId.value, msg.requesterId.value, pollVO)
     psm.toJson
   }
 
   private def pollStoppedMessageToJson(msg: PollStoppedMessage): String = {
-    val psm = new org.bigbluebutton.common.messages.PollStoppedMessage(msg.meetingID, msg.requesterId, msg.pollId)
+    val psm = new org.bigbluebutton.common.messages.PollStoppedMessage(msg.meetingId.value, msg.requesterId.value, msg.pollId)
     psm.toJson
   }
 
@@ -443,43 +441,44 @@ class MessageSenderActor(val service: MessageSender)
   private def pollShowResultMessageToJson(msg: PollShowResultMessage): String = {
     val pollResultVO = pollResultVOtoMap(msg.poll)
 
-    val psm = new org.bigbluebutton.common.messages.PollShowResultMessage(msg.meetingID, pollResultVO)
+    val psm = new org.bigbluebutton.common.messages.PollShowResultMessage(msg.meetingId.value, pollResultVO)
     psm.toJson
   }
 
   private def pollHideResultMessageToJson(msg: PollHideResultMessage): String = {
-    val psm = new org.bigbluebutton.common.messages.PollHideResultMessage(msg.meetingID, msg.pollId)
+    val psm = new org.bigbluebutton.common.messages.PollHideResultMessage(msg.meetingId.value, msg.pollId)
     psm.toJson
   }
 
   private def UserRespondedToPollMessageTpJson(msg: UserRespondedToPollMessage): String = {
     val pollResultVO = pollResultVOtoMap(msg.poll)
-    val psm = new org.bigbluebutton.common.messages.UserVotedPollMessage(msg.meetingID, msg.presenterId, pollResultVO)
+    val psm = new org.bigbluebutton.common.messages.UserVotedPollMessage(msg.meetingId.value, msg.pollId, pollResultVO)
     psm.toJson
   }
 
   private def handleLockLayoutEvent(msg: LockLayoutEvent) {
-    val users = new java.util.ArrayList[String];
+    val users = new java.util.ArrayList[String]
     msg.applyTo.foreach(uvo => {
-      users.add(uvo.userID)
+      users.add(uvo.id.value)
     })
 
-    val evt = new LockLayoutMessage(msg.meetingID, msg.setById, msg.locked, users)
+    val evt = new LockLayoutMessage(msg.meetingId.value, msg.setById.value, msg.locked, users)
     service.send(MessagingConstants.FROM_USERS_CHANNEL, evt.toJson())
   }
 
   private def handleBroadcastLayoutEvent(msg: BroadcastLayoutEvent) {
-    val users = new java.util.ArrayList[String];
+    val users = new java.util.ArrayList[String]
     msg.applyTo.foreach(uvo => {
-      users.add(uvo.userID)
+      users.add(uvo.id.value)
     })
 
-    val evt = new BroadcastLayoutMessage(msg.meetingID, msg.setByUserID, msg.layoutID, msg.locked, users)
+    val evt = new BroadcastLayoutMessage(msg.meetingId.value, msg.setByUserId.value, msg.layoutID, msg.locked, users)
     service.send(MessagingConstants.FROM_USERS_CHANNEL, evt.toJson())
   }
 
   private def handleGetCurrentLayoutReply(msg: GetCurrentLayoutReply) {
-    val reply = new GetCurrentLayoutReplyMessage(msg.meetingID, msg.requesterID, msg.setByUserID, msg.layoutID, msg.locked)
+    val reply = new GetCurrentLayoutReplyMessage(msg.meetingId.value, msg.requesterId.value,
+      msg.setByUserId.value, msg.layoutID, msg.locked)
     service.send(MessagingConstants.FROM_USERS_CHANNEL, reply.toJson())
   }
 
@@ -525,6 +524,7 @@ class MessageSenderActor(val service: MessageSender)
 
   private def handleUserRegistered(msg: UserRegistered) {
     val json = UsersMessageToJsonConverter.userRegisteredToJson(msg)
+    println("************** Publishing [" + json + "] *******************")
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, json)
   }
 
@@ -569,22 +569,22 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handleMuteVoiceUser(msg: MuteVoiceUser) {
-    val m = new MuteUserInVoiceConfRequestMessage(msg.meetingID, msg.voiceConfId, msg.voiceUserId, msg.mute)
+    val m = new MuteUserInVoiceConfRequestMessage(msg.meetingId.value, msg.voiceConfId.value, msg.voiceUserId.value, msg.mute)
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
   private def handleGetUsersFromVoiceConference(msg: GetUsersInVoiceConference) {
-    val m = new GetUsersFromVoiceConfRequestMessage(msg.meetingID, msg.voiceConfId)
+    val m = new GetUsersFromVoiceConfRequestMessage(msg.meetingId.value, msg.voiceConfId.value)
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
   private def handleEjectVoiceUser(msg: EjectVoiceUser) {
-    val m = new EjectUserFromVoiceConfRequestMessage(msg.meetingID, msg.voiceConfId, msg.voiceUserId)
+    val m = new EjectUserFromVoiceConfRequestMessage(msg.meetingId.value, msg.voiceConfId.value, msg.voiceUserId.value)
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
   private def handleTransferUserToMeeting(msg: TransferUserToMeeting) {
-    val m = new TransferUserToVoiceConfRequestMessage(msg.voiceConfId, msg.targetVoiceConfId, msg.userId);
+    val m = new TransferUserToVoiceConfRequestMessage(msg.voiceConfId.value, msg.targetVoiceConfId.value, msg.userId.value);
     service.send(MessagingConstants.TO_VOICE_CONF_SYSTEM_CHAN, m.toJson())
   }
 
@@ -601,7 +601,7 @@ class MessageSenderActor(val service: MessageSender)
   private def handleValidateAuthTokenReply(msg: ValidateAuthTokenReply) {
     println("**** handleValidateAuthTokenReply *****")
     val json = UsersMessageToJsonConverter.validateAuthTokenReplyToJson(msg)
-    //println("************** Publishing [" + json + "] *******************")
+    println("************** Publishing [" + json + "] *******************")
     service.send(MessagingConstants.FROM_USERS_CHANNEL, json)
   }
 
@@ -717,5 +717,10 @@ class MessageSenderActor(val service: MessageSender)
     val json = CaptionMessageToJsonConverter.editCaptionHistoryReplyToJson(msg)
     println(json)
     service.send(MessagingConstants.FROM_CAPTION_CHANNEL, json)
+  }
+
+  private def handleBreakoutRoomsTimeRemainingUpdate(msg: BreakoutRoomsTimeRemainingUpdateOutMessage) {
+    val json = MeetingMessageToJsonConverter.breakoutRoomsTimeRemainingUpdateToJson(msg)
+    service.send(MessagingConstants.FROM_USERS_CHANNEL, json)
   }
 }

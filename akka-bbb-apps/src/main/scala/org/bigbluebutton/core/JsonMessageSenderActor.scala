@@ -6,22 +6,6 @@ import akka.actor.ActorLogging
 import akka.actor.Props
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.common.messages.MessagingConstants
-import org.bigbluebutton.core.pubsub.senders.ChatMessageToJsonConverter
-import org.bigbluebutton.common.messages.StartRecordingVoiceConfRequestMessage
-import org.bigbluebutton.common.messages.StopRecordingVoiceConfRequestMessage
-import org.bigbluebutton.core.pubsub.senders.MeetingMessageToJsonConverter
-import org.bigbluebutton.core.pubsub.senders.PesentationMessageToJsonConverter
-import org.bigbluebutton.common.messages.GetPresentationInfoReplyMessage
-import org.bigbluebutton.common.messages.PresentationRemovedMessage
-import org.bigbluebutton.core.apps.Page
-import collection.JavaConverters._
-import scala.collection.JavaConversions._
-import org.bigbluebutton.core.apps.SimplePollResultOutVO
-import org.bigbluebutton.core.apps.SimplePollOutVO
-import org.bigbluebutton.core.pubsub.senders.UsersMessageToJsonConverter
-import org.bigbluebutton.common.messages._
-import org.bigbluebutton.core.pubsub.senders.WhiteboardMessageToJsonConverter
-import org.bigbluebutton.common.converters.ToJsonEncoder
 import org.bigbluebutton.messages.payload._
 import org.bigbluebutton.messages._
 
@@ -50,13 +34,14 @@ class JsonMessageSenderActor(val service: MessageSender)
 
   // Breakout
   private def handleBreakoutRoomStarted(msg: BreakoutRoomStartedOutMessage) {
-    val payload = new BreakoutRoomPayload(msg.meetingId, msg.breakout.breakoutId, msg.breakout.name)
+    val payload = new BreakoutRoomPayload(msg.meetingId.value, msg.breakout.breakoutId.value,
+      msg.breakout.name)
     val request = new BreakoutRoomStarted(payload)
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, request.toJson)
   }
 
   private def handleBreakoutRoomEnded(msg: BreakoutRoomEndedOutMessage) {
-    val payload = new BreakoutRoomPayload(msg.meetingId, msg.breakoutId, "")
+    val payload = new BreakoutRoomPayload(msg.meetingId.value, msg.breakoutId.value, "")
     val request = new BreakoutRoomClosed(payload)
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, request.toJson)
   }
@@ -64,42 +49,50 @@ class JsonMessageSenderActor(val service: MessageSender)
   private def handleUpdateBreakoutUsers(msg: UpdateBreakoutUsersOutMessage) {
     val users = new java.util.ArrayList[BreakoutUserPayload]()
     msg.users.foreach(x => users.add(new BreakoutUserPayload(x.id, x.name)))
-    val payload = new UpdateBreakoutUsersPayload(msg.meetingId, msg.breakoutId, users)
+    val payload = new UpdateBreakoutUsersPayload(msg.meetingId.value, msg.breakoutId.value, users)
     val request = new UpdateBreakoutUsers(payload)
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, request.toJson())
   }
 
   private def handleMeetingTimeRemainingUpdate(msg: MeetingTimeRemainingUpdate) {
-    val payload = new MeetingTimeRemainingPayload(msg.meetingId, msg.timeRemaining)
+    val payload = new MeetingTimeRemainingPayload(msg.meetingId.value, msg.timeRemaining)
     val request = new TimeRemainingUpdate(payload)
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, request.toJson())
   }
 
+  private def handleMeetingTimeRemainingUpdate(msg: BreakoutRoomsTimeRemainingUpdateOutMessage) {
+    // TODO: handleMeetingTimeRemainingUpdate
+    //    val payload = new BreakoutRoomsTimeRemainingPayload(msg.meetingId.value, msg.timeRemaining)
+    //    val request = new BreakoutRoomsTimeRemainingUpdate(payload)
+    //    service.send(MessagingConstants.FROM_MEETING_CHANNEL, request.toJson())
+  }
+
   private def handleBreakoutRoomsList(msg: BreakoutRoomsListOutMessage) {
     val rooms = new java.util.ArrayList[BreakoutRoomPayload]()
-    msg.rooms.foreach(r => rooms.add(new BreakoutRoomPayload(msg.meetingId, r.breakoutId, r.name)))
-    val payload = new BreakoutRoomsListPayload(msg.meetingId, rooms)
+    msg.rooms.foreach(r => rooms.add(new BreakoutRoomPayload(msg.meetingId.value, r.breakoutId.value, r.name)))
+    val payload = new BreakoutRoomsListPayload(msg.meetingId.value, rooms)
     val request = new BreakoutRoomsList(payload)
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, request.toJson())
   }
 
   private def handleCreateBreakoutRoom(msg: CreateBreakoutRoom) {
-    val payload = new CreateBreakoutRoomRequestPayload(msg.room.breakoutId, msg.room.parentId, msg.room.name,
-      msg.room.voiceConfId, msg.room.viewerPassword, msg.room.moderatorPassword,
+    val payload = new CreateBreakoutRoomRequestPayload(msg.room.breakoutId.value,
+      msg.room.parentId.value, msg.room.name.value,
+      msg.room.voiceConfId.value, msg.room.viewerPassword, msg.room.moderatorPassword,
       msg.room.durationInMinutes, msg.room.defaultPresentationURL)
     val request = new CreateBreakoutRoomRequest(payload)
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, request.toJson())
   }
 
   private def handleEndBreakoutRoom(msg: EndBreakoutRoom) {
-    val payload = new EndBreakoutRoomRequestPayload(msg.breakoutId)
+    val payload = new EndBreakoutRoomRequestPayload(msg.breakoutId.value)
     val request = new EndBreakoutRoomRequest(payload)
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, request.toJson())
   }
 
   def handleBreakoutRoomJoinURL(msg: BreakoutRoomJoinURLOutMessage) {
-    val payload = new BreakoutRoomJoinURLPayload(msg.meetingId,
-      msg.breakoutId, msg.userId, msg.joinURL)
+    val payload = new BreakoutRoomJoinURLPayload(msg.meetingId.value,
+      msg.breakoutId.value, msg.userId.value, msg.joinURL)
     val request = new BreakoutRoomJoinURL(payload)
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, request.toJson)
   }

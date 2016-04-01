@@ -530,6 +530,30 @@ public class MeetingService implements MessageListener {
 		}
 	}
 
+    private void meetingDestroyed(MeetingDestroyed message) {
+        Meeting m = getMeeting(message.meetingId);
+        if (m != null) {
+            long now = System.currentTimeMillis();
+            m.setEndTime(now);
+
+            Map<String, Object> logData = new HashMap<String, Object>();
+            logData.put("meetingId", m.getInternalId());
+            logData.put("externalMeetingId", m.getExternalId());
+            logData.put("name", m.getName());
+            logData.put("duration", m.getDuration());
+            logData.put("record", m.isRecord());
+            logData.put("event", "meeting_destroyed");
+            logData.put("description", "Meeting has been destroyed.");
+
+            Gson gson = new Gson();
+            String logStr = gson.toJson(logData);
+
+            log.info("Meeting destroyed: data={}", logStr);
+
+            return;
+        }
+    }
+
 	private void meetingEnded(MeetingEnded message) {
 		Meeting m = getMeeting(message.meetingId);
 		if (m != null) {
@@ -683,10 +707,10 @@ public class MeetingService implements MessageListener {
 	private void processMessage(final IMessage message) {
 		Runnable task = new Runnable() {
 	    public void run() {
-	  		if (message instanceof MeetingDestroyed) {
-	  			
-	  		} else if (message instanceof MeetingStarted) {
+	  		if (message instanceof MeetingStarted) {
 	  			meetingStarted((MeetingStarted)message);
+			} else if (message instanceof MeetingDestroyed) {
+                    		meetingDestroyed((MeetingDestroyed) message);
 	  		} else if (message instanceof MeetingEnded) {
 	  			meetingEnded((MeetingEnded)message);
 	  		} else if (message instanceof UserJoined) {

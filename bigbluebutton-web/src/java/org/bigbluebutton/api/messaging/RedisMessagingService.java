@@ -124,7 +124,7 @@ public class RedisMessagingService implements MessagingService {
         Gson gson = new Gson();
 
         HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("messageId", MessagingConstants.UPLOAD_PRESENTATION_EVENT);
+        map.put("messageId", "upload_presentation_message");
         map.put("meetingId", meetingId);
         map.put("presId", presId);
         map.put("presFilename", presFilename);

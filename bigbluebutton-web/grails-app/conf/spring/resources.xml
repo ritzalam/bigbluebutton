@@ -88,8 +88,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
     <property name="defaultAvatarURL" value="${defaultAvatarURL}"/>
     <property name="defaultConfigURL" value="${defaultConfigURL}"/>
   </bean>
-        
-	<import resource="doc-conversion.xml" />
+
 	<import resource="bbb-redis-pool.xml" />
 	<import resource="bbb-redis-messaging.xml" />
 	<import resource="turn-stun-servers.xml" />

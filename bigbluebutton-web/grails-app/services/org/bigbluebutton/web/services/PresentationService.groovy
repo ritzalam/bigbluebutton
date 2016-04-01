@@ -20,13 +20,10 @@ package org.bigbluebutton.web.services
 
 import java.util.concurrent.*;
 import java.lang.InterruptedException
-import org.bigbluebutton.presentation.DocumentConversionService
-import org.bigbluebutton.presentation.UploadedPresentation
 
 class PresentationService {
 
     static transactional = false
-	DocumentConversionService documentConversionService
 	def presentationDir
 	def testConferenceMock
 	def testRoomMock
@@ -76,18 +73,18 @@ class PresentationService {
     return presentationDir
   }
 
-    def processUploadedPresentation = {uploadedPres ->
-        // Run conversion on another thread.
-        Timer t = new Timer(uploadedPres.getName(), false)
-
-        t.runAfter(1000) {
-            try {
-                documentConversionService.processDocument(uploadedPres)
-            } finally {
-            t.cancel()
-            }
-        }
-    }
+//    def processUploadedPresentation = {uploadedPres ->
+//        // Run conversion on another thread.
+//        Timer t = new Timer(uploadedPres.getName(), false)
+//
+//        t.runAfter(1000) {
+//            try {
+//                documentConversionService.processDocument(uploadedPres)
+//            } finally {
+//            t.cancel()
+//            }
+//        }
+//    }
 
 	def showSlide(String conf, String room, String presentationName, String id) {
 		new File(roomDirectory(conf, room).absolutePath + File.separatorChar + presentationName + File.separatorChar + "slide-${id}.swf")
@@ -137,27 +134,27 @@ class PresentationService {
       return new File(presentationDir + File.separatorChar + conf + File.separatorChar + room)
   }
 
-	def testConversionProcess() {
-		File presDir = new File(roomDirectory(testConferenceMock, testRoomMock).absolutePath + File.separatorChar + testPresentationName)
-		
-		if (presDir.exists()) {
-			File pres = new File(presDir.getAbsolutePath() + File.separatorChar + testUploadedPresentation)
-			if (pres.exists()) {
-				UploadedPresentation uploadedPres = new UploadedPresentation(testConferenceMock, testRoomMock, testPresentationName);
-				uploadedPres.setUploadedFile(pres);
-				// Run conversion on another thread.
-				new Timer().runAfter(1000) 
-				{
-					documentConversionService.processDocument(uploadedPres)
-				}
-			} else {
-				log.error "${pres.absolutePath} does NOT exist"
-			}			
-		} else {
-			log.error "${presDir.absolutePath} does NOT exist."
-		}
-		
-	}
+//	def testConversionProcess() {
+//		File presDir = new File(roomDirectory(testConferenceMock, testRoomMock).absolutePath + File.separatorChar + testPresentationName)
+//
+//		if (presDir.exists()) {
+//			File pres = new File(presDir.getAbsolutePath() + File.separatorChar + testUploadedPresentation)
+//			if (pres.exists()) {
+//				UploadedPresentation uploadedPres = new UploadedPresentation(testConferenceMock, testRoomMock, testPresentationName);
+//				uploadedPres.setUploadedFile(pres);
+//				// Run conversion on another thread.
+//				new Timer().runAfter(1000)
+//				{
+//					documentConversionService.processDocument(uploadedPres)
+//				}
+//			} else {
+//				log.error "${pres.absolutePath} does NOT exist"
+//			}
+//		} else {
+//			log.error "${presDir.absolutePath} does NOT exist."
+//		}
+//
+//	}
 }
 
 /*** Helper classes **/

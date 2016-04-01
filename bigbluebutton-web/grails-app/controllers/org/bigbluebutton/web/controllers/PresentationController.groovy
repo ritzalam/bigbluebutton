@@ -1,7 +1,7 @@
 /**
 * BigBlueButton open source conferencing system - http://www.bigbluebutton.org/
 *
-* Copyright (c) 2012 BigBlueButton Inc. and by respective authors (see below).
+* Copyright (c) 2016 BigBlueButton Inc. and by respective authors (see below).
 *
 * This program is free software; you can redistribute it and/or modify it under the
 * terms of the GNU Lesser General Public License as published by the Free Software
@@ -20,7 +20,6 @@ package org.bigbluebutton.web.controllers
 
 import grails.converters.*
 import org.bigbluebutton.web.services.PresentationService
-import org.bigbluebutton.presentation.UploadedPresentation
 import org.bigbluebutton.api.MeetingService;
 import org.bigbluebutton.api.Util;
 import org.bigbluebutton.common.messages.MessagingConstants;
@@ -114,7 +113,8 @@ class PresentationController {
   }
 
   def testConversion = {
-    presentationService.testConversionProcess();
+//    presentationService.testConversionProcess();
+
   }
 
   //handle external presentation server 

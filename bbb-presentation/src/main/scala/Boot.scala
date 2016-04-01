@@ -60,10 +60,7 @@ object Boot extends App with SystemConfiguration {
   val svgImageCreator = new SvgImageCreatorImp()
   svgImageCreator.setImageMagickDir(imageMagickDir)
 
-  val generatedSlidesInfoHelper = new GeneratedSlidesInfoHelperImp()
-
   val swfSlidesGenerationProgressNotifier = new SwfSlidesGenerationProgressNotifier()
-  swfSlidesGenerationProgressNotifier.setGeneratedSlidesInfoHelper(generatedSlidesInfoHelper)
   swfSlidesGenerationProgressNotifier.setMessageSender(msgSender)
 
   val imageToSwfSlidesGenerationService = new ImageToSwfSlidesGenerationService()

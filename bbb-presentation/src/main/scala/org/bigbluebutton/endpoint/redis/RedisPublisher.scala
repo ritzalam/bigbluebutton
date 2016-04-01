@@ -13,7 +13,7 @@ class RedisPublisher(val system: ActorSystem) extends SystemConfiguration {
   redis.clientSetname("BbbPresentationConversionPub")
 
   def publish(channel: String, data: String) {
-    if("bigbluebutton:from-bbb-presentation-conv:keepalive" != channel) {
+    if ("bigbluebutton:from-bbb-presentation-conv:keepalive" != channel) {
       println("PUBLISH TO [" + channel + "]: \n [" + data + "]")
     }
     redis.publish(channel, data)

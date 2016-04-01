@@ -22,7 +22,6 @@ import com.google.gson.Gson;
 import org.bigbluebutton.presentation.ConversionMessageConstants;
 import org.bigbluebutton.presentation.ConversionUpdateMessage;
 import org.bigbluebutton.presentation.ConversionUpdateMessage.MessageBuilder;
-import org.bigbluebutton.presentation.GeneratedSlidesInfoHelper;
 import org.bigbluebutton.presentation.UploadedPresentation;
 import org.bigbluebutton.pubsub.MessageSender;
 import org.bigbluebutton.common.messages.MessagingConstants;
@@ -35,8 +34,6 @@ public class SwfSlidesGenerationProgressNotifier {
     private static Logger log = LoggerFactory.getLogger(SwfSlidesGenerationProgressNotifier.class);
 
     private MessageSender messageSender;
-
-    private GeneratedSlidesInfoHelper generatedSlidesInfoHelper;
 
     private void notifyProgressListener(Map<String, Object> msg) {
 
@@ -68,11 +65,6 @@ public class SwfSlidesGenerationProgressNotifier {
     }
 
     public void sendConversionCompletedMessage(UploadedPresentation pres) {
-        if (generatedSlidesInfoHelper == null) {
-            log.error("GeneratedSlidesInfoHelper was not set. Could not notify interested listeners.");
-            return;
-        }
-
         MessageBuilder builder = new ConversionUpdateMessage.MessageBuilder(pres);
         builder.messageKey(ConversionMessageConstants.CONVERSION_COMPLETED_KEY);
         builder.numberOfPages(pres.getNumberOfPages());
@@ -82,10 +74,6 @@ public class SwfSlidesGenerationProgressNotifier {
 
     public void setMessageSender(MessageSender m) {
         messageSender = m;
-    }
-
-    public void setGeneratedSlidesInfoHelper(GeneratedSlidesInfoHelper helper) {
-        generatedSlidesInfoHelper = helper;
     }
 
     public void sendCreatingTextFilesUpdateMessage(UploadedPresentation pres) {

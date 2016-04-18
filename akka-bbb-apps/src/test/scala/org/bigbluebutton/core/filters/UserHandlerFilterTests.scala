@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.filters
 
 import org.bigbluebutton.core.UnitSpec
+import org.bigbluebutton.core.domain.{ Authz, CanEjectUser, CanRaiseHand }
 import org.bigbluebutton.core.models.RegisteredUsers
 
 /**

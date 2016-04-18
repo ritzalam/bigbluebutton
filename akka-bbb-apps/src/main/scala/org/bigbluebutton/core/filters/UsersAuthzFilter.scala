@@ -1,32 +1,24 @@
 package org.bigbluebutton.core.filters
 
-import org.bigbluebutton.core.api.{ UserJoining, EjectUserFromMeeting }
+import org.bigbluebutton.core.api.{ EjectUserFromMeeting, UserJoining }
 import org.bigbluebutton.core.LiveMeeting
+import org.bigbluebutton.core.domain.CanEjectUser
 import org.bigbluebutton.core.handlers.UsersHandler
+import org.bigbluebutton.core.models.Users2x
 
-trait Authz
-case object CanRaiseHand extends Authz
-case object CanEjectUser extends Authz
-
-trait DefaultAuthz {
-  def can(action: String, userAuthz: Set[String]): Boolean = {
-    userAuthz contains action
-  }
-}
-
-trait UsersHandlerFilter extends UsersHandler with DefaultAuthz {
+trait UsersHandlerFilter extends UsersHandler with DefaultPermissionsFilter {
   this: LiveMeeting =>
 
   abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeeting) {
-    for {
-      user <- meeting.getUser(msg.userId)
-      // if user can ejectUser {
-      //     // forward message to handler to process
-      //     super.handleEjectUserFromMeeting(msg)
-      // } else {
-      //     send request rejected message
-      // }
-    } super.handleEjectUserFromMeeting(msg)
+    Users2x.findWithId(msg.userId, meeting.users2x.toVector) foreach { user =>
+      if (can(CanEjectUser, user.permissions)) {
+        // forward message to handler to process
+        super.handleEjectUserFromMeeting(msg)
+      } else {
+        //     send request rejected message
+      }
+    }
+
   }
 
   abstract override def handleUserJoin(msg: UserJoining): Unit = {

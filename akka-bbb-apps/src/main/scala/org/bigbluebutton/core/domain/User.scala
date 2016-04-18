@@ -49,7 +49,7 @@ case class User2x(
   sessionId: SessionId,
   roles: Set[String],
   presence: Set[Presence],
-  permissions: UserAuthz)
+  permissions: Set[Authz])
 
 case class Permissions(
   disableCam: Boolean = false,

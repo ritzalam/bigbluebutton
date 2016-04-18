@@ -15,7 +15,7 @@ object Users2x {
     sessionId: SessionId,
     roles: Set[String],
     presence: Set[Presence],
-    permissions: UserAuthz): User2x = {
+    permissions: Set[Authz]): User2x = {
 
     new User2x(id, extId, name, sessionId, roles, presence, permissions)
   }

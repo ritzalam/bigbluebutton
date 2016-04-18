@@ -4,10 +4,9 @@ import org.bigbluebutton.core.api.{ UserJoining, EjectUserFromMeeting }
 import org.bigbluebutton.core.LiveMeeting
 import org.bigbluebutton.core.handlers.UsersHandler
 
-object Authz {
-  val RAISE_HAND = "CanUserRaiseHand"
-  val EJECT_USER = "CanUserEjectUser"
-}
+trait Authz
+case object CanRaiseHand extends Authz
+case object CanEjectUser extends Authz
 
 trait DefaultAuthz {
   def can(action: String, userAuthz: Set[String]): Boolean = {

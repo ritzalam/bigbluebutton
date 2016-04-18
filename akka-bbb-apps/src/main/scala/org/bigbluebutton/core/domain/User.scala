@@ -1,5 +1,10 @@
 package org.bigbluebutton.core.domain
 
+trait Role2x
+case object Moderator extends Role2x
+case object Viewer extends Role2x
+case object Presenter extends Role2x
+
 object Role {
   val MODERATOR = "Moderator"
   val VIEWER = "Viewer"

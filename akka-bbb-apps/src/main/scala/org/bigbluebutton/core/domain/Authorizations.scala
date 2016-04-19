@@ -1,10 +1,10 @@
 package org.bigbluebutton.core.domain
 
-sealed trait Authz
-case object CanRaiseHand extends Authz
-case object CanEjectUser extends Authz
-case object CanLockLayout extends Authz
-case object CanSetRecordingStatus extends Authz
-case object CanAssignPresenter extends Authz
-case object CanSharePresentation extends Authz
+sealed trait Permission2x
+case object CanRaiseHand extends Permission2x
+case object CanEjectUser extends Permission2x
+case object CanLockLayout extends Permission2x
+case object CanSetRecordingStatus extends Permission2x
+case object CanAssignPresenter extends Permission2x
+case object CanSharePresentation extends Permission2x
 

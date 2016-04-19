@@ -27,8 +27,6 @@ trait Meeting extends RegisteredUsers with Users {
   var breakoutRoomsStartedOn: Long = 0
   var breakoutRoomsdurationInMinutes: Int = 0
 
-  val users2x: Users2x = new Users2x
-
   def isExtensionAllowed: Boolean = extension.numExtensions < extension.maxExtensions
   def incNumExtension(): Int = {
     if (extension.numExtensions < extension.maxExtensions) {

@@ -3,7 +3,7 @@ package org.bigbluebutton.core.filters
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core.domain.{ Permission2x, CanEjectUser, CanRaiseHand }
 
-class UserHandlerFilterTests extends UnitSpec {
+class DefaultPermissionsFilterTests extends UnitSpec {
   it should "eject user" in {
     object DefPerm extends DefaultPermissionsFilter
     val perm: Set[Permission2x] = Set(CanEjectUser, CanRaiseHand)

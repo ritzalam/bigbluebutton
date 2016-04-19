@@ -42,15 +42,6 @@ case class VoiceUser(
 
 case class Presenter(id: IntUserId, name: Name, assignedBy: IntUserId)
 
-case class User2x(
-  id: IntUserId,
-  extId: ExtUserId,
-  name: Name,
-  sessionId: SessionId,
-  roles: Set[String],
-  presence: Set[Presence],
-  permissions: Set[Authz])
-
 case class Permissions(
   disableCam: Boolean = false,
   disableMic: Boolean = false,
@@ -59,16 +50,6 @@ case class Permissions(
   lockedLayout: Boolean = false,
   lockOnJoin: Boolean = false,
   lockOnJoinConfigurable: Boolean = false)
-
-case class Voice2x(
-  id: String,
-  webId: String,
-  callId: CallerId,
-  phoningIn: Boolean,
-  joined: Boolean,
-  locked: Boolean,
-  muted: Boolean,
-  talking: Boolean)
 
 sealed trait Presence
 case class FlashBrowserPresence(id: IntUserId, extId: ExtUserId, name: Name, sessionId: String) extends Presence

@@ -57,16 +57,17 @@ class MeetingActorInternal(val mProps: MeetingProperties,
 }
 
 object MeetingActor {
-  def props(mProps: MeetingProperties,
+  def props(
+    mProps: MeetingProperties,
     eventBus: IncomingEventBus,
     outGW: OutMessageGateway): Props =
     Props(classOf[MeetingActor], mProps, eventBus, outGW)
 }
 
-class MeetingActor(val mProps: MeetingProperties,
-  val eventBus: IncomingEventBus,
-  val outGW: OutMessageGateway)
-    extends Actor with ActorLogging {
+class MeetingActor(
+    val mProps: MeetingProperties,
+    val eventBus: IncomingEventBus,
+    val outGW: OutMessageGateway) extends Actor with ActorLogging {
 
   val chatModel = new ChatModel()
   val layoutModel = new LayoutModel()
@@ -78,7 +79,8 @@ class MeetingActor(val mProps: MeetingProperties,
 
   // We extract the meeting handlers into this class so it is
   // easy to test.
-  val liveMeeting = new LiveMeeting(mProps, eventBus, outGW,
+  val liveMeeting = new LiveMeeting(
+    mProps, eventBus, outGW,
     chatModel, layoutModel, pollModel,
     wbModel, presModel, breakoutModel, captionModel)
 

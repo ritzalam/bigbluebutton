@@ -1,19 +1,12 @@
 package org.bigbluebutton.core
 
-import org.bigbluebutton.core.domain.{ Permissions, IntUserId, MeetingProperties }
-import org.bigbluebutton.core.handlers.PresentationHandler
-import org.bigbluebutton.core.handlers.PollHandler
-import org.bigbluebutton.core.handlers.WhiteboardHandler
-import org.bigbluebutton.core.handlers.ChatHandler
-import org.bigbluebutton.core.handlers.LayoutHandler
-import org.bigbluebutton.core.handlers.BreakoutRoomHandler
+import org.bigbluebutton.core.domain.{ IntUserId, MeetingProperties, Permissions }
+import org.bigbluebutton.core.handlers._
 import java.util.concurrent.TimeUnit
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.bus.IncomingEventBus
 import akka.actor.ActorContext
 import akka.event.Logging
-import org.bigbluebutton.core.handlers.CaptionHandler
-import org.bigbluebutton.core.filters.UsersHandlerFilter
 import org.bigbluebutton.core.models._
 
 class LiveMeeting(val props: MeetingProperties,
@@ -28,7 +21,7 @@ class LiveMeeting(val props: MeetingProperties,
   val captionModel: CaptionModel)(implicit val context: ActorContext)
     extends PresentationHandler
     with LayoutHandler with ChatHandler with WhiteboardHandler with PollHandler
-    with BreakoutRoomHandler with CaptionHandler with UsersHandlerFilter {
+    with BreakoutRoomHandler with CaptionHandler with UsersHandler {
 
   val log = Logging(context.system, getClass)
 

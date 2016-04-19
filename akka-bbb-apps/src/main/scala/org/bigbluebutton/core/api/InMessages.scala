@@ -89,6 +89,9 @@ case class GetLockSettings(
 case class ValidateAuthToken(
   meetingId: IntMeetingId, userId: IntUserId, token: AuthToken,
   correlationId: String, sessionId: String) extends InMessage
+case class RegisterUser2x(
+  meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
+  extUserId: ExtUserId, authToken: AuthToken) extends InMessage
 case class RegisterUser(
   meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[String],
   extUserId: ExtUserId, authToken: AuthToken) extends InMessage

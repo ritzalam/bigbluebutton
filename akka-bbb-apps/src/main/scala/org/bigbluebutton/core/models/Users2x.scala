@@ -13,7 +13,7 @@ object Users2x {
     extId: ExtUserId,
     name: Name,
     sessionId: SessionId,
-    roles: Set[String],
+    roles: Set[Role2x],
     presence: Set[Presence],
     permissions: Set[Permission2x]): User2x = {
 
@@ -33,7 +33,7 @@ object Users2x {
   }
 
   def findModerator(users: Vector[User2x]): Option[User2x] = users.find {
-    u => u.roles.contains(Role.MODERATOR)
+    u => u.roles.contains(ModeratorRole)
   }
 }
 
@@ -57,7 +57,11 @@ class Users2x {
 object RegisteredUsers2x {
   def apply(): RegisteredUsers2x = new RegisteredUsers2x()
 
-  def create(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[String], token: AuthToken): RegisteredUser2x = {
+  def create(userId: IntUserId,
+    extId: ExtUserId,
+    name: Name,
+    roles: Set[Role2x],
+    token: AuthToken): RegisteredUser2x = {
     new RegisteredUser2x(userId, extId, name, roles, token)
   }
 }

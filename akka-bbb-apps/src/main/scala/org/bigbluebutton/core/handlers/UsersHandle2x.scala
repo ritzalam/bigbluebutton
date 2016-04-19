@@ -1,16 +1,14 @@
 package org.bigbluebutton.core.handlers
 
-import org.bigbluebutton.core.api.{ EjectUserFromMeeting, RegisterUser, UserJoining, ValidateAuthToken }
+import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.models.{ Meeting2x, RegisteredUsers2x, Users2x }
-import org.bigbluebutton.core.OutMessageGateway
 
 trait UsersHandler2x {
 
   val meeting: Meeting2x
-  val outGW: OutMessageGateway
-  val sender = new UsersMessageSender(outGW)
+  val sender: UsersMessageSender2x
 
-  def handleRegisterUser2x(msg: RegisterUser): Unit = {
+  def handleRegisterUser2x(msg: RegisterUser2x): Unit = {
     val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
     val _ = meeting.regUsers2x.add(regUser)
     sender.sendUserRegisteredMessage(meeting.props.id, meeting.props.recorded, regUser)

@@ -3,11 +3,12 @@ package org.bigbluebutton.core.handlers
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.models.{ Meeting2x, RegisteredUsers2x, Users2x }
+import org.bigbluebutton.core.util.RandomStringGenerator
 
 import scala.collection.immutable.ListSet
 import scala.collection.mutable.ArrayBuffer
 
-trait UsersHandler2x {
+trait UsersHandler2x extends UsersApp2x {
 
   val meeting: Meeting2x
   val sender: UsersMessageSender2x
@@ -27,28 +28,44 @@ trait UsersHandler2x {
     }
   }
 
-  def handleUserJoin2x(msg: UserJoining): Unit = {
+  def handleUserJoin2x(msg: UserJoining2x): Unit = {
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
-    val regUser = meeting.regUsers2x.findWithToken(msg.token)
+
     val users = meeting.users2x.toVector
-    val u = Users2x.findWithId(msg.userId, users)
-
-    regUser foreach { ru =>
-      //val voiceUser = initializeVoice(msg.userId, ru.name)
-      //      val locked = meeting.getInitialLockStatus(ru.roles)
-      //      val uvo = createNewUser(msg.userId, ru.extId, ru.name, ru.roles, voiceUser, meeting.getInitialLockStatus(ru.roles))
-      //      sender.sendUserJoinedMessage(meeting.props.id, meeting.props.recorded, uvo)
-      //      sender.sendMeetingStateMessage(meeting.props.id, meeting.props.recorded, uvo.id, meeting.getPermissions,
-      //        Muted(meeting.isMeetingMuted))
-
-      //      becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
+    Users2x.findWithId(msg.userId, users) match {
+      case Some(user) =>
+        // Update just the session id as this is a reconnect.
+        val u = User2x.updateSessionId(user, msg.sessionId)
+        meeting.users2x.save(u)
+      case None =>
+        val regUser = meeting.regUsers2x.findWithToken(msg.token)
+        regUser foreach { ru =>
+          val vid = VoiceUserId(RandomStringGenerator.randomAlphanumericString(6))
+          val voiceUser = Users2x.createVoiceUser(vid, msg.userId, ru.name)
+          val permissions = meeting.getPermissions
+          val uvo = Users2x.create(
+            msg.userId,
+            ru.extId,
+            ru.name,
+            msg.sessionId,
+            EmojiStatus("none"),
+            ru.roles,
+            voiceUser,
+            new UserPermissions(permissions, false))
+          meeting.users2x.save(uvo)
+          sender.sendUserJoinedMessage(meeting.props.id, meeting.props.recorded, uvo)
+          //      sender.sendMeetingStateMessage(meeting.props.id, meeting.props.recorded, uvo.id, meeting.getPermissions,
+          //        Muted(meeting.isMeetingMuted))
+          becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
+          //
+          webUserJoined
+          startRecordingIfAutoStart()
+        }
     }
-    //
-    //    webUserJoined
-    //    startRecordingIfAutoStart()
+
   }
 
   def handleUserConnectedToGlobalAudio(msg: UserConnectedToGlobalAudio) {
@@ -650,30 +667,4 @@ trait UsersHandler2x {
     //    assignNewPresenter(msg.newPresenterId, msg.newPresenterName, msg.assignedBy)
   }
 
-  def assignNewPresenter(newPresenterId: IntUserId, newPresenterName: Name, assignedBy: IntUserId) {
-    // Stop poll if one is running as presenter left.
-    //    handleStopPollRequest(StopPollRequest(props.id, assignedBy))
-
-    //    if (meeting.hasUser(newPresenterId)) {
-
-    //      meeting.getCurrentPresenter match {
-    //        case Some(curPres) =>
-    //          meeting.unbecomePresenter(curPres.id.value)
-    //          sender.sendUserStatusChangeMessage(props.id, props.recorded, curPres.id, false)
-
-    //        case None => // do nothing
-    //      }
-
-    //      meeting.getUser(newPresenterId) match {
-    //        case Some(newPres) =>
-    //          meeting.becomePresenter(newPres.id)
-    //          meeting.setCurrentPresenterInfo(new Presenter(newPresenterId, newPresenterName, assignedBy))
-    //          sender.sendPresenterAssignedMessage(props.id, props.recorded, new Presenter(newPresenterId, newPresenterName, assignedBy))
-    //          sender.sendUserStatusChangeMessage(props.id, props.recorded, newPresenterId, true)
-
-    //        case None => // do nothing
-    //      }
-
-    //    }
-  }
 }

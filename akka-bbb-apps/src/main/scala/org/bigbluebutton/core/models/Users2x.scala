@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.models
 
 import org.bigbluebutton.core.domain._
+import org.bigbluebutton.core.util.RandomStringGenerator
 
 import scala.collection.immutable.HashMap
 
@@ -19,11 +20,12 @@ object Users2x {
     extId: ExtUserId,
     name: Name,
     sessionId: SessionId,
+    emojiStatus: EmojiStatus,
     roles: Set[Role2x],
-    presence: Set[Presence],
+    voice: Voice2x,
     permissions: UserPermissions): User2x = {
 
-    new User2x(id, extId, name, sessionId, roles, presence, permissions, Set.empty, Set.empty)
+    new User2x(id, extId, name, sessionId, emojiStatus, roles, voice, permissions, Set.empty, Set.empty)
   }
 
   def findWithSessionId(sessionId: String, users: Vector[User2x]): Option[User2x] = users.find {
@@ -40,6 +42,11 @@ object Users2x {
 
   def findModerator(users: Vector[User2x]): Option[User2x] = users.find {
     u => u.roles.contains(ModeratorRole)
+  }
+
+  def createVoiceUser(id: VoiceUserId, webId: IntUserId, name: Name): Voice2x = {
+    val callerId = CallerId(CallerIdName(name.value), CallerIdNum(name.value))
+    new Voice2x(id, webId, callerId, PhoneUser(false), JoinedVoice(false), Locked(false), Muted(false), Talking(false))
   }
 }
 

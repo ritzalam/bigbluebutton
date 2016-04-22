@@ -16,7 +16,7 @@ trait Meeting2x {
 
   private var audioSettingsInited = false
   private var permissionsInited = false
-  private var permissions = new Permissions()
+  private var permissions: Set[Permission2x] = Set.empty
   private var recording = false
   private var muted = false
   private var meetingEnded = false
@@ -63,9 +63,8 @@ trait Meeting2x {
   def audioSettingsInitialized(): Boolean = audioSettingsInited
   def initializeAudioSettings() = audioSettingsInited = true
   def permissionsEqual(other: Permissions): Boolean = permissions == other
-  def lockLayout(lock: Boolean) = permissions = permissions.copy(lockedLayout = lock)
-  def getPermissions: Permissions = permissions
-  def setPermissions(p: Permissions) = permissions = p
+  def getPermissions: Set[Permission2x] = permissions
+  def setPermissions(p: Set[Permission2x]) = permissions = p
   def meetingHasEnded() = meetingEnded = true
   def hasMeetingEnded: Boolean = meetingEnded
   def timeNowInMinutes(): Long = TimeUnit.NANOSECONDS.toMinutes(System.nanoTime())

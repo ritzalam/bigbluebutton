@@ -48,30 +48,41 @@ case class RegisteredUser2x(id: IntUserId, extId: ExtUserId, name: Name, roles: 
 
 case class UserPermissions(permissions: Set[Permission2x], pinned: Boolean)
 
-
 object User2x {
   def muted(user: User2x): User2x = {
-    modify(user)(_.voice.muted).setTo(true)
+    modify(user)(_.voice.muted).setTo(Muted(true))
   }
 
   def unmuted(user: User2x): User2x = {
-    modify(user)(_.voice.muted).setTo(false)
+    modify(user)(_.voice.muted).setTo(Muted(false))
   }
 
   def talking(user: User2x): User2x = {
-    modify(user)(_.voice.talking).setTo(true)
+    modify(user)(_.voice.talking).setTo(Talking(true))
   }
 
   def notTalking(user: User2x): User2x = {
-    modify(user)(_.voice.talking).setTo(false)
+    modify(user)(_.voice.talking).setTo(Talking(false))
   }
 
   def joinedVoice(user: User2x): User2x = {
-    modify(user)(_.voice.joined).setTo(true)
+    modify(user)(_.voice.joined).setTo(JoinedVoice(true))
   }
 
   def leftVoice(user: User2x): User2x = {
-    modify(user)(_.voice.joined).setTo(false)
+    modify(user)(_.voice.joined).setTo(JoinedVoice(false))
+  }
+
+  def updateSessionId(user: User2x, sessionId: SessionId): User2x = {
+    modify(user)(_.sessionId).setTo(sessionId)
+  }
+
+  def pinUserPermissions(user: User2x): User2x = {
+    modify(user)(_.permissions.pinned).setTo(true)
+  }
+
+  def unPinUserPermissions(user: User2x): User2x = {
+    modify(user)(_.permissions.pinned).setTo(false)
   }
 }
 
@@ -80,22 +91,21 @@ case class User2x(
   extId: ExtUserId,
   name: Name,
   sessionId: SessionId,
+  emojiStatus: EmojiStatus,
   roles: Set[Role2x],
-  presence: Set[Presence],
   voice: Voice2x,
   permissions: UserPermissions,
   webcamStreams: Set[Stream],
   deskshareStreams: Set[Stream])
 
 case class Voice2x(
-  id: String,
-  webId: String,
+  id: VoiceUserId,
+  webId: IntUserId,
   callId: CallerId,
-  phoningIn: Boolean,
-  joined: Boolean,
-  locked: Boolean,
-  muted: Boolean,
-  talking: Boolean)
-
+  phoningIn: PhoneUser,
+  joined: JoinedVoice,
+  locked: Locked,
+  muted: Muted,
+  talking: Talking)
 
 case class Stream(id: String, uri: String, viewers: Set[IntUserId])

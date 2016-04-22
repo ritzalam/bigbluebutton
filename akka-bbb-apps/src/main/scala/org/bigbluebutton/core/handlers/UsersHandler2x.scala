@@ -15,12 +15,12 @@ trait UsersHandler2x extends UsersApp2x {
 
   def handleRegisterUser2x(msg: RegisterUser2x): Unit = {
     val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
-    val _ = meeting.regUsers2x.add(regUser)
+    val _ = meeting.regUsers.add(regUser)
     sender.sendUserRegisteredMessage(meeting.props.id, meeting.props.recorded, regUser)
   }
 
   def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
-    meeting.regUsers2x.findWithToken(msg.token) match {
+    meeting.regUsers.findWithToken(msg.token) match {
       case Some(u) =>
         sender.sendValidateAuthTokenReplyMessage(meeting.props.id, msg.userId, msg.token, true, msg.correlationId)
       case None =>
@@ -28,20 +28,20 @@ trait UsersHandler2x extends UsersApp2x {
     }
   }
 
-  def handleUserJoin2x(msg: UserJoining2x): Unit = {
+  def handleUserJoinWeb2x(msg: UserJoining2x): Unit = {
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
 
-    val users = meeting.users2x.toVector
+    val users = meeting.users.toVector
     Users2x.findWithId(msg.userId, users) match {
       case Some(user) =>
         // Update just the session id as this is a reconnect.
         val u = User2x.updateSessionId(user, msg.sessionId)
-        meeting.users2x.save(u)
+        meeting.users.save(u)
       case None =>
-        val regUser = meeting.regUsers2x.findWithToken(msg.token)
+        val regUser = meeting.regUsers.findWithToken(msg.token)
         regUser foreach { ru =>
           val vid = VoiceUserId(RandomStringGenerator.randomAlphanumericString(6))
           val voiceUser = Users2x.createVoiceUser(vid, msg.userId, ru.name)
@@ -55,14 +55,20 @@ trait UsersHandler2x extends UsersApp2x {
             ru.roles,
             voiceUser,
             new UserPermissions(permissions, false))
-          meeting.users2x.save(uvo)
+          meeting.users.save(uvo)
           sender.sendUserJoinedMessage(meeting.props.id, meeting.props.recorded, uvo)
           //      sender.sendMeetingStateMessage(meeting.props.id, meeting.props.recorded, uvo.id, meeting.getPermissions,
           //        Muted(meeting.isMeetingMuted))
           becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
-          //
-          webUserJoined
-          startRecordingIfAutoStart()
+
+          if (Users2x.numberOfWebUsers(meeting.users.toVector) > 0) {
+            meeting.resetLastWebUserLeftOn()
+          }
+
+          if (needToStartRecording(meeting)) {
+            meeting.recordingStarted()
+            //     sender.send(new RecordingStatusChanged(props.id, props.recorded, IntUserId("system"), meeting.isRecording))
+          }
         }
     }
 

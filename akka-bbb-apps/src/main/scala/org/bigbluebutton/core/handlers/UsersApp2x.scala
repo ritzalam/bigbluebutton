@@ -2,7 +2,7 @@ package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api.RecordingStatusChanged
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.models.Meeting2x
+import org.bigbluebutton.core.models.{ Meeting2x, Users2x }
 
 import scala.collection.immutable.ListSet
 
@@ -41,12 +41,11 @@ trait UsersApp2x {
     //    }
   }
 
-  def startRecordingIfAutoStart() {
-    //    if (props.recorded.value && !meeting.isRecording && props.autoStartRecording && meeting.numWebUsers == 1) {
-    //      log.info("Auto start recording. meetingId={}", props.id)
-    //      meeting.recordingStarted()
-    //      outGW.send(new RecordingStatusChanged(props.id, props.recorded, IntUserId("system"), meeting.isRecording))
-    //    }
+  def needToStartRecording(meeting: Meeting2x): Boolean = {
+    meeting.props.recorded.value &&
+      !meeting.isRecording &&
+      meeting.props.autoStartRecording &&
+      Users2x.numberOfWebUsers(meeting.users.toVector) == 1
   }
 
   def becomePresenterIfOnlyModerator(userId: IntUserId, name: Name, roles: Set[Role2x]) {

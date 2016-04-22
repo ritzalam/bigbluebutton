@@ -48,6 +48,10 @@ object Users2x {
     val callerId = CallerId(CallerIdName(name.value), CallerIdNum(name.value))
     new Voice2x(id, webId, callerId, PhoneUser(false), JoinedVoice(false), Locked(false), Muted(false), Talking(false))
   }
+
+  def numberOfWebUsers(users: Vector[User2x]): Int = {
+    users.filter(u => u.voice.phoningIn.value == false).length
+  }
 }
 
 class Users2x {

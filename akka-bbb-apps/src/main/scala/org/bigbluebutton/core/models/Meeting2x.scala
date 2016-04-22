@@ -11,8 +11,8 @@ class RunningMeeting2x {
 trait Meeting2x {
   val props: MeetingProperties
 
-  val regUsers2x: RegisteredUsers2x = new RegisteredUsers2x
-  val users2x: Users2x = new Users2x
+  val regUsers: RegisteredUsers2x = new RegisteredUsers2x
+  val users: Users2x = new Users2x
 
   private var audioSettingsInited = false
   private var permissionsInited = false

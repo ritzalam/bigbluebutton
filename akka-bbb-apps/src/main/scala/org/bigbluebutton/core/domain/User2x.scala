@@ -14,31 +14,31 @@ case class FlashBrowserPresence(
   name: Name,
   sessionId: SessionId) extends Presence
 
-case class FlashTwoWayPresence(
+case class FlashVoiceTwoWayPresence(
   id: IntUserId,
   extId: ExtUserId,
   name: Name,
   sessionId: SessionId) extends Presence
 
-case class FlashListenOnlyPresence(
+case class FlashVoiceListenOnlyPresence(
   id: IntUserId,
   extId: ExtUserId,
   name: Name,
   sessionId: SessionId) extends Presence
 
-case class WebRtcListenOnlyPresence(
+case class WebRtcVoiceListenOnlyPresence(
   id: IntUserId,
   extId: ExtUserId,
   name: Name,
   sessionId: SessionId) extends Presence
 
-case class WebRtcTwoWayPresence(
+case class WebRtcVoiceTwoWayPresence(
   id: IntUserId,
   extId: ExtUserId,
   name: Name,
   sessionId: SessionId) extends Presence
 
-case class PhoneInPresence(
+case class PhoneInVoicePresence(
   id: IntUserId,
   extId: ExtUserId,
   name: Name,

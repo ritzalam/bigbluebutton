@@ -2,10 +2,9 @@ package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.models.{ Meeting2x, RegisteredUsers2x, Users2x }
+import org.bigbluebutton.core.models.{Meeting2x, RegisteredUsers2x, Users2x}
 import org.bigbluebutton.core.util.RandomStringGenerator
 
-import scala.collection.immutable.ListSet
 import scala.collection.mutable.ArrayBuffer
 
 trait UsersHandler2x extends UsersApp2x {
@@ -29,6 +28,23 @@ trait UsersHandler2x extends UsersApp2x {
   }
 
   def handleUserJoinWeb2x(msg: UserJoining2x): Unit = {
+    def createVoiceUser(ru: RegisteredUser2x): Voice2x = {
+      val vid = VoiceUserId(RandomStringGenerator.randomAlphanumericString(6))
+      Users2x.createVoiceUser(vid, msg.userId, ru.name)
+    }
+
+    def createUser(ru: RegisteredUser2x, voiceUser: Voice2x, permissions: Set[Permission2x]): User2x = {
+      Users2x.create(
+        msg.userId,
+        ru.extId,
+        ru.name,
+        msg.sessionId,
+        EmojiStatus("none"),
+        ru.roles,
+        voiceUser,
+        new UserPermissions(permissions, false))
+    }
+
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
     // Compare sessionId, if sessionId is not same then this is a reconnect
@@ -43,18 +59,9 @@ trait UsersHandler2x extends UsersApp2x {
       case None =>
         val regUser = meeting.regUsers.findWithToken(msg.token)
         regUser foreach { ru =>
-          val vid = VoiceUserId(RandomStringGenerator.randomAlphanumericString(6))
-          val voiceUser = Users2x.createVoiceUser(vid, msg.userId, ru.name)
+          val voiceUser = createVoiceUser(ru)
           val permissions = meeting.getPermissions
-          val uvo = Users2x.create(
-            msg.userId,
-            ru.extId,
-            ru.name,
-            msg.sessionId,
-            EmojiStatus("none"),
-            ru.roles,
-            voiceUser,
-            new UserPermissions(permissions, false))
+          val uvo = createUser(ru, voiceUser, permissions)
           meeting.users.save(uvo)
           sender.sendUserJoinedMessage(meeting.props.id, meeting.props.recorded, uvo)
           //      sender.sendMeetingStateMessage(meeting.props.id, meeting.props.recorded, uvo.id, meeting.getPermissions,

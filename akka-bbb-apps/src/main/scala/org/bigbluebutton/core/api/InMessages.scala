@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.api
 
 import org.bigbluebutton.core.domain._
+import spray.json.JsObject
 
 case class InMessageHeader(name: String)
 case class InHeaderAndJsonPayload(header: InMessageHeader, payload: JsObject)

@@ -258,14 +258,17 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 				chatBox.name = chatWithUserID;
 				chatBox.chatWithUserID = chatWithUserID;
 				chatBox.tabIndexer.startIndex = tabIndexer.startIndex + 10;
-				if (publicChat) {
-					chatBox.label = PUBLIC_CHAT_USERNAME
-					chatBox.publicChat = true;
-					publicBox = chatBox; // keep a reference to the public chat box
-				} else {
-					chatBox.publicChat = false;
-					chatBox.label = UsersUtil.getUserName(chatWithUserID);
-				}
+		        
+		    if (publicChat) {
+		      chatBox.label = PUBLIC_CHAT_USERNAME
+		      chatBox.publicChat = true;
+				  publicBox = chatBox; // keep a reference to the public chat box
+		    } else {
+		      chatBox.publicChat = false;
+		      chatBox.label = UsersUtil.getUserName(chatWithUserID);
+		      chatBox.displayHowToCloseMessage();
+		    }
+				
 				chatBox.chatWithUsername = UsersUtil.getUserName(chatWithUserID);
 				if (chatTabs.numChildren >= 2) {
 					chatTabs.addChildAt(chatBox, chatTabs.numChildren - 1);

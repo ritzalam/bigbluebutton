@@ -2,7 +2,7 @@ package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.models.{Meeting2x, RegisteredUsers2x, Users2x}
+import org.bigbluebutton.core.models.{ Meeting2x, RegisteredUsers2x, Users2x }
 import org.bigbluebutton.core.util.RandomStringGenerator
 
 import scala.collection.mutable.ArrayBuffer

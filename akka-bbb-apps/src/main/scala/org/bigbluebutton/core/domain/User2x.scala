@@ -110,7 +110,21 @@ case class Voice2x(
   muted: Muted,
   talking: Talking)
 
-case class Stream(id: String, uri: String, viewers: Set[IntUserId])
+case class Stream(id: String, uri: String, viewers: Set[IntUserId]) {
+  def update(stream: Stream, uri: String): Stream = {
+    modify(stream)(_.uri).setTo(uri)
+  }
+
+  def add(stream: Stream, user: IntUserId): Stream = {
+    val newViewers = stream.viewers + user
+    modify(stream)(_.viewers).setTo(newViewers)
+  }
+
+  def remove(stream: Stream, user: IntUserId): Stream = {
+    val newViewers = stream.viewers - user
+    modify(stream)(_.viewers).setTo(newViewers)
+  }
+}
 
 trait Voice3x
 case class FlashWebListenOnly(sessionId: SessionId) extends Voice3x
@@ -172,12 +186,28 @@ case class PhoneCalling(sessionId: SessionId, callerId: CallerId, muted: Muted, 
 }
 
 case class User3x(
-  id: IntUserId,
-  roles: Set[Role2x],
-  applyMeetingPermissions: Boolean,
-  presence: Set[Presence2x],
-  restrictedPermissions: Set[Permission2x],
-  roleData: Set[RoleData])
+    id: IntUserId,
+    roles: Set[Role2x],
+    applyMeetingPermissions: Boolean,
+    presence: Set[Presence2x],
+    restrictedPermissions: Set[Permission2x],
+    roleData: Set[RoleData]) {
+
+  def update(user: User3x, presence: Presence2x): User3x = {
+    val newPresence = user.presence + presence
+    modify(user)(_.presence).setTo(newPresence)
+  }
+
+  def add(user: User3x, role: Role2x): User3x = {
+    val newRole = user.roles + role
+    modify(user)(_.roles).setTo(newRole)
+  }
+
+  def remove(user: User3x, role: Role2x): User3x = {
+    val newRole = user.roles - role
+    modify(user)(_.roles).setTo(newRole)
+  }
+}
 
 trait PresenceUserAgent
 case object FlashWebUserAgent extends PresenceUserAgent

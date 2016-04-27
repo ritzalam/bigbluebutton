@@ -67,6 +67,8 @@ case class AuthToken(value: String) extends AnyVal
 
 case class IntUserId(value: String) extends AnyVal
 
+case class PresenceId(value: String) extends AnyVal
+
 case class ExtUserId(value: String) extends AnyVal
 
 case class EmojiStatus(value: String) extends AnyVal
@@ -99,3 +101,6 @@ case class SessionId(value: String) extends AnyVal
 
 case class ReplyTo(value: String) extends AnyVal
 
+case class UserAgent(value: String) extends AnyVal
+
+case class Locale(value: String) extends AnyVal

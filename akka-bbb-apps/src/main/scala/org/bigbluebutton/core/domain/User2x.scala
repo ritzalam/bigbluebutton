@@ -193,19 +193,16 @@ case class User3x(
     restrictedPermissions: Set[Permission2x],
     roleData: Set[RoleData]) {
 
-  def update(user: User3x, presence: Presence2x): User3x = {
-    val newPresence = user.presence + presence
-    modify(user)(_.presence).setTo(newPresence)
+  def update(old: Presence2x, user: User3x, updated: Presence2x): User3x = {
+    modify(user)(_.presence).setTo((user.presence - old) + updated)
   }
 
   def add(user: User3x, role: Role2x): User3x = {
-    val newRole = user.roles + role
-    modify(user)(_.roles).setTo(newRole)
+    modify(user)(_.roles).setTo(user.roles + role)
   }
 
   def remove(user: User3x, role: Role2x): User3x = {
-    val newRole = user.roles - role
-    modify(user)(_.roles).setTo(newRole)
+    modify(user)(_.roles).setTo(user.roles - role)
   }
 }
 
@@ -264,7 +261,11 @@ case class Html5WebPresence(
   }
 }
 
-case class DataApp2x(sessionId: SessionId)
+case class DataApp2x(sessionId: SessionId) {
+  def update(data: DataApp2x, session: SessionId): DataApp2x = {
+    modify(data)(_.sessionId).setTo(session)
+  }
+}
 
 case class WebcamApp2x(sessionId: SessionId, streams: Set[Stream])
 

@@ -23,7 +23,7 @@ object Users2x {
     emojiStatus: EmojiStatus,
     roles: Set[Role2x],
     voice: Voice2x,
-    permissions: UserPermissions): User2x = {
+    permissions: UserAbilities): User2x = {
 
     new User2x(id, extId, name, sessionId, emojiStatus, roles, voice, permissions, Set.empty, Set.empty)
   }
@@ -55,7 +55,7 @@ object Users2x {
 }
 
 class Users2x {
-  private var users = new HashMap[String, User2x]
+  private var users = new collection.immutable.HashMap[String, User2x]
 
   def save(user: User2x): Vector[User2x] = {
     users += user.id.value -> user

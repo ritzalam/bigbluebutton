@@ -33,7 +33,7 @@ trait UsersHandler2x extends UsersApp2x {
       Users2x.createVoiceUser(vid, msg.userId, ru.name)
     }
 
-    def createUser(ru: RegisteredUser2x, voiceUser: Voice2x, permissions: Set[Permission2x]): User2x = {
+    def createUser(ru: RegisteredUser2x, voiceUser: Voice2x, permissions: Set[Abilities2x]): User2x = {
       Users2x.create(
         msg.userId,
         ru.extId,
@@ -42,7 +42,7 @@ trait UsersHandler2x extends UsersApp2x {
         EmojiStatus("none"),
         ru.roles,
         voiceUser,
-        new UserPermissions(permissions, false))
+        new UserAbilities(permissions, permissions, false))
     }
 
     // Check if there is a registered user with token

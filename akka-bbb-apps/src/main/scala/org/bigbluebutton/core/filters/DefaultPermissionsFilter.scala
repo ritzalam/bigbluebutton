@@ -9,12 +9,16 @@ object RolePermissions {
   val viewPermissions = Set(CanShareCamera, CanRaiseHand, CanUseMicrophone)
 }
 
+object ClientTypeAbilities {
+  val flashWebClientAbilities = Set(HasLayoutSupport, HasWebRtcSupport)
+}
+
 trait DefaultPermissionsFilter {
-  def can(action: Permission2x, permissions: Set[Permission2x]): Boolean = {
+  def can(action: Abilities2x, permissions: Set[Abilities2x]): Boolean = {
     permissions contains action
   }
 
-  def addPermissionsFromRole(role: Role2x, permissions: Set[Permission2x]): Set[Permission2x] = {
+  def addPermissionsFromRole(role: Role2x, permissions: Set[Abilities2x]): Set[Abilities2x] = {
     role match {
       case ModeratorRole =>
         permissions ++ RolePermissions.modPermissions
@@ -25,7 +29,7 @@ trait DefaultPermissionsFilter {
     }
   }
 
-  def removePermissionsFromRole(role: Role2x, permissions: Set[Permission2x]): Set[Permission2x] = {
+  def removePermissionsFromRole(role: Role2x, permissions: Set[Abilities2x]): Set[Abilities2x] = {
     role match {
       case ModeratorRole =>
         permissions -- RolePermissions.modPermissions

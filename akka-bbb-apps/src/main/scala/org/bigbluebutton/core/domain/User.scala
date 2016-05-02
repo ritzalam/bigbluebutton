@@ -104,3 +104,5 @@ case class ReplyTo(value: String) extends AnyVal
 case class UserAgent(value: String) extends AnyVal
 
 case class Locale(value: String) extends AnyVal
+
+case class SessionToken(value: String) extends AnyVal

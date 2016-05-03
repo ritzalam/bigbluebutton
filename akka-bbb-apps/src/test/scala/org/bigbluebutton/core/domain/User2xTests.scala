@@ -10,9 +10,9 @@ class User2xTests extends UnitSpec {
   val screenshareApp = ScreenshareApp2x(SessionId("ss-session-id"), Set.empty)
 
   it should "update presence" in {
-    val presence1 = new FlashWebPresence(PresenceId("flash-web-presence-id-1"))
-    val presence2 = new FlashWebPresence(PresenceId("flash-web-presence-id-2"))
-    val presence3 = new FlashWebPresence(PresenceId("flash-web-presence-id-3"))
+    val presence1 = new FlashWebPresence4x(PresenceId("flash-web-presence-id-1"))
+    val presence2 = new FlashWebPresence4x(PresenceId("flash-web-presence-id-2"))
+    val presence3 = new FlashWebPresence4x(PresenceId("flash-web-presence-id-3"))
 
     val perm: Set[Abilities2x] = Set(CanEjectUser, CanRaiseHand)
     val user = new User4x(IntUserId("userid-1"), ExtUserId("userid-1"))

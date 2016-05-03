@@ -11,6 +11,66 @@ object UsersUtil {
   }
 }
 
+object Users3x {
+
+  def apply(): Users3x = new Users3x()
+
+  def create(
+    id: IntUserId,
+    extId: ExtUserId,
+    name: Name,
+    sessionId: SessionId,
+    emojiStatus: EmojiStatus,
+    roles: Set[Role2x],
+    voice: Voice2x,
+    permissions: UserAbilities): User3x = {
+
+    new User3x(id, roles, Set.empty, new UserAbilities(Set.empty, Set.empty, false), Set.empty)
+  }
+
+  //  def findWithSessionId(sessionId: String, users: Vector[User3x]): Option[User3x] = users.find {
+  //    u => u.sessionId.value == sessionId
+  //  }
+
+  def findWithId(id: IntUserId, users: Vector[User3x]): Option[User3x] = users.find {
+    u => u.id.value == id.value
+  }
+
+  //  def findWithExtId(id: ExtUserId, users: Vector[User3x]): Option[User3x] = users.find {
+  //    u => u.extId.value == id.value
+  //  }
+
+  def findModerator(users: Vector[User3x]): Option[User3x] = users.find {
+    u => u.roles.contains(ModeratorRole)
+  }
+
+  //  def createVoiceUser(id: VoiceUserId, webId: IntUserId, name: Name): Voice2x = {
+  //    val callerId = CallerId(CallerIdName(name.value), CallerIdNum(name.value))
+  //    new Voice2x(id, webId, callerId, PhoneUser(false), JoinedVoice(false), Locked(false), Muted(false), Talking(false))
+  //  }
+
+  //  def numberOfWebUsers(users: Vector[User3x]): Int = {
+  //    users.filter(u => u.voice.phoningIn.value == false).length
+  //  }
+}
+
+class Users3x {
+  private var users = new collection.immutable.HashMap[String, User3x]
+
+  def save(user: User3x): Vector[User3x] = {
+    users += user.id.value -> user
+    users.values.toVector
+  }
+
+  def remove(id: IntUserId): Option[User3x] = {
+    val user = users.get(id.value)
+    user foreach (u => users -= id.value)
+    user
+  }
+
+  def toVector: Vector[User3x] = users.values.toVector
+}
+
 object Users2x {
 
   def apply(): Users2x = new Users2x()

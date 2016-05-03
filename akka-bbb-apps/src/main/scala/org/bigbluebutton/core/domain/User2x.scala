@@ -194,7 +194,7 @@ object PhoneCalling {
 case class PhoneCalling(sessionId: SessionId, callerId: CallerId, muted: Muted, talking: Talking) extends Voice3x
 
 object User3x {
-  def update(old: Presence2x, user: User3x, updated: Presence2x): User3x = {
+  def update(old: Presence4x, user: User3x, updated: Presence4x): User3x = {
     modify(user)(_.presence).setTo((user.presence - old) + updated)
   }
 
@@ -210,7 +210,7 @@ object User3x {
 case class User3x(
   id: IntUserId,
   roles: Set[Role2x],
-  presence: Set[Presence2x],
+  presence: Set[Presence4x],
   permissions: UserAbilities,
   roleData: Set[RoleData])
 
@@ -218,9 +218,62 @@ trait PresenceUserAgent
 case object FlashWebUserAgent extends PresenceUserAgent
 case object Html5WebUserAgent extends PresenceUserAgent
 
-abstract class Presence2x(val id: PresenceId)
+trait Presence2x
 
-class FlashWebPresence(id: PresenceId) extends Presence2x(id) {
+object FlashWebPresence2x {
+  def save(presence: FlashWebPresence2x, data: DataApp2x): FlashWebPresence2x = {
+    modify(presence)(_.dataApp).setTo(Some(data))
+  }
+
+  def save(presence: FlashWebPresence2x, app: WebcamApp2x): FlashWebPresence2x = {
+    modify(presence)(_.webcamApp).setTo(Some(app))
+  }
+
+  def save(presence: FlashWebPresence2x, app: VoiceApp2x): FlashWebPresence2x = {
+    modify(presence)(_.voiceApp).setTo(Some(app))
+  }
+
+  def save(presence: FlashWebPresence2x, app: ScreenshareApp2x): FlashWebPresence2x = {
+    modify(presence)(_.screenshareApp).setTo(Some(app))
+  }
+}
+
+case class FlashWebPresence2x(
+  id: PresenceId,
+  dataApp: Option[DataApp2x] = None,
+  webcamApp: Option[WebcamApp2x] = None,
+  voiceApp: Option[VoiceApp2x] = None,
+  screenshareApp: Option[ScreenshareApp2x] = None) extends Presence2x
+
+object Html5WebPresence2x {
+  def save(presence: Html5WebPresence2x, data: DataApp2x): Html5WebPresence2x = {
+    modify(presence)(_.dataApp).setTo(Some(data))
+  }
+
+  def save(presence: Html5WebPresence2x, app: WebcamApp2x): Html5WebPresence2x = {
+    modify(presence)(_.webcamApp).setTo(Some(app))
+  }
+
+  def save(presence: Html5WebPresence2x, app: VoiceApp2x): Html5WebPresence2x = {
+    modify(presence)(_.voiceApp).setTo(Some(app))
+  }
+
+  def save(presence: Html5WebPresence2x, app: ScreenshareApp2x): Html5WebPresence2x = {
+    modify(presence)(_.screenshareApp).setTo(Some(app))
+  }
+}
+
+case class Html5WebPresence2x(
+  id: PresenceId,
+  name: Name,
+  dataApp: Option[DataApp2x] = None,
+  webcamApp: Option[WebcamApp2x] = None,
+  voiceApp: Option[VoiceApp2x] = None,
+  screenshareApp: Option[ScreenshareApp2x] = None) extends Presence2x
+
+abstract class Presence4x(val id: PresenceId)
+
+class FlashWebPresence4x(id: PresenceId) extends Presence4x(id) {
   private var dataApp: Option[DataApp2x] = None
   private var webcamApp: Option[WebcamApp2x] = None
   private var voiceApp: Option[VoiceApp2x] = None
@@ -244,7 +297,7 @@ class FlashWebPresence(id: PresenceId) extends Presence2x(id) {
   }
 }
 
-class Html5WebPresence(id: PresenceId, name: Name) extends Presence2x(id) {
+class Html5WebPresence4x(id: PresenceId, name: Name) extends Presence4x(id) {
   private var dataApp: Option[DataApp2x] = None
   private var webcamApp: Option[WebcamApp2x] = None
   private var voiceApp: Option[VoiceApp2x] = None
@@ -294,11 +347,11 @@ case class CaptionStream(url: String)
 
 class User4x(val id: IntUserId, val extId: ExtUserId) {
   private val roles: Set[Role2x] = Set.empty
-  private var presence = new collection.immutable.HashMap[PresenceId, Presence2x]
+  private var presence = new collection.immutable.HashMap[PresenceId, Presence4x]
   private val roleData: Set[RoleData] = Set.empty
   private val permissions: UserAbilities = UserAbilities(Set.empty, Set.empty, false)
 
-  def save(pres: Presence2x) = {
+  def save(pres: Presence4x) = {
     presence += pres.id -> pres
   }
 
@@ -310,7 +363,7 @@ class User4x(val id: IntUserId, val extId: ExtUserId) {
     roles - role
   }
 
-  def remove(pres: Presence2x) = {
+  def remove(pres: Presence4x) = {
     presence -= pres.id
   }
 }

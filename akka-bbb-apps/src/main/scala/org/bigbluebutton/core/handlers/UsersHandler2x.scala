@@ -46,23 +46,22 @@ trait UsersHandler2x extends UsersApp2x {
     // Check if there is a user already in the list of users, if so, might be a reconnect
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
-    /*
+
     val users = meeting.users3x.toVector
     Users3x.findWithId(msg.userId, users) match {
       case Some(user) =>
-        // Update just the session id as this is a reconnect.
-        val u = User2x.updateSessionId(user, msg.sessionId, msg.presenceId)
-        meeting.users.save(u)
+      // Update just the session id as this is a reconnect.
+      //val u = User2x.updateSessionId(user, msg.sessionId, msg.presenceId)
+      //meeting.users.save(u)
       case None =>
         val regUser = meeting.registeredUsers.findWithToken(msg.token)
         regUser foreach { ru =>
           val voiceUser = createVoiceUser(ru)
           val permissions = meeting.getPermissions
-          val uvo = createUser(ru, voiceUser, permissions)
-          meeting.users.save(uvo)
+          val uvo = createUser(ru)
+          meeting.users3x.save(uvo)
           sender.sendUserJoinedMessage(meeting.props.id, meeting.props.recorded, uvo)
-          //      sender.sendMeetingStateMessage(meeting.props.id, meeting.props.recorded, uvo.id, meeting.getPermissions,
-          //        Muted(meeting.isMeetingMuted))
+
           becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
 
           if (Users2x.numberOfWebUsers(meeting.users.toVector) > 0) {
@@ -75,7 +74,7 @@ trait UsersHandler2x extends UsersApp2x {
           }
         }
     }
-*/
+
   }
 
   def handleUserConnectedToGlobalAudio(msg: UserConnectedToGlobalAudio) {

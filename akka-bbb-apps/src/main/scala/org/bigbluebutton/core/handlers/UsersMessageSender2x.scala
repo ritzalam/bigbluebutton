@@ -152,7 +152,7 @@ class UsersMessageSender2x(val outGW: OutMessageGateway) {
   def sendUserJoinedMessage(
     meetingId: IntMeetingId,
     recorded: Recorded,
-    user: User2x): Unit = {
+    user: User3x): Unit = {
     //    outGW.send(new UserJoined(meetingId, recorded, user))
   }
 

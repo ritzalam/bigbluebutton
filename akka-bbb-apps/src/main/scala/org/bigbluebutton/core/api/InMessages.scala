@@ -99,7 +99,8 @@ case class NewUserPresence2x(
   userId: IntUserId,
   token: AuthToken,
   sessionId: SessionId,
-  presenceId: PresenceId) extends InMessage
+  presenceId: PresenceId,
+  userAgent: PresenceUserAgent) extends InMessage
 case class UserJoining(
   meetingId: IntMeetingId, userId: IntUserId, token: AuthToken) extends InMessage
 case class UserLeaving(

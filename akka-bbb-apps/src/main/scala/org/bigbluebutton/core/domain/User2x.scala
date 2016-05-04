@@ -198,6 +198,14 @@ object User3x {
     modify(user)(_.presence).setTo((user.presence - old) + updated)
   }
 
+  def findWithPresenceId(presence: Set[Presence2x], presenceId: PresenceId): Option[Presence2x] = {
+    presence.find(p => p.id == presenceId)
+  }
+
+  def add(user: User3x, presence: Presence2x): User3x = {
+    modify(user)(_.presence).setTo(user.presence + presence)
+  }
+
   def add(user: User3x, role: Role2x): User3x = {
     modify(user)(_.roles).setTo(user.roles + role)
   }
@@ -205,6 +213,7 @@ object User3x {
   def remove(user: User3x, role: Role2x): User3x = {
     modify(user)(_.roles).setTo(user.roles - role)
   }
+
 }
 
 case class User3x(
@@ -220,7 +229,7 @@ trait PresenceUserAgent
 case object FlashWebUserAgent extends PresenceUserAgent
 case object Html5WebUserAgent extends PresenceUserAgent
 
-trait Presence2x
+trait Presence2x { val id: PresenceId }
 
 object FlashWebPresence2x {
   def save(presence: FlashWebPresence2x, data: DataApp2x): FlashWebPresence2x = {

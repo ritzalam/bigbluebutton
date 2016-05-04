@@ -15,7 +15,8 @@ class User2xTests extends UnitSpec {
     val presence3 = new FlashWebPresence2x(PresenceId("flash-web-presence-id-3"))
 
     val perm: Set[Abilities2x] = Set(CanEjectUser, CanRaiseHand)
-    val user = new User3x(IntUserId("userid-1"), Set(ModeratorRole, PresenterRole), Set(presence1, presence2),
+    val user = new User3x(IntUserId("userid-1"), Set(ModeratorRole, PresenterRole),
+      Set(presence1, presence2),
       UserAbilities(Set.empty, Set.empty, false), Set.empty, Set.empty, Set.empty)
 
     val newDataApp = DataApp2x(SessionId("updated-session"))

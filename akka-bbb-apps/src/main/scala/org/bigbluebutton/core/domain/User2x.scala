@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.domain
 
 import com.softwaremill.quicklens._
+import org.bigbluebutton.core.models.Users3x
 
 trait Role2x
 case object ModeratorRole extends Role2x
@@ -214,6 +215,12 @@ object User3x {
     modify(user)(_.roles).setTo(user.roles - role)
   }
 
+  def create(id: PresenceId, userAgent: PresenceUserAgent): Presence2x = {
+    userAgent match {
+      case FlashWebUserAgent => FlashWebPresence2x(id)
+      case Html5WebUserAgent => Html5WebPresence2x(id, Name("foo"))
+    }
+  }
 }
 
 case class User3x(

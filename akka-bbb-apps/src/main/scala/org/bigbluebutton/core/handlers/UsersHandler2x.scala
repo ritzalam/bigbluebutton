@@ -34,12 +34,7 @@ trait UsersHandler2x extends UsersApp2x {
     }
 
     def createUser(ru: RegisteredUser2x): User3x = {
-      Users3x.create(
-        msg.userId,
-        ru.extId,
-        ru.name,
-        msg.sessionId,
-        ru.roles)
+      Users3x.create(msg.userId, ru.extId, ru.name, msg.sessionId, ru.roles)
     }
 
     // Check if there is a registered user with token
@@ -54,12 +49,11 @@ trait UsersHandler2x extends UsersApp2x {
       //val u = User2x.updateSessionId(user, msg.sessionId, msg.presenceId)
       //meeting.users.save(u)
       case None =>
-        val regUser = meeting.registeredUsers.findWithToken(msg.token)
-        regUser foreach { ru =>
-          val voiceUser = createVoiceUser(ru)
-          val permissions = meeting.getPermissions
+        meeting.registeredUsers.findWithToken(msg.token) foreach { ru =>
           val uvo = createUser(ru)
-          meeting.users3x.save(uvo)
+          val presence = User3x.create(msg.presenceId, msg.userAgent)
+          val user = User3x.add(uvo, presence)
+          meeting.users3x.save(user)
           sender.sendUserJoinedMessage(meeting.props.id, meeting.props.recorded, uvo)
 
           becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)

@@ -94,8 +94,12 @@ case class RegisterUser2x(
 case class RegisterUser(
   meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[String],
   extUserId: ExtUserId, authToken: AuthToken) extends InMessage
-case class UserJoining2x(
-  meetingId: IntMeetingId, userId: IntUserId, token: AuthToken, sessionId: SessionId) extends InMessage
+case class NewUserPresence2x(
+  meetingId: IntMeetingId,
+  userId: IntUserId,
+  token: AuthToken,
+  sessionId: SessionId,
+  presenceId: PresenceId) extends InMessage
 case class UserJoining(
   meetingId: IntMeetingId, userId: IntUserId, token: AuthToken) extends InMessage
 case class UserLeaving(

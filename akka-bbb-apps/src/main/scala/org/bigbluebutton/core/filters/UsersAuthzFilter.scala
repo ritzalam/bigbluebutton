@@ -9,12 +9,12 @@ trait UsersHandlerFilter extends UsersHandler2x {
   val meeting: Meeting2x
 
   object DefaultAbilitiesFilter extends DefaultAbilitiesFilter
-  val permissionFilter = DefaultAbilitiesFilter
+  val abilitiesFilter = DefaultAbilitiesFilter
 
   abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeeting) {
     Users3x.findWithId(msg.userId, meeting.users3x.toVector) foreach { user =>
-      val abilities = permissionFilter.calcEffectiveAbilities(user.roles, user.permissions, meeting.getPermissions)
-      if (permissionFilter.can(CanEjectUser, abilities)) {
+      val abilities = abilitiesFilter.calcEffectiveAbilities(user.roles, user.permissions, meeting.getPermissions)
+      if (abilitiesFilter.can(CanEjectUser, abilities)) {
         // forward message to handler to process
         super.handleEjectUserFromMeeting(msg)
       } else {

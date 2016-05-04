@@ -52,18 +52,6 @@ trait DefaultAbilitiesFilter {
     userAbilities: UserAbilities,
     meetingAbilities: Set[Abilities2x]): Set[Abilities2x] = {
 
-    def calcRolesAbilities(roles: Set[Role2x]): Set[Abilities2x] = {
-      val abilities: Set[Abilities2x] = Set.empty
-      roles.foreach { r =>
-        r match {
-          case ModeratorRole => abilities ++ RoleAbilities.moderatorAbilities
-          case ViewerRole => abilities ++ RoleAbilities.viewerAbilities
-          case PresenterRole => abilities ++ RoleAbilities.presenterAbilities
-        }
-      }
-      abilities
-    }
-
     var effectiveAbilities: Set[Abilities2x] = Set.empty
     effectiveAbilities = (calcRolesAbilities(roles) ++ clientAbilities) -- userAbilities.removed
     if (userAbilities.applyMeetingAbilities) {

@@ -10,18 +10,19 @@ class User2xTests extends UnitSpec {
   val screenshareApp = ScreenshareApp2x(SessionId("ss-session-id"), Set.empty)
 
   it should "update presence" in {
-    val presence1 = new FlashWebPresence4x(PresenceId("flash-web-presence-id-1"))
-    val presence2 = new FlashWebPresence4x(PresenceId("flash-web-presence-id-2"))
-    val presence3 = new FlashWebPresence4x(PresenceId("flash-web-presence-id-3"))
+    val presence1 = new FlashWebPresence2x(PresenceId("flash-web-presence-id-1"))
+    val presence2 = new FlashWebPresence2x(PresenceId("flash-web-presence-id-2"))
+    val presence3 = new FlashWebPresence2x(PresenceId("flash-web-presence-id-3"))
 
     val perm: Set[Abilities2x] = Set(CanEjectUser, CanRaiseHand)
-    val user = new User4x(IntUserId("userid-1"), ExtUserId("userid-1"))
+    val user = new User3x(IntUserId("userid-1"), Set(ModeratorRole, PresenterRole), Set(presence1, presence2),
+      UserAbilities(Set.empty, Set.empty, false), Set.empty, Set.empty, Set.empty)
 
     val newDataApp = DataApp2x(SessionId("updated-session"))
-    presence1.save(newDataApp)
-    user.save(presence1)
+    val presence1a = FlashWebPresence2x.save(presence1, newDataApp)
+    val newUser = User3x.update(presence1, user, presence1a)
 
-    //    assert(user2.presence.size == 2)
+    assert(newUser.presence.size == 2)
   }
 
   //  it should "not eject user" in {

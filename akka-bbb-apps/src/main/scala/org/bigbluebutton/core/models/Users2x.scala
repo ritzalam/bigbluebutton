@@ -13,19 +13,14 @@ object UsersUtil {
 
 object Users3x {
 
-  def apply(): Users3x = new Users3x()
-
   def create(
     id: IntUserId,
     extId: ExtUserId,
     name: Name,
     sessionId: SessionId,
-    emojiStatus: EmojiStatus,
-    roles: Set[Role2x],
-    voice: Voice2x,
-    permissions: UserAbilities): User3x = {
+    roles: Set[Role2x]): User3x = {
 
-    new User3x(id, roles, Set.empty, new UserAbilities(Set.empty, Set.empty, false), Set.empty)
+    new User3x(id, roles, Set.empty, new UserAbilities(Set.empty, Set.empty, false), Set.empty, Set.empty, Set.empty)
   }
 
   //  def findWithSessionId(sessionId: String, users: Vector[User3x]): Option[User3x] = users.find {

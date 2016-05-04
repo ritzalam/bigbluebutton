@@ -2,7 +2,7 @@ package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.models.{ Meeting2x, RegisteredUsers2x, Users2x }
+import org.bigbluebutton.core.models.{ Meeting2x, RegisteredUsers2x, Users2x, Users3x }
 import org.bigbluebutton.core.util.RandomStringGenerator
 
 import scala.collection.mutable.ArrayBuffer
@@ -14,12 +14,12 @@ trait UsersHandler2x extends UsersApp2x {
 
   def handleRegisterUser2x(msg: RegisterUser2x): Unit = {
     val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
-    val _ = meeting.regUsers.add(regUser)
+    val _ = meeting.registeredUsers.add(regUser)
     sender.sendUserRegisteredMessage(meeting.props.id, meeting.props.recorded, regUser)
   }
 
   def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
-    meeting.regUsers.findWithToken(msg.token) match {
+    meeting.registeredUsers.findWithToken(msg.token) match {
       case Some(u) =>
         sender.sendValidateAuthTokenReplyMessage(meeting.props.id, msg.userId, msg.token, true, msg.correlationId)
       case None =>
@@ -27,37 +27,34 @@ trait UsersHandler2x extends UsersApp2x {
     }
   }
 
-  def handleUserJoinWeb2x(msg: UserJoining2x): Unit = {
+  def handleUserJoinWeb2x(msg: NewUserPresence2x): Unit = {
     def createVoiceUser(ru: RegisteredUser2x): Voice2x = {
       val vid = VoiceUserId(RandomStringGenerator.randomAlphanumericString(6))
       Users2x.createVoiceUser(vid, msg.userId, ru.name)
     }
 
-    def createUser(ru: RegisteredUser2x, voiceUser: Voice2x, permissions: Set[Abilities2x]): User2x = {
-      Users2x.create(
+    def createUser(ru: RegisteredUser2x): User3x = {
+      Users3x.create(
         msg.userId,
         ru.extId,
         ru.name,
         msg.sessionId,
-        EmojiStatus("none"),
-        ru.roles,
-        voiceUser,
-        new UserAbilities(permissions, permissions, false))
+        ru.roles)
     }
 
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
-
-    val users = meeting.users.toVector
-    Users2x.findWithId(msg.userId, users) match {
+    /*
+    val users = meeting.users3x.toVector
+    Users3x.findWithId(msg.userId, users) match {
       case Some(user) =>
         // Update just the session id as this is a reconnect.
-        val u = User2x.updateSessionId(user, msg.sessionId)
+        val u = User2x.updateSessionId(user, msg.sessionId, msg.presenceId)
         meeting.users.save(u)
       case None =>
-        val regUser = meeting.regUsers.findWithToken(msg.token)
+        val regUser = meeting.registeredUsers.findWithToken(msg.token)
         regUser foreach { ru =>
           val voiceUser = createVoiceUser(ru)
           val permissions = meeting.getPermissions
@@ -78,7 +75,7 @@ trait UsersHandler2x extends UsersApp2x {
           }
         }
     }
-
+*/
   }
 
   def handleUserConnectedToGlobalAudio(msg: UserConnectedToGlobalAudio) {

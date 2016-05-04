@@ -11,7 +11,7 @@ class RunningMeeting2x {
 trait Meeting2x {
   val props: MeetingProperties
 
-  val regUsers: RegisteredUsers2x = new RegisteredUsers2x
+  val registeredUsers: RegisteredUsers2x = new RegisteredUsers2x
   val users: Users2x = new Users2x
   val users3x: Users3x = new Users3x
 

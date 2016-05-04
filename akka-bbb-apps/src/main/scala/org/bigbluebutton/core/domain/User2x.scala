@@ -194,7 +194,7 @@ object PhoneCalling {
 case class PhoneCalling(sessionId: SessionId, callerId: CallerId, muted: Muted, talking: Talking) extends Voice3x
 
 object User3x {
-  def update(old: Presence4x, user: User3x, updated: Presence4x): User3x = {
+  def update(old: Presence2x, user: User3x, updated: Presence2x): User3x = {
     modify(user)(_.presence).setTo((user.presence - old) + updated)
   }
 
@@ -210,9 +210,11 @@ object User3x {
 case class User3x(
   id: IntUserId,
   roles: Set[Role2x],
-  presence: Set[Presence4x],
+  presence: Set[Presence2x],
   permissions: UserAbilities,
-  roleData: Set[RoleData])
+  roleData: Set[RoleData],
+  config: Set[String],
+  extData: Set[String])
 
 trait PresenceUserAgent
 case object FlashWebUserAgent extends PresenceUserAgent
@@ -271,56 +273,6 @@ case class Html5WebPresence2x(
   voiceApp: Option[VoiceApp2x] = None,
   screenshareApp: Option[ScreenshareApp2x] = None) extends Presence2x
 
-abstract class Presence4x(val id: PresenceId)
-
-class FlashWebPresence4x(id: PresenceId) extends Presence4x(id) {
-  private var dataApp: Option[DataApp2x] = None
-  private var webcamApp: Option[WebcamApp2x] = None
-  private var voiceApp: Option[VoiceApp2x] = None
-  private var screenshareApp: Option[ScreenshareApp2x] = None
-  private val userAgent: PresenceUserAgent = FlashWebUserAgent
-
-  def save(data: DataApp2x) = {
-    dataApp = Some(data)
-  }
-
-  def save(app: WebcamApp2x) = {
-    webcamApp = Some(app)
-  }
-
-  def save(app: VoiceApp2x) = {
-    voiceApp = Some(app)
-  }
-
-  def save(app: ScreenshareApp2x) = {
-    screenshareApp = Some(app)
-  }
-}
-
-class Html5WebPresence4x(id: PresenceId, name: Name) extends Presence4x(id) {
-  private var dataApp: Option[DataApp2x] = None
-  private var webcamApp: Option[WebcamApp2x] = None
-  private var voiceApp: Option[VoiceApp2x] = None
-  private var screenshareApp: Option[ScreenshareApp2x] = None
-  private val userAgent: PresenceUserAgent = Html5WebUserAgent
-
-  def save(data: DataApp2x) = {
-    dataApp = Some(data)
-  }
-
-  def save(app: WebcamApp2x) = {
-    webcamApp = Some(app)
-  }
-
-  def save(app: VoiceApp2x) = {
-    voiceApp = Some(app)
-  }
-
-  def save(app: ScreenshareApp2x) = {
-    screenshareApp = Some(app)
-  }
-}
-
 object DataApp2x {
   def update(data: DataApp2x, session: SessionId): DataApp2x = {
     modify(data)(_.sessionId).setTo(session)
@@ -345,25 +297,3 @@ case class StenographerRoleData(locale: Locale, captionStream: CaptionStream) ex
 
 case class CaptionStream(url: String)
 
-class User4x(val id: IntUserId, val extId: ExtUserId) {
-  private val roles: Set[Role2x] = Set.empty
-  private var presence = new collection.immutable.HashMap[PresenceId, Presence4x]
-  private val roleData: Set[RoleData] = Set.empty
-  private val permissions: UserAbilities = UserAbilities(Set.empty, Set.empty, false)
-
-  def save(pres: Presence4x) = {
-    presence += pres.id -> pres
-  }
-
-  def add(role: Role2x) = {
-    roles + role
-  }
-
-  def remove(role: Role2x) = {
-    roles - role
-  }
-
-  def remove(pres: Presence4x) = {
-    presence -= pres.id
-  }
-}

@@ -10,8 +10,11 @@ class UsersMessageSender2x(val outGW: OutMessageGateway) {
     meetingId: IntMeetingId,
     recorded: Recorded,
     userId: IntUserId,
-    listenOnly: ListenOnly): Unit = {
-    outGW.send(new UserListeningOnly(meetingId, recorded, userId, listenOnly.value))
+    presenceId: PresenceId,
+    voice: Voice4x): Unit = {
+
+    outGW.send(new UserListeningOnly2x(meetingId, recorded, userId, presenceId,
+      voice))
   }
 
   def sendMuteVoiceUserMessage(

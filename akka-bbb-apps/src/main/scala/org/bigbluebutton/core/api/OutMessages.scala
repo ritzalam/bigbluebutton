@@ -105,6 +105,10 @@ case class UserJoined(
 case class UserChangedEmojiStatus(
   meetingId: IntMeetingId, recorded: Recorded,
   emojiStatus: EmojiStatus, userId: IntUserId) extends IOutMessage
+case class UserListeningOnly2x(
+  meetingId: IntMeetingId, recorded: Recorded,
+  userId: IntUserId, presenceId: PresenceId,
+  voice: Voice4x) extends IOutMessage
 case class UserListeningOnly(
   meetingId: IntMeetingId, recorded: Recorded,
   userId: IntUserId, listenOnly: Boolean) extends IOutMessage

@@ -129,70 +129,13 @@ object Stream {
 
 case class Stream(id: String, uri: String, viewers: Set[IntUserId])
 
-trait Voice3x
-case class FlashWebListenOnly(sessionId: SessionId) extends Voice3x
-
-object FlashWebDuplex {
-  def mute(voice: FlashWebDuplex): FlashWebDuplex = {
-    modify(voice)(_.muted).setTo(Muted(true))
-  }
-
-  def unmute(voice: FlashWebDuplex): FlashWebDuplex = {
-    modify(voice)(_.muted).setTo(Muted(false))
-  }
-
-  def talking(voice: FlashWebDuplex): FlashWebDuplex = {
-    modify(voice)(_.talking).setTo(Talking(true))
-  }
-
-  def silent(voice: FlashWebDuplex): FlashWebDuplex = {
-    modify(voice)(_.talking).setTo(Talking(false))
-  }
-}
-
-case class FlashWebDuplex(sessionId: SessionId, muted: Muted, talking: Talking) extends Voice3x
-
-case class WebRtcWebListenOnly(sessionId: SessionId) extends Voice3x
-
-object WebRtcWebDuplex {
-  def mute(voice: WebRtcWebDuplex): WebRtcWebDuplex = {
-    modify(voice)(_.muted).setTo(Muted(true))
-  }
-
-  def unmute(voice: WebRtcWebDuplex): WebRtcWebDuplex = {
-    modify(voice)(_.muted).setTo(Muted(false))
-  }
-
-  def talking(voice: WebRtcWebDuplex): WebRtcWebDuplex = {
-    modify(voice)(_.talking).setTo(Talking(true))
-  }
-
-  def silent(voice: WebRtcWebDuplex): WebRtcWebDuplex = {
-    modify(voice)(_.talking).setTo(Talking(false))
-  }
-}
-
-case class WebRtcWebDuplex(sessionId: SessionId, muted: Muted, talking: Talking) extends Voice3x
-
-object PhoneCalling {
-  def mute(voice: PhoneCalling): PhoneCalling = {
-    modify(voice)(_.muted).setTo(Muted(true))
-  }
-
-  def unmute(voice: PhoneCalling): PhoneCalling = {
-    modify(voice)(_.muted).setTo(Muted(false))
-  }
-
-  def talking(voice: PhoneCalling): PhoneCalling = {
-    modify(voice)(_.talking).setTo(Talking(true))
-  }
-
-  def silent(voice: PhoneCalling): PhoneCalling = {
-    modify(voice)(_.talking).setTo(Talking(false))
-  }
-}
-
-case class PhoneCalling(sessionId: SessionId, callerId: CallerId, muted: Muted, talking: Talking) extends Voice3x
+case class Voice4x(
+  userAgent: UserAgent,
+  userId: IntUserId,
+  callerId: CallerId,
+  listenDirection: ListenDirection,
+  talkDirection: TalkDirection,
+  muted: Muted, talking: Talking)
 
 object User3x {
   def update(old: Presence2x, user: User3x, updated: Presence2x): User3x = {
@@ -217,14 +160,17 @@ object User3x {
 
   def create(id: PresenceId, userAgent: PresenceUserAgent): Presence2x = {
     userAgent match {
-      case FlashWebUserAgent => FlashWebPresence2x(id)
-      case Html5WebUserAgent => Html5WebPresence2x(id, Name("foo"))
+      case FlashWebUserAgent => Presence2x(id, UserAgent("Flash"), None, None, None, None)
+      case Html5WebUserAgent => Presence2x(id, UserAgent("Html5"), None, None, None, None)
     }
   }
 }
 
 case class User3x(
   id: IntUserId,
+  extId: ExtUserId,
+  name: Name,
+  emojiStatus: EmojiStatus,
   roles: Set[Role2x],
   presence: Set[Presence2x],
   permissions: UserAbilities,
@@ -236,58 +182,32 @@ trait PresenceUserAgent
 case object FlashWebUserAgent extends PresenceUserAgent
 case object Html5WebUserAgent extends PresenceUserAgent
 
-trait Presence2x { val id: PresenceId }
-
-object FlashWebPresence2x {
-  def save(presence: FlashWebPresence2x, data: DataApp2x): FlashWebPresence2x = {
-    modify(presence)(_.dataApp).setTo(Some(data))
+object Presence2x {
+  def save(presence: Presence2x, data: DataApp2x): Presence2x = {
+    modify(presence)(_.data).setTo(Some(data))
   }
 
-  def save(presence: FlashWebPresence2x, app: WebcamApp2x): FlashWebPresence2x = {
-    modify(presence)(_.webcamApp).setTo(Some(app))
+  def save(presence: Presence2x, app: WebcamApp2x): Presence2x = {
+    modify(presence)(_.webcams).setTo(Some(app))
   }
 
-  def save(presence: FlashWebPresence2x, app: VoiceApp2x): FlashWebPresence2x = {
-    modify(presence)(_.voiceApp).setTo(Some(app))
+  def save(presence: Presence2x, app: Voice4x): Presence2x = {
+    modify(presence)(_.voice).setTo(Some(app))
   }
 
-  def save(presence: FlashWebPresence2x, app: ScreenshareApp2x): FlashWebPresence2x = {
-    modify(presence)(_.screenshareApp).setTo(Some(app))
+  def save(presence: Presence2x, app: ScreenshareApp2x): Presence2x = {
+    modify(presence)(_.screenshare).setTo(Some(app))
   }
+
 }
 
-case class FlashWebPresence2x(
+case class Presence2x(
   id: PresenceId,
-  dataApp: Option[DataApp2x] = None,
-  webcamApp: Option[WebcamApp2x] = None,
-  voiceApp: Option[VoiceApp2x] = None,
-  screenshareApp: Option[ScreenshareApp2x] = None) extends Presence2x
-
-object Html5WebPresence2x {
-  def save(presence: Html5WebPresence2x, data: DataApp2x): Html5WebPresence2x = {
-    modify(presence)(_.dataApp).setTo(Some(data))
-  }
-
-  def save(presence: Html5WebPresence2x, app: WebcamApp2x): Html5WebPresence2x = {
-    modify(presence)(_.webcamApp).setTo(Some(app))
-  }
-
-  def save(presence: Html5WebPresence2x, app: VoiceApp2x): Html5WebPresence2x = {
-    modify(presence)(_.voiceApp).setTo(Some(app))
-  }
-
-  def save(presence: Html5WebPresence2x, app: ScreenshareApp2x): Html5WebPresence2x = {
-    modify(presence)(_.screenshareApp).setTo(Some(app))
-  }
-}
-
-case class Html5WebPresence2x(
-  id: PresenceId,
-  name: Name,
-  dataApp: Option[DataApp2x] = None,
-  webcamApp: Option[WebcamApp2x] = None,
-  voiceApp: Option[VoiceApp2x] = None,
-  screenshareApp: Option[ScreenshareApp2x] = None) extends Presence2x
+  userAgent: UserAgent,
+  data: Option[DataApp2x],
+  voice: Option[Voice4x],
+  webcams: Option[WebcamApp2x],
+  screenshare: Option[ScreenshareApp2x])
 
 object DataApp2x {
   def update(data: DataApp2x, session: SessionId): DataApp2x = {
@@ -299,8 +219,7 @@ case class DataApp2x(sessionId: SessionId)
 
 case class WebcamApp2x(sessionId: SessionId, streams: Set[Stream])
 
-case class VoiceApp2x(sessionId: SessionId, voice: Voice3x)
-
+case class VoiceApp2x(sessionId: SessionId, voice: Voice4x)
 case class ScreenshareApp2x(sessionId: SessionId, streams: Set[Stream])
 
 trait RoleData

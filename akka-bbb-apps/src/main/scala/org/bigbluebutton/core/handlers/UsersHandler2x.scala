@@ -2,7 +2,7 @@ package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.models.{ Meeting2x, RegisteredUsers2x, Users2x, Users3x }
+import org.bigbluebutton.core.models.{ Meeting2x, RegisteredUsers2x, Users3x }
 import org.bigbluebutton.core.util.RandomStringGenerator
 
 import scala.collection.mutable.ArrayBuffer
@@ -14,12 +14,12 @@ trait UsersHandler2x extends UsersApp2x {
 
   def handleRegisterUser2x(msg: RegisterUser2x): Unit = {
     val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
-    val _ = meeting.registeredUsers.add(regUser)
+    val _ = meeting.state.registeredUsers.add(regUser)
     sender.sendUserRegisteredMessage(meeting.props.id, meeting.props.recorded, regUser)
   }
 
   def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
-    meeting.registeredUsers.findWithToken(msg.token) match {
+    meeting.state.registeredUsers.findWithToken(msg.token) match {
       case Some(u) =>
         sender.sendValidateAuthTokenReplyMessage(meeting.props.id, msg.userId, msg.token, true, msg.correlationId)
       case None =>
@@ -28,10 +28,6 @@ trait UsersHandler2x extends UsersApp2x {
   }
 
   def handleUserJoinWeb2x(msg: NewUserPresence2x): Unit = {
-    def createVoiceUser(ru: RegisteredUser2x): Voice2x = {
-      val vid = VoiceUserId(RandomStringGenerator.randomAlphanumericString(6))
-      Users2x.createVoiceUser(vid, msg.userId, ru.name)
-    }
 
     def createUser(ru: RegisteredUser2x): User3x = {
       Users3x.create(msg.userId, ru.extId, ru.name, msg.sessionId, ru.roles)
@@ -42,51 +38,55 @@ trait UsersHandler2x extends UsersApp2x {
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
 
-    val users = meeting.users3x.toVector
-    Users3x.findWithId(msg.userId, users) match {
+    meeting.state.users.findWithId(msg.userId) match {
       case Some(user) =>
       // Update just the session id as this is a reconnect.
       //val u = User2x.updateSessionId(user, msg.sessionId, msg.presenceId)
       //meeting.users.save(u)
       case None =>
-        meeting.registeredUsers.findWithToken(msg.token) foreach { ru =>
+        meeting.state.registeredUsers.findWithToken(msg.token) foreach { ru =>
           val uvo = createUser(ru)
           val presence = User3x.create(msg.presenceId, msg.userAgent)
           val user = User3x.add(uvo, presence)
-          meeting.users3x.save(user)
+          meeting.state.users.save(user)
+
           sender.sendUserJoinedMessage(meeting.props.id, meeting.props.recorded, uvo)
 
           becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
 
-          if (Users2x.numberOfWebUsers(meeting.users.toVector) > 0) {
-            meeting.resetLastWebUserLeftOn()
-          }
+          //          if (Users2x.numberOfWebUsers(meeting.state.users.toVector) > 0) {
+          //            meeting.resetLastWebUserLeftOn()
+          //          }
 
-          if (needToStartRecording(meeting)) {
-            meeting.recordingStarted()
-            //     sender.send(new RecordingStatusChanged(props.id, props.recorded, IntUserId("system"), meeting.isRecording))
-          }
+          //          if (needToStartRecording(meeting)) {
+          //            meeting.recordingStarted()
+          //     sender.send(new RecordingStatusChanged(props.id, props.recorded, IntUserId("system"), meeting.isRecording))
+          //          }
         }
     }
 
   }
 
-  def handleUserConnectedToGlobalAudio(msg: UserConnectedToGlobalAudio) {
-    /*    log.info("Handling UserConnectedToGlobalAudio: meetingId=" + props.id + " userId=" + msg.userId)
-
-    val user = meeting.getUser(msg.userId)
-    user foreach { u =>
-      if (meeting.addGlobalAudioConnection(msg.userId)) {
-        val vu = u.voiceUser.copy(joinedVoice = JoinedVoice(false), talking = Talking(false))
-        val uvo = u.copy(listenOnly = ListenOnly(true), voiceUser = vu)
-        meeting.saveUser(uvo)
-        log.info("UserConnectedToGlobalAudio: meetingId=" + props.id + " userId=" + uvo.id + " user=" + uvo)
-        sender.sendUserListeningOnlyMessage(props.id, props.recorded, uvo.id, uvo.listenOnly)
-      }
+  def handleUserJoinedVoiceConfListenOnly(msg: UserJoinedVoiceConfListenOnly): Unit = {
+    def createVoice(user: User3x): Voice4x = {
+      val callerId = CallerId(CallerIdName(user.name.value), CallerIdNum(user.name.value))
+      Voice4x(msg.userAgent, msg.userId, callerId, ListenDirection(true), TalkDirection(false), Muted(false), Talking(false))
     }
-*/ }
+
+    def sendMessage(user: User3x, voice: Voice4x): Unit = {
+      sender.sendUserListeningOnlyMessage(meeting.props.id, meeting.props.recorded, user.id, msg.presenceId, voice)
+    }
+
+    for {
+      user <- meeting.state.users.findWithId(msg.userId)
+      presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
+      voice = createVoice(user)
+    } yield sendMessage(user, voice)
+
+  }
 
   def handleUserDisconnectedFromGlobalAudio(msg: UserDisconnectedFromGlobalAudio) {
+
     /*    log.info("Handling UserDisconnectedToGlobalAudio: meetingId=" + props.id + " userId=" + msg.userId)
 
     val user = meeting.getUser(msg.userId)

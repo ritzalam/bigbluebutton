@@ -31,14 +31,6 @@ class Users3x {
     u => u.roles.contains(ModeratorRole)
   }
 
-  //  def createVoiceUser(id: VoiceUserId, webId: IntUserId, name: Name): Voice2x = {
-  //    val callerId = CallerId(CallerIdName(name.value), CallerIdNum(name.value))
-  //    new Voice2x(id, webId, callerId, PhoneUser(false), JoinedVoice(false), Locked(false), Muted(false), Talking(false))
-  //  }
-
-  //  def numberOfWebUsers(users: Vector[User3x]): Int = {
-  //     users.filter(u => u.presence.length == 0).length
-  //  }
 }
 
 object Users3x {
@@ -58,10 +50,7 @@ object Users3x {
 object RegisteredUsers2x {
   def apply(): RegisteredUsers2x = new RegisteredUsers2x()
 
-  def create(userId: IntUserId,
-    extId: ExtUserId,
-    name: Name,
-    roles: Set[Role2x],
+  def create(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[Role2x],
     token: AuthToken): RegisteredUser2x = {
     new RegisteredUser2x(userId, extId, name, roles, token)
   }

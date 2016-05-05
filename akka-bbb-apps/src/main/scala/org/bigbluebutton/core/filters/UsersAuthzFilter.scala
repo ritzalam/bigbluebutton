@@ -28,7 +28,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
     super.handleUserJoin(msg)
   }
 
-  abstract override def handleUserJoinedVoiceConfListenOnly(msg: UserJoinedVoiceConfListenOnly): Unit = {
+  abstract override def handleUserJoinedVoiceConfListenOnly(msg: UserJoinedVoiceConf): Unit = {
 
   }
 }

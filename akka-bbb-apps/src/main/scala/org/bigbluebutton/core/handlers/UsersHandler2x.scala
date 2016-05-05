@@ -67,129 +67,121 @@ trait UsersHandler2x extends UsersApp2x {
 
   }
 
-  def handleUserJoinedVoiceConfListenOnly(msg: UserJoinedVoiceConfListenOnly): Unit = {
+  def handleUserJoinedVoiceConfListenOnly(msg: UserJoinedVoiceConf): Unit = {
     def createVoice(user: User3x): Voice4x = {
-      val callerId = CallerId(CallerIdName(user.name.value), CallerIdNum(user.name.value))
-      Voice4x(msg.userAgent, msg.userId, callerId, ListenDirection(true), TalkDirection(false), Muted(false), Talking(false))
+      Voice4x(msg.voice.id, joined = JoinedVoice(true), msg.voice.userAgent, msg.voice.callerId,
+        msg.voice.listenDirection, msg.voice.talkDirection, msg.voice.muted, msg.voice.talking)
+    }
+
+    def update(user: User3x, presence: Presence2x, voice: Voice4x): User3x = {
+      val newPresence = Presence2x.save(presence, voice)
+      User3x.update(presence, user, newPresence)
     }
 
     def sendMessage(user: User3x, voice: Voice4x): Unit = {
       sender.sendUserListeningOnlyMessage(meeting.props.id, meeting.props.recorded, user.id, msg.presenceId, voice)
     }
 
+    def saveAndSend(user: User3x, voice: Voice4x): Unit = {
+      meeting.state.users.save(user)
+      sendMessage(user, voice)
+    }
+
     for {
       user <- meeting.state.users.findWithId(msg.userId)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
       voice = createVoice(user)
-    } yield sendMessage(user, voice)
+      newUser = update(user, presence, voice)
+    } yield saveAndSend(newUser, voice)
 
   }
 
-  def handleUserDisconnectedFromGlobalAudio(msg: UserDisconnectedFromGlobalAudio) {
+  def handleUserLeftVoiceConfListenOnly(msg: UserLeftVoiceConf): Unit = {
+    def saveAndSend(user: User3x, voice: Voice4x): Unit = {
+      meeting.state.users.save(user)
+      sendMessage(user, voice)
+    }
 
-    /*    log.info("Handling UserDisconnectedToGlobalAudio: meetingId=" + props.id + " userId=" + msg.userId)
+    def sendMessage(user: User3x, voice: Voice4x): Unit = {
+      sender.sendUserListeningOnlyMessage(meeting.props.id, meeting.props.recorded, user.id, msg.presenceId, voice)
+    }
 
-    val user = meeting.getUser(msg.userId)
-    user foreach { u =>
-      if (meeting.removeGlobalAudioConnection(msg.userId)) {
-        if (!u.joinedWeb.value) {
-          val userLeaving = meeting.removeUser(u.id)
-          log.info("Not web user. Send user left message. meetingId=" + props.id + " userId=" + u.id + " user=" + u)
-          userLeaving foreach (u => sender.sendUserLeftMessage(props.id, props.recorded, u))
-        } else {
-          val vu = u.voiceUser.copy(joinedVoice = JoinedVoice(false))
-          val uvo = u.copy(listenOnly = ListenOnly(false), voiceUser = vu)
-          meeting.saveUser(uvo)
-          log.info("UserDisconnectedToGlobalAudio: meetingId=" + props.id + " userId=" + uvo.id + " user=" + uvo)
-          sender.sendUserListeningOnlyMessage(props.id, props.recorded, uvo.id, uvo.listenOnly)
-        }
+    def remove(user: User3x, presence: Presence2x, voice: Voice4x): User3x = {
+      val newPresence = Presence2x.save(presence, voice)
+      User3x.update(presence, user, newPresence)
+    }
+
+    for {
+      user <- meeting.state.users.findWithId(msg.userId)
+      presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
+      newUser = remove(user, presence, presence.voice)
+    } yield saveAndSend(newUser, presence.voice)
+  }
+
+  def handleMuteAllExceptPresenterRequest(msg: MuteAllExceptPresenterRequest): Unit = {
+
+    def findNonPresenters: Vector[User3x] = {
+      meeting.state.users.toVector.filterNot(u => u.roles.contains(PresenterRole))
+    }
+
+    def findNonListenOnlyPresence(user: User3x): Set[Presence2x] = {
+      user.presence.filter(p => p.voice.listenDirection.value == true && p.voice.talkDirection.value == true)
+    }
+
+    findNonPresenters foreach { u =>
+      val presence = findNonListenOnlyPresence(u)
+      presence foreach { p =>
+        sender.sendMuteVoiceUserMessage(meeting.props.id, meeting.props.recorded, u.id, msg.requesterId,
+          p.voice.id, meeting.props.voiceConf, msg.mute)
       }
     }
-*/ }
-
-  def handleMuteAllExceptPresenterRequest(msg: MuteAllExceptPresenterRequest) {
-    /*    if (msg.mute) {
-      meeting.muteMeeting()
-    } else {
-      meeting.unmuteMeeting()
-    }
-
-    sender.sendMeetingMutedMessage(props.id, props.recorded, meeting.isMeetingMuted)
-    usersWhoAreNotPresenter foreach { u =>
-      sender.sendMuteVoiceUserMessage(props.id, props.recorded, u.id, msg.requesterId,
-        u.voiceUser.id, props.voiceConf, msg.mute)
-    }
-*/ }
-
-  def handleMuteMeetingRequest(msg: MuteMeetingRequest) {
-    /*    if (msg.mute) {
-      meeting.muteMeeting()
-    } else {
-      meeting.unmuteMeeting()
-    }
-    sender.sendMeetingMutedMessage(props.id, props.recorded, meeting.isMeetingMuted)
-    meeting.getUsers foreach { u =>
-      sender.sendMuteVoiceUserMessage(props.id, props.recorded, u.id, msg.requesterId,
-        u.voiceUser.id, props.voiceConf, msg.mute)
-    }
-*/ }
-
-  def handleValidateAuthToken(msg: ValidateAuthToken) {
-    /*    log.info("Got ValidateAuthToken message. meetingId=" + msg.meetingId + " userId=" + msg.userId)
-    meeting.findWithToken(msg.token) match {
-      case Some(u) =>
-        val replyTo = props.id.value + '/' + msg.userId
-
-        //send the reply
-        sender.sendValidateAuthTokenReplyMessage(props.id, msg.userId, msg.token, true, msg.correlationId)
-        log.info("ValidateToken success. meetingId=" + props.id + " userId=" + msg.userId)
-
-        //join the user
-        handleUserJoin(new UserJoining(props.id, msg.userId, msg.token))
-      case None =>
-        log.info("ValidateToken failed. meetingId=" + props.id + " userId=" + msg.userId)
-        sender.sendValidateAuthTokenReplyMessage(props.id, msg.userId, msg.token, false, msg.correlationId)
-
-*/
-
-    /**
-     * Send a reply to BigBlueButtonActor to let it know this MeetingActor hasn't hung!
-     * Sometimes, the actor seems to hang and doesn't anymore accept messages. This is a simple
-     * audit to check whether the actor is still alive. (ralam feb 25, 2015)
-     */
-    //sender ! new ValidateAuthTokenReply(mProps.meetingID, msg.userId, msg.token, false, msg.correlationId)
   }
 
-  def handleRegisterUser(msg: RegisterUser): Unit = {
-    /*    if (meeting.hasMeetingEnded) {
-      // Check first is the meeting has ended and the user refreshed the client to reconnect.
-      log.info("Register user failed. Meeting has ended. meetingId=" + props.id + " userId=" + msg.userId)
-      sender.sendMeetingHasEnded(props.id, msg.userId)
-    } else {
-      for {
-        regUser <- meeting.createRegisteredUser(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
-        rUsers = meeting.addRegisteredUser(msg.authToken, regUser)
-      } yield sender.sendUserRegisteredMessage(props.id, props.recorded, regUser)
+  def handleMuteMeetingRequest(msg: MuteMeetingRequest): Unit = {
+    def findNonListenOnlyPresence(user: User3x): Set[Presence2x] = {
+      user.presence.filter(p => p.voice.listenDirection.value == true && p.voice.talkDirection.value == true)
     }
-*/ }
+
+    meeting.state.users.toVector foreach { u =>
+      val presence = findNonListenOnlyPresence(u)
+      presence foreach { p =>
+        sender.sendMuteVoiceUserMessage(meeting.props.id, meeting.props.recorded, u.id, msg.requesterId,
+          p.voice.id, meeting.props.voiceConf, msg.mute)
+      }
+    }
+  }
+
+  def handleRegisterUser(msg: RegisterUser2x): Unit = {
+    if (meeting.hasMeetingEnded) {
+      // Check first is the meeting has ended and the user refreshed the client to reconnect.
+      sender.sendMeetingHasEnded(meeting.props.id, msg.userId)
+    } else {
+      val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
+      val rUsers = meeting.state.registeredUsers.add(regUser)
+      sender.sendUserRegisteredMessage(meeting.props.id, meeting.props.recorded, regUser)
+    }
+  }
 
   def handleIsMeetingMutedRequest(msg: IsMeetingMutedRequest) {
     //    sender.sendIsMeetingMutedReplyMessage(props.id, props.recorded, msg.requesterId, meeting.isMeetingMuted)
   }
 
   def handleMuteUserRequest(msg: MuteUserRequest) {
-    /*    log.info("Received mute user request. meetingId=" + props.id + " userId=" + msg.userId + " mute=" + msg.mute)
-    meeting.getUser(msg.userId) match {
-      case Some(u) =>
-        log.info("Send mute user request. meetingId=" + props.id + " userId=" + u.id + " user=" + u)
-        sender.sendMuteVoiceUserMessage(props.id, props.recorded, u.id, msg.requesterId,
-          u.voiceUser.id, props.voiceConf, msg.mute)
 
-      case None =>
-        log.info("Could not find user to mute.  meetingId=" + props.id + " userId=" + msg.userId)
-
+    def isMutable(voice: Voice4x): Boolean = {
+      voice.joined.value && !voice.muted.value && voice.listenDirection.value && voice.talkDirection.value
     }
-*/ }
+
+    def sendMuteUser(presence: Set[Presence2x]): Unit = {
+      //     sender.sendMuteVoiceUserMessage(meeting.props.id, meeting.props.recorded, presence.voice.id, msg.requesterId,
+      //       presence.voice.id, meeting.props.voiceConf, msg.mute)
+    }
+
+    for {
+      user <- meeting.state.users.findWithId(msg.userId)
+      presence = user.presence.filter(p => isMutable(p.voice))
+    } yield sendMuteUser(presence)
+  }
 
   def handleEjectUserRequest(msg: EjectUserFromVoiceRequest) {
     /*    log.info("Received eject user request. meetingId=" + msg.meetingId + " userId=" + msg.userId)
@@ -251,17 +243,6 @@ trait UsersHandler2x extends UsersApp2x {
       }
     }
 */ }
-
-  def usersWhoAreNotPresenter(): Array[UserVO] = {
-    val au = ArrayBuffer[UserVO]()
-    //
-    //    meeting.getUsers foreach { u =>
-    //      if (!u.presenter.value) {
-    //        au += u
-    //      }
-    //    }
-    au.toArray
-  }
 
   def handleUserEmojiStatus(msg: UserEmojiStatus) {
     /*    val userVO = changeUserEmojiStatus(msg.userId, msg.emojiStatus)

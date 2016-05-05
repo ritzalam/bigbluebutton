@@ -129,13 +129,39 @@ object Stream {
 
 case class Stream(id: String, uri: String, viewers: Set[IntUserId])
 
+object Voice4x {
+  def mute(voice: Voice4x): Voice4x = {
+    modify(voice)(_.muted).setTo(Muted(true))
+  }
+
+  def unMute(voice: Voice4x): Voice4x = {
+    modify(voice)(_.muted).setTo(Muted(false))
+  }
+
+  def joined(voice: Voice4x): Voice4x = {
+    modify(voice)(_.joined).setTo(JoinedVoice(true))
+  }
+
+  def left(voice: Voice4x): Voice4x = {
+    Voice4x(voice.id)
+  }
+
+  def listenOnly(voice: Voice4x): Voice4x = {
+    modify(voice)(_.listenDirection).setTo(ListenDirection(true))
+    modify(voice)(_.talkDirection).setTo(TalkDirection(false))
+  }
+
+}
+
 case class Voice4x(
-  userAgent: UserAgent,
-  userId: IntUserId,
-  callerId: CallerId,
-  listenDirection: ListenDirection,
-  talkDirection: TalkDirection,
-  muted: Muted, talking: Talking)
+  id: VoiceUserId,
+  joined: JoinedVoice = JoinedVoice(false),
+  userAgent: UserAgent = UserAgent("None"),
+  callerId: CallerId = CallerId(CallerIdName("unknown"), CallerIdNum("unknown")),
+  listenDirection: ListenDirection = ListenDirection(false),
+  talkDirection: TalkDirection = TalkDirection(false),
+  muted: Muted = Muted(true),
+  talking: Talking = Talking(false))
 
 object User3x {
   def update(old: Presence2x, user: User3x, updated: Presence2x): User3x = {
@@ -160,8 +186,8 @@ object User3x {
 
   def create(id: PresenceId, userAgent: PresenceUserAgent): Presence2x = {
     userAgent match {
-      case FlashWebUserAgent => Presence2x(id, UserAgent("Flash"), None, None, None, None)
-      case Html5WebUserAgent => Presence2x(id, UserAgent("Html5"), None, None, None, None)
+      case FlashWebUserAgent => Presence2x(id, UserAgent("Flash"), None, Voice4x(VoiceUserId("foo")), None, None)
+      case Html5WebUserAgent => Presence2x(id, UserAgent("Html5"), None, Voice4x(VoiceUserId("foo")), None, None)
     }
   }
 }
@@ -192,7 +218,7 @@ object Presence2x {
   }
 
   def save(presence: Presence2x, app: Voice4x): Presence2x = {
-    modify(presence)(_.voice).setTo(Some(app))
+    modify(presence)(_.voice).setTo(app)
   }
 
   def save(presence: Presence2x, app: ScreenshareApp2x): Presence2x = {
@@ -205,7 +231,7 @@ case class Presence2x(
   id: PresenceId,
   userAgent: UserAgent,
   data: Option[DataApp2x],
-  voice: Option[Voice4x],
+  voice: Voice4x,
   webcams: Option[WebcamApp2x],
   screenshare: Option[ScreenshareApp2x])
 

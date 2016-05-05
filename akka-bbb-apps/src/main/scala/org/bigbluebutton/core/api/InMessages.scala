@@ -255,10 +255,9 @@ case class UserTalkingInVoiceConfMessage(
   voiceConfId: VoiceConf, voiceUserId: VoiceUserId, talking: Boolean) extends InMessage
 case class VoiceConfRecordingStartedMessage(
   voiceConfId: VoiceConf, recordStream: String, recording: Boolean, timestamp: String) extends InMessage
-case class UserJoinedVoiceConfListenOnly(meetingId: IntMeetingId, userId: IntUserId, presenceId: PresenceId,
-  voiceConf: VoiceConf, userAgent: UserAgent) extends InMessage
-case class UserLeftVoiceConfListenOnly(meetingId: IntMeetingId, userId: IntUserId, presenceId: PresenceId,
-  voiceConf: VoiceConf, userAgent: UserAgent) extends InMessage
+case class UserJoinedVoiceConf(meetingId: IntMeetingId, userId: IntUserId, presenceId: PresenceId,
+  voice: Voice4x) extends InMessage
+case class UserLeftVoiceConf(meetingId: IntMeetingId, userId: IntUserId, presenceId: PresenceId) extends InMessage
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Whiteboard

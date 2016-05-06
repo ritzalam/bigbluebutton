@@ -1,19 +1,21 @@
 package org.bigbluebutton.core
 
-import akka.actor.{ Actor, ActorLogging, Props }
-import org.bigbluebutton.core.api.{ EjectUserFromMeeting, ValidateAuthToken }
+import akka.actor.{Actor, ActorLogging, Props}
+import org.bigbluebutton.core.api.{EjectUserFromMeeting, ValidateAuthToken}
 import org.bigbluebutton.core.bus.IncomingEventBus
-import org.bigbluebutton.core.domain.MeetingProperties
+import org.bigbluebutton.core.domain.{MeetingActorRef, MeetingProperties}
 
 object UserActor {
   def props(
-    mProps: MeetingProperties,
+           meetingActorRef: MeetingActorRef,
+           props: MeetingProperties,
     eventBus: IncomingEventBus,
     outGW: OutMessageGateway): Props =
-    Props(classOf[UserActor], mProps, eventBus, outGW)
+    Props(classOf[UserActor], meetingActorRef, props, eventBus, outGW)
 }
 
 class UserActor(
+                 meetingActorRef: MeetingActorRef,
     val mProps: MeetingProperties,
     val eventBus: IncomingEventBus,
     val outGW: OutMessageGateway) extends Actor with ActorLogging {

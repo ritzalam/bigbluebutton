@@ -96,13 +96,14 @@ class BigBlueButtonActor(val system: ActorSystem,
       case None =>
         log.info("Create meeting request. meetingId={}", msg.mProps.id)
 
-        var m = RunningMeeting(msg.mProps, outGW, eventBus)
+        val m = RunningMeeting(msg.mProps, outGW, eventBus)
 
         /** Subscribe to meeting and voice events. **/
         eventBus.subscribe(m.actorRef, m.mProps.id.value)
         eventBus.subscribe(m.actorRef, m.mProps.voiceConf.value)
 
         meetings += m.mProps.id.value -> m
+
         outGW.send(new MeetingCreated(m.mProps.id, m.mProps.extId, m.mProps.recorded, m.mProps.name.value,
           m.mProps.voiceConf.value, msg.mProps.duration, msg.mProps.moderatorPass,
           msg.mProps.viewerPass, msg.mProps.createTime, msg.mProps.createDate))

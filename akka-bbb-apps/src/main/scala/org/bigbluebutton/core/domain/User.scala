@@ -113,8 +113,9 @@ case class Locale(value: String) extends AnyVal
 
 case class SessionToken(value: String) extends AnyVal
 
-case class MeetingActorRef(value: ActorRef) extends AnyVal
-
-case class UserActorRef(value: ActorRef) extends AnyVal
-
 case class PresenceActorRef(value: ActorRef) extends AnyVal
+
+
+case class MeetingActorRef(id: IntMeetingId, value: ActorRef)
+
+case class UserActorRef(id: IntUserId, actorRef: ActorRef)

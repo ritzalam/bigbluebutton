@@ -52,12 +52,15 @@ trait UsersHandler2x extends UsersApp2x {
 
           sender.sendUserJoinedMessage(meeting.props.id, meeting.props.recorded, uvo)
 
+          // TODO: Become presenter if only moderator in meeting
           becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
 
+          // TODO: Keep track if there are still web users in the meeting.
           //          if (Users2x.numberOfWebUsers(meeting.state.users.toVector) > 0) {
           //            meeting.resetLastWebUserLeftOn()
           //          }
 
+          // TODO: Start recording when first user joins meeting
           //          if (needToStartRecording(meeting)) {
           //            meeting.recordingStarted()
           //     sender.send(new RecordingStatusChanged(props.id, props.recorded, IntUserId("system"), meeting.isRecording))
@@ -173,6 +176,7 @@ trait UsersHandler2x extends UsersApp2x {
     }
 
     def sendMuteUser(presence: Set[Presence2x]): Unit = {
+      // TODO: Send mute voice user
       //     sender.sendMuteVoiceUserMessage(meeting.props.id, meeting.props.recorded, presence.voice.id, msg.requesterId,
       //       presence.voice.id, meeting.props.voiceConf, msg.mute)
     }
@@ -183,19 +187,21 @@ trait UsersHandler2x extends UsersApp2x {
     } yield sendMuteUser(presence)
   }
 
-  def handleEjectUserRequest(msg: EjectUserFromVoiceRequest) {
-    /*    log.info("Received eject user request. meetingId=" + msg.meetingId + " userId=" + msg.userId)
-    meeting.getUser(msg.userId) match {
-      case Some(u) =>
-        if (u.voiceUser.joinedVoice.value) {
-          log.info("Ejecting user from voice.  meetingId=" + props.id + " userId=" + u.id)
-          sender.sendEjectVoiceUserMessage(props.id, props.recorded, msg.ejectedBy, u.id,
-            u.voiceUser.id, props.voiceConf)
-        }
+  def handleEjectUserFromVoiceRequest(msg: EjectUserFromVoiceRequest) {
 
-      case None => // do nothing
+    def removeAndEject(user: User3x): Unit = {
+      meeting.state.users.remove(user.id)
+      // TODO: Send Eject user from voice
+      //      sender.sendEjectVoiceUserMessage(props.id, props.recorded, msg.ejectedBy, u.id,
+      //        u.voiceUser.id, props.voiceConf)
     }
-*/ }
+
+    for {
+      user <- meeting.state.users.findWithId(msg.userId)
+      // TODO: Get all the presence with voice. Go through them and eject one by one.
+      // What to do with listen only??
+    } yield removeAndEject(user)
+  }
 
   def handleGetLockSettings(msg: GetLockSettings) {
     //println("*************** Reply with current lock settings ********************")
@@ -245,29 +251,32 @@ trait UsersHandler2x extends UsersApp2x {
 */ }
 
   def handleUserEmojiStatus(msg: UserEmojiStatus) {
-    /*    val userVO = changeUserEmojiStatus(msg.userId, msg.emojiStatus)
 
-    userVO foreach { uvo =>
-      sender.sendUserChangedEmojiStatusMessage(props.id, props.recorded, uvo.emojiStatus, uvo.id)
+    def saveAndSend(user: User3x): Unit = {
+      meeting.state.users.save(user)
+      // TODO:
+      //     sender.sendUserChangedEmojiStatusMessage(props.id, props.recorded, uvo.emojiStatus, uvo.id)
     }
-*/ }
+    for {
+      user <- meeting.state.users.findWithId(msg.userId)
+      newUser = User3x.update(user, msg.emojiStatus)
+    } yield saveAndSend(user)
+  }
 
   def handleEjectUserFromMeeting(msg: EjectUserFromMeeting) {
-    /*    meeting.getUser(msg.userId) foreach { user =>
-      if (user.voiceUser.joinedVoice.value) {
-        sender.sendEjectVoiceUserMessage(props.id, props.recorded,
-          msg.ejectedBy, msg.userId, user.voiceUser.id, props.voiceConf)
-      }
+    def removeAndEject(user: User3x): Unit = {
+      meeting.state.users.remove(user.id)
+      meeting.state.registeredUsers.remove(msg.userId)
 
-      meeting.removeUser(msg.userId)
-      meeting.removeRegisteredUser(msg.userId)
-
-      log.info("Ejecting user from meeting.  meetingId=" + props.id + " userId=" + msg.userId)
-      sender.sendUserEjectedFromMeetingMessage(props.id, props.recorded, msg.userId, msg.ejectedBy)
-      sender.sendDisconnectUserMessage(props.id, msg.userId)
-      sender.sendUserLeftMessage(msg.meetingId, props.recorded, user)
+      // TODO: Send user ejected message
+      //      sender.sendUserEjectedFromMeetingMessage(props.id, props.recorded, msg.userId, msg.ejectedBy)
+      //      sender.sendDisconnectUserMessage(props.id, msg.userId)
+      //      sender.sendUserLeftMessage(msg.meetingId, props.recorded, user)
     }
-*/ }
+    for {
+      user <- meeting.state.users.findWithId(msg.userId)
+    } yield removeAndEject(user)
+  }
 
   def handleUserShareWebcam(msg: UserShareWebcam) {
     /*    meeting.getUser(msg.userId) foreach { user =>
@@ -306,39 +315,6 @@ trait UsersHandler2x extends UsersApp2x {
   def sendUserLeftEvent(user: UserVO) {
     //    val u = meeting.removeUser(user.id)
     //    sender.sendUserLeftMessage(props.id, props.recorded, user)
-  }
-
-  def handleUserJoin(msg: UserJoining): Unit = {
-    //    log.debug("Received user joined meeting. metingId=" + props.id + " userId=" + msg.userId)
-
-    //    val regUser = meeting.findWithToken(msg.token)
-    //    val webUser = meeting.getUser(msg.userId)
-    //    webUser foreach { wu =>
-    //      if (!wu.joinedWeb.value) {
-    /**
-     * If user is not joined through the web (perhaps reconnecting).
-     * Send a user left event to clear up user list of all clients.
-     */
-    //        sendUserLeftEvent(wu)
-    //      }
-    //    }
-
-    //    regUser foreach { ru =>
-    //      val voiceUser = initializeVoice(msg.userId, ru.name)
-    //      val locked = getInitialLockStatus(ru.roles)
-    //      val uvo = createNewUser(msg.userId, ru.extId, ru.name, ru.roles, voiceUser, getInitialLockStatus(ru.roles))
-
-    //      log.info("User joined meeting. metingId=" + props.id + " userId=" + uvo.id + " user=" + uvo)
-
-    //      sender.sendUserJoinedMessage(props.id, props.recorded, uvo)
-    //      sender.sendMeetingStateMessage(props.id, props.recorded, uvo.id, meeting.getPermissions,
-    //        Muted(meeting.isMeetingMuted))
-
-    //      becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
-    //    }
-
-    //    webUserJoined
-    //    startRecordingIfAutoStart()
   }
 
   def handleUserJoin2(msg: UserJoining): Unit = {

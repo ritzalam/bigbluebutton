@@ -184,6 +184,10 @@ object User3x {
     modify(user)(_.roles).setTo(user.roles - role)
   }
 
+  def update(user: User3x, emoji: EmojiStatus): User3x = {
+    modify(user)(_.emojiStatus).setTo(emoji)
+  }
+
   def create(id: PresenceId, userAgent: PresenceUserAgent): Presence2x = {
     userAgent match {
       case FlashWebUserAgent => Presence2x(id, UserAgent("Flash"), None, Voice4x(VoiceUserId("foo")), None, None)

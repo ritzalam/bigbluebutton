@@ -34,12 +34,7 @@ class Users3x {
 }
 
 object Users3x {
-  def create(
-    id: IntUserId,
-    extId: ExtUserId,
-    name: Name,
-    sessionId: SessionId,
-    roles: Set[Role2x]): User3x = {
+  def create(id: IntUserId, extId: ExtUserId, name: Name, sessionId: SessionId, roles: Set[Role2x]): User3x = {
 
     new User3x(id, extId, name, EmojiStatus("none"), roles,
       Set.empty, new UserAbilities(Set.empty, Set.empty, false),

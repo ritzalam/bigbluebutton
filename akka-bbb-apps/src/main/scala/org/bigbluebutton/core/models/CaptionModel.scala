@@ -35,18 +35,18 @@ class CaptionModel {
   }
 
   def editHistory(startIndex: Integer, endIndex: Integer, locale: String, text: String) {
-    println("editHistory entered")
+
     if (transcripts contains locale) {
-      println("editHistory found locale:" + locale)
+
       var oText: String = transcripts(locale)(1)
 
       if (startIndex >= 0 && endIndex <= oText.length && startIndex <= endIndex) {
-        println("editHistory passed index test")
+
         var sText: String = oText.substring(0, startIndex)
         var eText: String = oText.substring(endIndex)
 
         transcripts(locale)(1) = (sText + text + eText)
-        println("editHistory new history is: " + transcripts(locale)(1))
+
       }
     }
   }

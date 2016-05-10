@@ -11,7 +11,6 @@ class RunningMeeting2x {
 trait Meeting2x {
   val props: MeetingProperties
 
-
   val state = new MeetingState
 
   private var audioSettingsInited = false

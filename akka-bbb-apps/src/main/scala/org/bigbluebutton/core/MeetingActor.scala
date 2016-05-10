@@ -58,15 +58,15 @@ class MeetingActorInternal(val mProps: MeetingProperties,
 
 object MeetingActor {
   def props(
-    mProps: MeetingProperties,
-    eventBus: IncomingEventBus,
+    props: MeetingProperties,
+    bus: IncomingEventBus,
     outGW: OutMessageGateway): Props =
-    Props(classOf[MeetingActor], mProps, eventBus, outGW)
+    Props(classOf[MeetingActor], props, bus, outGW)
 }
 
 class MeetingActor(
-    val mProps: MeetingProperties,
-    val eventBus: IncomingEventBus,
+    val props: MeetingProperties,
+    val bus: IncomingEventBus,
     val outGW: OutMessageGateway) extends Actor with ActorLogging {
 
   val chatModel = new ChatModel()
@@ -77,18 +77,14 @@ class MeetingActor(
   val breakoutModel = new BreakoutRoomModel()
   val captionModel = new CaptionModel()
 
-  // We extract the meeting handlers into this class so it is
-  // easy to test.
-  val liveMeeting = new LiveMeeting(
-    mProps, eventBus, outGW,
-    chatModel, layoutModel, pollModel,
+  // We extract the meeting handlers into this class so it is easy to test.
+  val liveMeeting = new LiveMeeting(props, bus, outGW, chatModel, layoutModel, pollModel,
     wbModel, presModel, breakoutModel, captionModel)
 
   /**
-   * Put the internal message injector into another actor so this
-   * actor is easy to test.
+   * Put the internal message injector into another actor so this actor is easy to test.
    */
-  var actorMonitor = context.actorOf(MeetingActorInternal.props(mProps, eventBus, outGW))
+  var actorMonitor = context.actorOf(MeetingActorInternal.props(props, bus, outGW))
 
   def receive = {
     case msg: MonitorNumberOfUsers => liveMeeting.handleMonitorNumberOfWebUsers(msg)

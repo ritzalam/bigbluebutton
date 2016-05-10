@@ -1,9 +1,7 @@
 package org.bigbluebutton.core.models
 
 import akka.actor.ActorRef
-import org.bigbluebutton.core.domain.{IntUserId, UserActorRef}
-
-
+import org.bigbluebutton.core.domain.{ IntUserId, UserActorRef }
 
 class UserActorRefs {
   private var userActorRefs = new collection.immutable.HashMap[IntUserId, UserActorRef]
@@ -14,7 +12,7 @@ class UserActorRefs {
 
   def remove(id: IntUserId): Option[UserActorRef] = {
     val ref = userActorRefs.get(id)
-    ref foreach( r => userActorRefs -= id)
+    ref foreach (r => userActorRefs -= id)
     ref
   }
 

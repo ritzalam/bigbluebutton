@@ -11,6 +11,7 @@ trait UsersHandler2x extends UsersApp2x {
 
   val meeting: Meeting2x
   val sender: UsersMessageSender2x
+  private var userHandlers = new collection.immutable.HashMap[String, UserActorMessageHandler]
 
   def handleRegisterUser2x(msg: RegisterUser2x): Unit = {
     val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
@@ -21,6 +22,10 @@ trait UsersHandler2x extends UsersApp2x {
   def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
     meeting.state.registeredUsers.findWithToken(msg.token) match {
       case Some(u) =>
+        val userHandler = new UserActorMessageHandler(msg.userId, msg.extId, props, bus, outGW)
+        userHandlers += msg.userId.value -> userHandler
+        val state = userHandler.handleValidateAuthToken2x(msg, meeting.state)
+
         sender.sendValidateAuthTokenReplyMessage(meeting.props.id, msg.userId, msg.token, true, msg.correlationId)
       case None =>
         sender.sendValidateAuthTokenReplyMessage(meeting.props.id, msg.userId, msg.token, false, msg.correlationId)

@@ -1,11 +1,15 @@
 package org.bigbluebutton.core
 
 import org.bigbluebutton.core.api.ValidateAuthToken
-import org.bigbluebutton.core.domain.{ ExtUserId, IntUserId, User3x }
+import org.bigbluebutton.core.domain.{ User3x }
 
 class UserActorMessageHandler {
 
   def handleValidateAuthToken(msg: ValidateAuthToken): Unit = {
+
+  }
+
+  def handleMuteUserRequest(): Unit = {
 
   }
 }

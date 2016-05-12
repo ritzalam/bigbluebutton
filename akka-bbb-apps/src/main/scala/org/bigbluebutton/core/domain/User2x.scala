@@ -47,7 +47,18 @@ case class PhoneInVoicePresence(
   name: Name,
   sessionId: SessionId) extends Presence
 
-case class RegisteredUser2x(id: IntUserId, extId: ExtUserId, name: Name, roles: Set[Role2x], authToken: AuthToken)
+case class RegisteredUser2x(id: IntUserId,
+  extId: ExtUserId,
+  name: Name,
+  roles: Set[Role2x],
+  authToken: AuthToken,
+  avatar: Avatar,
+  logoutUrl: LogoutUrl,
+  welcome: Welcome,
+  dialNumbers: Set[DialNumber],
+  pinNumber: PinNumber,
+  config: Set[String],
+  extData: Set[String])
 
 case class UserAbilities(removed: Set[Abilities2x], added: Set[Abilities2x], applyMeetingAbilities: Boolean)
 
@@ -112,9 +123,6 @@ case class Voice2x(
   talking: Talking)
 
 object Stream {
-  def update(stream: Stream, uri: String): Stream = {
-    modify(stream)(_.uri).setTo(uri)
-  }
 
   def add(stream: Stream, user: IntUserId): Stream = {
     val newViewers = stream.viewers + user
@@ -127,7 +135,8 @@ object Stream {
   }
 }
 
-case class Stream(id: String, uri: String, viewers: Set[IntUserId])
+case class MediaAttribute(key: String, value: String)
+case class Stream(id: String, sessionId: SessionId, attributes: Set[MediaAttribute], viewers: Set[IntUserId])
 
 object Voice4x {
   def mute(voice: Voice4x): Voice4x = {
@@ -190,8 +199,11 @@ object User3x {
 
   def create(id: PresenceId, userAgent: PresenceUserAgent): Presence2x = {
     userAgent match {
-      case FlashWebUserAgent => Presence2x(id, UserAgent("Flash"), None, Voice4x(VoiceUserId("foo")), None, None)
-      case Html5WebUserAgent => Presence2x(id, UserAgent("Html5"), None, Voice4x(VoiceUserId("foo")), None, None)
+      case FlashWebUserAgent => Presence2x(
+        id, UserAgent("Flash"), DataApp2x(SessionId("none")), Voice4x(VoiceUserId("foo")),
+        WebCamStreams(Set.empty), ScreenShareStreams(Set.empty))
+      case Html5WebUserAgent => Presence2x(id, UserAgent("Html5"), DataApp2x(SessionId("none")),
+        Voice4x(VoiceUserId("foo")), WebCamStreams(Set.empty), ScreenShareStreams(Set.empty))
     }
   }
 }
@@ -214,19 +226,11 @@ case object Html5WebUserAgent extends PresenceUserAgent
 
 object Presence2x {
   def save(presence: Presence2x, data: DataApp2x): Presence2x = {
-    modify(presence)(_.data).setTo(Some(data))
-  }
-
-  def save(presence: Presence2x, app: WebcamApp2x): Presence2x = {
-    modify(presence)(_.webcams).setTo(Some(app))
+    modify(presence)(_.data).setTo(data)
   }
 
   def save(presence: Presence2x, app: Voice4x): Presence2x = {
     modify(presence)(_.voice).setTo(app)
-  }
-
-  def save(presence: Presence2x, app: ScreenshareApp2x): Presence2x = {
-    modify(presence)(_.screenshare).setTo(Some(app))
   }
 
 }
@@ -234,10 +238,10 @@ object Presence2x {
 case class Presence2x(
   id: PresenceId,
   userAgent: UserAgent,
-  data: Option[DataApp2x],
+  data: DataApp2x,
   voice: Voice4x,
-  webcams: Option[WebcamApp2x],
-  screenshare: Option[ScreenshareApp2x])
+  webCams: WebCamStreams,
+  screenShare: ScreenShareStreams)
 
 object DataApp2x {
   def update(data: DataApp2x, session: SessionId): DataApp2x = {
@@ -247,10 +251,10 @@ object DataApp2x {
 
 case class DataApp2x(sessionId: SessionId)
 
-case class WebcamApp2x(sessionId: SessionId, streams: Set[Stream])
+case class WebCamStreams(streams: Set[Stream])
 
 case class VoiceApp2x(sessionId: SessionId, voice: Voice4x)
-case class ScreenshareApp2x(sessionId: SessionId, streams: Set[Stream])
+case class ScreenShareStreams(streams: Set[Stream])
 
 trait RoleData
 case class SignLanguageInterpreterRoleData(locale: Locale, stream: Stream) extends RoleData {

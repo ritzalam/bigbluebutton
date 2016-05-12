@@ -1,82 +1,160 @@
 package org.bigbluebutton.core.handlers
 
+import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.models.{ Meeting2x, RegisteredUsers2x, Users3x }
-import org.bigbluebutton.core.util.RandomStringGenerator
+import org.bigbluebutton.core.models.{ MeetingState, PinNumberGenerator, RegisteredUsers2x }
 
-import scala.collection.mutable.ArrayBuffer
-
-trait UsersHandler2x extends UsersApp2x {
-
-  val meeting: Meeting2x
+trait UsersHandler2x {
+  val state: MeetingState
+  val props: MeetingProperties
   val sender: UsersMessageSender2x
+  val outGW: OutMessageGateway
+
   private var userHandlers = new collection.immutable.HashMap[String, UserActorMessageHandler]
 
   def handleRegisterUser2x(msg: RegisterUser2x): Unit = {
-    val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
-    val _ = meeting.state.registeredUsers.add(regUser)
-    sender.sendUserRegisteredMessage(meeting.props.id, meeting.props.recorded, regUser)
+    val pinNumber = PinNumberGenerator.generatePin(props.voiceConf, state.status.get)
+    val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken, msg.avatar,
+      msg.logoutUrl, msg.welcome, msg.dialNumbers, pinNumber, msg.config, msg.extData)
+    state.registeredUsers.add(regUser)
+    // TODO: Send register user reply
+    //sender.sendUserRegisteredMessage(meeting.props.id, meeting.props.recorded, regUser)
   }
 
   def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
-    meeting.state.registeredUsers.findWithToken(msg.token) match {
+    state.registeredUsers.findWithToken(msg.token) match {
       case Some(u) =>
-        val userHandler = new UserActorMessageHandler(msg.userId, msg.extId, props, bus, outGW)
+        val userHandler = new UserActorMessageHandler(u, props, outGW)
         userHandlers += msg.userId.value -> userHandler
-        val state = userHandler.handleValidateAuthToken2x(msg, meeting.state)
-
-        sender.sendValidateAuthTokenReplyMessage(meeting.props.id, msg.userId, msg.token, true, msg.correlationId)
+        userHandler.handleValidateAuthToken2x(msg, state)
       case None =>
-        sender.sendValidateAuthTokenReplyMessage(meeting.props.id, msg.userId, msg.token, false, msg.correlationId)
+      // TODO: Send validate auth token reply
+      //  sender.sendValidateAuthTokenReplyMessage(meeting.props.id, msg.userId, msg.token, false, msg.correlationId)
+      // Close the connection
     }
   }
 
   def handleUserJoinWeb2x(msg: NewUserPresence2x): Unit = {
-
-    def createUser(ru: RegisteredUser2x): User3x = {
-      Users3x.create(msg.userId, ru.extId, ru.name, msg.sessionId, ru.roles)
-    }
 
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
 
-    meeting.state.users.findWithId(msg.userId) match {
-      case Some(user) =>
-      // Update just the session id as this is a reconnect.
-      //val u = User2x.updateSessionId(user, msg.sessionId, msg.presenceId)
-      //meeting.users.save(u)
-      case None =>
-        meeting.state.registeredUsers.findWithToken(msg.token) foreach { ru =>
-          val uvo = createUser(ru)
-          val presence = User3x.create(msg.presenceId, msg.userAgent)
-          val user = User3x.add(uvo, presence)
-          meeting.state.users.save(user)
+    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserJoinWeb2x(msg, state) }
 
-          sender.sendUserJoinedMessage(meeting.props.id, meeting.props.recorded, uvo)
+    // TODO: Keep track if there are still web users in the meeting.
+    //          if (Users2x.numberOfWebUsers(meeting.state.users.toVector) > 0) {
+    //            meeting.resetLastWebUserLeftOn()
+    //          }
 
-          // TODO: Become presenter if only moderator in meeting
-          becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
-
-          // TODO: Keep track if there are still web users in the meeting.
-          //          if (Users2x.numberOfWebUsers(meeting.state.users.toVector) > 0) {
-          //            meeting.resetLastWebUserLeftOn()
-          //          }
-
-          // TODO: Start recording when first user joins meeting
-          //          if (needToStartRecording(meeting)) {
-          //            meeting.recordingStarted()
-          //     sender.send(new RecordingStatusChanged(props.id, props.recorded, IntUserId("system"), meeting.isRecording))
-          //          }
-        }
-    }
+    // TODO: Start recording when first user joins meeting
+    //          if (needToStartRecording(meeting)) {
+    //            meeting.recordingStarted()
+    //     sender.send(new RecordingStatusChanged(props.id, props.recorded, IntUserId("system"), meeting.isRecording))
+    //          }
 
   }
 
+  def handleUserLeftWeb2x(msg: UserPresenceLeft2x): Unit = {
+    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserLeftWeb2x(msg, state) }
+
+    //    if (meeting.hasUser(msg.userId)) {
+    //      val user = meeting.removeUser(msg.userId)
+    //      user foreach { u =>
+    //        log.info("User left meeting. meetingId=" + props.id + " userId=" + u.id + " user=" + u)
+    //        sender.sendUserLeftMessage(msg.meetingId, props.recorded, u)
+
+    //        if (u.presenter.value) {
+
+    /* The current presenter has left the meeting. Find a moderator and make
+	       * him presenter. This way, if there is a moderator in the meeting, there
+	       * will always be a presenter.
+	       */
+    //          val moderator = meeting.findAModerator()
+    //          moderator.foreach { mod =>
+    //            log.info("Presenter left meeting.  meetingId=" + props.id + " userId=" + u.id
+    //              + ". Making user=[" + mod.id + "] presenter.")
+    //            assignNewPresenter(mod.id, mod.name, mod.id)
+    //          }
+    //        }
+
+    //        val vu = u.voiceUser
+    //        if (vu.joinedVoice.value || u.listenOnly.value) {
+    /**
+     * The user that left is still in the voice conference. Maybe this user just got disconnected
+     * and is reconnecting. Make the user as joined only in the voice conference. If we get a
+     * user left voice conference message, then we will remove the user from the users list.
+     */
+    //          switchUserToPhoneUser((new UserJoinedVoiceConfMessage(props.voiceConf,
+    //            vu.id, u.id, u.extId, vu.callerId,
+    //            vu.muted, vu.talking, u.listenOnly)));
+    //        }
+
+    //        checkCaptionOwnerLogOut(u.id.value)
+    //      }
+
+    //      startCheckingIfWeNeedToEndVoiceConf()
+    //      stopAutoStartedRecording()
+    //    }
+  }
+
+  def handleViewWebCamRequest2x(msg: ViewWebCamRequest2x) {
+    userHandlers.get(msg.userId.value) foreach { handler => handler.handleViewWebCamRequest2x(msg, state) }
+
+    /*    meeting.getUser(msg.userId) foreach { user =>
+      val streams = user.webcamStreams + msg.stream
+      val uvo = user.copy(hasStream = HasStream(true), webcamStreams = streams)
+      meeting.saveUser(uvo)
+      log.info("User shared webcam.  meetingId=" + props.id + " userId=" + uvo.id
+        + " stream=" + msg.stream + " streams=" + streams)
+      sender.sendUserSharedWebcamMessage(props.id, props.recorded, uvo.id, msg.stream)
+    }
+*/ }
+
+  def handleShareWebCamRequest2x(msg: ShareWebCamRequest2x) {
+    userHandlers.get(msg.userId.value) foreach { handler => handler.handleShareWebCamRequest2x(msg, state) }
+
+    /*    meeting.getUser(msg.userId) foreach { user =>
+      val streams = user.webcamStreams + msg.stream
+      val uvo = user.copy(hasStream = HasStream(true), webcamStreams = streams)
+      meeting.saveUser(uvo)
+      log.info("User shared webcam.  meetingId=" + props.id + " userId=" + uvo.id
+        + " stream=" + msg.stream + " streams=" + streams)
+      sender.sendUserSharedWebcamMessage(props.id, props.recorded, uvo.id, msg.stream)
+    }
+*/ }
+
+  def handleUserShareWebCam2x(msg: UserShareWebCam2x) {
+    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserShareWebCam2x(msg, state) }
+
+    /*    meeting.getUser(msg.userId) foreach { user =>
+      val streams = user.webcamStreams + msg.stream
+      val uvo = user.copy(hasStream = HasStream(true), webcamStreams = streams)
+      meeting.saveUser(uvo)
+      log.info("User shared webcam.  meetingId=" + props.id + " userId=" + uvo.id
+        + " stream=" + msg.stream + " streams=" + streams)
+      sender.sendUserSharedWebcamMessage(props.id, props.recorded, uvo.id, msg.stream)
+    }
+*/ }
+
+  def handleUserUnShareWebCam2x(msg: UserUnShareWebCam2x) {
+    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserUnShareWebCam2x(msg, state) }
+    /*    meeting.getUser(msg.userId) foreach { user =>
+      val streamName = user.webcamStreams find (w => w == msg.stream) foreach { streamName =>
+        val streams = user.webcamStreams - streamName
+        val uvo = user.copy(hasStream = HasStream((!streams.isEmpty)), webcamStreams = streams)
+        meeting.saveUser(uvo)
+        log.info("User unshared webcam.  meetingId=" + props.id + " userId=" + uvo.id
+          + " stream=" + msg.stream + " streams=" + streams)
+        sender.sendUserUnsharedWebcamMessage(props.id, props.recorded, uvo.id, msg.stream)
+      }
+    }
+*/ }
+
   def handleUserJoinedVoiceConfListenOnly(msg: UserJoinedVoiceConf): Unit = {
-    def createVoice(user: User3x): Voice4x = {
+    /*    def createVoice(user: User3x): Voice4x = {
       Voice4x(msg.voice.id, joined = JoinedVoice(true), msg.voice.userAgent, msg.voice.callerId,
         msg.voice.listenDirection, msg.voice.talkDirection, msg.voice.muted, msg.voice.talking)
     }
@@ -101,11 +179,11 @@ trait UsersHandler2x extends UsersApp2x {
       voice = createVoice(user)
       newUser = update(user, presence, voice)
     } yield saveAndSend(newUser, voice)
-
+*/
   }
 
   def handleUserLeftVoiceConfListenOnly(msg: UserLeftVoiceConf): Unit = {
-    def saveAndSend(user: User3x, voice: Voice4x): Unit = {
+    /*    def saveAndSend(user: User3x, voice: Voice4x): Unit = {
       meeting.state.users.save(user)
       sendMessage(user, voice)
     }
@@ -124,10 +202,10 @@ trait UsersHandler2x extends UsersApp2x {
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
       newUser = remove(user, presence, presence.voice)
     } yield saveAndSend(newUser, presence.voice)
-  }
+*/ }
 
   def handleMuteAllExceptPresenterRequest(msg: MuteAllExceptPresenterRequest): Unit = {
-
+    /*
     def findNonPresenters: Vector[User3x] = {
       meeting.state.users.toVector.filterNot(u => u.roles.contains(PresenterRole))
     }
@@ -143,10 +221,10 @@ trait UsersHandler2x extends UsersApp2x {
           p.voice.id, meeting.props.voiceConf, msg.mute)
       }
     }
-  }
+*/ }
 
   def handleMuteMeetingRequest(msg: MuteMeetingRequest): Unit = {
-    def findNonListenOnlyPresence(user: User3x): Set[Presence2x] = {
+    /*    def findNonListenOnlyPresence(user: User3x): Set[Presence2x] = {
       user.presence.filter(p => p.voice.listenDirection.value == true && p.voice.talkDirection.value == true)
     }
 
@@ -157,25 +235,33 @@ trait UsersHandler2x extends UsersApp2x {
           p.voice.id, meeting.props.voiceConf, msg.mute)
       }
     }
-  }
+*/ }
 
   def handleRegisterUser(msg: RegisterUser2x): Unit = {
-    if (meeting.hasMeetingEnded) {
+    /*    if (meeting.hasMeetingEnded) {
       // Check first is the meeting has ended and the user refreshed the client to reconnect.
       sender.sendMeetingHasEnded(meeting.props.id, msg.userId)
     } else {
-      val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken)
+      val (pinNumber, newMeeting) = PinNumberGenerator.generatePin(props.voiceConf, meeting3x)
+      val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken,
+        avatar = msg.avatar,
+        logoutUrl = msg.logoutUrl,
+        welcome = msg.welcome,
+        dialNumbers = msg.dialNumbers,
+        pinNumber,
+        config = msg.config,
+        extData = msg.extData)
       val rUsers = meeting.state.registeredUsers.add(regUser)
       sender.sendUserRegisteredMessage(meeting.props.id, meeting.props.recorded, regUser)
     }
-  }
+*/ }
 
   def handleIsMeetingMutedRequest(msg: IsMeetingMutedRequest) {
     //    sender.sendIsMeetingMutedReplyMessage(props.id, props.recorded, msg.requesterId, meeting.isMeetingMuted)
   }
 
   def handleMuteUserRequest(msg: MuteUserRequest) {
-
+    /*
     def isMutable(voice: Voice4x): Boolean = {
       voice.joined.value && !voice.muted.value && voice.listenDirection.value && voice.talkDirection.value
     }
@@ -190,10 +276,10 @@ trait UsersHandler2x extends UsersApp2x {
       user <- meeting.state.users.findWithId(msg.userId)
       presence = user.presence.filter(p => isMutable(p.voice))
     } yield sendMuteUser(presence)
-  }
+*/ }
 
   def handleEjectUserFromVoiceRequest(msg: EjectUserFromVoiceRequest) {
-
+    /*
     def removeAndEject(user: User3x): Unit = {
       meeting.state.users.remove(user.id)
       // TODO: Send Eject user from voice
@@ -206,7 +292,7 @@ trait UsersHandler2x extends UsersApp2x {
       // TODO: Get all the presence with voice. Go through them and eject one by one.
       // What to do with listen only??
     } yield removeAndEject(user)
-  }
+*/ }
 
   def handleGetLockSettings(msg: GetLockSettings) {
     //println("*************** Reply with current lock settings ********************")
@@ -256,7 +342,7 @@ trait UsersHandler2x extends UsersApp2x {
 */ }
 
   def handleUserEmojiStatus(msg: UserEmojiStatus) {
-
+    /*
     def saveAndSend(user: User3x): Unit = {
       meeting.state.users.save(user)
       // TODO:
@@ -266,10 +352,10 @@ trait UsersHandler2x extends UsersApp2x {
       user <- meeting.state.users.findWithId(msg.userId)
       newUser = User3x.update(user, msg.emojiStatus)
     } yield saveAndSend(user)
-  }
+*/ }
 
   def handleEjectUserFromMeeting(msg: EjectUserFromMeeting) {
-    def removeAndEject(user: User3x): Unit = {
+    /*    def removeAndEject(user: User3x): Unit = {
       meeting.state.users.remove(user.id)
       meeting.state.registeredUsers.remove(msg.userId)
 
@@ -281,30 +367,6 @@ trait UsersHandler2x extends UsersApp2x {
     for {
       user <- meeting.state.users.findWithId(msg.userId)
     } yield removeAndEject(user)
-  }
-
-  def handleUserShareWebcam(msg: UserShareWebcam) {
-    /*    meeting.getUser(msg.userId) foreach { user =>
-      val streams = user.webcamStreams + msg.stream
-      val uvo = user.copy(hasStream = HasStream(true), webcamStreams = streams)
-      meeting.saveUser(uvo)
-      log.info("User shared webcam.  meetingId=" + props.id + " userId=" + uvo.id
-        + " stream=" + msg.stream + " streams=" + streams)
-      sender.sendUserSharedWebcamMessage(props.id, props.recorded, uvo.id, msg.stream)
-    }
-*/ }
-
-  def handleUserunshareWebcam(msg: UserUnshareWebcam) {
-    /*    meeting.getUser(msg.userId) foreach { user =>
-      val streamName = user.webcamStreams find (w => w == msg.stream) foreach { streamName =>
-        val streams = user.webcamStreams - streamName
-        val uvo = user.copy(hasStream = HasStream((!streams.isEmpty)), webcamStreams = streams)
-        meeting.saveUser(uvo)
-        log.info("User unshared webcam.  meetingId=" + props.id + " userId=" + uvo.id
-          + " stream=" + msg.stream + " streams=" + streams)
-        sender.sendUserUnsharedWebcamMessage(props.id, props.recorded, uvo.id, msg.stream)
-      }
-    }
 */ }
 
   def handleChangeUserStatus(msg: ChangeUserStatus): Unit = {
@@ -401,47 +463,6 @@ trait UsersHandler2x extends UsersApp2x {
     //      }
     //      webUserJoined
     //      startRecordingIfAutoStart()
-    //    }
-  }
-
-  def handleUserLeft(msg: UserLeaving): Unit = {
-    //    if (meeting.hasUser(msg.userId)) {
-    //      val user = meeting.removeUser(msg.userId)
-    //      user foreach { u =>
-    //        log.info("User left meeting. meetingId=" + props.id + " userId=" + u.id + " user=" + u)
-    //        sender.sendUserLeftMessage(msg.meetingId, props.recorded, u)
-
-    //        if (u.presenter.value) {
-
-    /* The current presenter has left the meeting. Find a moderator and make
-	       * him presenter. This way, if there is a moderator in the meeting, there
-	       * will always be a presenter.
-	       */
-    //          val moderator = meeting.findAModerator()
-    //          moderator.foreach { mod =>
-    //            log.info("Presenter left meeting.  meetingId=" + props.id + " userId=" + u.id
-    //              + ". Making user=[" + mod.id + "] presenter.")
-    //            assignNewPresenter(mod.id, mod.name, mod.id)
-    //          }
-    //        }
-
-    //        val vu = u.voiceUser
-    //        if (vu.joinedVoice.value || u.listenOnly.value) {
-    /**
-     * The user that left is still in the voice conference. Maybe this user just got disconnected
-     * and is reconnecting. Make the user as joined only in the voice conference. If we get a
-     * user left voice conference message, then we will remove the user from the users list.
-     */
-    //          switchUserToPhoneUser((new UserJoinedVoiceConfMessage(props.voiceConf,
-    //            vu.id, u.id, u.extId, vu.callerId,
-    //            vu.muted, vu.talking, u.listenOnly)));
-    //        }
-
-    //        checkCaptionOwnerLogOut(u.id.value)
-    //      }
-
-    //      startCheckingIfWeNeedToEndVoiceConf()
-    //      stopAutoStartedRecording()
     //    }
   }
 

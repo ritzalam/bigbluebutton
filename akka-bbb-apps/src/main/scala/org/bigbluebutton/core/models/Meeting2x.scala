@@ -3,6 +3,7 @@ package org.bigbluebutton.core.models
 import java.util.concurrent.TimeUnit
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.util.RandomStringGenerator
+import com.softwaremill.quicklens._
 
 class RunningMeeting2x {
 
@@ -10,8 +11,6 @@ class RunningMeeting2x {
 
 trait Meeting2x {
   val props: MeetingProperties
-
-  val state = new MeetingState
 
   private var audioSettingsInited = false
   private var permissionsInited = false
@@ -77,5 +76,76 @@ trait Meeting2x {
   def hasUser(userId: IntUserId, users: Array[UserVO]): Boolean = {
     val u = users find { u => u.id.value == userId.value }
     u.isDefined
+  }
+}
+
+case class Meeting3x(
+  abilities: Set[Abilities2x] = Set.empty,
+  isRecording: Boolean = false,
+  muted: Boolean = false,
+  ended: Boolean = false,
+  hasLastWebUserLeft: Boolean = false,
+  lastWebUserLeftOnTimestamp: Long = 0L,
+  voiceRecordingFilename: String = "",
+  startedOn: Long = 0L,
+  pinNumbers: Set[PinNumber] = Set.empty,
+  lastGeneratedPin: Int = 0,
+  breakoutRoomsStartedOn: Long = 0L,
+  breakoutRoomsDurationInMinutes: Int = 120)
+
+object Meeting3x {
+  def isExtensionAllowed(extension: MeetingExtensionProp): Boolean = extension.numExtensions < extension.maxExtensions
+  def incNumExtension(extension: MeetingExtensionProp): MeetingExtensionProp = {
+    if (extension.numExtensions < extension.maxExtensions) {
+      modify(extension)(_.numExtensions).setTo(extension.numExtensions + 1)
+    }
+    extension
+  }
+
+  def fifteenMinutesNoticeSent(extension: MeetingExtensionProp): MeetingExtensionProp = {
+    modify(extension)(_.sent15MinNotice).setTo(true)
+  }
+
+  def tenMinutesNoticeSent(extension: MeetingExtensionProp): MeetingExtensionProp = {
+    modify(extension)(_.sent10MinNotice).setTo(true)
+  }
+
+  def fiveMinutesNoticeSent(extension: MeetingExtensionProp): MeetingExtensionProp = {
+    modify(extension)(_.sent5MinNotice).setTo(true)
+  }
+
+  def mute(meeting: Meeting3x): Meeting3x = {
+    modify(meeting)(_.muted).setTo(true)
+  }
+
+  def unMute(meeting: Meeting3x): Meeting3x = {
+    modify(meeting)(_.muted).setTo(false)
+  }
+
+  def recordingStarted(meeting: Meeting3x): Meeting3x = {
+    modify(meeting)(_.isRecording).setTo(true)
+  }
+
+  def recordingStopped(meeting: Meeting3x): Meeting3x = {
+    modify(meeting)(_.isRecording).setTo(false)
+  }
+
+}
+
+object PinNumberGenerator {
+  def generatePin(conf: VoiceConf, meeting: Meeting3x): PinNumber = {
+    def inc(curPin: Int): Int = {
+      if ((curPin + 1) < 1000) curPin + 1
+      else 1
+    }
+
+    def genAvailablePin(): PinNumber = {
+      val pin = conf.value.toInt + inc(meeting.lastGeneratedPin)
+      val myPin = PinNumber(pin)
+      if (meeting.pinNumbers.contains(myPin)) genAvailablePin
+      myPin
+    }
+
+    genAvailablePin
   }
 }

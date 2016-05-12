@@ -12,7 +12,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
   val abilitiesFilter = DefaultAbilitiesFilter
 
   abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeeting): Unit = {
-    meeting.state.users.findWithId(msg.userId) foreach { user =>
+    /*    meeting.state.users.findWithId(msg.userId) foreach { user =>
       val abilities = abilitiesFilter.calcEffectiveAbilities(user.roles, user.permissions, meeting.getPermissions)
       if (abilitiesFilter.can(CanEjectUser, abilities)) {
         // forward message to handler to process
@@ -21,7 +21,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
         //     send request rejected message
       }
     }
-
+*/
   }
 
   abstract override def handleUserJoinedVoiceConfListenOnly(msg: UserJoinedVoiceConf): Unit = {

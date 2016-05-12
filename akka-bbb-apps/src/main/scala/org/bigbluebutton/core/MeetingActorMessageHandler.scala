@@ -4,10 +4,10 @@ import akka.actor.ActorContext
 import org.bigbluebutton.core.api.ValidateAuthToken
 import org.bigbluebutton.core.bus.IncomingEventBus
 import org.bigbluebutton.core.domain.UserActorRef
-import org.bigbluebutton.core.models.{ Meeting2x, UserActorRefs }
+import org.bigbluebutton.core.models.{ Meeting2x, Meeting3x, UserActorRefs }
 
 trait MeetingActorMessageHandler {
-  val meeting: Meeting2x
+  val meeting: Meeting3x
   val context: ActorContext
   val eventBus: IncomingEventBus
   val outGW: OutMessageGateway
@@ -20,14 +20,14 @@ trait MeetingActorMessageHandler {
     // forward validate token
 
     def delegate(msg: ValidateAuthToken): Unit = {
-      meeting.state.registeredUsers.findWithToken(msg.token) match {
+      /*      meeting.registeredUsers.findWithToken(msg.token) match {
         case Some(u) =>
           val actorRef = context.actorOf(UserActor.props(meeting.props, eventBus, outGW), msg.userId.value)
           userActorRefs.save(UserActorRef(msg.userId, actorRef))
         case None =>
         // sender.sendValidateAuthTokenReplyMessage(meeting.props.id, msg.userId, msg.token, false, msg.correlationId)
       }
-    }
+*/ }
 
     userActorRefs findWithId (msg.userId) match {
       case Some(ref) => ref.actorRef ! msg

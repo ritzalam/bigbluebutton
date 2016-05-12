@@ -1,66 +1,117 @@
 package org.bigbluebutton.core.handlers
 
+import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core.api.{ NewUserPresence2x, ValidateAuthToken }
-import org.bigbluebutton.core.bus.IncomingEventBus
+import org.bigbluebutton.core.api.{ MeetingState => _, _ }
 import org.bigbluebutton.core.domain.{ User3x, _ }
-import org.bigbluebutton.core.models.{ MeetingState, Users3x }
+import org.bigbluebutton.core.models._
 
-class UserActorMessageHandler(id: IntUserId, extId: ExtUserId,
-    props: MeetingProperties, bus: IncomingEventBus, outGW: OutMessageGateway) {
+class UserActorMessageHandler(
+    user: RegisteredUser2x,
+    props: MeetingProperties,
+    outGW: OutMessageGateway) extends SystemConfiguration {
 
-  val userState = new UserState(id, extId)
+  private val userState: UserState = new UserState(user)
 
-  def handleValidateAuthToken2x(msg: ValidateAuthToken, meeting: MeetingState): MeetingState = {
-    meeting.registeredUsers.findWithToken(msg.token) match {
-      case Some(u) => meeting
+  def handleValidateAuthToken2x(msg: ValidateAuthToken, meeting: MeetingState): Unit = {
+    def sendResponse(user: RegisteredUser2x): Unit = {
+      // Send response with user status
       //        sender.sendValidateAuthTokenReplyMessage(props.id, msg.userId, msg.token, true, msg.correlationId)
-      case None => meeting
-      //        sender.sendValidateAuthTokenReplyMessage(props.id, msg.userId, msg.token, false, msg.correlationId)
-      // outGW.send()
     }
+
+    for {
+      user <- meeting.registeredUsers.findWithToken(msg.token)
+    } yield sendResponse(user)
   }
 
-  def handleUserJoinWeb2x(msg: NewUserPresence2x): Unit = {
-
-    def createUser(ru: RegisteredUser2x): User3x = {
-      Users3x.create(msg.userId, ru.extId, ru.name, msg.sessionId, ru.roles)
-    }
+  def handleUserJoinWeb2x(msg: NewUserPresence2x, meeting: MeetingState): Unit = {
 
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
 
-    meeting.state.users.findWithId(msg.userId) match {
+    meeting.users.findWithId(msg.userId) match {
       case Some(user) =>
-      // Update just the session id as this is a reconnect.
-      //val u = User2x.updateSessionId(user, msg.sessionId, msg.presenceId)
-      //meeting.users.save(u)
-      case None =>
-        meeting.state.registeredUsers.findWithToken(msg.token) foreach { ru =>
-          val uvo = createUser(ru)
-          val presence = User3x.create(msg.presenceId, msg.userAgent)
-          val user = User3x.add(uvo, presence)
-          meeting.state.users.save(user)
+        // Find presence associated with this session
+        val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
 
-          sender.sendUserJoinedMessage(meeting.props.id, meeting.props.recorded, uvo)
+      // TODO: Send reconnecting message
+      case None =>
+        meeting.registeredUsers.findWithToken(msg.token) foreach { ru =>
+          //  val uvo = userState.get
+          val u = Users3x.create(msg.userId, ru.extId, ru.name, ru.roles)
+          val presence = User3x.create(msg.presenceId, msg.userAgent)
+          val user = User3x.add(u, presence)
+          meeting.users.save(user)
+
+          //    sender.sendUserJoinedMessage(props.id, meeting.recorded, uvo)
 
           // TODO: Become presenter if only moderator in meeting
-          becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
+          //    becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
 
-          // TODO: Keep track if there are still web users in the meeting.
-          //          if (Users2x.numberOfWebUsers(meeting.state.users.toVector) > 0) {
-          //            meeting.resetLastWebUserLeftOn()
-          //          }
-
-          // TODO: Start recording when first user joins meeting
-          //          if (needToStartRecording(meeting)) {
-          //            meeting.recordingStarted()
-          //     sender.send(new RecordingStatusChanged(props.id, props.recorded, IntUserId("system"), meeting.isRecording))
-          //          }
         }
     }
 
+  }
+
+  def handleUserLeftWeb2x(msg: UserPresenceLeft2x, meeting: MeetingState): Unit = {
+    meeting.users.findWithId(msg.userId) match {
+      case Some(user) =>
+        // Find presence associated with this session
+        val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
+
+      // TODO: Send reconnecting message
+      case None =>
+
+    }
+  }
+
+  def handleViewWebCamRequest2x(msg: ViewWebCamRequest2x, meeting: MeetingState): Unit = {
+    def send(tokens: Set[String]): Unit = {
+      if (tokens.contains(msg.token)) {
+        // send media info
+      }
+    }
+
+    for {
+      user <- meeting.users.findWithId(msg.userId)
+    } yield send(userState.get.tokens)
+
+  }
+
+  def handleShareWebCamRequest2x(msg: ShareWebCamRequest2x, meeting: MeetingState): Unit = {
+    def send(): Unit = {
+
+    }
+
+    for {
+      user <- meeting.users.findWithId(msg.userId)
+      presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
+    } yield send()
+
+  }
+
+  def handleUserShareWebCam2x(msg: UserShareWebCam2x, meeting: MeetingState): Unit = {
+    def send(): Unit = {
+
+    }
+
+    for {
+      user <- meeting.users.findWithId(msg.userId)
+      presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
+    } yield send()
+
+  }
+
+  def handleUserUnShareWebCam2x(msg: UserUnShareWebCam2x, meeting: MeetingState): Unit = {
+    def send(): Unit = {
+
+    }
+
+    for {
+      user <- meeting.users.findWithId(msg.userId)
+      presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
+    } yield send()
   }
 }

@@ -34,7 +34,7 @@ class Users3x {
 }
 
 object Users3x {
-  def create(id: IntUserId, extId: ExtUserId, name: Name, sessionId: SessionId, roles: Set[Role2x]): User3x = {
+  def create(id: IntUserId, extId: ExtUserId, name: Name, roles: Set[Role2x]): User3x = {
 
     new User3x(id, extId, name, EmojiStatus("none"), roles,
       Set.empty, new UserAbilities(Set.empty, Set.empty, false),
@@ -46,9 +46,22 @@ object RegisteredUsers2x {
   def apply(): RegisteredUsers2x = new RegisteredUsers2x()
 
   def create(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[Role2x],
-    token: AuthToken): RegisteredUser2x = {
-    new RegisteredUser2x(userId, extId, name, roles, token)
+    token: AuthToken, avatar: Avatar,
+    logoutUrl: LogoutUrl,
+    welcome: Welcome,
+    dialNumbers: Set[DialNumber],
+    pinNumber: PinNumber,
+    config: Set[String],
+    extData: Set[String]): RegisteredUser2x = {
+    new RegisteredUser2x(userId, extId, name, roles, token, avatar: Avatar,
+      logoutUrl: LogoutUrl,
+      welcome: Welcome,
+      dialNumbers: Set[DialNumber],
+      pinNumber: PinNumber,
+      config: Set[String],
+      extData: Set[String])
   }
+
 }
 
 class RegisteredUsers2x {
@@ -75,3 +88,31 @@ class RegisteredUsers2x {
     ru
   }
 }
+
+object Users4x {
+  def add(user: User3x, users: Vector[User3x]): Vector[User3x] = {
+    users :+ user
+  }
+}
+
+case class Users4x(users: Vector[User3x])
+
+object RegisteredUsers4x {
+  def add(user: RegisteredUser2x, users: Vector[RegisteredUser2x]): Vector[RegisteredUser2x] = {
+    users :+ user
+  }
+
+  def findWithToken(token: AuthToken, users: Vector[RegisteredUser2x]): Option[RegisteredUser2x] = {
+    users find (ru => ru.authToken.value == token.value)
+  }
+
+  def findWithUserId(id: IntUserId, users: Vector[RegisteredUser2x]): Option[RegisteredUser2x] = {
+    users find (ru => id.value == ru.id.value)
+  }
+
+  def remove(id: IntUserId, users: Vector[RegisteredUser2x]): Vector[RegisteredUser2x] = {
+    users filterNot (u => u.id.value == id.value)
+  }
+}
+
+case class RegisteredUsers4x(registeredUsers: Vector[RegisteredUser2x])

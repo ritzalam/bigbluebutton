@@ -5,20 +5,20 @@ import org.bigbluebutton.core.UnitSpec
 class User2xTests extends UnitSpec {
   val flashListenOnly = Voice4x(VoiceUserId("flash-web-listen-only-session-id"))
   val dataApp = DataApp2x(SessionId("data-session-id"))
-  val webcamApp = WebcamApp2x(SessionId("webcam-session-id"), Set.empty)
+  val webCamApp = WebCamStreams(Set.empty)
   val voiceApp = VoiceApp2x(SessionId("voice-session-id"), flashListenOnly)
-  val screenshareApp = ScreenshareApp2x(SessionId("ss-session-id"), Set.empty)
+  val screenShareApp = ScreenShareStreams(Set.empty)
 
   it should "update presence" in {
     val presence1 = new Presence2x(
       PresenceId("flash-web-presence-id-1"),
-      UserAgent("Flash"), None, Voice4x(VoiceUserId("foo")), None, None)
+      UserAgent("Flash"), dataApp, Voice4x(VoiceUserId("foo")), webCamApp, screenShareApp)
     val presence2 = new Presence2x(
       PresenceId("flash-web-presence-id-2"),
-      UserAgent("Flash"), None, Voice4x(VoiceUserId("foo")), None, None)
+      UserAgent("Flash"), dataApp, Voice4x(VoiceUserId("foo")), webCamApp, screenShareApp)
     val presence3 = new Presence2x(
       PresenceId("flash-web-presence-id-3"),
-      UserAgent("Flash"), None, Voice4x(VoiceUserId("foo")), None, None)
+      UserAgent("Flash"), dataApp, Voice4x(VoiceUserId("foo")), webCamApp, screenShareApp)
 
     val perm: Set[Abilities2x] = Set(CanEjectUser, CanRaiseHand)
     val user = new User3x(

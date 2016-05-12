@@ -90,7 +90,12 @@ case class ValidateAuthToken(
   correlationId: String, sessionId: String) extends InMessage
 case class RegisterUser2x(
   meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
-  extUserId: ExtUserId, authToken: AuthToken) extends InMessage
+  extUserId: ExtUserId, authToken: AuthToken, avatar: Avatar,
+  logoutUrl: LogoutUrl,
+  welcome: Welcome,
+  dialNumbers: Set[DialNumber],
+  config: Set[String],
+  extData: Set[String]) extends InMessage
 case class RegisterUser(
   meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[String],
   extUserId: ExtUserId, authToken: AuthToken) extends InMessage
@@ -101,6 +106,25 @@ case class NewUserPresence2x(
   sessionId: SessionId,
   presenceId: PresenceId,
   userAgent: PresenceUserAgent) extends InMessage
+case class UserPresenceLeft2x(
+  meetingId: IntMeetingId,
+  userId: IntUserId,
+  sessionId: SessionId,
+  presenceId: PresenceId,
+  userAgent: PresenceUserAgent) extends InMessage
+case class ShareWebCamRequest2x(
+  meetingId: IntMeetingId, userId: IntUserId,
+  presenceId: PresenceId) extends InMessage
+case class ViewWebCamRequest2x(
+  meetingId: IntMeetingId, userId: IntUserId,
+  presenceId: PresenceId, streamId: String, token: String) extends InMessage
+case class UserShareWebCam2x(
+  meetingId: IntMeetingId, userId: IntUserId,
+  presenceId: PresenceId, stream: String) extends InMessage
+case class UserUnShareWebCam2x(
+  meetingId: IntMeetingId, userId: IntUserId,
+  presenceId: PresenceId, stream: String) extends InMessage
+
 case class UserJoining(
   meetingId: IntMeetingId, userId: IntUserId, token: AuthToken) extends InMessage
 case class UserLeaving(

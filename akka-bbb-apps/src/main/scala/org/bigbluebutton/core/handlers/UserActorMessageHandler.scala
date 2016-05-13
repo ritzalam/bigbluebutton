@@ -49,7 +49,7 @@ class UserActorMessageHandler(
       case None =>
         for {
           ru <- RegisteredUsers2x.findWithToken(msg.token, meeting.registeredUsers.toVector)
-          u = Users3x.create(msg.userId, ru.extId, ru.name, ru.roles)
+          u = User3x.create(msg.userId, ru.extId, ru.name, ru.roles)
           presence = User3x.create(msg.presenceId, msg.userAgent)
           user = User3x.add(u, presence)
         } yield process(user)

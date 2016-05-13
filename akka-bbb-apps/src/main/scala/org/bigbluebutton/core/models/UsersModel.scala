@@ -20,12 +20,6 @@ class Users3x {
 }
 
 object Users3x {
-  def create(id: IntUserId, extId: ExtUserId, name: Name, roles: Set[Role2x]): User3x = {
-
-    new User3x(id, extId, name, EmojiStatus("none"), roles,
-      Set.empty, new UserAbilities(Set.empty, Set.empty, false),
-      Set.empty, Set.empty, Set.empty)
-  }
 
   def findWithId(id: IntUserId, users: Vector[User3x]): Option[User3x] = users.find(u => u.id.value == id.value)
   def findWithExtId(id: ExtUserId, users: Vector[User3x]): Option[User3x] = users.find(u => u.extId.value == id.value)

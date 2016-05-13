@@ -173,6 +173,13 @@ case class Voice4x(
   talking: Talking = Talking(false))
 
 object User3x {
+  def create(id: IntUserId, extId: ExtUserId, name: Name, roles: Set[Role2x]): User3x = {
+
+    new User3x(id, extId, name, EmojiStatus("none"), roles,
+      Set.empty, new UserAbilities(Set.empty, Set.empty, false),
+      Set.empty, Set.empty, Set.empty)
+  }
+
   def update(old: Presence2x, user: User3x, updated: Presence2x): User3x = {
     modify(user)(_.presence).setTo((user.presence - old) + updated)
   }

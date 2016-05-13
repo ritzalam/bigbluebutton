@@ -11,16 +11,16 @@ object MeetingActor2x {
   def props(
     props: MeetingProperties2x,
     bus: IncomingEventBus,
-    outGW: OutMessageGateway): Props =
-    Props(classOf[MeetingActor2x], props, bus, outGW)
+    outGW: OutMessageGateway,
+    state: MeetingState): Props =
+    Props(classOf[MeetingActor2x], props, bus, outGW, state)
 }
 
 class MeetingActor2x(
     val props: MeetingProperties2x,
     val bus: IncomingEventBus,
-    val outGW: OutMessageGateway) extends Actor with ActorLogging with UsersHandlerFilter {
-
-  val state: MeetingState = new MeetingState(props)
+    val outGW: OutMessageGateway,
+    val state: MeetingState) extends Actor with ActorLogging with UsersHandlerFilter {
 
   def receive = {
     case msg: RegisterUser2xCommand => handleRegisterUser2x(msg)

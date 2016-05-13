@@ -62,7 +62,7 @@ object UsersMessageToJsonConverter {
     args
   }
 
-  def meetingState(msg: MeetingState): String = {
+  def meetingState(msg: GetMeetingStateReply): String = {
     val payload = new java.util.HashMap[String, Any]()
     payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.PERMISSIONS, buildPermissionsHashMap(msg.permissions))

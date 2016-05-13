@@ -67,8 +67,8 @@ trait UsersHandler2x {
 
   }
 
-  def handleUserLeftWeb2x(msg: UserPresenceLeft2x): Unit = {
-    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserLeftWeb2x(msg, state) }
+  def handleUserLeave2xCommand(msg: UserLeave2xCommand): Unit = {
+    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserLeave2xCommand(msg, state) }
 
     //    if (meeting.hasUser(msg.userId)) {
     //      val user = meeting.removeUser(msg.userId)

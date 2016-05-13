@@ -165,7 +165,7 @@ class UsersMessageSender2x(val outGW: OutMessageGateway) {
     userId: IntUserId,
     permissions: Permissions,
     muted: Muted): Unit = {
-    outGW.send(new MeetingState(meetingId, recorded, userId, permissions, muted.value))
+    outGW.send(new GetMeetingStateReply(meetingId, recorded, userId, permissions, muted.value))
   }
 
   def sendUserLeftVoiceMessage(

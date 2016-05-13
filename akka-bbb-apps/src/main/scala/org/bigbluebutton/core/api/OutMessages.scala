@@ -22,7 +22,7 @@ case class MeetingMuted(
   meetingId: IntMeetingId, recorded: Recorded, meetingMuted: Boolean) extends IOutMessage
 case class MeetingEnded(
   meetingId: IntMeetingId, recorded: Recorded, voiceBridge: String) extends IOutMessage
-case class MeetingState(
+case class GetMeetingStateReply(
   meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId,
   permissions: Permissions, meetingMuted: Boolean) extends IOutMessage
 case class MeetingHasEnded(

@@ -76,7 +76,7 @@ class MessageSenderActor(val service: MessageSender)
     case msg: PollHideResultMessage => handlePollHideResultMessage(msg)
     case msg: UserRespondedToPollMessage => handleUserRespondedToPollMessage(msg)
     case msg: MeetingMuted => handleMeetingMuted(msg)
-    case msg: MeetingState => handleMeetingState(msg)
+    case msg: GetMeetingStateReply => handleMeetingState(msg)
     case msg: DisconnectAllUsers => handleDisconnectAllUsers(msg)
     case msg: DisconnectUser => handleDisconnectUser(msg)
     case msg: PermissionsSettingInitialized => handlePermissionsSettingInitialized(msg)
@@ -482,7 +482,7 @@ class MessageSenderActor(val service: MessageSender)
     service.send(MessagingConstants.FROM_USERS_CHANNEL, reply.toJson())
   }
 
-  private def handleMeetingState(msg: MeetingState) {
+  private def handleMeetingState(msg: GetMeetingStateReply) {
     val json = UsersMessageToJsonConverter.meetingState(msg)
     service.send(MessagingConstants.FROM_MEETING_CHANNEL, json)
   }

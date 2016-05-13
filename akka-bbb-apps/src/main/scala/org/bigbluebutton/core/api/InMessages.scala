@@ -106,6 +106,12 @@ case class NewUserPresence2x(
   sessionId: SessionId,
   presenceId: PresenceId,
   userAgent: PresenceUserAgent) extends InMessage
+case class UserLeave2xCommand(
+  meetingId: IntMeetingId,
+  userId: IntUserId,
+  sessionId: SessionId,
+  presenceId: PresenceId,
+  userAgent: PresenceUserAgent) extends InMessage
 case class UserPresenceLeft2x(
   meetingId: IntMeetingId,
   userId: IntUserId,

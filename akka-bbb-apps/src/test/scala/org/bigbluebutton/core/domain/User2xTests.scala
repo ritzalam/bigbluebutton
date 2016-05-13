@@ -12,13 +12,13 @@ class User2xTests extends UnitSpec {
   it should "update presence" in {
     val presence1 = new Presence2x(
       PresenceId("flash-web-presence-id-1"),
-      UserAgent("Flash"), dataApp, Voice4x(VoiceUserId("foo")), webCamApp, screenShareApp)
+      UserAgent("Flash"), Set.empty, dataApp, Voice4x(VoiceUserId("foo")), webCamApp, screenShareApp)
     val presence2 = new Presence2x(
       PresenceId("flash-web-presence-id-2"),
-      UserAgent("Flash"), dataApp, Voice4x(VoiceUserId("foo")), webCamApp, screenShareApp)
+      UserAgent("Flash"), Set.empty, dataApp, Voice4x(VoiceUserId("foo")), webCamApp, screenShareApp)
     val presence3 = new Presence2x(
       PresenceId("flash-web-presence-id-3"),
-      UserAgent("Flash"), dataApp, Voice4x(VoiceUserId("foo")), webCamApp, screenShareApp)
+      UserAgent("Flash"), Set.empty, dataApp, Voice4x(VoiceUserId("foo")), webCamApp, screenShareApp)
 
     val perm: Set[Abilities2x] = Set(CanEjectUser, CanRaiseHand)
     val user = new User3x(

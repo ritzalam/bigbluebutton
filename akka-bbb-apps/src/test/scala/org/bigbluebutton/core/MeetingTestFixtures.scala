@@ -1,6 +1,6 @@
 package org.bigbluebutton.core
 
-import org.bigbluebutton.core.api.{ RegisterUser2xCommand, TimestampGenerator, ValidateAuthToken }
+import org.bigbluebutton.core.api.{ NewUserPresence2x, RegisterUser2xCommand, TimestampGenerator, ValidateAuthToken }
 import org.bigbluebutton.core.domain.{ VoiceConf, Welcome, _ }
 
 trait MeetingTestFixtures {
@@ -47,6 +47,12 @@ trait MeetingTestFixtures {
     Set("config1", "config2"),
     Set("data12", "data2"))
 
-  val validateAuthTokenCommand = new ValidateAuthToken(intMeetingId, intUserId, authToken,
-    "none", "none")
+  val validateAuthTokenCommand = new ValidateAuthToken(intMeetingId, intUserId, authToken, "none", "none")
+
+  val userJoinCommand: NewUserPresence2x = new NewUserPresence2x(intMeetingId,
+    intUserId,
+    authToken,
+    SessionId("session-1"),
+    PresenceId("presence-1"),
+    FlashWebUserAgent)
 }

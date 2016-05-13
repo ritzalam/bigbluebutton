@@ -20,42 +20,45 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- meeting.registeredUsers.findWithToken(msg.token)
+      user <- RegisteredUsers2x.findWithToken(msg.token, meeting.registeredUsers.toVector)
     } yield sendResponse(user)
   }
 
   def handleUserJoinWeb2x(msg: NewUserPresence2x, meeting: MeetingState): Unit = {
-    // Check if there is a registered user with token
-    // Check if there is a user already in the list of users, if so, might be a reconnect
-    // Compare sessionId, if sessionId is not same then this is a reconnect
-    // Just update the sessionId and send join success
+    def becomePresenter(user: User3x): Unit = {
+      // TODO: Become presenter if only moderator in meeting
+      if (user.isModerator && !Users3x.hasPresenter(meeting.users.toVector)) {
+        val u = User3x.add(user, PresenterRole)
+        meeting.users.save(u)
+        // Send presenter assigned message
+      }
+    }
 
-    meeting.users.findWithId(msg.userId) match {
+    def process(user: User3x): Unit = {
+      meeting.users.save(user)
+      outGW.send(new UserJoinedEvent2x(msg.meetingId, props.recorded, user))
+      becomePresenter(user)
+    }
+
+    Users3x.findWithId(msg.userId, meeting.users.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
         val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
 
       // TODO: Send reconnecting message
       case None =>
-        meeting.registeredUsers.findWithToken(msg.token) foreach { ru =>
-          //  val uvo = userState.get
-          val u = Users3x.create(msg.userId, ru.extId, ru.name, ru.roles)
-          val presence = User3x.create(msg.presenceId, msg.userAgent)
-          val user = User3x.add(u, presence)
-          meeting.users.save(user)
-
-          //    sender.sendUserJoinedMessage(props.id, meeting.recorded, uvo)
-
-          // TODO: Become presenter if only moderator in meeting
-          //    becomePresenterIfOnlyModerator(msg.userId, ru.name, ru.roles)
-
-        }
+        for {
+          ru <- RegisteredUsers2x.findWithToken(msg.token, meeting.registeredUsers.toVector)
+          u = Users3x.create(msg.userId, ru.extId, ru.name, ru.roles)
+          presence = User3x.create(msg.presenceId, msg.userAgent)
+          user = User3x.add(u, presence)
+        } yield process(user)
     }
 
   }
 
   def handleUserLeftWeb2x(msg: UserPresenceLeft2x, meeting: MeetingState): Unit = {
-    meeting.users.findWithId(msg.userId) match {
+    Users3x.findWithId(msg.userId, meeting.users.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
         val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
@@ -74,7 +77,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- meeting.users.findWithId(msg.userId)
+      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
     } yield send(userState.get.tokens)
 
   }
@@ -85,7 +88,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- meeting.users.findWithId(msg.userId)
+      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
 
@@ -97,7 +100,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- meeting.users.findWithId(msg.userId)
+      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
 
@@ -109,7 +112,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- meeting.users.findWithId(msg.userId)
+      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
   }

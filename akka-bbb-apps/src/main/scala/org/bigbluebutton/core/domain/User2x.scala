@@ -200,25 +200,28 @@ object User3x {
   def create(id: PresenceId, userAgent: PresenceUserAgent): Presence2x = {
     userAgent match {
       case FlashWebUserAgent => Presence2x(
-        id, UserAgent("Flash"), DataApp2x(SessionId("none")), Voice4x(VoiceUserId("foo")),
+        id, UserAgent("Flash"), Set.empty, DataApp2x(SessionId("none")), Voice4x(VoiceUserId("foo")),
         WebCamStreams(Set.empty), ScreenShareStreams(Set.empty))
-      case Html5WebUserAgent => Presence2x(id, UserAgent("Html5"), DataApp2x(SessionId("none")),
+      case Html5WebUserAgent => Presence2x(id, UserAgent("Html5"), Set.empty, DataApp2x(SessionId("none")),
         Voice4x(VoiceUserId("foo")), WebCamStreams(Set.empty), ScreenShareStreams(Set.empty))
     }
   }
 }
 
 case class User3x(
-  id: IntUserId,
-  extId: ExtUserId,
-  name: Name,
-  emojiStatus: EmojiStatus,
-  roles: Set[Role2x],
-  presence: Set[Presence2x],
-  permissions: UserAbilities,
-  roleData: Set[RoleData],
-  config: Set[String],
-  extData: Set[String])
+    id: IntUserId,
+    extId: ExtUserId,
+    name: Name,
+    emojiStatus: EmojiStatus,
+    roles: Set[Role2x],
+    presence: Set[Presence2x],
+    permissions: UserAbilities,
+    roleData: Set[RoleData],
+    config: Set[String],
+    extData: Set[String]) {
+
+  def isModerator: Boolean = roles.contains(ModeratorRole)
+}
 
 trait PresenceUserAgent
 case object FlashWebUserAgent extends PresenceUserAgent
@@ -238,6 +241,7 @@ object Presence2x {
 case class Presence2x(
   id: PresenceId,
   userAgent: UserAgent,
+  sessions: Set[SessionId],
   data: DataApp2x,
   voice: Voice4x,
   webCams: WebCamStreams,

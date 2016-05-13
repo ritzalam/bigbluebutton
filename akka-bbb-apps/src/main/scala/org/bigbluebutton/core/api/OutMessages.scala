@@ -110,6 +110,8 @@ case class ValidateAuthTokenFailedReply2x(
 case class ValidateAuthTokenReply(
   meetingId: IntMeetingId, requesterId: IntUserId,
   token: AuthToken, valid: Boolean, correlationId: String) extends IOutMessage
+case class UserJoinedEvent2x(
+  meetingId: IntMeetingId, recorded: Recorded, user: User3x) extends IOutMessage
 case class UserJoined(
   meetingId: IntMeetingId, recorded: Recorded, user: UserVO) extends IOutMessage
 case class UserChangedEmojiStatus(

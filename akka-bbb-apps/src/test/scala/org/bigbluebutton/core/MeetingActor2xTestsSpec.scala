@@ -51,4 +51,13 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActor2xTestsSp
       }
     }
   }
+
+  "A MeetingActor" should {
+    "Send a UserJoinedEvent when receiving UserJoinCommand and there is registered user" in {
+      within(500 millis) {
+        meetingActorRef ! userJoinCommand
+        expectMsgClass(classOf[UserJoinedEvent2x])
+      }
+    }
+  }
 }

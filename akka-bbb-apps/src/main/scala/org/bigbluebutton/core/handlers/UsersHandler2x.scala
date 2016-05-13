@@ -27,6 +27,7 @@ trait UsersHandler2x {
       pinNumber,
       msg.config,
       msg.extData)
+
     state.registeredUsers.add(regUser)
     outGW.send(new UserRegisteredEvent2x(props.id, props.recorded, regUser))
   }
@@ -39,7 +40,7 @@ trait UsersHandler2x {
     }
 
     for {
-      regUser <- state.registeredUsers.findWithToken(msg.token)
+      regUser <- RegisteredUsers2x.findWithToken(msg.token, state.registeredUsers.toVector)
     } yield handle(regUser)
 
   }

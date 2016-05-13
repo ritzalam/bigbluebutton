@@ -15,16 +15,14 @@ trait UsersHandlerFilter extends UsersHandler2x {
   val abilitiesFilter = DefaultAbilitiesFilter
 
   abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeeting): Unit = {
-    /*    meeting.state.users.findWithId(msg.userId) foreach { user =>
-      val abilities = abilitiesFilter.calcEffectiveAbilities(user.roles, user.permissions, meeting.getPermissions)
+    Users3x.findWithId(msg.userId, state.users.toVector) foreach { user =>
+      val abilities = abilitiesFilter.calcEffectiveAbilities(user.roles, user.permissions, state.abilities.get.removed)
       if (abilitiesFilter.can(CanEjectUser, abilities)) {
-        // forward message to handler to process
         super.handleEjectUserFromMeeting(msg)
       } else {
-        //     send request rejected message
+        outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
       }
     }
-*/
   }
 
   override def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {

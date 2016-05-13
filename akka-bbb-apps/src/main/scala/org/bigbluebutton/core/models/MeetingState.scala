@@ -1,19 +1,29 @@
 package org.bigbluebutton.core.models
 
 import com.softwaremill.quicklens._
-import org.bigbluebutton.core.domain.{ MeetingExtensionProp, MeetingProperties2x }
+import org.bigbluebutton.core.domain.{ Abilities2x, MeetingExtensionProp, MeetingProperties2x }
 
-class MeetingState(val props: MeetingProperties2x) {
-  val registeredUsers = new RegisteredUsers2x
-  val users = new Users3x
-  val chats = new ChatModel
-  val layouts = new LayoutModel
-  val polls = new PollModel
-  val whiteboards = new WhiteboardModel
-  val presentations = new PresentationModel
-  val breakoutRooms = new BreakoutRoomModel
-  val captions = new CaptionModel
+case class MeetingAbilities(removed: Set[Abilities2x], added: Set[Abilities2x])
 
+class MeetingPermissions {
+  private var permissions: MeetingAbilities = new MeetingAbilities(Set.empty, Set.empty)
+
+  def get: MeetingAbilities = permissions
+  def save(abilities: MeetingAbilities): Unit = permissions = abilities
+}
+
+class MeetingState(
+    val props: MeetingProperties2x,
+    val abilities: MeetingPermissions,
+    val registeredUsers: RegisteredUsers2x,
+    val users: Users3x,
+    val chats: ChatModel,
+    val layouts: LayoutModel,
+    val polls: PollModel,
+    val whiteboards: WhiteboardModel,
+    val presentations: PresentationModel,
+    val breakoutRooms: BreakoutRoomModel,
+    val captions: CaptionModel) {
   val status: MeetingStatus = new MeetingStatus
   val extension: ExtensionStatus = new ExtensionStatus
 }

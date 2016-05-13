@@ -2,6 +2,7 @@ package org.bigbluebutton.core
 
 import org.bigbluebutton.core.api.{ NewUserPresence2x, RegisterUser2xCommand, TimestampGenerator, ValidateAuthToken }
 import org.bigbluebutton.core.domain.{ VoiceConf, Welcome, _ }
+import org.bigbluebutton.core.models.{ MeetingStatus => _, _ }
 
 trait MeetingTestFixtures {
   val intMeetingId = IntMeetingId("foo")
@@ -37,6 +38,19 @@ trait MeetingTestFixtures {
     maxUsers,
     allowVoiceOnly,
     isBreakout)
+
+  val abilities: MeetingPermissions = new MeetingPermissions
+
+  val registeredUsers = new RegisteredUsers2x
+  val users = new Users3x
+  val chats = new ChatModel
+  val layouts = new LayoutModel
+  val polls = new PollModel
+  val whiteboards = new WhiteboardModel
+  val presentations = new PresentationModel
+  val breakoutRooms = new BreakoutRoomModel
+  val captions = new CaptionModel
+  val extension: ExtensionStatus = new ExtensionStatus
 
   val registerUserCommand = RegisterUser2xCommand(
     intMeetingId, intUserId, userName, Set(ModeratorRole),

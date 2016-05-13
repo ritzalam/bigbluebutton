@@ -88,7 +88,7 @@ case class GetLockSettings(
 case class ValidateAuthToken(
   meetingId: IntMeetingId, userId: IntUserId, token: AuthToken,
   correlationId: String, sessionId: String) extends InMessage
-case class RegisterUser2x(
+case class RegisterUser2xCommand(
   meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
   extUserId: ExtUserId, authToken: AuthToken, avatar: Avatar,
   logoutUrl: LogoutUrl,

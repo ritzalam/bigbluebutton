@@ -1,12 +1,15 @@
 package org.bigbluebutton.core.filters
 
+import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api._
-import org.bigbluebutton.core.domain.CanEjectUser
-import org.bigbluebutton.core.handlers.{ UsersHandler, UsersHandler2x }
-import org.bigbluebutton.core.models.{ Meeting2x, Users3x }
+import org.bigbluebutton.core.domain.{ CanEjectUser, MeetingProperties2x }
+import org.bigbluebutton.core.handlers.{ UserActorMessageHandler, UsersHandler, UsersHandler2x }
+import org.bigbluebutton.core.models.{ Meeting2x, MeetingState, Users3x }
 
 trait UsersHandlerFilter extends UsersHandler2x {
-  val meeting: Meeting2x
+  val state: MeetingState
+  val props: MeetingProperties2x
+  val outGW: OutMessageGateway
 
   object DefaultAbilitiesFilter extends DefaultAbilitiesFilter
   val abilitiesFilter = DefaultAbilitiesFilter
@@ -24,7 +27,12 @@ trait UsersHandlerFilter extends UsersHandler2x {
 */
   }
 
-  abstract override def handleUserJoinedVoiceConfListenOnly(msg: UserJoinedVoiceConf): Unit = {
-
+  override def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
+    state.registeredUsers.findWithToken(msg.token) match {
+      case Some(u) =>
+        super.handleValidateAuthToken2x(msg)
+      case None =>
+        outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
+    }
   }
 }

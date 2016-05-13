@@ -1,9 +1,9 @@
 package org.bigbluebutton.core.models
 
 import com.softwaremill.quicklens._
-import org.bigbluebutton.core.domain.{ MeetingExtensionProp, MeetingProperties, PinNumber }
+import org.bigbluebutton.core.domain.{ MeetingExtensionProp, MeetingProperties2x }
 
-class MeetingState(val props: MeetingProperties) {
+class MeetingState(val props: MeetingProperties2x) {
   val registeredUsers = new RegisteredUsers2x
   val users = new Users3x
   val chats = new ChatModel

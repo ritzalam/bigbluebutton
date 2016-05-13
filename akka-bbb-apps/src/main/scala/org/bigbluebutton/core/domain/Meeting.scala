@@ -53,6 +53,20 @@ case class MeetingProperties(
   createDate: String,
   isBreakout: Boolean)
 
+case class MeetingProperties2x(
+  id: IntMeetingId,
+  extId: ExtMeetingId,
+  name: Name,
+  recorded: Recorded,
+  voiceConf: VoiceConf,
+  duration: Int,
+  autoStartRecording: Boolean,
+  allowStartStopRecording: Boolean,
+  createTime: Long,
+  maxUsers: Int,
+  allowVoiceOnly: Boolean,
+  isBreakout: Boolean)
+
 case class MeetingExtensionProp(
   maxExtensions: Int = 2,
   numExtensions: Int = 0,

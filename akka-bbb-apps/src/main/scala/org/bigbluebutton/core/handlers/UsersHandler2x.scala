@@ -7,32 +7,41 @@ import org.bigbluebutton.core.models.{ MeetingState, PinNumberGenerator, Registe
 
 trait UsersHandler2x {
   val state: MeetingState
-  val props: MeetingProperties
-  val sender: UsersMessageSender2x
+  val props: MeetingProperties2x
   val outGW: OutMessageGateway
 
   private var userHandlers = new collection.immutable.HashMap[String, UserActorMessageHandler]
 
-  def handleRegisterUser2x(msg: RegisterUser2x): Unit = {
+  def handleRegisterUser2x(msg: RegisterUser2xCommand): Unit = {
     val pinNumber = PinNumberGenerator.generatePin(props.voiceConf, state.status.get)
-    val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken, msg.avatar,
-      msg.logoutUrl, msg.welcome, msg.dialNumbers, pinNumber, msg.config, msg.extData)
+    val regUser = RegisteredUsers2x.create(
+      msg.userId,
+      msg.extUserId,
+      msg.name,
+      msg.roles,
+      msg.authToken,
+      msg.avatar,
+      msg.logoutUrl,
+      msg.welcome,
+      msg.dialNumbers,
+      pinNumber,
+      msg.config,
+      msg.extData)
     state.registeredUsers.add(regUser)
-    // TODO: Send register user reply
-    //sender.sendUserRegisteredMessage(meeting.props.id, meeting.props.recorded, regUser)
+    outGW.send(new UserRegisteredEvent2x(props.id, props.recorded, regUser))
   }
 
   def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
-    state.registeredUsers.findWithToken(msg.token) match {
-      case Some(u) =>
-        val userHandler = new UserActorMessageHandler(u, props, outGW)
-        userHandlers += msg.userId.value -> userHandler
-        userHandler.handleValidateAuthToken2x(msg, state)
-      case None =>
-      // TODO: Send validate auth token reply
-      //  sender.sendValidateAuthTokenReplyMessage(meeting.props.id, msg.userId, msg.token, false, msg.correlationId)
-      // Close the connection
+    def handle(regUser: RegisteredUser2x): Unit = {
+      val userHandler = new UserActorMessageHandler(regUser, props, outGW)
+      userHandlers += msg.userId.value -> userHandler
+      userHandler.handleValidateAuthToken2x(msg, state)
     }
+
+    for {
+      regUser <- state.registeredUsers.findWithToken(msg.token)
+    } yield handle(regUser)
+
   }
 
   def handleUserJoinWeb2x(msg: NewUserPresence2x): Unit = {
@@ -234,25 +243,6 @@ trait UsersHandler2x {
         sender.sendMuteVoiceUserMessage(meeting.props.id, meeting.props.recorded, u.id, msg.requesterId,
           p.voice.id, meeting.props.voiceConf, msg.mute)
       }
-    }
-*/ }
-
-  def handleRegisterUser(msg: RegisterUser2x): Unit = {
-    /*    if (meeting.hasMeetingEnded) {
-      // Check first is the meeting has ended and the user refreshed the client to reconnect.
-      sender.sendMeetingHasEnded(meeting.props.id, msg.userId)
-    } else {
-      val (pinNumber, newMeeting) = PinNumberGenerator.generatePin(props.voiceConf, meeting3x)
-      val regUser = RegisteredUsers2x.create(msg.userId, msg.extUserId, msg.name, msg.roles, msg.authToken,
-        avatar = msg.avatar,
-        logoutUrl = msg.logoutUrl,
-        welcome = msg.welcome,
-        dialNumbers = msg.dialNumbers,
-        pinNumber,
-        config = msg.config,
-        extData = msg.extData)
-      val rUsers = meeting.state.registeredUsers.add(regUser)
-      sender.sendUserRegisteredMessage(meeting.props.id, meeting.props.recorded, regUser)
     }
 */ }
 

@@ -8,15 +8,15 @@ import org.bigbluebutton.core.models._
 
 class UserActorMessageHandler(
     user: RegisteredUser2x,
-    props: MeetingProperties,
+    props: MeetingProperties2x,
     outGW: OutMessageGateway) extends SystemConfiguration {
 
   private val userState: UserState = new UserState(user)
 
   def handleValidateAuthToken2x(msg: ValidateAuthToken, meeting: MeetingState): Unit = {
     def sendResponse(user: RegisteredUser2x): Unit = {
-      // Send response with user status
-      //        sender.sendValidateAuthTokenReplyMessage(props.id, msg.userId, msg.token, true, msg.correlationId)
+      // TODO: Send response with user status
+      outGW.send(new ValidateAuthTokenReply2x(msg.meetingId, msg.userId, msg.token, true))
     }
 
     for {
@@ -25,7 +25,6 @@ class UserActorMessageHandler(
   }
 
   def handleUserJoinWeb2x(msg: NewUserPresence2x, meeting: MeetingState): Unit = {
-
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
     // Compare sessionId, if sessionId is not same then this is a reconnect

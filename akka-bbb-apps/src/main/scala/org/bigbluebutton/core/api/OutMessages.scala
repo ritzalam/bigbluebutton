@@ -31,6 +31,8 @@ case class MeetingDestroyed(
   meetingId: IntMeetingId) extends IOutMessage
 case class DisconnectAllUsers(
   meetingId: IntMeetingId) extends IOutMessage
+case class DisconnectUser2x(
+  meetingId: IntMeetingId, userId: IntUserId) extends IOutMessage
 case class DisconnectUser(
   meetingId: IntMeetingId, userId: IntUserId) extends IOutMessage
 case class KeepAliveMessageReply(
@@ -76,6 +78,8 @@ case class GetPermissionsSettingReply(
   meetingId: IntMeetingId, userId: String) extends IOutMessage
 
 // Users
+case class UserRegisteredEvent2x(
+  meetingId: IntMeetingId, recorded: Recorded, user: RegisteredUser2x) extends IOutMessage
 case class UserRegistered(
   meetingId: IntMeetingId, recorded: Recorded, user: RegisteredUser) extends IOutMessage
 case class UserLeft(
@@ -97,6 +101,12 @@ case class GetUsersReply(
 case class ValidateAuthTokenTimedOut(
   meetingId: IntMeetingId, requesterId: IntUserId,
   token: String, valid: Boolean, correlationId: String) extends IOutMessage
+case class ValidateAuthTokenReply2x(
+  meetingId: IntMeetingId, requesterId: IntUserId,
+  token: AuthToken, valid: Boolean) extends IOutMessage
+case class ValidateAuthTokenFailedReply2x(
+  meetingId: IntMeetingId, requesterId: IntUserId,
+  token: AuthToken, valid: Boolean, correlationId: String) extends IOutMessage
 case class ValidateAuthTokenReply(
   meetingId: IntMeetingId, requesterId: IntUserId,
   token: AuthToken, valid: Boolean, correlationId: String) extends IOutMessage

@@ -40,7 +40,6 @@ import org.bigbluebutton.api.MeetingService;
 import org.bigbluebutton.api.ParamsProcessorUtil;
 import org.bigbluebutton.api.Util;
 import org.bigbluebutton.presentation.PresentationUrlDownloadService;
-import org.bigbluebutton.presentation.UploadedPresentation
 import org.bigbluebutton.web.services.PresentationService
 import org.bigbluebutton.web.services.turn.StunTurnService;
 import org.bigbluebutton.web.services.turn.TurnEntry;
@@ -1998,10 +1997,10 @@ class ApiController {
 
   def processUploadedFile(meetingId, presId, filename, presFile) {
     def presentationBaseUrl = presentationService.presentationBaseUrl
-    UploadedPresentation uploadedPres = new UploadedPresentation(meetingId, presId, filename, presentationBaseUrl);
-    uploadedPres.setUploadedFile(presFile);
-    presentationService.processUploadedPresentation(uploadedPres);
-  }
+    log.info("ApiController::processUploadedFile " + presFile.getAbsolutePath())
+    meetingService.sendUploadPresentation(meetingId, presId, filename, presentationBaseUrl,
+                presFile.getAbsolutePath())
+    }
 
   def beforeInterceptor = {
     if (paramsProcessorUtil.isServiceEnabled() == false) {

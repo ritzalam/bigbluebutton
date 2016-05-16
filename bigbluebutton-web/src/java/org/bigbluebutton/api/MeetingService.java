@@ -466,69 +466,59 @@ public class MeetingService implements MessageListener {
     processEndMeeting(new EndMeeting(message.breakoutId));
   }
 	
-	private void processEndMeeting(EndMeeting message) {
-		messagingService.endMeeting(message.meetingId);
-		
-		Meeting m = getMeeting(message.meetingId);
-		if (m != null) {
-			m.setForciblyEnded(true);
-			if (removeMeetingWhenEnded) {
-		          processRecording(m.getInternalId());
-			  destroyMeeting(m.getInternalId());		  		
-		          meetings.remove(m.getInternalId());		
-		          removeUserSessions(m.getInternalId());
-			}
-		}	
-	}
-	
-	public void addUserCustomData(String meetingId, String userID, Map<String,String> userCustomData){
-		Meeting m = getMeeting(meetingId);
-		if (m != null){
-			m.addUserCustomData(userID, userCustomData);
-		}
-	}
 
-	private void meetingStarted(MeetingStarted message) {
-		Meeting m = getMeeting(message.meetingId);
-		if (m != null) {
-			if (m.getStartTime() == 0) {
-				long now = System.currentTimeMillis();
-				m.setStartTime(now);
-				
-				Map<String, Object> logData = new HashMap<String, Object>();
-				logData.put("meetingId", m.getInternalId());
-				logData.put("externalMeetingId", m.getExternalId());
-				logData.put("name", m.getName());
-				logData.put("duration", m.getDuration());
-				logData.put("record", m.isRecord());
-				logData.put("isBreakout", m.isBreakout());
-				logData.put("event", "meeting_started");
-				logData.put("description", "Meeting has started.");
-				
-				Gson gson = new Gson();
-			    String logStr =  gson.toJson(logData);
-				
-				log.info("Meeting started: data={}", logStr);
-				
-			} else {
-				Map<String, Object> logData = new HashMap<String, Object>();
-				logData.put("meetingId", m.getInternalId());
-				logData.put("externalMeetingId", m.getExternalId());
-				logData.put("name", m.getName());
-				logData.put("duration", m.getDuration());
-				logData.put("record", m.isRecord());
-				logData.put("isBreakout", m.isBreakout());
-				logData.put("event", "meeting_restarted");
-				logData.put("description", "Meeting has restarted.");
+    public void sendUploadPresentation(String meetingId, String presId, String presFilename,
+                                       String presentationBaseUrl, String fileCompletePath) {
+        messagingService.sendUploadPresentation(meetingId, presId, presFilename,
+                presentationBaseUrl, fileCompletePath);
+    }
 
-				Gson gson = new Gson();
-				String logStr =  gson.toJson(logData);
-				
-				log.info("Meeting restarted: data={}", logStr);
-			}
-			return;
-		}
-	}
+    private void processEndMeeting(EndMeeting message) {
+        messagingService.endMeeting(message.meetingId);
+
+        Meeting m = getMeeting(message.meetingId);
+        if (m != null) {
+            m.setForciblyEnded(true);
+            if (removeMeetingWhenEnded) {
+                processRecording(m.getInternalId());
+                destroyMeeting(m.getInternalId());
+                meetings.remove(m.getInternalId());
+                removeUserSessions(m.getInternalId());
+            }
+        }
+    }
+
+    public void addUserCustomData(String meetingId, String userID,
+            Map<String, String> userCustomData) {
+        Meeting m = getMeeting(meetingId);
+        if (m != null) {
+            m.addUserCustomData(userID, userCustomData);
+        }
+    }
+
+    private void meetingStarted(MeetingStarted message) {
+        Meeting m = getMeeting(message.meetingId);
+        if (m != null) {
+            if (m.getStartTime() == 0) {
+                long now = System.currentTimeMillis();
+                m.setStartTime(now);
+
+                Map<String, Object> logData = new HashMap<String, Object>();
+                logData.put("meetingId", m.getInternalId());
+                logData.put("externalMeetingId", m.getExternalId());
+                logData.put("name", m.getName());
+                logData.put("duration", m.getDuration());
+                logData.put("record", m.isRecord());
+                logData.put("event", "meeting_started");
+                logData.put("description", "Meeting has started.");
+
+                Gson gson = new Gson();
+                String logStr = gson.toJson(logData);
+
+                log.info("Meeting started: data={}", logStr);
+            }
+        }
+    }
 
     private void meetingDestroyed(MeetingDestroyed message) {
         Meeting m = getMeeting(message.meetingId);

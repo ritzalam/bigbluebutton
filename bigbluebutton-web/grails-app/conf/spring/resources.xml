@@ -46,17 +46,11 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         <property name="expiredMeetingCleanupTimerTask" ref="expiredMeetingCleanupTimerTask"/>
         <property name="messagingService" ref="messagingService"/>
         <property name="recordingService" ref="recordingService"/>
-        <property name="presDownloadService" ref="presDownloadService"/>
-        <property name="paramsProcessorUtil" ref="paramsProcessorUtil"/>
   </bean>
 
   <bean id="recordingServiceHelper" class="org.bigbluebutton.api.RecordingServiceHelperImp"/>
   
-  <bean id="presDownloadService" class="org.bigbluebutton.presentation.PresentationUrlDownloadService">
-    <property name="presentationDir" value="${presentationDir}"/>
-    <property name="presentationBaseURL" value="${presentationBaseURL}"/>  
-    <property name="documentConversionService" ref="documentConversionService"/>  
-  </bean>
+  <bean id="presDownloadService" class="org.bigbluebutton.presentation.PresentationUrlDownloadService"/>
   
   <bean id="recordingService" class="org.bigbluebutton.api.RecordingService" >
     <property name="recordingStatusDir" value="${recordStatusDir}"/>  
@@ -93,8 +87,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
     <property name="defaultAvatarURL" value="${defaultAvatarURL}"/>
     <property name="defaultConfigURL" value="${defaultConfigURL}"/>
   </bean>
-        
-	<import resource="doc-conversion.xml" />
+
 	<import resource="bbb-redis-pool.xml" />
 	<import resource="bbb-redis-messaging.xml" />
 	<import resource="turn-stun-servers.xml" />

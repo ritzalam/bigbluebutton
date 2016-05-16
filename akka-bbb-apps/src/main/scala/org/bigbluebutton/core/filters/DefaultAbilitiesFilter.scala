@@ -3,10 +3,22 @@ package org.bigbluebutton.core.filters
 import org.bigbluebutton.core.domain._
 
 object RoleAbilities {
-  val moderatorAbilities = Set(CanAssignPresenter, CanChangeLayout, CanEjectUser, CanLockLayout,
-    CanPrivateChat, CanPublicChat)
-  val presenterAbilities = Set(CanUploadPresentation, CanSharePresentation)
-  val viewerAbilities = Set(CanShareCamera, CanRaiseHand, CanUseMicrophone)
+  val moderatorAbilities = Set(
+    CanAssignPresenter,
+    CanChangeLayout,
+    CanEjectUser,
+    CanLockLayout,
+    CanPrivateChat,
+    CanPublicChat)
+
+  val presenterAbilities = Set(
+    CanUploadPresentation,
+    CanSharePresentation)
+
+  val viewerAbilities = Set(
+    CanShareCamera,
+    CanRaiseHand,
+    CanUseMicrophone)
 }
 
 object ClientTypeAbilities {

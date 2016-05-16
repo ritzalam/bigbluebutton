@@ -10,7 +10,7 @@ import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._
 
-class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActor2xTestsSpec",
+class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec",
   ConfigFactory.parseString(TestKitUsageSpec.config)))
     with DefaultTimeout with ImplicitSender with WordSpecLike
     with Matchers with StopSystemAfterAll with MeetingTestFixtures {
@@ -24,7 +24,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActor2xTestsSp
     "Send a DisconnectUser when receiving ValitadateAuthTokenCommand and there is no registered user" in {
       within(500 millis) {
         val state: MeetingState = new MeetingState(
-          props,
+          piliProps,
           abilities,
           registeredUsers,
           users,
@@ -36,8 +36,8 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActor2xTestsSp
           breakoutRooms,
           captions)
 
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(props, eventBus, outGW, state))
-        meetingActorRef ! validateAuthTokenCommand
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
+        meetingActorRef ! du30ValidateAuthTokenCommand
         expectMsgClass(classOf[DisconnectUser2x])
       }
     }
@@ -46,7 +46,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActor2xTestsSp
   "A MeetingActor" should {
     "Send a UserRegisteredEvent when receiving UserRegisterCommand" in {
       within(500 millis) {
-        val state: MeetingState = new MeetingState(props,
+        val state: MeetingState = new MeetingState(piliProps,
           abilities,
           registeredUsers,
           users,
@@ -57,8 +57,8 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActor2xTestsSp
           presentations,
           breakoutRooms,
           captions)
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(props, eventBus, outGW, state))
-        meetingActorRef ! registerUserCommand
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
+        meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
       }
     }
@@ -67,7 +67,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActor2xTestsSp
   "A MeetingActor" should {
     "Send a ValidateAuthTokenReply when receiving ValitadateAuthTokenCommand and there is registered user" in {
       within(500 millis) {
-        val state: MeetingState = new MeetingState(props,
+        val state: MeetingState = new MeetingState(piliProps,
           abilities,
           registeredUsers,
           users,
@@ -78,10 +78,10 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActor2xTestsSp
           presentations,
           breakoutRooms,
           captions)
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(props, eventBus, outGW, state))
-        meetingActorRef ! registerUserCommand
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
+        meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
-        meetingActorRef ! validateAuthTokenCommand
+        meetingActorRef ! du30ValidateAuthTokenCommand
         expectMsgClass(classOf[ValidateAuthTokenReply2x])
       }
     }
@@ -90,7 +90,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActor2xTestsSp
   "A MeetingActor" should {
     "Send a UserJoinedEvent when receiving UserJoinCommand and there is registered user" in {
       within(500 millis) {
-        val state: MeetingState = new MeetingState(props,
+        val state: MeetingState = new MeetingState(piliProps,
           abilities,
           registeredUsers,
           users,
@@ -101,15 +101,15 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActor2xTestsSp
           presentations,
           breakoutRooms,
           captions)
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(props, eventBus, outGW, state))
-        meetingActorRef ! registerUserCommand
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
+        meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
-        meetingActorRef ! validateAuthTokenCommand
+        meetingActorRef ! du30ValidateAuthTokenCommand
         expectMsgClass(classOf[ValidateAuthTokenReply2x])
-        meetingActorRef ! userJoinCommand
+        meetingActorRef ! du30UserJoinCommand
         expectMsgPF() {
           case event: UserJoinedEvent2x =>
-            assert(event.meetingId == intMeetingId)
+            assert(event.meetingId == piliIntMeetingId)
         }
       }
     }

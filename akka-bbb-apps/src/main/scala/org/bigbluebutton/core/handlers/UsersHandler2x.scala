@@ -7,13 +7,12 @@ import org.bigbluebutton.core.models.{ MeetingState, PinNumberGenerator, Registe
 
 trait UsersHandler2x {
   val state: MeetingState
-  val props: MeetingProperties2x
   val outGW: OutMessageGateway
 
   private var userHandlers = new collection.immutable.HashMap[String, UserActorMessageHandler]
 
   def handleRegisterUser2x(msg: RegisterUser2xCommand): Unit = {
-    val pinNumber = PinNumberGenerator.generatePin(props.voiceConf, state.status.get)
+    val pinNumber = PinNumberGenerator.generatePin(state.props.voiceConf, state.status.get)
     val regUser = RegisteredUsers2x.create(
       msg.userId,
       msg.extUserId,
@@ -29,12 +28,12 @@ trait UsersHandler2x {
       msg.extData)
 
     state.registeredUsers.add(regUser)
-    outGW.send(new UserRegisteredEvent2x(props.id, props.recorded, regUser))
+    outGW.send(new UserRegisteredEvent2x(state.props.id, state.props.recorded, regUser))
   }
 
   def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
     def handle(regUser: RegisteredUser2x): Unit = {
-      val userHandler = new UserActorMessageHandler(regUser, props, outGW)
+      val userHandler = new UserActorMessageHandler(regUser, outGW)
       userHandlers += msg.userId.value -> userHandler
       userHandler.handleValidateAuthToken2x(msg, state)
     }

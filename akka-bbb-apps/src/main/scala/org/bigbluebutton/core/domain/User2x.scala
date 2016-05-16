@@ -7,6 +7,8 @@ trait Role2x
 case object ModeratorRole extends Role2x
 case object ViewerRole extends Role2x
 case object PresenterRole extends Role2x
+case object GuestRole extends Role2x
+case object AuthenticatedGuestRole extends Role2x
 case object StenographerRole extends Role2x
 case object SignLanguageInterpreterRole extends Role2x
 

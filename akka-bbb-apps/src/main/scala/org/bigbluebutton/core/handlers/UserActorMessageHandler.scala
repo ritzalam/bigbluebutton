@@ -8,7 +8,6 @@ import org.bigbluebutton.core.models._
 
 class UserActorMessageHandler(
     user: RegisteredUser2x,
-    props: MeetingProperties2x,
     outGW: OutMessageGateway) extends SystemConfiguration {
 
   private val userState: UserState = new UserState(user)
@@ -36,7 +35,7 @@ class UserActorMessageHandler(
 
     def process(user: User3x): Unit = {
       meeting.users.save(user)
-      outGW.send(new UserJoinedEvent2x(msg.meetingId, props.recorded, user))
+      outGW.send(new UserJoinedEvent2x(msg.meetingId, meeting.props.recorded, user))
       becomePresenter(user)
     }
 

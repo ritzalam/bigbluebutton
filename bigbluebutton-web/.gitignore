@@ -7,3 +7,7 @@ target/*
 bin/*
 plugins/*
 /bin/
+bigbluebutton-web.eml
+bigbluebutton-web.ipr
+bigbluebutton-web.iws
+

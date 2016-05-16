@@ -1,7 +1,6 @@
 package org.bigbluebutton.core.domain
 
 import com.softwaremill.quicklens._
-import org.bigbluebutton.core.models.Users3x
 
 trait Role2x
 case object ModeratorRole extends Role2x
@@ -64,56 +63,6 @@ case class RegisteredUser2x(id: IntUserId,
 
 case class UserAbilities(removed: Set[Abilities2x], added: Set[Abilities2x], applyMeetingAbilities: Boolean)
 
-object User2x {
-  def muted(user: User2x): User2x = {
-    modify(user)(_.voice.muted).setTo(Muted(true))
-  }
-
-  def unmuted(user: User2x): User2x = {
-    modify(user)(_.voice.muted).setTo(Muted(false))
-  }
-
-  def talking(user: User2x): User2x = {
-    modify(user)(_.voice.talking).setTo(Talking(true))
-  }
-
-  def notTalking(user: User2x): User2x = {
-    modify(user)(_.voice.talking).setTo(Talking(false))
-  }
-
-  def joinedVoice(user: User2x): User2x = {
-    modify(user)(_.voice.joined).setTo(JoinedVoice(true))
-  }
-
-  def leftVoice(user: User2x): User2x = {
-    modify(user)(_.voice.joined).setTo(JoinedVoice(false))
-  }
-
-  def updateSessionId(user: User2x, sessionId: SessionId): User2x = {
-    modify(user)(_.sessionId).setTo(sessionId)
-  }
-
-  def pinUserPermissions(user: User2x): User2x = {
-    modify(user)(_.restricted.applyMeetingAbilities).setTo(true)
-  }
-
-  def unPinUserPermissions(user: User2x): User2x = {
-    modify(user)(_.restricted.applyMeetingAbilities).setTo(false)
-  }
-}
-
-case class User2x(
-  id: IntUserId,
-  extId: ExtUserId,
-  name: Name,
-  sessionId: SessionId,
-  emojiStatus: EmojiStatus,
-  roles: Set[Role2x],
-  voice: Voice2x,
-  restricted: UserAbilities,
-  webcamStreams: Set[Stream],
-  deskshareStreams: Set[Stream])
-
 case class Voice2x(
   id: VoiceUserId,
   webId: IntUserId,
@@ -161,7 +110,6 @@ object Voice4x {
     modify(voice)(_.listenDirection).setTo(ListenDirection(true))
     modify(voice)(_.talkDirection).setTo(TalkDirection(false))
   }
-
 }
 
 case class Voice4x(
@@ -244,7 +192,6 @@ object Presence2x {
   def save(presence: Presence2x, app: Voice4x): Presence2x = {
     modify(presence)(_.voice).setTo(app)
   }
-
 }
 
 case class Presence2x(
@@ -263,9 +210,7 @@ object DataApp2x {
 }
 
 case class DataApp2x(sessionId: SessionId)
-
 case class WebCamStreams(streams: Set[Stream])
-
 case class VoiceApp2x(sessionId: SessionId, voice: Voice4x)
 case class ScreenShareStreams(streams: Set[Stream])
 

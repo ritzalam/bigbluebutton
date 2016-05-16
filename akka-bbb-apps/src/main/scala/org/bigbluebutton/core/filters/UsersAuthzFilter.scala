@@ -24,7 +24,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
     }
   }
 
-  override def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
+  abstract override def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
     RegisteredUsers2x.findWithToken(msg.token, state.registeredUsers.toVector) match {
       case Some(u) =>
         super.handleValidateAuthToken2x(msg)
@@ -33,7 +33,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
     }
   }
 
-  override def handleUserJoinWeb2x(msg: NewUserPresence2x): Unit = {
+  abstract override def handleUserJoinWeb2x(msg: NewUserPresence2x): Unit = {
     RegisteredUsers2x.findWithToken(msg.token, state.registeredUsers.toVector) match {
       case Some(u) =>
         super.handleUserJoinWeb2x(msg)

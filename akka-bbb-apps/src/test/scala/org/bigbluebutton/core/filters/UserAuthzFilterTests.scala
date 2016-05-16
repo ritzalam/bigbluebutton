@@ -43,6 +43,7 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar {
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg)
 
     // Then verify the class under test used the mock object as expected
+    // The disconnect user shouldn't be called as user has ability to eject another user
     verify(mockOutGW, never()).send(new DisconnectUser2x(ejectUserMsg.meetingId, ejectUserMsg.ejectedBy))
 
   }
@@ -80,6 +81,7 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar {
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg)
 
     // Then verify the class under test used the mock object as expected
+    // The disconnect user should be called as user has no ability to eject another user
     verify(mockOutGW).send(new DisconnectUser2x(ejectUserMsg.meetingId, ejectUserMsg.ejectedBy))
     verify(mockOutGW, times(1)).send(new DisconnectUser2x(ejectUserMsg.meetingId, ejectUserMsg.ejectedBy))
   }

@@ -57,33 +57,41 @@ case class MeetingProperties2x(
   id: IntMeetingId,
   extId: ExtMeetingId,
   name: Name,
-  recorded: Recorded,
   voiceConf: VoiceConf,
   duration: Int,
-  autoStartRecording: Boolean,
-  allowStartStopRecording: Boolean,
-  createTime: Long,
   maxUsers: Int,
   allowVoiceOnly: Boolean,
-  isBreakout: Boolean)
+  isBreakout: Boolean,
+  extensionProp: MeetingExtensionProp,
+  recordingProp: MeetingRecordingProp)
+
+case class MeetingRecordingProp(
+  recorded: Recorded = Recorded(false),
+  autoStartRecording: Boolean = false,
+  allowStartStopRecording: Boolean = true)
 
 case class MeetingExtensionProp(
-  maxExtensions: Int = 2,
-  numExtensions: Int = 0,
+  maxExtensions: Int = 0,
   extendByMinutes: Int = 20,
-  sendNotice: Boolean = true,
+  sendNotice: Boolean = true)
+
+case class MeetingRecordingStatus(
+  recording: Boolean,
+  voiceRecordingFilename: String = "")
+
+case class MeetingExtensionStatus(
+  numExtensions: Int = 0,
   sent15MinNotice: Boolean = false,
   sent10MinNotice: Boolean = false,
   sent5MinNotice: Boolean = false)
 
 case class MeetingStatus(
-  recording: Boolean,
   muted: Boolean,
   ended: Boolean,
   lastWebUserLeft: Boolean,
   lastWebUserLeftOnTimestamp: Long,
-  voiceRecordingFilename: String = "",
-  extension: MeetingExtensionProp,
   startedOn: Long,
   breakoutRoomsStartedOn: Long,
-  breakoutRoomsDurationInMinutes: Int)
+  breakoutRoomsDurationInMinutes: Int,
+  extensionStatus: MeetingExtensionStatus,
+  recordingStatus: MeetingRecordingStatus)

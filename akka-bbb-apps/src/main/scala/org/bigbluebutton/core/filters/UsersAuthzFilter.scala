@@ -2,9 +2,9 @@ package org.bigbluebutton.core.filters
 
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api._
-import org.bigbluebutton.core.domain.{ CanEjectUser, MeetingProperties2x }
-import org.bigbluebutton.core.handlers.{ UserActorMessageHandler, UsersHandler, UsersHandler2x }
-import org.bigbluebutton.core.models.{ Meeting2x, MeetingState, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core.domain.{ CanEjectUser }
+import org.bigbluebutton.core.handlers.{ UsersHandler2x }
+import org.bigbluebutton.core.models.{ MeetingState, RegisteredUsers2x, Users3x }
 
 trait UsersHandlerFilter extends UsersHandler2x {
   val state: MeetingState

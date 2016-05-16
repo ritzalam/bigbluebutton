@@ -35,25 +35,7 @@ class BigBlueButtonActor(val system: ActorSystem,
   }
 
   private def handleValidateAuthToken(msg: ValidateAuthToken) {
-    meetings.get(msg.meetingId.value) foreach { m =>
-      m.actorRef ! msg
-
-      //      val future = m.actorRef.ask(msg)(5 seconds)
-      //      future onComplete {
-      //        case Success(result) => {
-      //          log.info("Validate auth token response. meetingId=" + msg.meetingID + " userId=" + msg.userId + " token=" + msg.token)
-      //          /**
-      //           * Received a reply from MeetingActor which means hasn't hung!
-      //           * Sometimes, the actor seems to hang and doesn't anymore accept messages. This is a simple
-      //           * audit to check whether the actor is still alive. (ralam feb 25, 2015)
-      //           */
-      //        }
-      //        case Failure(failure) => {
-      //          log.warning("Validate auth token timeout. meetingId=" + msg.meetingID + " userId=" + msg.userId + " token=" + msg.token)
-      //          outGW.send(new ValidateAuthTokenTimedOut(msg.meetingID, msg.userId, msg.token, false, msg.correlationId))
-      //        }
-      //      }
-    }
+    meetings.get(msg.meetingId.value) foreach (m => m.actorRef ! msg)
   }
 
   private def handleKeepAliveMessage(msg: KeepAliveMessage): Unit = {

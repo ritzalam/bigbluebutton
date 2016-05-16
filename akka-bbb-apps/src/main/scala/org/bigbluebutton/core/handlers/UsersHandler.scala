@@ -3,10 +3,8 @@ package org.bigbluebutton.core.handlers
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain.Role
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.models.RegisteredUsers2x
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.immutable.ListSet
-import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting
 
 trait UsersHandler extends UsersApp {

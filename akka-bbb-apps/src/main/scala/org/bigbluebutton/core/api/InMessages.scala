@@ -21,6 +21,8 @@ case class KeepAliveMessage(aliveID: String) extends InMessage
 // Meeting
 /////////////////////////////////////////////////////////////////////////////
 
+case class CreateMeeting2x(meetingId: IntMeetingId, mProps: MeetingProperties2x) extends InMessage
+
 case class MonitorNumberOfUsers(meetingId: IntMeetingId) extends InMessage
 case class SendTimeRemainingUpdate(meetingId: IntMeetingId) extends InMessage
 case class ExtendMeetingDuration(meetingId: IntMeetingId, userId: IntUserId) extends InMessage

@@ -147,19 +147,20 @@ trait MeetingTestFixtures {
 
   val jbUser = User3x.create(marIntUserId, marExtUserId, marUserName, marRoles)
 
+  val extensionProp = new MeetingExtensionProp
+  val recordingProp = new MeetingRecordingProp
+
   val piliProps: MeetingProperties2x = MeetingProperties2x(
     piliIntMeetingId,
     piliExtMeetingId,
     piliMeetingName,
-    piliRecorded,
     voiceConf,
     duration,
-    autoStartRecording,
-    allowStartStopRecording,
-    TimestampGenerator.generateTimestamp(),
     maxUsers,
     allowVoiceOnly,
-    isBreakout)
+    isBreakout,
+    extensionProp,
+    recordingProp)
 
   val abilities: MeetingPermissions = new MeetingPermissions
   val registeredUsers = new RegisteredUsers2x

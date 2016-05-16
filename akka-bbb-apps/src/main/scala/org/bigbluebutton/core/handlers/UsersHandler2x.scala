@@ -28,7 +28,7 @@ trait UsersHandler2x {
       msg.extData)
 
     state.registeredUsers.add(regUser)
-    outGW.send(new UserRegisteredEvent2x(state.props.id, state.props.recorded, regUser))
+    outGW.send(new UserRegisteredEvent2x(state.props.id, state.props.recordingProp.recorded, regUser))
   }
 
   def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {

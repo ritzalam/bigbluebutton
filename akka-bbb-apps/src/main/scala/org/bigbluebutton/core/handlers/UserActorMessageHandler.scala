@@ -35,7 +35,7 @@ class UserActorMessageHandler(
 
     def process(user: User3x): Unit = {
       meeting.users.save(user)
-      outGW.send(new UserJoinedEvent2x(msg.meetingId, meeting.props.recorded, user))
+      outGW.send(new UserJoinedEvent2x(msg.meetingId, meeting.props.recordingProp.recorded, user))
       becomePresenter(user)
     }
 

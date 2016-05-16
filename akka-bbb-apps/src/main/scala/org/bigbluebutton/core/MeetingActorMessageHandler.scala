@@ -4,7 +4,7 @@ import akka.actor.ActorContext
 import org.bigbluebutton.core.api.ValidateAuthToken
 import org.bigbluebutton.core.bus.IncomingEventBus
 import org.bigbluebutton.core.domain.UserActorRef
-import org.bigbluebutton.core.models.{ Meeting2x, Meeting3x, UserActorRefs }
+import org.bigbluebutton.core.models.{ Meeting3x, UserActorRefs }
 
 trait MeetingActorMessageHandler {
   val meeting: Meeting3x

@@ -21,23 +21,25 @@ trait Meeting extends RegisteredUsers with Users {
   private var voiceRecordingFilename: String = ""
 
   private var extension = new MeetingExtensionProp
+  private var extensionStatus = new MeetingExtensionStatus()
 
   val startedOn = timeNowInSeconds
 
   var breakoutRoomsStartedOn: Long = 0
   var breakoutRoomsdurationInMinutes: Int = 0
 
-  def isExtensionAllowed: Boolean = extension.numExtensions < extension.maxExtensions
+  def isExtensionAllowed: Boolean = extensionStatus.numExtensions < extension.maxExtensions
+
   def incNumExtension(): Int = {
-    if (extension.numExtensions < extension.maxExtensions) {
-      extension = extension.copy(numExtensions = extension.numExtensions + 1); extension.numExtensions
+    if (extensionStatus.numExtensions < extension.maxExtensions) {
+      extensionStatus = extensionStatus.copy(numExtensions = extensionStatus.numExtensions + 1)
     }
-    extension.numExtensions
+    extensionStatus.numExtensions
   }
 
-  def notice15MinutesSent() = extension = extension.copy(sent15MinNotice = true)
-  def notice10MinutesSent() = extension = extension.copy(sent10MinNotice = true)
-  def notice5MinutesSent() = extension = extension.copy(sent5MinNotice = true)
+  def notice15MinutesSent() = extensionStatus = extensionStatus.copy(sent15MinNotice = true)
+  def notice10MinutesSent() = extensionStatus = extensionStatus.copy(sent10MinNotice = true)
+  def notice5MinutesSent() = extensionStatus = extensionStatus.copy(sent5MinNotice = true)
 
   def getMeetingExtensionProp: MeetingExtensionProp = extension
   def muteMeeting() = meetingMuted = true

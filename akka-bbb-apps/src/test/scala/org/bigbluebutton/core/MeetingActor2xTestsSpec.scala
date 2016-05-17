@@ -114,4 +114,44 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
       }
     }
   }
+
+  "A MeetingActor" should {
+    "Eject the user when receiving eject user command" in {
+      within(500 millis) {
+        val testRegUsers = new RegisteredUsers2x
+        testRegUsers.add(du30RegisteredUser)
+        testRegUsers.add(mdsRegisteredUser)
+        testRegUsers.add(marRegisteredUser)
+
+        val testUsers = new Users3x
+        testUsers.save(du30User)
+        testUsers.save(mdsUser)
+        testUsers.save(marUser)
+
+        val state: MeetingState = new MeetingState(piliProps,
+          abilities,
+          testRegUsers,
+          testUsers,
+          chats,
+          layouts,
+          polls,
+          whiteboards,
+          presentations,
+          breakoutRooms,
+          captions)
+
+        val ejectUserMsg = new EjectUserFromMeeting(piliIntMeetingId, marIntUserId, du30IntUserId)
+
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
+        meetingActorRef ! ejectUserMsg
+        //expectMsgAllClassOf(classOf[UserEjectedFromMeeting], classOf[DisconnectUser2x], classOf[UserLeft2x])
+        expectMsgClass(classOf[UserEjectedFromMeeting])
+        expectMsgClass(classOf[DisconnectUser2x])
+        expectMsgClass(classOf[UserLeft2x])
+
+        assert(state.users.toVector.length == 2)
+        assert(state.registeredUsers.toVector.length == 2)
+      }
+    }
+  }
 }

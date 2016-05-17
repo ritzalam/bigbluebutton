@@ -20,7 +20,7 @@ trait MeetingTestFixtures {
   val du30IntUserId = IntUserId("du30")
   val du30ExtUserId = ExtUserId("DU30")
   val du30UserName = Name("Rody Duterte")
-  val du30Roles: Set[Role2x] = Set(ModeratorRole)
+  val du30Roles: Set[Role2x] = Set(ModeratorRole, PresenterRole)
   val du30AuthToken = AuthToken("Du30LetMeWin!")
   val du30Avatar = Avatar("http://www.gravatar.com/sdsdas")
   val du30LogoutUrl = LogoutUrl("http://www.amoutofhere.com")

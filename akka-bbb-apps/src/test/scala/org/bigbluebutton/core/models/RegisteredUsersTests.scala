@@ -1,58 +1,128 @@
 package org.bigbluebutton.core.models
 
-import org.bigbluebutton.core.UnitSpec
-import org.bigbluebutton.core.domain._
+import org.bigbluebutton.core.{ MeetingTestFixtures, UnitSpec }
 
-class RegisteredUsersTests extends UnitSpec {
-  val ru1 = RegisteredUser(IntUserId("u1"), ExtUserId("eu1"), Name("Rody"), Set(Role.MODERATOR), AuthToken("au1"))
-  val ru2 = RegisteredUser(IntUserId("u2"), ExtUserId("eu2"), Name("Grace"), Set(Role.MODERATOR), AuthToken("au2"))
-  val ru3 = RegisteredUser(IntUserId("u3"), ExtUserId("eu3"), Name("Mar"), Set(Role.MODERATOR), AuthToken("au3"))
+class RegisteredUsersTests extends UnitSpec with MeetingTestFixtures {
 
   it should "add a registered user" in {
-    object RegisteredUsers extends RegisteredUsers
-    val rusers = RegisteredUsers
+    val testRegUsers = new RegisteredUsers2x
+    testRegUsers.add(du30RegisteredUser)
+    testRegUsers.add(mdsRegisteredUser)
+    testRegUsers.add(marRegisteredUser)
 
-    val regUser1 = rusers.addRegisteredUser(ru1.authToken, ru1)
-    val regUser2 = rusers.addRegisteredUser(ru2.authToken, ru2)
-    val regUser3 = rusers.addRegisteredUser(ru3.authToken, ru3)
-
-    assert(regUser3.length == 3)
+    assert(testRegUsers.toVector.length == 3)
   }
 
   it should "find a registered user using token" in {
-    object RegisteredUsers extends RegisteredUsers
-    val rusers = RegisteredUsers
+    val testRegUsers = new RegisteredUsers2x
+    testRegUsers.add(du30RegisteredUser)
+    testRegUsers.add(mdsRegisteredUser)
+    testRegUsers.add(marRegisteredUser)
 
-    val regUser1 = rusers.addRegisteredUser(ru1.authToken, ru1)
-    val regUser2 = rusers.addRegisteredUser(ru2.authToken, ru2)
-    val regUser3 = rusers.addRegisteredUser(ru3.authToken, ru3)
+    assert(testRegUsers.toVector.length == 3)
 
-    val u1 = rusers.findWithToken(ru3.authToken)
-    assert(u1.get.id == ru3.id)
+    RegisteredUsers2x.findWithToken(du30RegisteredUser.authToken, testRegUsers.toVector) match {
+      case Some(u) => assert(u.id == du30RegisteredUser.id)
+      case None => fail("Failed to find user.")
+    }
   }
 
   it should "find a registered user using id" in {
-    object RegisteredUsers extends RegisteredUsers
-    val rusers = RegisteredUsers
+    val testRegUsers = new RegisteredUsers2x
+    testRegUsers.add(du30RegisteredUser)
+    testRegUsers.add(mdsRegisteredUser)
+    testRegUsers.add(marRegisteredUser)
 
-    val regUser1 = rusers.addRegisteredUser(ru1.authToken, ru1)
-    val regUser2 = rusers.addRegisteredUser(ru2.authToken, ru2)
-    val regUser3 = rusers.addRegisteredUser(ru3.authToken, ru3)
+    assert(testRegUsers.toVector.length == 3)
 
-    val u1 = rusers.findWithUserId(ru3.id)
-    assert(u1.get.id == ru3.id)
+    RegisteredUsers2x.findWithUserId(du30RegisteredUser.id, testRegUsers.toVector) match {
+      case Some(u) => assert(u.id == du30RegisteredUser.id)
+      case None => fail("Failed to find user.")
+    }
   }
 
   it should "remove a registered user using id" in {
-    object RegisteredUsers extends RegisteredUsers
-    val rusers = RegisteredUsers
+    val testRegUsers = new RegisteredUsers2x
+    testRegUsers.add(du30RegisteredUser)
+    testRegUsers.add(mdsRegisteredUser)
+    testRegUsers.add(marRegisteredUser)
 
-    val regUser1 = rusers.addRegisteredUser(ru1.authToken, ru1)
-    val regUser2 = rusers.addRegisteredUser(ru2.authToken, ru2)
-    val regUser3 = rusers.addRegisteredUser(ru3.authToken, ru3)
+    assert(testRegUsers.toVector.length == 3)
 
-    val regUser4 = rusers.removeRegisteredUser(ru3.id)
-    assert(regUser4.get.id == ru3.id)
-    assert(rusers.toArray.length == 2)
+    val regUser4 = testRegUsers.remove(du30RegisteredUser.id) match {
+      case Some(u) => assert(u.id == du30RegisteredUser.id)
+      case None => fail("Failed to find user.")
+    }
+
+    assert(testRegUsers.toVector.length == 2)
   }
+
+  // ====================================
+  it should "add a user" in {
+    val users = new Users3x
+    users.save(du30User)
+    users.save(mdsUser)
+    users.save(marUser)
+
+    assert(users.toVector.length == 3)
+  }
+
+  it should "find a user using id" in {
+    val users = new Users3x
+    users.save(du30User)
+    users.save(mdsUser)
+    users.save(marUser)
+
+    Users3x.findWithId(du30RegisteredUser.id, users.toVector) match {
+      case Some(u) => assert(u.id == du30RegisteredUser.id)
+      case None => fail("Failed to find user.")
+    }
+  }
+
+  it should "find a user using external id" in {
+    val users = new Users3x
+    users.save(du30User)
+    users.save(mdsUser)
+    users.save(marUser)
+
+    Users3x.findWithExtId(du30RegisteredUser.extId, users.toVector) match {
+      case Some(u) => assert(u.id == du30RegisteredUser.id)
+      case None => fail("Failed to find user.")
+    }
+  }
+
+  it should "remove a user using id" in {
+    val users = new Users3x
+    users.save(du30User)
+    users.save(mdsUser)
+    users.save(marUser)
+
+    users.remove(du30RegisteredUser.id) match {
+      case Some(u) => assert(u.id == du30RegisteredUser.id)
+      case None => fail("Failed to find user.")
+    }
+
+    assert(users.toVector.length == 2)
+  }
+
+  it should "have one user with moderator role" in {
+    val users = new Users3x
+    users.save(du30User)
+    users.save(mdsUser)
+    users.save(marUser)
+
+    val mods = Users3x.findModerators(users.toVector)
+    assert(mods.length == 1)
+  }
+
+  it should "have one user with presenter role" in {
+    val users = new Users3x
+    users.save(du30User)
+    users.save(mdsUser)
+    users.save(marUser)
+
+    val pres = Users3x.findPresenters(users.toVector)
+    assert(pres.length == 1)
+  }
+
 }

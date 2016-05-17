@@ -3,7 +3,7 @@ package org.bigbluebutton.core.handlers
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.models.{ MeetingState, PinNumberGenerator, RegisteredUsers2x }
+import org.bigbluebutton.core.models.{ MeetingState, PinNumberGenerator, RegisteredUsers2x, Users3x }
 
 trait UsersHandler2x {
   val state: MeetingState
@@ -345,19 +345,24 @@ trait UsersHandler2x {
 */ }
 
   def handleEjectUserFromMeeting(msg: EjectUserFromMeeting) {
-    /*    def removeAndEject(user: User3x): Unit = {
-      meeting.state.users.remove(user.id)
-      meeting.state.registeredUsers.remove(msg.userId)
+    def removeAndEject(user: User3x): Unit = {
+      // remove user from list of users
+      state.users.remove(user.id)
+      // remove user from registered users to prevent re-joining
+      state.registeredUsers.remove(msg.userId)
 
-      // TODO: Send user ejected message
-      //      sender.sendUserEjectedFromMeetingMessage(props.id, props.recorded, msg.userId, msg.ejectedBy)
-      //      sender.sendDisconnectUserMessage(props.id, msg.userId)
-      //      sender.sendUserLeftMessage(msg.meetingId, props.recorded, user)
+      // Send message to user that he has been ejected.
+      outGW.send(new UserEjectedFromMeeting(state.props.id, state.props.recordingProp.recorded, msg.userId, msg.ejectedBy))
+      // Tell system to disconnect user.
+      outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
+      // Tell all others that user has left the meeting.
+      outGW.send(new UserLeft2x(state.props.id, state.props.recordingProp.recorded, msg.userId))
     }
+
     for {
-      user <- meeting.state.users.findWithId(msg.userId)
+      user <- Users3x.findWithId(msg.userId, state.users.toVector)
     } yield removeAndEject(user)
-*/ }
+  }
 
   def handleChangeUserStatus(msg: ChangeUserStatus): Unit = {
     //    if (meeting.hasUser(msg.userId)) {

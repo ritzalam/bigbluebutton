@@ -16,21 +16,18 @@ class Users3x {
   }
 
   def toVector: Vector[User3x] = users.values.toVector
-
 }
 
 object Users3x {
-
   def findWithId(id: IntUserId, users: Vector[User3x]): Option[User3x] = users.find(u => u.id.value == id.value)
   def findWithExtId(id: ExtUserId, users: Vector[User3x]): Option[User3x] = users.find(u => u.extId.value == id.value)
-  def findModerator(users: Vector[User3x]): Option[User3x] = users.find(u => u.roles.contains(ModeratorRole))
+  def findModerators(users: Vector[User3x]): Vector[User3x] = users.filter(u => u.roles.contains(ModeratorRole))
   def findPresenters(users: Vector[User3x]): Vector[User3x] = users.filter(u => u.roles.contains(PresenterRole))
   def hasModerator(users: Vector[User3x]): Boolean = users.filter(u => u.roles.contains(ModeratorRole)).length > 0
   def hasPresenter(users: Vector[User3x]): Boolean = users.filter(u => u.roles.contains(PresenterRole)).length > 0
 }
 
 object RegisteredUsers2x {
-
   def create(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[Role2x],
     token: AuthToken, avatar: Avatar,
     logoutUrl: LogoutUrl,
@@ -55,7 +52,6 @@ object RegisteredUsers2x {
   def findWithUserId(id: IntUserId, users: Vector[RegisteredUser2x]): Option[RegisteredUser2x] = {
     users.find(ru => id.value == ru.id.value)
   }
-
 }
 
 class RegisteredUsers2x {
@@ -69,36 +65,8 @@ class RegisteredUsers2x {
   }
 
   def remove(id: IntUserId): Option[RegisteredUser2x] = {
-    val ru = regUsers.get(id.value)
+    val ru = RegisteredUsers2x.findWithUserId(id, toVector)
     ru foreach { u => regUsers -= u.authToken.value }
     ru
   }
 }
-
-object Users4x {
-  def add(user: User3x, users: Vector[User3x]): Vector[User3x] = {
-    users :+ user
-  }
-}
-
-case class Users4x(users: Vector[User3x])
-
-object RegisteredUsers4x {
-  def add(user: RegisteredUser2x, users: Vector[RegisteredUser2x]): Vector[RegisteredUser2x] = {
-    users :+ user
-  }
-
-  def findWithToken(token: AuthToken, users: Vector[RegisteredUser2x]): Option[RegisteredUser2x] = {
-    users find (ru => ru.authToken.value == token.value)
-  }
-
-  def findWithUserId(id: IntUserId, users: Vector[RegisteredUser2x]): Option[RegisteredUser2x] = {
-    users find (ru => id.value == ru.id.value)
-  }
-
-  def remove(id: IntUserId, users: Vector[RegisteredUser2x]): Vector[RegisteredUser2x] = {
-    users filterNot (u => u.id.value == id.value)
-  }
-}
-
-case class RegisteredUsers4x(registeredUsers: Vector[RegisteredUser2x])

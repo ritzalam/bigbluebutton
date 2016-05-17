@@ -82,6 +82,8 @@ case class UserRegisteredEvent2x(
   meetingId: IntMeetingId, recorded: Recorded, user: RegisteredUser2x) extends IOutMessage
 case class UserRegistered(
   meetingId: IntMeetingId, recorded: Recorded, user: RegisteredUser) extends IOutMessage
+case class UserLeft2x(
+  meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId) extends IOutMessage
 case class UserLeft(
   meetingId: IntMeetingId, recorded: Recorded, user: UserVO) extends IOutMessage
 case class UserEjectedFromMeeting(

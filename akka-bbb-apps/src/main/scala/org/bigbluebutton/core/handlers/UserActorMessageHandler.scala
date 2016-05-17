@@ -6,9 +6,7 @@ import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain.{ User3x, _ }
 import org.bigbluebutton.core.models._
 
-class UserActorMessageHandler(
-    user: RegisteredUser2x,
-    outGW: OutMessageGateway) extends SystemConfiguration {
+class UserActorMessageHandler(user: RegisteredUser2x, outGW: OutMessageGateway) extends SystemConfiguration {
 
   private val userState: UserState = new UserState(user)
 
@@ -21,6 +19,10 @@ class UserActorMessageHandler(
     for {
       user <- RegisteredUsers2x.findWithToken(msg.token, meeting.registeredUsers.toVector)
     } yield sendResponse(user)
+  }
+
+  def handleEjectUserFromMeeting(msg: EjectUserFromMeeting, meeting: MeetingState): Unit = {
+
   }
 
   def handleUserJoinWeb2x(msg: NewUserPresence2x, meeting: MeetingState): Unit = {

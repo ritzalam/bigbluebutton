@@ -2,7 +2,7 @@ package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.api.{ DisconnectUser2x, EjectUserFromMeeting }
 import org.bigbluebutton.core.{ OutMessageGateway, UnitSpec }
-import org.bigbluebutton.core.models.{ MeetingState, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core.models.{ MeetingStateModel, MeetingStatus, RegisteredUsers2x, Users3x }
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 
@@ -19,7 +19,7 @@ class UserActorMessageHandlerTests extends UnitSpec with MockitoSugar {
     testUsers.save(mdsUser)
     testUsers.save(marUser)
 
-    val state: MeetingState = new MeetingState(piliProps,
+    val state: MeetingStateModel = new MeetingStateModel(piliProps,
       abilities,
       testRegUsers,
       testUsers,
@@ -29,7 +29,8 @@ class UserActorMessageHandlerTests extends UnitSpec with MockitoSugar {
       whiteboards,
       presentations,
       breakoutRooms,
-      captions)
+      captions,
+      new MeetingStatus)
 
     val mockOutGW = mock[OutMessageGateway]
     // Create the class under test and pass the mock to it

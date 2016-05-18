@@ -3,10 +3,10 @@ package org.bigbluebutton.core.handlers
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.models.{ MeetingState, PinNumberGenerator, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core.models.{ MeetingStateModel, PinNumberGenerator, RegisteredUsers2x, Users3x }
 
 trait UsersHandler2x {
-  val state: MeetingState
+  val state: MeetingStateModel
   val outGW: OutMessageGateway
 
   private var userHandlers = new collection.immutable.HashMap[String, UserActorMessageHandler]
@@ -352,11 +352,15 @@ trait UsersHandler2x {
       state.registeredUsers.remove(msg.userId)
 
       // Send message to user that he has been ejected.
-      outGW.send(new UserEjectedFromMeeting(state.props.id, state.props.recordingProp.recorded, msg.userId, msg.ejectedBy))
+      outGW.send(new UserEjectedFromMeeting(state.props.id,
+        state.props.recordingProp.recorded,
+        msg.userId, msg.ejectedBy))
       // Tell system to disconnect user.
       outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
       // Tell all others that user has left the meeting.
-      outGW.send(new UserLeft2x(state.props.id, state.props.recordingProp.recorded, msg.userId))
+      outGW.send(new UserLeft2x(state.props.id,
+        state.props.recordingProp.recorded,
+        msg.userId))
     }
 
     for {

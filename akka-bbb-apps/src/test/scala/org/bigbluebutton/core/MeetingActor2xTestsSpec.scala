@@ -5,6 +5,7 @@ import akka.testkit.{ DefaultTimeout, ImplicitSender, TestKit }
 import com.typesafe.config.ConfigFactory
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.bus.{ IncomingEventBus, OutgoingEventBus }
+import org.bigbluebutton.core.domain.{ MeetingExtensionProp, MeetingExtensionStatus }
 import org.bigbluebutton.core.models._
 import org.scalatest.{ Matchers, WordSpecLike }
 
@@ -23,7 +24,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
   "A MeetingActor" should {
     "Send a DisconnectUser when receiving ValitadateAuthTokenCommand and there is no registered user" in {
       within(500 millis) {
-        val state: MeetingState = new MeetingState(
+        val state: MeetingStateModel = new MeetingStateModel(
           piliProps,
           abilities,
           registeredUsers,
@@ -34,7 +35,8 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
           whiteboards,
           presentations,
           breakoutRooms,
-          captions)
+          captions,
+          new MeetingStatus)
 
         val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
         meetingActorRef ! du30ValidateAuthTokenCommand
@@ -46,7 +48,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
   "A MeetingActor" should {
     "Send a UserRegisteredEvent when receiving UserRegisterCommand" in {
       within(500 millis) {
-        val state: MeetingState = new MeetingState(piliProps,
+        val state: MeetingStateModel = new MeetingStateModel(piliProps,
           abilities,
           registeredUsers,
           users,
@@ -56,7 +58,8 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
           whiteboards,
           presentations,
           breakoutRooms,
-          captions)
+          captions,
+          new MeetingStatus)
         val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
         meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
@@ -67,7 +70,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
   "A MeetingActor" should {
     "Send a ValidateAuthTokenReply when receiving ValitadateAuthTokenCommand and there is registered user" in {
       within(500 millis) {
-        val state: MeetingState = new MeetingState(piliProps,
+        val state: MeetingStateModel = new MeetingStateModel(piliProps,
           abilities,
           registeredUsers,
           users,
@@ -77,7 +80,8 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
           whiteboards,
           presentations,
           breakoutRooms,
-          captions)
+          captions,
+          new MeetingStatus)
         val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
         meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
@@ -90,7 +94,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
   "A MeetingActor" should {
     "Send a UserJoinedEvent when receiving UserJoinCommand and there is registered user" in {
       within(500 millis) {
-        val state: MeetingState = new MeetingState(piliProps,
+        val state: MeetingStateModel = new MeetingStateModel(piliProps,
           abilities,
           registeredUsers,
           users,
@@ -100,7 +104,8 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
           whiteboards,
           presentations,
           breakoutRooms,
-          captions)
+          captions,
+          new MeetingStatus)
         val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
         meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
@@ -128,17 +133,10 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
         testUsers.save(mdsUser)
         testUsers.save(marUser)
 
-        val state: MeetingState = new MeetingState(piliProps,
-          abilities,
-          testRegUsers,
-          testUsers,
-          chats,
-          layouts,
-          polls,
-          whiteboards,
-          presentations,
-          breakoutRooms,
-          captions)
+        val state: MeetingStateModel = new MeetingStateModel(piliProps,
+          abilities, testRegUsers, testUsers, chats, layouts,
+          polls, whiteboards, presentations, breakoutRooms, captions,
+          new MeetingStatus)
 
         val ejectUserMsg = new EjectUserFromMeeting(piliIntMeetingId, marIntUserId, du30IntUserId)
 

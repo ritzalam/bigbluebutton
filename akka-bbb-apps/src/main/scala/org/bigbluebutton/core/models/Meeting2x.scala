@@ -1,8 +1,6 @@
 package org.bigbluebutton.core.models
 
-import java.util.concurrent.TimeUnit
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.util.RandomStringGenerator
 import com.softwaremill.quicklens._
 
 case class Meeting3x(
@@ -17,7 +15,9 @@ case class Meeting3x(
   pinNumbers: Set[PinNumber] = Set.empty,
   lastGeneratedPin: Int = 0,
   breakoutRoomsStartedOn: Long = 0L,
-  breakoutRoomsDurationInMinutes: Int = 120)
+  breakoutRoomsDurationInMinutes: Int = 120,
+  extensionStatus: MeetingExtensionStatus = new MeetingExtensionStatus,
+  recordingStatus: MeetingRecordingStatus = new MeetingRecordingStatus)
 
 object Meeting3x {
   def isExtensionAllowed(

@@ -5,14 +5,14 @@ import org.bigbluebutton.core.api.{ EjectUserFromMeeting, NewUserPresence2x, Reg
 import org.bigbluebutton.core.bus.IncomingEventBus
 import org.bigbluebutton.core.domain.MeetingProperties2x
 import org.bigbluebutton.core.filters.UsersHandlerFilter
-import org.bigbluebutton.core.models.MeetingState
+import org.bigbluebutton.core.models.MeetingStateModel
 
 object MeetingActor2x {
   def props(
     props: MeetingProperties2x,
     bus: IncomingEventBus,
     outGW: OutMessageGateway,
-    state: MeetingState): Props =
+    state: MeetingStateModel): Props =
     Props(classOf[MeetingActor2x], props, bus, outGW, state)
 }
 
@@ -20,7 +20,7 @@ class MeetingActor2x(
     val props: MeetingProperties2x,
     val bus: IncomingEventBus,
     val outGW: OutMessageGateway,
-    val state: MeetingState) extends Actor with ActorLogging with UsersHandlerFilter {
+    val state: MeetingStateModel) extends Actor with ActorLogging with UsersHandlerFilter {
 
   def receive = {
     case msg: RegisterUser2xCommand => handleRegisterUser2x(msg)

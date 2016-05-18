@@ -10,7 +10,7 @@ class UserActorMessageHandler(user: RegisteredUser2x, outGW: OutMessageGateway) 
 
   private val userState: UserState = new UserState(user)
 
-  def handleValidateAuthToken2x(msg: ValidateAuthToken, meeting: MeetingState): Unit = {
+  def handleValidateAuthToken2x(msg: ValidateAuthToken, meeting: MeetingStateModel): Unit = {
     def sendResponse(user: RegisteredUser2x): Unit = {
       // TODO: Send response with user status
       outGW.send(new ValidateAuthTokenReply2x(msg.meetingId, msg.userId, msg.token, true))
@@ -21,11 +21,11 @@ class UserActorMessageHandler(user: RegisteredUser2x, outGW: OutMessageGateway) 
     } yield sendResponse(user)
   }
 
-  def handleEjectUserFromMeeting(msg: EjectUserFromMeeting, meeting: MeetingState): Unit = {
+  def handleEjectUserFromMeeting(msg: EjectUserFromMeeting, meeting: MeetingStateModel): Unit = {
 
   }
 
-  def handleUserJoinWeb2x(msg: NewUserPresence2x, meeting: MeetingState): Unit = {
+  def handleUserJoinWeb2x(msg: NewUserPresence2x, meeting: MeetingStateModel): Unit = {
     def becomePresenter(user: User3x): Unit = {
       // TODO: Become presenter if only moderator in meeting
       if (user.isModerator && !Users3x.hasPresenter(meeting.users.toVector)) {
@@ -58,7 +58,7 @@ class UserActorMessageHandler(user: RegisteredUser2x, outGW: OutMessageGateway) 
 
   }
 
-  def handleUserLeave2xCommand(msg: UserLeave2xCommand, meeting: MeetingState): Unit = {
+  def handleUserLeave2xCommand(msg: UserLeave2xCommand, meeting: MeetingStateModel): Unit = {
     Users3x.findWithId(msg.userId, meeting.users.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
@@ -70,7 +70,7 @@ class UserActorMessageHandler(user: RegisteredUser2x, outGW: OutMessageGateway) 
     }
   }
 
-  def handleViewWebCamRequest2x(msg: ViewWebCamRequest2x, meeting: MeetingState): Unit = {
+  def handleViewWebCamRequest2x(msg: ViewWebCamRequest2x, meeting: MeetingStateModel): Unit = {
     def send(tokens: Set[String]): Unit = {
       if (tokens.contains(msg.token)) {
         // send media info
@@ -83,7 +83,7 @@ class UserActorMessageHandler(user: RegisteredUser2x, outGW: OutMessageGateway) 
 
   }
 
-  def handleShareWebCamRequest2x(msg: ShareWebCamRequest2x, meeting: MeetingState): Unit = {
+  def handleShareWebCamRequest2x(msg: ShareWebCamRequest2x, meeting: MeetingStateModel): Unit = {
     def send(): Unit = {
 
     }
@@ -95,7 +95,7 @@ class UserActorMessageHandler(user: RegisteredUser2x, outGW: OutMessageGateway) 
 
   }
 
-  def handleUserShareWebCam2x(msg: UserShareWebCam2x, meeting: MeetingState): Unit = {
+  def handleUserShareWebCam2x(msg: UserShareWebCam2x, meeting: MeetingStateModel): Unit = {
     def send(): Unit = {
 
     }
@@ -107,7 +107,7 @@ class UserActorMessageHandler(user: RegisteredUser2x, outGW: OutMessageGateway) 
 
   }
 
-  def handleUserUnShareWebCam2x(msg: UserUnShareWebCam2x, meeting: MeetingState): Unit = {
+  def handleUserUnShareWebCam2x(msg: UserUnShareWebCam2x, meeting: MeetingStateModel): Unit = {
     def send(): Unit = {
 
     }

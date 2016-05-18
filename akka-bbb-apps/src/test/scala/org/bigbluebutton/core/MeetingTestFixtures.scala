@@ -172,7 +172,7 @@ trait MeetingTestFixtures {
   val presentations = new PresentationModel
   val breakoutRooms = new BreakoutRoomModel
   val captions = new CaptionModel
-  val extension: ExtensionStatus = new ExtensionStatus
+  val extension: MeetingExtensionStatus = new MeetingExtensionStatus
 
   val du30RegisterUserCommand = RegisterUser2xCommand(
     piliIntMeetingId,

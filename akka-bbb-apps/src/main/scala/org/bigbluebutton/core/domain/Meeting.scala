@@ -76,7 +76,7 @@ case class MeetingExtensionProp(
   sendNotice: Boolean = true)
 
 case class MeetingRecordingStatus(
-  recording: Boolean,
+  recording: Boolean = false,
   voiceRecordingFilename: String = "")
 
 case class MeetingExtensionStatus(
@@ -85,13 +85,3 @@ case class MeetingExtensionStatus(
   sent10MinNotice: Boolean = false,
   sent5MinNotice: Boolean = false)
 
-case class MeetingStatus(
-  muted: Boolean,
-  ended: Boolean,
-  lastWebUserLeft: Boolean,
-  lastWebUserLeftOnTimestamp: Long,
-  startedOn: Long,
-  breakoutRoomsStartedOn: Long,
-  breakoutRoomsDurationInMinutes: Int,
-  extensionStatus: MeetingExtensionStatus,
-  recordingStatus: MeetingRecordingStatus)

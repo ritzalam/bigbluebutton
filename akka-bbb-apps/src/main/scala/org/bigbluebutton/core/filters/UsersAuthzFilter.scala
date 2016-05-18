@@ -4,10 +4,10 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.domain.{ CanEjectUser }
 import org.bigbluebutton.core.handlers.{ UsersHandler2x }
-import org.bigbluebutton.core.models.{ MeetingState, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core.models.{ MeetingStateModel, RegisteredUsers2x, Users3x }
 
 trait UsersHandlerFilter extends UsersHandler2x {
-  val state: MeetingState
+  val state: MeetingStateModel
   val outGW: OutMessageGateway
 
   object DefaultAbilitiesFilter extends DefaultAbilitiesFilter
@@ -15,7 +15,12 @@ trait UsersHandlerFilter extends UsersHandler2x {
 
   abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeeting): Unit = {
     Users3x.findWithId(msg.ejectedBy, state.users.toVector) foreach { user =>
-      val abilities = abilitiesFilter.calcEffectiveAbilities(user.roles, user.permissions, state.abilities.get.removed)
+
+      val abilities = abilitiesFilter.calcEffectiveAbilities(
+        user.roles,
+        user.permissions,
+        state.abilities.get.removed)
+
       if (abilitiesFilter.can(CanEjectUser, abilities)) {
         super.handleEjectUserFromMeeting(msg)
       } else {

@@ -1,12 +1,13 @@
 package org.bigbluebutton.core.filters
 
 import org.bigbluebutton.core.api.{ DisconnectUser2x, EjectUserFromMeeting }
+import org.bigbluebutton.core.domain.MeetingExtensionStatus
 import org.bigbluebutton.core.{ OutMessageGateway, UnitSpec }
-import org.bigbluebutton.core.models.{ MeetingState, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core.models.{ MeetingStateModel, MeetingStatus, RegisteredUsers2x, Users3x }
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
 
-class UsersHandlerFilterDummy(val state: MeetingState, val outGW: OutMessageGateway) extends UsersHandlerFilter
+class UsersHandlerFilterDummy(val state: MeetingStateModel, val outGW: OutMessageGateway) extends UsersHandlerFilter
 
 class UserAuthzFilterTests extends UnitSpec with MockitoSugar {
   it should "eject user if user has ability" in {
@@ -21,17 +22,10 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar {
     testUsers.save(mdsUser)
     testUsers.save(marUser)
 
-    val state: MeetingState = new MeetingState(piliProps,
-      abilities,
-      testRegUsers,
-      testUsers,
-      chats,
-      layouts,
-      polls,
-      whiteboards,
-      presentations,
-      breakoutRooms,
-      captions)
+    val state: MeetingStateModel = new MeetingStateModel(piliProps,
+      abilities, testRegUsers, testUsers, chats, layouts,
+      polls, whiteboards, presentations, breakoutRooms, captions,
+      new MeetingStatus)
 
     val mockOutGW = mock[OutMessageGateway]
     // Create the class under test and pass the mock to it
@@ -45,7 +39,6 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar {
     // Then verify the class under test used the mock object as expected
     // The disconnect user shouldn't be called as user has ability to eject another user
     verify(mockOutGW, never()).send(new DisconnectUser2x(ejectUserMsg.meetingId, ejectUserMsg.ejectedBy))
-
   }
 
   it should "not eject user if user has no ability" in {
@@ -59,7 +52,7 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar {
     testUsers.save(mdsUser)
     testUsers.save(marUser)
 
-    val state: MeetingState = new MeetingState(piliProps,
+    val state: MeetingStateModel = new MeetingStateModel(piliProps,
       abilities,
       testRegUsers,
       testUsers,
@@ -69,7 +62,8 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar {
       whiteboards,
       presentations,
       breakoutRooms,
-      captions)
+      captions,
+      new MeetingStatus)
 
     val mockOutGW = mock[OutMessageGateway]
     // Create the class under test and pass the mock to it

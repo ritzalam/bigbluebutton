@@ -125,6 +125,13 @@ source ~/.profile
  git clone https://github.com/ritzalam/bigbluebutton.git
 ```
 
+Checkout the development branch.
+
+```
+git checkout bbb-2x-prototyping
+```
+
+
 ### Run tests
 
 Run the tests to see if everything has been setup correctly.
@@ -232,7 +239,7 @@ Implement a unit test to test your handler. Open `src/test/scala/org/bigbluebutt
 
 Here is a test for filtering the eject user message. 
 
-We use Mockito (`http://mockito.org/`) to mock out collaborator classes. You verify if the message is being handled or
+We use [Mockito](http://mockito.org/) to mock out collaborator classes. You verify if the message is being handled or
 rejected.
 
 You can setup your test data by editing `src/test/scala/org/bigbluebutton/core/MeetingTestFixtures.scala`. This way you can

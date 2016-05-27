@@ -178,6 +178,7 @@ object MeetingMessageToJsonConverter {
     payload.put("breakoutId", msg.breakoutId)
     payload.put("recorded", msg.recorded)
     payload.put("numberOfUsers", msg.users.length)
+    payload.put("users", msg.users.toArray)
 
     val header = Util.buildHeader(UpdateBreakoutUsers.NAME, None)
     Util.buildJson(header, payload)

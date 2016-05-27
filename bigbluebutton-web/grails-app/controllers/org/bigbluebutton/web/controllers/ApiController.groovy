@@ -19,20 +19,22 @@
 package org.bigbluebutton.web.controllers
 
 import javax.servlet.ServletRequest;
+import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bigbluebutton.api.domain.Config;
 import org.bigbluebutton.api.domain.Meeting;
 import org.bigbluebutton.api.domain.Recording;
+import org.bigbluebutton.api.domain.User;
 import org.bigbluebutton.api.domain.UserSession;
 import org.bigbluebutton.api.ApiErrors;
 import org.bigbluebutton.api.ClientConfigService;
@@ -43,6 +45,8 @@ import org.bigbluebutton.presentation.PresentationUrlDownloadService;
 import org.bigbluebutton.web.services.PresentationService
 import org.bigbluebutton.web.services.turn.StunTurnService;
 import org.bigbluebutton.web.services.turn.TurnEntry;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import freemarker.template.Configuration;
 import freemarker.cache.WebappTemplateLoader;
@@ -437,7 +441,7 @@ class ApiController {
     meetingService.addUserSession(sessionToken, us);
 
     // Register user into the meeting.
-    meetingService.registerUser(us.meetingID, us.internalUserId, us.fullname, us.role, us.externUserID, us.authToken)
+    meetingService.registerUser(us.meetingID, us.internalUserId, us.fullname, us.role, us.externUserID, us.authToken, us.avatarURL)
 
     log.info("Session user token for " + us.fullname + " [" + session[sessionToken]+ "]")
     session.setMaxInactiveInterval(SESSION_TIMEOUT);
@@ -460,7 +464,7 @@ class ApiController {
 
     if (redirectClient){
       String destUrl = clientURL + "?sessionToken=" + sessionToken
-      log.info("Successfully joined. Redirecting to ${paramsProcessorUtil.getDefaultClientUrl()}");
+      log.info("Successfully joined. Redirecting to ${destUrl}");
       redirect(url: destUrl);
     }
     else{
@@ -703,7 +707,6 @@ class ApiController {
       return
     }
 
-
     if (! paramsProcessorUtil.isChecksumSame(API_CALL, params.checksum, request.getQueryString())) {
       invalid("checksumError", "You did not pass the checksum security check")
       return
@@ -927,31 +930,7 @@ class ApiController {
     }
   }
 
-
-  def getDefaultConfigXML = {
-
-    String API_CALL = "getDefaultConfigXML"
-    ApiErrors errors = new ApiErrors();
-
-    if (StringUtils.isEmpty(params.checksum)) {
-      invalid("checksumError", "You did not pass the checksum security check")
-      return
-    }
-
-    // Do we agree on the checksum? If not, complain.
-    if (! paramsProcessorUtil.isChecksumSame(API_CALL, params.checksum, request.getQueryString())) {
-      errors.checksumError()
-      respondWithErrors(errors)
-      return
-    }
-
-    String defConfigXML = paramsProcessorUtil.getDefaultConfigXML();
-
-    response.addHeader("Cache-Control", "no-cache")
-    render text: defConfigXML, contentType: 'text/xml'
-
-  }
-
+  
   private Map<String, String[]> getParameters(ServletRequest request) {
     // Copy the parameters into our own Map as we can't pass the paramMap
     // from the request as it's an unmodifiable map.
@@ -1003,10 +982,6 @@ class ApiController {
       invalid("invalidMeetingIdentifier", "The meeting ID that you supplied did not match any existing meetings");
       return;
       // END - backward compatibility
-
-      errors.invalidMeetingIdError();
-      respondWithErrors(errors)
-      return;
     }
 
     Map<String, String[]> reqParams = getParameters(request)
@@ -1101,10 +1076,6 @@ class ApiController {
       invalid("invalidMeetingIdentifier", "The meeting ID that you supplied did not match any existing meetings");
       return;
       // END - backward compatibility
-
-      errors.invalidMeetingIdError();
-      respondWithErrors(errors)
-      return;
     }
 
     Map<String, String[]> reqParams = getParameters(request)
@@ -1144,7 +1115,6 @@ class ApiController {
           defaultConfig = false;
         }
       }
-
 
       String token = meeting.storeConfig(defaultConfig, decodedConfigXML);
       response.addHeader("Cache-Control", "no-cache")
@@ -1341,7 +1311,7 @@ class ApiController {
       return
     }
 
-    if(!StringUtils.isEmpty(params.meetingID)) {
+    if (!StringUtils.isEmpty(params.meetingID)) {
       params.meetingID = StringUtils.strip(params.meetingID);
       if (StringUtils.isEmpty(params.meetingID)) {
         invalid("missingParamMeetingID", "You must specify a meeting ID for the meeting.");
@@ -1359,17 +1329,13 @@ class ApiController {
       invalid("invalidMeetingIdentifier", "The meeting ID that you supplied did not match any existing meetings");
       return;
       // END - backward compatibility
-
-      errors.invalidMeetingIdError();
-      respondWithErrors(errors)
-      return;
     }
 
-    if (! paramsProcessorUtil.isChecksumSame(API_CALL, params.checksum, request.getQueryString())) {
+    if (!paramsProcessorUtil.isChecksumSame(API_CALL, params.checksum, request.getQueryString())) {
       response.addHeader("Cache-Control", "no-cache")
       withFormat {
         xml {
-          render(contentType:"text/xml") {
+          render(contentType: "text/xml") {
             response() {
               returncode("FAILED")
               messageKey("listSubscriptionsChecksumError")
@@ -1379,21 +1345,21 @@ class ApiController {
         }
       }
     } else {
-      List<Map<String,String>> list = meetingService.listSubscriptions(meeting.getInternalId());
+      List<Map<String, String>> list = meetingService.listSubscriptions(meeting.getInternalId());
 
       response.addHeader("Cache-Control", "no-cache")
       withFormat {
         xml {
-          render(contentType:"text/xml") {
+          render(contentType: "text/xml") {
             response() {
               returncode("SUCCESS")
               subscriptions() {
-                list.each{ item ->
-                  subscription(){
+                list.each { item ->
+                  subscription() {
                     subscriptionID() { mkp.yield(item.get("subscriptionID")) }
                     event() { mkp.yield(item.get("event")) }
                     callbackURL() { mkp.yield(item.get("callbackURL")) }
-                    active()  { mkp.yield(item.get("active")) }
+                    active() { mkp.yield(item.get("active")) }
                   }
                 }
               }
@@ -1401,14 +1367,39 @@ class ApiController {
           }
         }
       }
-
     }
   }
+
+    def getDefaultConfigXML = {
+
+        String API_CALL = "getDefaultConfigXML"
+        ApiErrors errors = new ApiErrors();
+
+        if (StringUtils.isEmpty(params.checksum)) {
+            invalid("checksumError", "You did not pass the checksum security check")
+            return
+        }
+
+        // Do we agree on the checksum? If not, complain.
+        if (!paramsProcessorUtil.isChecksumSame(API_CALL, params.checksum, request.getQueryString())) {
+            errors.checksumError()
+            respondWithErrors(errors)
+            return
+        }
+
+        String defConfigXML = paramsProcessorUtil.getDefaultConfigXML();
+
+        response.addHeader("Cache-Control", "no-cache")
+        render text: defConfigXML, contentType: 'text/xml'
+    }
+
 
   /***********************************************
    * CONFIG API
    ***********************************************/
   def configXML = {
+    String API_CALL = 'configXML'
+    log.debug CONTROLLER_NAME + "#${API_CALL}"
 
     String logoutUrl = paramsProcessorUtil.getDefaultLogoutUrl()
     boolean reject = false
@@ -1416,11 +1407,11 @@ class ApiController {
     UserSession us = null
 
     if (StringUtils.isEmpty(params.sessionToken)) {
-      println("No session for user in conference.")
+      log.info("No session for user in conference.")
       reject = true
     } else {
       sessionToken = StringUtils.strip(params.sessionToken)
-      println("SessionToken = " + sessionToken)
+      log.info("SessionToken = " + sessionToken)
       if (!session[sessionToken]) {
           reject = true
       } else {
@@ -1718,7 +1709,6 @@ class ApiController {
       internalRecordIds = paramsProcessorUtil.convertToInternalMeetingId(externalMeetingIds);
     }
 
-
     Map<String,Recording> recs = meetingService.getRecordings(internalRecordIds, states);
     recs = meetingService.filterRecordingsByMetadata(recs, ParamsProcessorUtil.processMetaParam(params));
 
@@ -1825,9 +1815,6 @@ class ApiController {
       return;
       // END - backward compatibility
 
-      errors.recordingNotFound();
-      respondWithErrors(errors);
-      return;
     }
 
     meetingService.setPublishRecording(recordIdList,publish.toBoolean());
@@ -1902,10 +1889,6 @@ class ApiController {
       invalid("notFound", "We could not find recordings");
       return;
       // END - backward compatibility
-
-      errors.recordingNotFound();
-      respondWithErrors(errors);
-      return;
     }
 
     meetingService.deleteRecordings(recordIdList);
@@ -2169,4 +2152,3 @@ class ApiController {
   }
 
 }
-

@@ -317,3 +317,10 @@ case class UpdateCaptionOwnerRequest(
   meetingId: IntMeetingId, locale: String, ownerID: String) extends InMessage
 case class EditCaptionHistoryRequest(
   meetingId: IntMeetingId, userID: String, startIndex: Integer, endIndex: Integer, locale: String, text: String) extends InMessage
+// DeskShare
+case class DeskShareStartedRequest(conferenceName: String, callerId: String, callerIdName: String)
+case class DeskShareStoppedRequest(conferenceName: String, callerId: String, callerIdName: String)
+case class DeskShareRTMPBroadcastStartedRequest(conferenceName: String, streamname: String, videoWidth: Int, videoHeight: Int, timestamp: String)
+case class DeskShareRTMPBroadcastStoppedRequest(conferenceName: String, streamname: String, videoWidth: Int, videoHeight: Int, timestamp: String)
+case class DeskShareGetDeskShareInfoRequest(conferenceName: String, requesterID: String, replyTo: String)
+

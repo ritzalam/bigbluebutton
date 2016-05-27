@@ -273,6 +273,12 @@ case class UpdateCaptionOwnerReply(
   meetingId: IntMeetingId, recorded: Recorded, locale: String, ownerID: String) extends IOutMessage
 case class EditCaptionHistoryReply(
   meetingId: IntMeetingId, recorded: Recorded, userID: String, startIndex: Integer, endIndex: Integer, locale: String, text: String) extends IOutMessage
+// DeskShare
+case class DeskShareStartRTMPBroadcast(conferenceName: String, streamPath: String) extends IOutMessage
+case class DeskShareStopRTMPBroadcast(conferenceName: String, streamPath: String) extends IOutMessage
+case class DeskShareNotifyViewersRTMP(meetingID: String, streamPath: String, videoWidth: Int, videoHeight: Int, broadcasting: Boolean) extends IOutMessage
+case class DeskShareNotifyASingleViewer(meetingID: String, userID: String, streamPath: String, videoWidth: Int, videoHeight: Int, broadcasting: Boolean) extends IOutMessage
+case class DeskShareHangUp(meetingID: String, fsConferenceName: String) extends IOutMessage
 
 // Value Objects
 case class MeetingVO(id: String, recorded: Recorded)

@@ -24,6 +24,8 @@ resolvers ++= Seq(
   "blindside-repos" at "http://blindside.googlecode.com/svn/repository/"
 )
 
+resolvers += Resolver.sonatypeRepo("releases")
+
 publishTo := Some(Resolver.file("file",  new File(Path.userHome.absolutePath+"/dev/repo/maven-repo/releases" )) )
 
 // We want to have our jar files in lib_managed dir.
@@ -63,10 +65,11 @@ libraryDependencies ++= {
     "com.google.code.gson"      %  "gson"                                 % "2.5",
     "redis.clients"             %  "jedis"                                % "2.7.2",
     "org.apache.commons"        %  "commons-lang3"                        % "3.2",
-    "org.bigbluebutton"         %  "bbb-common-message"                   % "0.0.17-SNAPSHOT",
+    "org.bigbluebutton"         %  "bbb-common-message"                   % "0.0.18-SNAPSHOT",
     "io.spray"                 %%  "spray-json"                           % "1.3.2",
     "com.softwaremill.quicklens" %% "quicklens"                           % "1.4.6"
-  )}
+  )
+}
 
 seq(Revolver.settings: _*)
 

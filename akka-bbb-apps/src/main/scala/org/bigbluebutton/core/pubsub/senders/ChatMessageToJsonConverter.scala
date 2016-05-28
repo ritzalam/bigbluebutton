@@ -32,8 +32,8 @@ object ChatMessageToJsonConverter {
 
   def getChatHistoryReplyToJson(msg: GetChatHistoryReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.REQUESTER_ID, msg.requesterID)
 
     val collection = new ArrayList[java.util.Map[String, String]]();
 
@@ -49,7 +49,7 @@ object ChatMessageToJsonConverter {
 
   def sendPublicMessageEventToJson(msg: SendPublicMessageEvent): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
     payload.put(Constants.MESSAGE, mapAsJavaMap(ChatMessageToJsonConverter.chatMessageToMap(msg.message)))
 
     val header = Util.buildHeader(MessageNames.SEND_PUBLIC_CHAT_MESSAGE, None)
@@ -58,7 +58,7 @@ object ChatMessageToJsonConverter {
 
   def sendPrivateMessageEventToJson(msg: SendPrivateMessageEvent): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
     payload.put(Constants.MESSAGE, mapAsJavaMap(ChatMessageToJsonConverter.chatMessageToMap(msg.message)))
 
     val header = Util.buildHeader(MessageNames.SEND_PRIVATE_CHAT_MESSAGE, None)

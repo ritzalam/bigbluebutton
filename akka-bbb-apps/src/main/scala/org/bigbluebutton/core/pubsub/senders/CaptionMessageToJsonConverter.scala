@@ -10,18 +10,18 @@ import org.bigbluebutton.core.messaging.Util
 object CaptionMessageToJsonConverter {
   def sendCaptionHistoryReplyToJson(msg: SendCaptionHistoryReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.REQUESTER_ID, msg.requesterID)
 
     payload.put(Constants.CAPTION_HISTORY, mapAsJavaMap(msg.history))
 
-    val header = Util.buildHeader(MessageNames.SEND_CAPTION_HISTORY_REPLY, Some(msg.requesterId.value))
+    val header = Util.buildHeader(MessageNames.SEND_CAPTION_HISTORY_REPLY, Some(msg.requesterID))
     Util.buildJson(header, payload)
   }
 
   def updateCaptionOwnerReplyToJson(msg: UpdateCaptionOwnerReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
     payload.put(Constants.LOCALE, msg.locale)
     payload.put(Constants.OWNER_ID, msg.ownerID)
 
@@ -31,7 +31,7 @@ object CaptionMessageToJsonConverter {
 
   def editCaptionHistoryReplyToJson(msg: EditCaptionHistoryReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
     payload.put(Constants.USER_ID, msg.userID)
     payload.put(Constants.START_INDEX, msg.startIndex)
     payload.put(Constants.END_INDEX, msg.endIndex)

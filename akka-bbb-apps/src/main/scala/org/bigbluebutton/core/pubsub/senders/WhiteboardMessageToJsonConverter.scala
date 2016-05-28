@@ -2,7 +2,7 @@ package org.bigbluebutton.core.pubsub.senders
 
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.messaging.Util
-import org.bigbluebutton.core.domain.AnnotationVO
+import org.bigbluebutton.core.apps.AnnotationVO
 import collection.JavaConverters._
 import scala.collection.JavaConversions._
 
@@ -26,9 +26,9 @@ object WhiteboardMessageToJsonConverter {
 
   def getWhiteboardShapesReplyToJson(msg: GetWhiteboardShapesReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
     payload.put(Constants.WHITEBOARD_ID, msg.whiteboardId)
-    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
+    payload.put(Constants.REQUESTER_ID, msg.requesterID)
 
     val shapes = new java.util.ArrayList[java.util.Map[String, Any]]()
     msg.shapes.foreach { shape =>
@@ -43,8 +43,8 @@ object WhiteboardMessageToJsonConverter {
 
   def sendWhiteboardAnnotationEventToJson(msg: SendWhiteboardAnnotationEvent): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.REQUESTER_ID, msg.requesterID)
     payload.put(Constants.WHITEBOARD_ID, msg.whiteboardId)
     payload.put(Constants.SHAPE, shapeToMap(msg.shape))
 
@@ -54,8 +54,8 @@ object WhiteboardMessageToJsonConverter {
 
   def clearWhiteboardEventToJson(msg: ClearWhiteboardEvent): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.REQUESTER_ID, msg.requesterID)
     payload.put(Constants.WHITEBOARD_ID, msg.whiteboardId)
 
     val header = Util.buildHeader(MessageNames.WHITEBOARD_CLEARED, None)
@@ -64,8 +64,8 @@ object WhiteboardMessageToJsonConverter {
 
   def undoWhiteboardEventToJson(msg: UndoWhiteboardEvent): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.REQUESTER_ID, msg.requesterID)
     payload.put(Constants.WHITEBOARD_ID, msg.whiteboardId)
     payload.put(Constants.SHAPE_ID, msg.shapeId)
 
@@ -75,8 +75,8 @@ object WhiteboardMessageToJsonConverter {
 
   def whiteboardEnabledEventToJson(msg: WhiteboardEnabledEvent): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.REQUESTER_ID, msg.requesterID)
     payload.put(Constants.ENABLE, msg.enable)
 
     val header = Util.buildHeader(MessageNames.WHITEBOARD_ENABLED, None)
@@ -85,8 +85,8 @@ object WhiteboardMessageToJsonConverter {
 
   def isWhiteboardEnabledReplyToJson(msg: IsWhiteboardEnabledReply): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.REQUESTER_ID, msg.requesterId.value)
+    payload.put(Constants.MEETING_ID, msg.meetingID)
+    payload.put(Constants.REQUESTER_ID, msg.requesterID)
     payload.put(Constants.ENABLE, msg.enabled)
 
     val header = Util.buildHeader(MessageNames.IS_WHITEBOARD_ENABLED_REPLY, Some(msg.replyTo))

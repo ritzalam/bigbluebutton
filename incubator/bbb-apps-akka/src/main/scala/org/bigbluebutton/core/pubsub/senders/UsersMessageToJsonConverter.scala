@@ -2,9 +2,10 @@ package org.bigbluebutton.core.pubsub.senders
 
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.common.messages.MessagingConstants
-import org.bigbluebutton.core.domain.{ Permissions, RegisteredUser, UserVO }
+import org.bigbluebutton.core.domain.{ Permissions, RegisteredUser, RegisteredUser2x, UserVO }
 import org.bigbluebutton.core.messaging.Util
 import com.google.gson.Gson
+
 import collection.JavaConverters._
 import scala.collection.JavaConversions._
 
@@ -39,7 +40,7 @@ object UsersMessageToJsonConverter {
     mapAsJavaMap(wuser)
   }
 
-  private def registeredUserToMap(user: RegisteredUser): java.util.Map[String, Any] = {
+  private def registeredUserToMap(user: RegisteredUser2x): java.util.Map[String, Any] = {
     val wuser = new scala.collection.mutable.HashMap[String, Any]
     wuser += "userid" -> user.id.value
     wuser += "extern_userid" -> user.extId.value
@@ -169,7 +170,7 @@ object UsersMessageToJsonConverter {
     Util.buildJson(header, payload)
   }
 
-  def userRegisteredToJson(msg: UserRegistered): String = {
+  def userRegisteredToJson(msg: UserRegisteredEvent2x): String = {
     val payload = new java.util.HashMap[String, Any]()
     payload.put(Constants.MEETING_ID, msg.meetingId.value)
     payload.put(Constants.USER, registeredUserToMap(msg.user))
@@ -357,9 +358,9 @@ object UsersMessageToJsonConverter {
     Util.buildJson(header, payload)
   }
 
-  def validateAuthTokenReplyToJson(msg: ValidateAuthTokenReply): String = {
+  def validateAuthTokenReplyToJson(msg: ValidateAuthTokenReply2x): String = {
     val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.REPLY_TO, msg.correlationId)
+    payload.put(Constants.REPLY_TO, "todo")
     payload.put(Constants.VALID, msg.valid.toString)
     payload.put(Constants.USER_ID, msg.requesterId.value)
     payload.put(Constants.AUTH_TOKEN, msg.token.value)

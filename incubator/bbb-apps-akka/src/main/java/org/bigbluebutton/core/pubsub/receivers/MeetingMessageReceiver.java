@@ -47,6 +47,7 @@ public class MeetingMessageReceiver implements MessageHandler {
                         Gson gson = new Gson();
                         CreateMeetingRequest msg = gson.fromJson(message, CreateMeetingRequest.class);
                         bbbGW.handleBigBlueButtonMessage(msg);
+                        return;
                     }
                 }
             }
@@ -59,6 +60,7 @@ public class MeetingMessageReceiver implements MessageHandler {
                     //bbbGW.endMeeting(emm.meetingId);
                 } else if (msg instanceof RegisterUserMessage) {
                     RegisterUserMessage emm = (RegisterUserMessage) msg;
+                    bbbGW.handleBigBlueButtonMessage(emm);
                     //bbbGW.registerUser(emm.meetingID, emm.internalUserId, emm.fullname, emm.role, emm.externUserID, emm.authToken, emm.avatarURL);
                 } else if (msg instanceof DestroyMeetingMessage) {
                     DestroyMeetingMessage emm = (DestroyMeetingMessage) msg;
@@ -66,6 +68,7 @@ public class MeetingMessageReceiver implements MessageHandler {
                 } else if (msg instanceof ValidateAuthTokenMessage) {
                     ValidateAuthTokenMessage emm = (ValidateAuthTokenMessage) msg;
                     String sessionId = "tobeimplemented";
+                    bbbGW.handleBigBlueButtonMessage(emm);
                     //bbbGW.validateAuthToken(emm.meetingId, emm.userId, emm.token, emm.replyTo, sessionId);
                 } else if (msg instanceof UserConnectedToGlobalAudio) {
                     UserConnectedToGlobalAudio emm = (UserConnectedToGlobalAudio) msg;

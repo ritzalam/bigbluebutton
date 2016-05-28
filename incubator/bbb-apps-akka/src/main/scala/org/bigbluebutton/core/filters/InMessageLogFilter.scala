@@ -1,6 +1,6 @@
 package org.bigbluebutton.core.filters
 
-import org.bigbluebutton.core.api.{ UserJoining, EjectUserFromMeeting }
+import org.bigbluebutton.core.api.IncomingMessage._
 import org.bigbluebutton.core.LiveMeeting
 import org.bigbluebutton.core.handlers.UsersHandler
 import akka.actor.ActorContext

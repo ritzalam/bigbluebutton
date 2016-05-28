@@ -36,22 +36,22 @@ public class WhiteboardMessageReceiver implements MessageHandler {
                     String messageName = header.get("name").getAsString();
                     if (UndoWhiteboardRequest.UNDO_WHITEBOARD_REQUEST.equals(messageName)) {
                         UndoWhiteboardRequest msg = UndoWhiteboardRequest.fromJson(message);
-                      //  bbbInGW.undoWhiteboard(msg.meetingId, msg.requesterId, msg.whiteboardId);
+                      bbbInGW.undoWhiteboard(msg.meetingId, msg.requesterId, msg.whiteboardId);
                     } else if (ClearWhiteboardRequestMessage.CLEAR_WHITEBOARD_REQUEST.equals(messageName)) {
                         ClearWhiteboardRequestMessage msg = ClearWhiteboardRequestMessage.fromJson(message);
-                      //  bbbInGW.clearWhiteboard(msg.meetingId, msg.requesterId, msg.whiteboardId);
+                      bbbInGW.clearWhiteboard(msg.meetingId, msg.requesterId, msg.whiteboardId);
                     } else if (RequestWhiteboardAnnotationHistoryRequestMessage.REQUEST_WHITEBOARD_ANNOTATION_HISTORY_REQUEST.equals(messageName)) {
                         RequestWhiteboardAnnotationHistoryRequestMessage msg = RequestWhiteboardAnnotationHistoryRequestMessage.fromJson(message);
-                      //  bbbInGW.requestWhiteboardAnnotationHistory(msg.meetingId, msg.requesterId, msg.whiteboardId, msg.replyTo);
+                      bbbInGW.requestWhiteboardAnnotationHistory(msg.meetingId, msg.requesterId, msg.whiteboardId, msg.replyTo);
                     } else if (IsWhiteboardEnabledRequestMessage.IS_WHITEBOARD_ENABLED_REQUEST.equals(messageName)) {
                         IsWhiteboardEnabledRequestMessage msg = IsWhiteboardEnabledRequestMessage.fromJson(message);
-                      //  bbbInGW.isWhiteboardEnabled(msg.meetingId, msg.requesterId, msg.replyTo);
+                      bbbInGW.isWhiteboardEnabled(msg.meetingId, msg.requesterId, msg.replyTo);
                     } else if (EnableWhiteboardRequestMessage.ENABLE_WHITEBOARD_REQUEST.equals(messageName)) {
                         EnableWhiteboardRequestMessage msg = EnableWhiteboardRequestMessage.fromJson(message);
-                       // bbbInGW.enableWhiteboard(msg.meetingId, msg.requesterId, msg.enable);
+                       bbbInGW.enableWhiteboard(msg.meetingId, msg.requesterId, msg.enable);
                     } else if (SendWhiteboardAnnotationRequestMessage.SEND_WHITEBOARD_ANNOTATION_REQUEST.equals(messageName)) {
                         SendWhiteboardAnnotationRequestMessage msg = SendWhiteboardAnnotationRequestMessage.fromJson(message);
-                       // bbbInGW.sendWhiteboardAnnotation(msg.meetingId, msg.requesterId, msg.annotation);
+                       bbbInGW.sendWhiteboardAnnotation(msg.meetingId, msg.requesterId, msg.annotation);
                     }
                 }
             }

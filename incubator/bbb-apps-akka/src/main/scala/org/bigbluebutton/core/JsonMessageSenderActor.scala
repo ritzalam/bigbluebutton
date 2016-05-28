@@ -3,7 +3,7 @@ package org.bigbluebutton.core
 import akka.actor.Actor
 import akka.actor.ActorLogging
 import akka.actor.Props
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.common.messages.MessagingConstants
 import org.bigbluebutton.messages.payload._
 import org.bigbluebutton.messages._

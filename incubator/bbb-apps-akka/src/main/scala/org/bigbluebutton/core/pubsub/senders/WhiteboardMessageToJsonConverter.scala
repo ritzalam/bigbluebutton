@@ -1,6 +1,8 @@
 package org.bigbluebutton.core.pubsub.senders
 
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.OutGoingMessage._
+import org.bigbluebutton.core.api.Constants
+import org.bigbluebutton.core.api.MessageNames
 import org.bigbluebutton.core.messaging.Util
 import org.bigbluebutton.core.domain.AnnotationVO
 import collection.JavaConverters._

@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.handlers
 
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.IncomingMessage._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.common.messages.WhiteboardKeyUtil
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.LiveMeeting

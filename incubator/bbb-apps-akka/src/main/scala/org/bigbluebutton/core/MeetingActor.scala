@@ -4,7 +4,8 @@ import akka.actor.Actor
 import akka.actor.ActorLogging
 import akka.actor.Props
 import org.bigbluebutton.core.bus._
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.IncomingMessage._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import scala.concurrent.duration._
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.models._

@@ -1,12 +1,10 @@
 package org.bigbluebutton.core.pubsub.senders
 
-import org.bigbluebutton.core.api._
-import org.bigbluebutton.common.messages.MessagingConstants
-import org.bigbluebutton.core.domain.{ Permissions, RegisteredUser, RegisteredUser2x, UserVO }
+import org.bigbluebutton.core.api.Constants
+import org.bigbluebutton.core.api.MessageNames
+import org.bigbluebutton.core.api.OutGoingMessage._
+import org.bigbluebutton.core.domain.{ Permissions, RegisteredUser2x, UserVO }
 import org.bigbluebutton.core.messaging.Util
-import com.google.gson.Gson
-
-import collection.JavaConverters._
 import scala.collection.JavaConversions._
 
 object UsersMessageToJsonConverter {

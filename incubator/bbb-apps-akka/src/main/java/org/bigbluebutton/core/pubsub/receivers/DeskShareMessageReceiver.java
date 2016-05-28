@@ -34,19 +34,19 @@ public class DeskShareMessageReceiver implements MessageHandler {
 
                     if (DeskShareStartedEventMessage.DESKSHARE_STARTED_MESSAGE.equals(messageName)) {
                         DeskShareStartedEventMessage msg = DeskShareStartedEventMessage.fromJson(message);
-                       // bbbGW.deskShareStarted(msg.conferenceName, msg.callerId, msg.callerIdName);
+                       bbbGW.deskShareStarted(msg.conferenceName, msg.callerId, msg.callerIdName);
                     } else if (DeskShareStoppedEventMessage.DESK_SHARE_STOPPED_MESSAGE.equals(messageName)) {
                         DeskShareStoppedEventMessage msg = DeskShareStoppedEventMessage.fromJson(message);
-                       // bbbGW.deskShareStopped(msg.conferenceName, msg.callerId, msg.callerIdName);
+                       bbbGW.deskShareStopped(msg.conferenceName, msg.callerId, msg.callerIdName);
                     } else if (DeskShareRTMPBroadcastStartedEventMessage.DESKSHARE_RTMP_BROADCAST_STARTED_MESSAGE.equals(messageName)) {
                         DeskShareRTMPBroadcastStartedEventMessage msg = DeskShareRTMPBroadcastStartedEventMessage.fromJson(message);
-                       // bbbGW.deskShareRTMPBroadcastStarted(msg.conferenceName, msg.streamname, msg.vw, msg.vh, msg.timestamp);
+                       bbbGW.deskShareRTMPBroadcastStarted(msg.conferenceName, msg.streamname, msg.vw, msg.vh, msg.timestamp);
                     } else if (DeskShareRTMPBroadcastStoppedEventMessage.DESKSHARE_RTMP_BROADCAST_STOPPED_MESSAGE.equals(messageName)) {
                         DeskShareRTMPBroadcastStoppedEventMessage msg = DeskShareRTMPBroadcastStoppedEventMessage.fromJson(message);
-                       // bbbGW.deskShareRTMPBroadcastStopped(msg.conferenceName, msg.streamname, msg.vw, msg.vh, msg.timestamp);
+                       bbbGW.deskShareRTMPBroadcastStopped(msg.conferenceName, msg.streamname, msg.vw, msg.vh, msg.timestamp);
                     } else if (DeskShareGetInfoRequestMessage.GET_DESKTOP_SHARE_GET_INFO_REQUEST.equals(messageName)) {
                         DeskShareGetInfoRequestMessage msg = DeskShareGetInfoRequestMessage.fromJson(message);
-                       // bbbGW.deskShareGetInfoRequest(msg.meetingId, msg.requesterId, msg.replyTo);
+                        bbbGW.deskShareGetInfoRequest(msg.meetingId, msg.requesterId, msg.replyTo);
                     }
                 }
             }

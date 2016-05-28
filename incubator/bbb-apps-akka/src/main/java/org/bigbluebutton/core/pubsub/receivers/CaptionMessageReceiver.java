@@ -29,13 +29,13 @@ public class CaptionMessageReceiver implements MessageHandler {
                     String messageName = header.get("name").getAsString();
                     if (SendCaptionHistoryRequestMessage.SEND_CAPTION_HISTORY_REQUEST.equals(messageName)) {
                         SendCaptionHistoryRequestMessage msg = SendCaptionHistoryRequestMessage.fromJson(message);
-                       // bbbGW.sendCaptionHistory(msg.meetingID, msg.requesterID);
+                        bbbGW.sendCaptionHistory(msg.meetingID, msg.requesterID);
                     } else if (UpdateCaptionOwnerMessage.UPDATE_CAPTION_OWNER.equals(messageName)) {
                         UpdateCaptionOwnerMessage msg = UpdateCaptionOwnerMessage.fromJson(message);
-                        //bbbGW.updateCaptionOwner(msg.meetingID, msg.locale, msg.ownerID);
+                        bbbGW.updateCaptionOwner(msg.meetingID, msg.locale, msg.ownerID);
                     } else if (EditCaptionHistoryMessage.EDIT_CAPTION_HISTORY.equals(messageName)) {
                         EditCaptionHistoryMessage msg = EditCaptionHistoryMessage.fromJson(message);
-                        //bbbGW.editCaptionHistory(msg.meetingID, msg.userID, msg.startIndex, msg.endIndex, msg.locale, msg.text);
+                        bbbGW.editCaptionHistory(msg.meetingID, msg.userID, msg.startIndex, msg.endIndex, msg.locale, msg.text);
                     }
                 }
             }

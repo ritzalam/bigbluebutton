@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.handlers
 
-import org.bigbluebutton.core.api.{ DisconnectUser2x, EjectUserFromMeeting }
+import org.bigbluebutton.core.api.IncomingMessage._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.core.{ OutMessageGateway, UnitSpec }
 import org.bigbluebutton.core.models.{ MeetingStateModel, MeetingStatus, RegisteredUsers2x, Users3x }
 import org.mockito.Mockito._

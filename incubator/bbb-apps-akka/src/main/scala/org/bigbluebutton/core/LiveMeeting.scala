@@ -3,7 +3,8 @@ package org.bigbluebutton.core
 import org.bigbluebutton.core.domain.{ IntUserId, MeetingProperties, Permissions }
 import org.bigbluebutton.core.handlers._
 import java.util.concurrent.TimeUnit
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.IncomingMessage._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.core.bus.IncomingEventBus
 import akka.actor.ActorContext
 import akka.event.Logging

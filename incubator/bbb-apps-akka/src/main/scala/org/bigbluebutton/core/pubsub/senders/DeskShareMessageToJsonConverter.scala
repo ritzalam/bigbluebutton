@@ -1,11 +1,12 @@
 package org.bigbluebutton.core.pubsub.senders
 
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.common.messages.DeskShareStartRTMPBroadcastEventMessage
 import org.bigbluebutton.common.messages.DeskShareStopRTMPBroadcastEventMessage
 import org.bigbluebutton.common.messages.DeskShareNotifyViewersRTMPEventMessage
 import org.bigbluebutton.common.messages.DeskShareNotifyASingleViewerEventMessage
 import org.bigbluebutton.common.messages.DeskShareHangUpEventMessage
+import org.bigbluebutton.core.api.TimestampGenerator
 
 object DeskShareMessageToJsonConverter {
   def getDeskShareHangUpToJson(msg: DeskShareHangUp): String = {

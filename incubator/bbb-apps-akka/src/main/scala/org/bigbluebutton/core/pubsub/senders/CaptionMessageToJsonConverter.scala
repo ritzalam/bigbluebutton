@@ -1,9 +1,8 @@
 package org.bigbluebutton.core.pubsub.senders
 
 import org.bigbluebutton.common.messages.Constants
-import scala.collection.mutable.HashMap
-import org.bigbluebutton.core.api._
-import collection.JavaConverters._
+import org.bigbluebutton.core.api.OutGoingMessage._
+import org.bigbluebutton.core.api.MessageNames
 import scala.collection.JavaConversions._
 import org.bigbluebutton.core.messaging.Util
 

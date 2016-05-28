@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.filters
 
-import org.bigbluebutton.core.api.{ DisconnectUser2x, EjectUserFromMeeting }
+import org.bigbluebutton.core.api.IncomingMessage._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.core.domain.MeetingExtensionStatus
 import org.bigbluebutton.core.{ OutMessageGateway, UnitSpec }
 import org.bigbluebutton.core.models.{ MeetingStateModel, MeetingStatus, RegisteredUsers2x, Users3x }

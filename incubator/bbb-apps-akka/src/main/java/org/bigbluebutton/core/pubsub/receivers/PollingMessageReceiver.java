@@ -30,21 +30,21 @@ public class PollingMessageReceiver implements MessageHandler {
                     String messageName = header.get("name").getAsString();
                     if (VotePollUserRequestMessage.VOTE_POLL_REQUEST.equals(messageName)) {
                         VotePollUserRequestMessage msg = VotePollUserRequestMessage.fromJson(message);
-                       // bbbGW.votePoll(msg.meetingId, msg.userId, msg.pollId, msg.questionId, msg.answerId);
+                        bbbGW.votePoll(msg.meetingId, msg.userId, msg.pollId, msg.questionId, msg.answerId);
                     } else if (StartPollRequestMessage.START_POLL_REQUEST.equals(messageName)) {
                         log.debug("Received StartPollRequest message");
                         StartPollRequestMessage msg = StartPollRequestMessage.fromJson(message);
-                       // bbbGW.startPoll(msg.meetingId, msg.requesterId, msg.pollId, msg.pollType);
+                        bbbGW.startPoll(msg.meetingId, msg.requesterId, msg.pollId, msg.pollType);
                     } else if (StopPollRequestMessage.STOP_POLL_REQUEST.equals(messageName)) {
                         StopPollRequestMessage msg = StopPollRequestMessage.fromJson(message);
-                       // bbbGW.stopPoll(msg.meetingId, msg.requesterId, msg.pollId);
+                        bbbGW.stopPoll(msg.meetingId, msg.requesterId, msg.pollId);
                     } else if (ShowPollResultRequestMessage.SHOW_POLL_RESULT_REQUEST.equals(messageName)) {
                         ShowPollResultRequestMessage msg = ShowPollResultRequestMessage.fromJson(message);
-                       // bbbGW.showPollResult(msg.meetingId, msg.requesterId, msg.pollId, msg.show);
+                        bbbGW.showPollResult(msg.meetingId, msg.requesterId, msg.pollId, msg.show);
                     } else if (StartCustomPollRequestMessage.START_CUSTOM_POLL_REQUEST.equals(messageName)) {
                         Gson gson = new Gson();
                         StartCustomPollRequestMessage msg = gson.fromJson(message, StartCustomPollRequestMessage.class);
-                       // bbbGW.handleBigBlueButtonMessage(msg);
+                        bbbGW.handleBigBlueButtonMessage(msg);
                     }
                 }
             }

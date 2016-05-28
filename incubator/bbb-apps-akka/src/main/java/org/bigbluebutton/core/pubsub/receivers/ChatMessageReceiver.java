@@ -29,13 +29,13 @@ public class ChatMessageReceiver implements MessageHandler {
                     String messageName = header.get("name").getAsString();
                     if (GetChatHistoryRequestMessage.GET_CHAT_HISTORY_REQUEST.equals(messageName)) {
                         GetChatHistoryRequestMessage msg = GetChatHistoryRequestMessage.fromJson(message);
-                       // bbbGW.getChatHistory(msg.meetingId, msg.requesterId, msg.replyTo);
+                        bbbGW.getChatHistory(msg.meetingId, msg.requesterId, msg.replyTo);
                     } else if (SendPublicChatMessage.SEND_PUBLIC_CHAT_MESSAGE.equals(messageName)) {
                         SendPublicChatMessage msg = SendPublicChatMessage.fromJson(message);
-                       // bbbGW.sendPublicMessage(msg.meetingId, msg.requesterId, msg.messageInfo);
+                        bbbGW.sendPublicMessage(msg.meetingId, msg.requesterId, msg.messageInfo);
                     } else if (SendPrivateChatMessage.SEND_PRIVATE_CHAT_MESSAGE.equals(messageName)) {
                         SendPrivateChatMessage msg = SendPrivateChatMessage.fromJson(message);
-                       // bbbGW.sendPrivateMessage(msg.meetingId, msg.requesterId, msg.messageInfo);
+                        bbbGW.sendPrivateMessage(msg.meetingId, msg.requesterId, msg.messageInfo);
                     }
                 }
             }

@@ -146,189 +146,189 @@ public class UsersMessageReceiver implements MessageHandler {
     private void processUserJoinedVoiceConfMessage(String json) {
         UserJoinedVoiceConfMessage msg = UserJoinedVoiceConfMessage.fromJson(json);
         if (msg != null) {
-           // bbbInGW.voiceUserJoined(msg.voiceConfId, msg.voiceUserId, msg.userId, msg.callerIdName, msg.callerIdNum, msg.muted, msg.avatarURL, msg.talking);
+            bbbInGW.voiceUserJoined(msg.voiceConfId, msg.voiceUserId, msg.userId, msg.callerIdName, msg.callerIdNum, msg.muted, msg.avatarURL, msg.talking);
         }
     }
 
     private void processUserLeftVoiceConfMessage(String json) {
         UserLeftVoiceConfMessage msg = UserLeftVoiceConfMessage.fromJson(json);
         if (msg != null) {
-           // bbbInGW.voiceUserLeft(msg.voiceConfId, msg.voiceUserId);
+            bbbInGW.voiceUserLeft(msg.voiceConfId, msg.voiceUserId);
         }
     }
 
     private void processUserLockedInVoiceConfMessage(String json) {
         UserLockedInVoiceConfMessage msg = UserLockedInVoiceConfMessage.fromJson(json);
         if (msg != null) {
-           // bbbInGW.voiceUserLocked(msg.voiceConfId, msg.voiceUserId, msg.locked);
+            bbbInGW.voiceUserLocked(msg.voiceConfId, msg.voiceUserId, msg.locked);
         }
     }
 
     private void processUserMutedInVoiceConfMessage(String json) {
         UserMutedInVoiceConfMessage msg = UserMutedInVoiceConfMessage.fromJson(json);
         if (msg != null) {
-           // bbbInGW.voiceUserMuted(msg.voiceConfId, msg.voiceUserId, msg.muted);
+           bbbInGW.voiceUserMuted(msg.voiceConfId, msg.voiceUserId, msg.muted);
         }
     }
 
     private void processUserTalkingInVoiceConfMessage(String json) {
         UserTalkingInVoiceConfMessage msg = UserTalkingInVoiceConfMessage.fromJson(json);
         if (msg != null) {
-           // bbbInGW.voiceUserTalking(msg.voiceConfId, msg.voiceUserId, msg.talking);
+           bbbInGW.voiceUserTalking(msg.voiceConfId, msg.voiceUserId, msg.talking);
         }
     }
 
     private void processVoiceConfRecordingStartedMessage(String json) {
         VoiceConfRecordingStartedMessage msg = VoiceConfRecordingStartedMessage.fromJson(json);
         if (msg != null) {
-           // bbbInGW.voiceRecording(msg.voiceConfId, msg.recordStream, msg.timestamp, msg.recording);
+           bbbInGW.voiceRecording(msg.voiceConfId, msg.recordStream, msg.timestamp, msg.recording);
         }
     }
 
     private void processUserLeavingMessage(String message) {
         UserLeavingMessage ulm = UserLeavingMessage.fromJson(message);
         if (ulm != null) {
-          //  bbbInGW.userLeft(ulm.meetingId, ulm.userId, ulm.meetingId);
+          bbbInGW.userLeft(ulm.meetingId, ulm.userId, ulm.meetingId);
         }
     }
 
     private void processAssignPresenterRequestMessage(String message) {
         AssignPresenterRequestMessage apm = AssignPresenterRequestMessage.fromJson(message);
         if (apm != null) {
-          //  bbbInGW.assignPresenter(apm.meetingId, apm.newPresenterId, apm.newPresenterName, apm.assignedBy);
+          bbbInGW.assignPresenter(apm.meetingId, apm.newPresenterId, apm.newPresenterName, apm.assignedBy);
         }
     }
 
     private void processUserEmojiStatusMessage(String message) {
         UserEmojiStatusMessage uesm = UserEmojiStatusMessage.fromJson(message);
         if (uesm != null) {
-          //  bbbInGW.userEmojiStatus(uesm.meetingId, uesm.userId, uesm.emojiStatus);
+          bbbInGW.userEmojiStatus(uesm.meetingId, uesm.userId, uesm.emojiStatus);
         }
     }
 
     private void processEjectUserFromMeetingRequestMessage(String message) {
         EjectUserFromMeetingRequestMessage eufm = EjectUserFromMeetingRequestMessage.fromJson(message);
         if (eufm != null) {
-          //  bbbInGW.ejectUserFromMeeting(eufm.meetingId, eufm.userId, eufm.ejectedBy);
+          bbbInGW.ejectUserFromMeeting(eufm.meetingId, eufm.userId, eufm.ejectedBy);
         }
     }
 
     private void processUserShareWebcamRequestMessage(String message) {
         UserShareWebcamRequestMessage msg = UserShareWebcamRequestMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.shareWebcam(msg.meetingId, msg.userId, msg.stream);
+          bbbInGW.shareWebcam(msg.meetingId, msg.userId, msg.stream);
         }
     }
 
     private void processUserUnshareWebcamRequestMessage(String message) {
         UserUnshareWebcamRequestMessage msg = UserUnshareWebcamRequestMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.unshareWebcam(msg.meetingId, msg.userId, msg.stream);
+          bbbInGW.unshareWebcam(msg.meetingId, msg.userId, msg.stream);
         }
     }
 
     private void processSetUserStatusRequestMessage(String message) {
         SetUserStatusRequestMessage msg = SetUserStatusRequestMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.setUserStatus(msg.meetingId, msg.userId, msg.status, msg.value);
+          bbbInGW.setUserStatus(msg.meetingId, msg.userId, msg.status, msg.value);
         }
     }
 
     private void processSetRecordingStatusRequestMessage(String message) {
         SetRecordingStatusRequestMessage msg = SetRecordingStatusRequestMessage.fromJson(message);
         if (msg != null) {
-          ///  bbbInGW.setRecordingStatus(msg.meetingId, msg.userId, msg.recording);
+          bbbInGW.setRecordingStatus(msg.meetingId, msg.userId, msg.recording);
         }
     }
 
     private void processGetRecordingStatusRequestMessage(String message) {
         GetRecordingStatusRequestMessage msg = GetRecordingStatusRequestMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.getRecordingStatus(msg.meetingId, msg.userId);
+          bbbInGW.getRecordingStatus(msg.meetingId, msg.userId);
         }
     }
 
     private void processGetUsersRequestMessage(String message) {
         GetUsersRequestMessage msg = GetUsersRequestMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.getUsers(msg.meetingId, msg.requesterId);
+          bbbInGW.getUsers(msg.meetingId, msg.requesterId);
         }
     }
 
     private void processInitPermissionsSettingMessage(String message) {
         InitPermissionsSettingMessage msg = InitPermissionsSettingMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.initLockSettings(msg.meetingId, msg.permissions);
+          bbbInGW.initLockSettings(msg.meetingId, msg.permissions);
         }
     }
 
     private void processInitAudioSettingsMessage(String message) {
         InitAudioSettingsMessage msg = InitAudioSettingsMessage.fromJson(message);
         if (msg != null) {
-          ///  bbbInGW.initAudioSettings(msg.meetingId, msg.userId, msg.muted);
+          bbbInGW.initAudioSettings(msg.meetingId, msg.userId, msg.muted);
         }
     }
 
     private void processBroadcastLayoutRequestMessage(String message) {
         BroadcastLayoutRequestMessage msg = BroadcastLayoutRequestMessage.fromJson(message);
         if (msg != null) {
-           // bbbInGW.broadcastLayout(msg.meetingId, msg.userId, msg.layout);
+           bbbInGW.broadcastLayout(msg.meetingId, msg.userId, msg.layout);
         }
     }
 
     private void processLockLayoutRequestMessage(String message) {
         LockLayoutRequestMessage msg = LockLayoutRequestMessage.fromJson(message);
         if (msg != null) {
-         //   bbbInGW.lockLayout(msg.meetingId, msg.userId, msg.lock, msg.viewersOnly, msg.layout);
+         bbbInGW.lockLayout(msg.meetingId, msg.userId, msg.lock, msg.viewersOnly, msg.layout);
         }
     }
 
     private void processGetCurrentLayoutRequestMessage(String message) {
         GetCurrentLayoutRequestMessage msg = GetCurrentLayoutRequestMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.getCurrentLayout(msg.meetingId, msg.userId);
+          bbbInGW.getCurrentLayout(msg.meetingId, msg.userId);
         }
     }
 
     private void processMuteAllExceptPresenterRequestMessage(String message) {
         MuteAllExceptPresenterRequestMessage msg = MuteAllExceptPresenterRequestMessage.fromJson(message);
         if (msg != null) {
-           // bbbInGW.muteAllExceptPresenter(msg.meetingId, msg.requesterId, msg.mute);
+           bbbInGW.muteAllExceptPresenter(msg.meetingId, msg.requesterId, msg.mute);
         }
     }
 
     private void processMuteAllRequestMessage(String message) {
         MuteAllRequestMessage msg = MuteAllRequestMessage.fromJson(message);
         if (msg != null) {
-           // bbbInGW.muteAllUsers(msg.meetingId, msg.requesterId, msg.mute);
+           bbbInGW.muteAllUsers(msg.meetingId, msg.requesterId, msg.mute);
         }
     }
 
     private void processIsMeetingMutedRequestMessage(String message) {
         IsMeetingMutedRequestMessage msg = IsMeetingMutedRequestMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.isMeetingMuted(msg.meetingId, msg.requesterId);
+          bbbInGW.isMeetingMuted(msg.meetingId, msg.requesterId);
         }
     }
 
     private void processMuteUserRequestMessage(String message) {
         MuteUserRequestMessage msg = MuteUserRequestMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.muteUser(msg.meetingId, msg.requesterId, msg.userId, msg.mute);
+          bbbInGW.muteUser(msg.meetingId, msg.requesterId, msg.userId, msg.mute);
         }
     }
 
     private void processLockMuteUserRequestMessage(String message) {
         LockMuteUserRequestMessage msg = LockMuteUserRequestMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.lockMuteUser(msg.meetingId, msg.requesterId, msg.userId, msg.lock);
+          bbbInGW.lockMuteUser(msg.meetingId, msg.requesterId, msg.userId, msg.lock);
         }
     }
 
     private void processEjectUserFromVoiceRequestMessage(String message) {
         EjectUserFromVoiceRequestMessage msg = EjectUserFromVoiceRequestMessage.fromJson(message);
         if (msg != null) {
-          //  bbbInGW.ejectUserFromVoice(msg.meetingId, msg.userId, msg.requesterId);
+          bbbInGW.ejectUserFromVoice(msg.meetingId, msg.userId, msg.requesterId);
         }
     }
 }

@@ -3,7 +3,7 @@ package org.bigbluebutton.core
 import scala.util.{ Try, Success, Failure }
 import spray.json.{ JsObject, JsonParser, DeserializationException }
 import org.parboiled.errors.ParsingException
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.IncomingMessage._
 import org.bigbluebutton.messages._
 
 object JsonMessageDecoder {

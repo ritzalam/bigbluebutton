@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.filters
 
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.IncomingMessage._
+import org.bigbluebutton.core.api.OutGoingMessage.TransferUserToMeeting
 
 trait InMsgFilter {
   def handleMonitorNumberOfWebUsers(msg: MonitorNumberOfUsers)

@@ -1,6 +1,5 @@
 package org.bigbluebutton.core.handlers
 
-import org.bigbluebutton.core.api.{ MeetingHasEnded, PresenterAssigned, UserVoiceTalking, _ }
 import org.bigbluebutton.core.domain.{ EmojiStatus, Locked, Muted, Presenter, _ }
 
 trait UsersMessageSenderTrait {

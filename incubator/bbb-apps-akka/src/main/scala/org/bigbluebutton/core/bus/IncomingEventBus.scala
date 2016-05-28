@@ -4,7 +4,7 @@ import akka.actor.ActorRef
 import akka.event.EventBus
 import akka.event.ActorEventBus
 import akka.event.LookupClassification
-import org.bigbluebutton.core.api.InMessage
+import org.bigbluebutton.core.api.IncomingMessage.InMessage
 
 case class BigBlueButtonEvent(val topic: String, val payload: InMessage)
 

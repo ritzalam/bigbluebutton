@@ -30,13 +30,13 @@ public class LockMessageReceiver implements MessageHandler {
                     String messageName = header.get("name").getAsString();
                     if (GetLockSettingsMessage.GET_LOCK_SETTINGS.equals(messageName)) {
                         GetLockSettingsMessage msg = GetLockSettingsMessage.fromJson(message);
-    //                    bbbGW.getLockSettings(msg.meetingId, msg.userId);
+                        bbbGW.getLockSettings(msg.meetingId, msg.userId);
                     } else if (LockUserMessage.LOCK_USER.equals(messageName)) {
                         LockUserMessage msg = LockUserMessage.fromJson(message);
-      //                  bbbGW.lockUser(msg.meetingId, msg.requesterId, msg.lock, msg.internalUserId);
+                       bbbGW.lockUser(msg.meetingId, msg.requesterId, msg.lock, msg.internalUserId);
                     } else if (SendLockSettingsMessage.SEND_LOCK_SETTINGS.equals(messageName)) {
                         SendLockSettingsMessage msg = SendLockSettingsMessage.fromJson(message);
-        //                bbbGW.sendLockSettings(msg.meetingId, msg.userId, msg.newSettings);
+                       bbbGW.sendLockSettings(msg.meetingId, msg.userId, msg.newSettings);
                     }
                 }
             }

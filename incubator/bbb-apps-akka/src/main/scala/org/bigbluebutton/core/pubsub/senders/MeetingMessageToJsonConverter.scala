@@ -1,12 +1,10 @@
 package org.bigbluebutton.core.pubsub.senders
 
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.OutGoingMessage._
+import org.bigbluebutton.core.api.Constants
+import org.bigbluebutton.core.api.MessageNames
 import org.bigbluebutton.core.messaging.Util
 import org.bigbluebutton.messages._
-
-import spray.json.JsArray
-import spray.json.JsObject
-import spray.json.JsString
 
 object MeetingMessageToJsonConverter {
   def meetingDestroyedToJson(msg: MeetingDestroyed): String = {

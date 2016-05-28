@@ -1,7 +1,8 @@
 package org.bigbluebutton.core.filters
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.IncomingMessage._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.core.domain.{ CanEjectUser }
 import org.bigbluebutton.core.handlers.{ UsersHandler2x }
 import org.bigbluebutton.core.models.{ MeetingStateModel, RegisteredUsers2x, Users3x }

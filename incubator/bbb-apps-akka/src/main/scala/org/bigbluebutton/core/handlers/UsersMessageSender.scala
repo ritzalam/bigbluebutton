@@ -1,7 +1,7 @@
 package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.core.domain._
 
 class UsersMessageSender(val outGW: OutMessageGateway) extends UsersMessageSenderTrait {

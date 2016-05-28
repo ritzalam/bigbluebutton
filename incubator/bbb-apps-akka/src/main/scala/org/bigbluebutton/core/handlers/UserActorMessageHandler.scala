@@ -2,7 +2,8 @@ package org.bigbluebutton.core.handlers
 
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.IncomingMessage._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.core.domain.{ User3x, _ }
 import org.bigbluebutton.core.models._
 

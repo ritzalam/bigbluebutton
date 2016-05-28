@@ -91,43 +91,43 @@ public class PresentationMessageListener implements MessageHandler {
                     String messageName = header.get("name").getAsString();
                     if (SendConversionUpdateMessage.SEND_CONVERSION_UPDATE.equals(messageName)) {
                         SendConversionUpdateMessage msg = SendConversionUpdateMessage.fromJson(message);
-                       // bbbInGW.sendConversionUpdate(msg.messageKey, msg.meetingId,
-                       //         msg.code, msg.presId, msg.presName);
+                        bbbInGW.sendConversionUpdate(msg.messageKey, msg.meetingId,
+                               msg.code, msg.presId, msg.presName);
                     } else if (ResizeAndMoveSlideMessage.RESIZE_AND_MOVE_SLIDE.equals(messageName)) {
                         ResizeAndMoveSlideMessage msg = ResizeAndMoveSlideMessage.fromJson(message);
-                       // bbbInGW.resizeAndMoveSlide(msg.meetingId, msg.xOffset, msg.yOffset,
-                       //         msg.widthRatio, msg.heightRatio);
+                        bbbInGW.resizeAndMoveSlide(msg.meetingId, msg.xOffset, msg.yOffset,
+                               msg.widthRatio, msg.heightRatio);
                     } else if (GetPresentationInfoMessage.GET_PRESENTATION_INFO.equals(messageName)) {
                         GetPresentationInfoMessage msg = GetPresentationInfoMessage.fromJson(message);
-                       // bbbInGW.getPresentationInfo(msg.meetingId, msg.requesterId, msg.replyTo);
+                       bbbInGW.getPresentationInfo(msg.meetingId, msg.requesterId, msg.replyTo);
                     } else if (SendConversionCompletedMessage.SEND_CONVERSION_COMPLETED.equals(messageName)) {
                         SendConversionCompletedMessage msg = SendConversionCompletedMessage.fromJson(message);
-                       // bbbInGW.sendConversionCompleted(msg.messageKey, msg.meetingId, msg.code,
-                       //         msg.presId, msg.numPages, msg.presName, msg.presBaseUrl);
+                       bbbInGW.sendConversionCompleted(msg.messageKey, msg.meetingId, msg.code,
+                               msg.presId, msg.numPages, msg.presName, msg.presBaseUrl);
                     } else if (SendPageCountErrorMessage.SEND_PAGE_COUNT_ERROR.equals(messageName)) {
                         SendPageCountErrorMessage msg = SendPageCountErrorMessage.fromJson(message);
-                        //bbbInGW.sendPageCountError(msg.messageKey, msg.meetingId, msg.code,
-                        //        msg.presId, msg.numberOfPages, msg.maxNumberPages, msg.presName);
+                        bbbInGW.sendPageCountError(msg.messageKey, msg.meetingId, msg.code,
+                                msg.presId, msg.numberOfPages, msg.maxNumberPages, msg.presName);
                     } else if (GoToSlideMessage.GO_TO_SLIDE.equals(messageName)) {
                         GoToSlideMessage msg = GoToSlideMessage.fromJson(message);
-                        //bbbInGW.gotoSlide(msg.meetingId, msg.page);
+                        bbbInGW.gotoSlide(msg.meetingId, msg.page);
                     } else if (RemovePresentationMessage.REMOVE_PRESENTATION.equals(messageName)) {
                         RemovePresentationMessage msg = RemovePresentationMessage.fromJson(message);
-                        //bbbInGW.removePresentation(msg.meetingId, msg.presentationId);
+                        bbbInGW.removePresentation(msg.meetingId, msg.presentationId);
                     } else if (SendCursorUpdateMessage.SEND_CURSOR_UPDATE.equals(messageName)) {
                         SendCursorUpdateMessage msg = SendCursorUpdateMessage.fromJson(message);
-                        //bbbInGW.sendCursorUpdate(msg.meetingId, msg.xPercent, msg.yPercent);
+                        bbbInGW.sendCursorUpdate(msg.meetingId, msg.xPercent, msg.yPercent);
                     } else if (SharePresentationMessage.SHARE_PRESENTATION.equals(messageName)) {
                         SharePresentationMessage msg = SharePresentationMessage.fromJson(message);
-                        //bbbInGW.sharePresentation(msg.meetingId, msg.presentationId, msg.share);
+                        bbbInGW.sharePresentation(msg.meetingId, msg.presentationId, msg.share);
                     } else if (GetSlideInfoMessage.GET_SLIDE_INFO.equals(messageName)) {
                         GetSlideInfoMessage msg = GetSlideInfoMessage.fromJson(message);
-                        //bbbInGW.getSlideInfo(msg.meetingId, msg.requesterId, msg.replyTo);
+                        bbbInGW.getSlideInfo(msg.meetingId, msg.requesterId, msg.replyTo);
                     } else if (SendSlideGeneratedMessage.SEND_SLIDE_GENERATED.equals(messageName)) {
 
                         SendSlideGeneratedMessage msg = SendSlideGeneratedMessage.fromJson(message);
-                        //bbbInGW.sendSlideGenerated(msg.messageKey, msg.meetingId, msg.code,
-                        //        msg.presId, msg.numberOfPages, msg.pagesCompleted, msg.presName);
+                        bbbInGW.sendSlideGenerated(msg.messageKey, msg.meetingId, msg.code,
+                               msg.presId, msg.numberOfPages, msg.pagesCompleted, msg.presName);
                     }
                 }
             } else {

@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.handlers
 
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.IncomingMessage._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.core.domain.Role
 import org.bigbluebutton.core.domain._
 import scala.collection.mutable.ArrayBuffer
@@ -411,9 +412,9 @@ trait UsersHandler extends UsersApp {
            * and is reconnecting. Make the user as joined only in the voice conference. If we get a
            * user left voice conference message, then we will remove the user from the users list.
            */
-          switchUserToPhoneUser((new UserJoinedVoiceConfMessage(props.voiceConf,
-            vu.id, u.id, u.extId, vu.callerId,
-            vu.muted, vu.talking, u.listenOnly)));
+          //  switchUserToPhoneUser((new UserJoinedVoiceConfMessage(props.voiceConf,
+          //   vu.id, u.id, u.extId, vu.callerId,
+          //   vu.muted, vu.talking, u.listenOnly)));
         }
 
         checkCaptionOwnerLogOut(u.id.value)

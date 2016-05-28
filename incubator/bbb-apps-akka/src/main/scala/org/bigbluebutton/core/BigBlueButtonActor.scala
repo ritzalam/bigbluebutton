@@ -5,7 +5,8 @@ import akka.actor.ActorLogging
 import akka.util.Timeout
 import scala.concurrent.duration._
 import org.bigbluebutton.core.bus._
-import org.bigbluebutton.core.api._
+import org.bigbluebutton.core.api.IncomingMessage._
+import org.bigbluebutton.core.api.OutGoingMessage._
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.domain._
 

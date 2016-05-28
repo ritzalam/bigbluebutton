@@ -1,7 +1,7 @@
 package org.bigbluebutton.core
 
 import akka.actor.ActorContext
-import org.bigbluebutton.core.api.ValidateAuthToken
+import org.bigbluebutton.core.api.IncomingMessage._
 import org.bigbluebutton.core.bus.IncomingEventBus
 import org.bigbluebutton.core.domain.UserActorRef
 import org.bigbluebutton.core.models.{ Meeting3x, UserActorRefs }

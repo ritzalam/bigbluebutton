@@ -29,25 +29,25 @@ public class ConversionUpdatesProcessor {
 
     public void sendConversionUpdate(String messageKey, String conference,
                                      String code, String presId, String presName) {
-        //bbbInGW.sendConversionUpdate(messageKey, conference, code, presId, presName);
+        bbbInGW.sendConversionUpdate(messageKey, conference, code, presId, presName);
     }
 
     public void sendPageCountError(String messageKey, String conference,
                                    String code, String presId, int numberOfPages,
                                    int maxNumberPages, String presName) {
-        //bbbInGW.sendPageCountError(messageKey, conference, code, presId, numberOfPages, maxNumberPages, presName);
+        bbbInGW.sendPageCountError(messageKey, conference, code, presId, numberOfPages, maxNumberPages, presName);
     }
 
     public void sendSlideGenerated(String messageKey, String conference,
                                    String code, String presId, int numberOfPages,
                                    int pagesCompleted, String presName) {
-        //bbbInGW.sendSlideGenerated(messageKey, conference, code, presId, numberOfPages, pagesCompleted, presName);
+        bbbInGW.sendSlideGenerated(messageKey, conference, code, presId, numberOfPages, pagesCompleted, presName);
     }
 
     public void sendConversionCompleted(String messageKey, String conference,
                                         String code, String presId, Integer numberOfPages, String presName,
                                         String presBaseUrl) {
-        //bbbInGW.sendConversionCompleted(messageKey, conference, code, presId, numberOfPages, presName, presBaseUrl);
+        bbbInGW.sendConversionCompleted(messageKey, conference, code, presId, numberOfPages, presName, presBaseUrl);
     }
 
     public void setBigBlueButtonInGW(IBigBlueButtonInGW inGW) {

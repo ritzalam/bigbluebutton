@@ -30,7 +30,7 @@ trait UserJoinedEventSender {
 
     val wuser = new scala.collection.mutable.HashMap[String, Any]
     wuser += "userid" -> user.id.value
-    wuser += "extern_userid" -> user.extId.value
+    wuser += "extern_userid" -> user.externalId.value
     wuser += "name" -> user.name.value
     wuser += "role" -> user.roles.toString()
     wuser += "emoji_status" -> user.emojiStatus.value

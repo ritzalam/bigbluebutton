@@ -3,9 +3,9 @@ package org.bigbluebutton.core2x.domain
 import com.softwaremill.quicklens._
 
 object User3x {
-  def create(id: IntUserId, extId: ExtUserId, name: Name, roles: Set[Role2x]): User3x = {
+  def create(id: IntUserId, externalId: ExtUserId, name: Name, roles: Set[Role2x]): User3x = {
 
-    new User3x(id, extId, name, EmojiStatus("none"), roles,
+    new User3x(id, externalId, name, EmojiStatus("none"), roles,
       Set.empty, new UserAbilities(Set.empty, Set.empty, false),
       Set.empty, Set.empty, Set.empty)
   }
@@ -46,16 +46,16 @@ object User3x {
 }
 
 case class User3x(
-    id: IntUserId,
-    extId: ExtUserId,
-    name: Name,
-    emojiStatus: EmojiStatus,
-    roles: Set[Role2x],
-    presence: Set[Presence2x],
-    permissions: UserAbilities,
-    roleData: Set[RoleData],
-    config: Set[String],
-    extData: Set[String]) {
+                   id: IntUserId,
+                   externalId: ExtUserId,
+                   name: Name,
+                   emojiStatus: EmojiStatus,
+                   roles: Set[Role2x],
+                   presence: Set[Presence2x],
+                   permissions: UserAbilities,
+                   roleData: Set[RoleData],
+                   config: Set[String],
+                   externalData: Set[String]) {
 
   def isModerator: Boolean = roles.contains(ModeratorRole)
 }

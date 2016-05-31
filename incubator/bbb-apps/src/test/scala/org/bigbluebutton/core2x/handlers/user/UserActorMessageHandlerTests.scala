@@ -1,9 +1,9 @@
-package org.bigbluebutton.core2x.handlers
+package org.bigbluebutton.core2x.handlers.user
 
-import org.bigbluebutton.core2x.api.IncomingMessage._
-import org.bigbluebutton.core2x.api.OutGoingMessage._
 import org.bigbluebutton.core.{ OutMessageGateway, UnitSpec }
 import org.bigbluebutton.core2x.MeetingTestFixtures
+import org.bigbluebutton.core2x.api.IncomingMessage._
+import org.bigbluebutton.core2x.api.OutGoingMessage._
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsers2x, Users3x }
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar

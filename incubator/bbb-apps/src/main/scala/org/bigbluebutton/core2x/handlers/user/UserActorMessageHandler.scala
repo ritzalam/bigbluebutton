@@ -1,4 +1,4 @@
-package org.bigbluebutton.core2x.handlers
+package org.bigbluebutton.core2x.handlers.user
 
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
@@ -7,56 +7,16 @@ import org.bigbluebutton.core2x.api.OutGoingMessage._
 import org.bigbluebutton.core2x.domain.{ User3x, _ }
 import org.bigbluebutton.core2x.models._
 
-class UserActorMessageHandler(user: RegisteredUser2x, outGW: OutMessageGateway) extends SystemConfiguration {
+class UserActorMessageHandler(
+  val user: RegisteredUser2x,
+  val outGW: OutMessageGateway)
+    extends SystemConfiguration
+    with ValidateAuthTokenHandler
+    with UserJoinedHandler {
 
-  private val userState: UserState = new UserState(user)
-
-  def handleValidateAuthToken2x(msg: ValidateAuthToken, meeting: MeetingStateModel): Unit = {
-    def sendResponse(user: RegisteredUser2x): Unit = {
-      // TODO: Send response with user status
-      outGW.send(new ValidateAuthTokenReply2x(msg.meetingId, msg.userId, msg.token, true))
-
-    }
-
-    for {
-      user <- RegisteredUsers2x.findWithToken(msg.token, meeting.registeredUsers.toVector)
-    } yield sendResponse(user)
-  }
+  val userState: UserState = new UserState(user)
 
   def handleEjectUserFromMeeting(msg: EjectUserFromMeeting, meeting: MeetingStateModel): Unit = {
-
-  }
-
-  def handleUserJoinWeb2x(msg: NewUserPresence2x, meeting: MeetingStateModel): Unit = {
-    def becomePresenter(user: User3x): Unit = {
-      // TODO: Become presenter if only moderator in meeting
-      if (user.isModerator && !Users3x.hasPresenter(meeting.users.toVector)) {
-        val u = User3x.add(user, PresenterRole)
-        meeting.users.save(u)
-        // Send presenter assigned message
-      }
-    }
-
-    def process(user: User3x): Unit = {
-      meeting.users.save(user)
-      outGW.send(new UserJoinedEvent2x(msg.meetingId, meeting.props.recordingProp.recorded, user))
-      becomePresenter(user)
-    }
-
-    Users3x.findWithId(msg.userId, meeting.users.toVector) match {
-      case Some(user) =>
-        // Find presence associated with this session
-        val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
-
-      // TODO: Send reconnecting message
-      case None =>
-        for {
-          ru <- RegisteredUsers2x.findWithToken(msg.token, meeting.registeredUsers.toVector)
-          u = User3x.create(msg.userId, ru.extId, ru.name, ru.roles)
-          presence = User3x.create(msg.presenceId, msg.userAgent)
-          user = User3x.add(u, presence)
-        } yield process(user)
-    }
 
   }
 

@@ -169,16 +169,6 @@ object UsersMessageToJsonConverter2x {
     Util.buildJson(header, payload)
   }
 
-  def userRegisteredToJson(msg: UserRegisteredEvent2x): String = {
-    val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.USER, registeredUserToMap(msg.user))
-    payload.put(Constants.RECORDED, msg.recorded.value)
-
-    val header = Util.buildHeader(MessageNames.USER_REGISTERED, None)
-    Util.buildJson(header, payload)
-  }
-
   def userChangedEmojiStatusToJson(msg: UserChangedEmojiStatus): String = {
     val payload = new java.util.HashMap[String, Any]()
     payload.put(Constants.MEETING_ID, msg.meetingId.value)
@@ -357,39 +347,6 @@ object UsersMessageToJsonConverter2x {
     Util.buildJson(header, payload)
   }
 
-  def validateAuthTokenReplyToJson(msg: ValidateAuthTokenReply2x): String = {
-    val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.REPLY_TO, "todo")
-    payload.put(Constants.VALID, msg.valid.toString)
-    payload.put(Constants.USER_ID, msg.requesterId.value)
-    payload.put(Constants.AUTH_TOKEN, msg.token.value)
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-
-    val header = Util.buildHeader(MessageNames.VALIDATE_AUTH_TOKEN_REPLY, None)
-    Util.buildJson(header, payload)
-  }
-
-  def validateAuthTokenTimeoutToJson(msg: ValidateAuthTokenTimedOut): String = {
-    val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.REPLY_TO, msg.correlationId)
-    payload.put(Constants.VALID, msg.valid.toString)
-    payload.put(Constants.AUTH_TOKEN, msg.token)
-    payload.put(Constants.USER_ID, msg.requesterId)
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-
-    val header = Util.buildHeader(MessageNames.VALIDATE_AUTH_TOKEN_TIMEOUT, None)
-    Util.buildJson(header, payload)
-  }
-
-  def userJoinedToJson(msg: UserJoinedEvent2x): String = {
-    val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put("user", userToMap(msg.user))
-
-    val header = Util.buildHeader(MessageNames.USER_JOINED, None)
-    Util.buildJson(header, payload)
-  }
-
   def userLeftToJson(msg: UserLeft): String = {
     val payload = new java.util.HashMap[String, Any]()
     payload.put(Constants.MEETING_ID, msg.meetingId.value)
@@ -430,17 +387,5 @@ object UsersMessageToJsonConverter2x {
     Util.buildJson(header, payload)
   }
 
-  def meetingCreatedToJson(msg: MeetingCreated): String = {
-    val payload = new java.util.HashMap[String, Any]()
-    payload.put(Constants.MEETING_ID, msg.meetingId.value)
-    payload.put(Constants.EXTERNAL_MEETING_ID, msg.mProps.extId.value)
-    payload.put(Constants.NAME, msg.mProps.name.value)
-    payload.put(Constants.RECORDED, msg.mProps.recordingProp.recorded)
-    payload.put(Constants.VOICE_CONF, msg.mProps.voiceConf.value)
-    payload.put(Constants.DURATION, msg.mProps.duration)
-
-    val header = Util.buildHeader(MessageNames.MEETING_CREATED, None)
-    Util.buildJson(header, payload)
-  }
 }
 

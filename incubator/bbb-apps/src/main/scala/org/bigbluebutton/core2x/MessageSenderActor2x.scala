@@ -1,12 +1,9 @@
 package org.bigbluebutton.core2x
 
 import akka.actor.{ Actor, ActorLogging, Props }
-import org.bigbluebutton.common.converters.ToJsonEncoder
-import org.bigbluebutton.common.messages.MessagingConstants
 import org.bigbluebutton.core.MessageSender
 import org.bigbluebutton.core2x.api.OutGoingMessage._
-import org.bigbluebutton.core.pubsub.senders.{ MeetingMessageToJsonConverter }
-import org.bigbluebutton.core2x.pubsub.senders.UsersMessageToJsonConverter2x
+import org.bigbluebutton.core2x.pubsub.senders._
 
 object MessageSenderActor2x {
   def props(msgSender: MessageSender): Props =
@@ -14,9 +11,12 @@ object MessageSenderActor2x {
 }
 
 class MessageSenderActor2x(val service: MessageSender)
-    extends Actor with ActorLogging {
-
-  val encoder = new ToJsonEncoder()
+    extends Actor with ActorLogging
+    with MeetingCreatedEventSender
+    with UserJoinedEventSender
+    with UserRegisteredEventSender
+    with ValidateAuthTokenReplySender
+    with ValidateAuthTokenTimedOutEventSender {
 
   def receive = {
     case msg: MeetingCreated => handleMeetingCreated(msg)
@@ -27,38 +27,4 @@ class MessageSenderActor2x(val service: MessageSender)
     case _ => // do nothing
   }
 
-  def handleUserJoinedEvent2x(msg: UserJoinedEvent2x): Unit = {
-    val json = UsersMessageToJsonConverter2x.userJoinedToJson(msg)
-    service.send(MessagingConstants.FROM_USERS_CHANNEL, json)
-  }
-
-  private def handleMeetingCreated(msg: MeetingCreated) {
-    val json = UsersMessageToJsonConverter2x.meetingCreatedToJson(msg)
-    service.send(MessagingConstants.FROM_MEETING_CHANNEL, json)
-  }
-
-  private def handleUserRegistered(msg: UserRegisteredEvent2x) {
-    val json = UsersMessageToJsonConverter2x.userRegisteredToJson(msg)
-    service.send(MessagingConstants.FROM_MEETING_CHANNEL, json)
-    handleRegisteredUser(msg);
-  }
-
-  private def handleRegisteredUser(msg: UserRegisteredEvent2x) {
-    val json = UsersMessageToJsonConverter2x.userRegisteredToJson(msg)
-    service.send(MessagingConstants.FROM_USERS_CHANNEL, json)
-  }
-
-  private def handleValidateAuthTokenReply(msg: ValidateAuthTokenReply2x) {
-    println("**** handleValidateAuthTokenReply *****")
-    val json = UsersMessageToJsonConverter2x.validateAuthTokenReplyToJson(msg)
-    //println("************** Publishing [" + json + "] *******************")
-    service.send(MessagingConstants.FROM_USERS_CHANNEL, json)
-  }
-
-  private def handleValidateAuthTokenTimedOut(msg: ValidateAuthTokenTimedOut) {
-    println("**** handleValidateAuthTokenTimedOut *****")
-    val json = UsersMessageToJsonConverter2x.validateAuthTokenTimeoutToJson(msg)
-    //println("************** Publishing [" + json + "] *******************")
-    service.send(MessagingConstants.FROM_USERS_CHANNEL, json)
-  }
 }

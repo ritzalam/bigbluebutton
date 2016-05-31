@@ -4,6 +4,7 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.api.IncomingMessage._
 import org.bigbluebutton.core2x.api.OutGoingMessage._
 import org.bigbluebutton.core2x.domain._
+import org.bigbluebutton.core2x.handlers.user.UserActorMessageHandler
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, PinNumberGenerator, RegisteredUsers2x, Users3x }
 
 trait UsersHandler2x {

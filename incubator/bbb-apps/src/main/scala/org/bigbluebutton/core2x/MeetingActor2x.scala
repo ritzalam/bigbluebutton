@@ -7,6 +7,8 @@ import org.bigbluebutton.core2x.domain.MeetingProperties2x
 import org.bigbluebutton.core2x.filters.UsersHandlerFilter
 import org.bigbluebutton.core2x.models.MeetingStateModel
 import org.bigbluebutton.core2x.api.IncomingMessage._
+import org.bigbluebutton.core2x.handlers._
+
 import scala.concurrent.duration._
 
 object MeetingActorInternal2x {
@@ -63,95 +65,22 @@ object MeetingActor2x {
 }
 
 class MeetingActor2x(
-    val props: MeetingProperties2x,
-    val bus: IncomingEventBus,
-    val outGW: OutMessageGateway,
-    val state: MeetingStateModel) extends Actor with ActorLogging with UsersHandlerFilter {
+  val props: MeetingProperties2x,
+  val bus: IncomingEventBus,
+  val outGW: OutMessageGateway,
+  val state: MeetingStateModel) extends Actor with ActorLogging
+    with ValidateAuthTokenCommandFilter
+    with RegisterUserCommandHandler
+    with UserJoinedCommandHandlerFilter
+    with EjectUserFromMeetingCommandFilter {
+
+  val userHandlers = new UserHandlers
 
   def receive = {
     case msg: RegisterUser2xCommand => handleRegisterUser2x(msg)
     case msg: ValidateAuthToken => handleValidateAuthToken2x(msg)
     case msg: NewUserPresence2x => handleUserJoinWeb2x(msg)
     case msg: EjectUserFromMeeting => handleEjectUserFromMeeting(msg)
-    case msg: UserJoinedVoiceConfMessage => println("handleUserJoinedVoiceConfMessage(msg)")
-    case msg: UserLeftVoiceConfMessage => println("handleUserLeftVoiceConfMessage(msg)")
-    case msg: UserMutedInVoiceConfMessage => println("handleUserMutedInVoiceConfMessage(msg)")
-    case msg: UserTalkingInVoiceConfMessage => println("handleUserTalkingInVoiceConfMessage(msg)")
-    case msg: VoiceConfRecordingStartedMessage => println("handleVoiceConfRecordingStartedMessage(msg)")
-    case msg: UserJoining => println("handleUserJoin(msg)")
-    case msg: UserLeaving => println("handleUserLeft(msg)")
-    case msg: AssignPresenter => println("handleAssignPresenter(msg)")
-    case msg: GetUsers => println("handleGetUsers(msg)")
-    case msg: ChangeUserStatus => println("handleChangeUserStatus(msg)")
-    case msg: UserEmojiStatus => println("handleUserEmojiStatus(msg)")
-    case msg: UserShareWebcam => println("handleUserShareWebcam(msg)")
-    case msg: UserUnshareWebcam => println("handleUserunshareWebcam(msg)")
-    case msg: MuteMeetingRequest => println("handleMuteMeetingRequest(msg)")
-    case msg: MuteAllExceptPresenterRequest => println("handleMuteAllExceptPresenterRequest(msg)")
-    case msg: IsMeetingMutedRequest => println("handleIsMeetingMutedRequest(msg)")
-    case msg: MuteUserRequest => println("handleMuteUserRequest(msg)")
-    case msg: EjectUserFromVoiceRequest => println("handleEjectUserRequest(msg)")
-    case msg: TransferUserToMeetingRequest => println("handleTransferUserToMeeting(msg)")
-    case msg: SetLockSettings => println("handleSetLockSettings(msg)")
-    case msg: GetLockSettings => println("handleGetLockSettings(msg)")
-    case msg: LockUserRequest => println("handleLockUserRequest(msg)")
-    case msg: InitLockSettings => println("handleInitLockSettings(msg)")
-    case msg: InitAudioSettings => println("handleInitAudioSettings(msg)")
-    case msg: GetChatHistoryRequest => println("handleGetChatHistoryRequest(msg)")
-    case msg: SendPublicMessageRequest => println("handleSendPublicMessageRequest(msg)")
-    case msg: SendPrivateMessageRequest => println(".handleSendPrivateMessageRequest(msg)")
-    case msg: UserConnectedToGlobalAudio => println(".handleUserConnectedToGlobalAudio(msg)")
-    case msg: UserDisconnectedFromGlobalAudio => println(".handleUserDisconnectedFromGlobalAudio(msg)")
-    case msg: GetCurrentLayoutRequest => println(".handleGetCurrentLayoutRequest(msg)")
-    case msg: BroadcastLayoutRequest => println(".handleBroadcastLayoutRequest(msg)")
-    case msg: InitializeMeeting => println(".handleInitializeMeeting(msg)")
-    case msg: ClearPresentation => println(".handleClearPresentation(msg)")
-    case msg: PresentationConversionUpdate => println(".handlePresentationConversionUpdate(msg)")
-    case msg: PresentationPageCountError => println(".handlePresentationPageCountError(msg)")
-    case msg: PresentationSlideGenerated => println(".handlePresentationSlideGenerated(msg)")
-    case msg: PresentationConversionCompleted => println(".handlePresentationConversionCompleted(msg)")
-    case msg: RemovePresentation => println(".handleRemovePresentation(msg)")
-    case msg: GetPresentationInfo => println(".handleGetPresentationInfo(msg)")
-    case msg: SendCursorUpdate => println(".handleSendCursorUpdate(msg)")
-    case msg: ResizeAndMoveSlide => println(".handleResizeAndMoveSlide(msg)")
-    case msg: GotoSlide => println(".handleGotoSlide(msg)")
-    case msg: SharePresentation => println(".handleSharePresentation(msg)")
-    case msg: GetSlideInfo => println(".handleGetSlideInfo(msg)")
-    case msg: PreuploadedPresentations => println(".handlePreuploadedPresentations(msg)")
-    case msg: SendWhiteboardAnnotationRequest => println(".handleSendWhiteboardAnnotationRequest(msg)")
-    case msg: GetWhiteboardShapesRequest => println(".handleGetWhiteboardShapesRequest(msg)")
-    case msg: ClearWhiteboardRequest => println(".handleClearWhiteboardRequest(msg)")
-    case msg: UndoWhiteboardRequest => println(".handleUndoWhiteboardRequest(msg)")
-    case msg: EnableWhiteboardRequest => println(".handleEnableWhiteboardRequest(msg)")
-    case msg: IsWhiteboardEnabledRequest => println(".handleIsWhiteboardEnabledRequest(msg)")
-    case msg: SetRecordingStatus => println(".handleSetRecordingStatus(msg)")
-    case msg: GetRecordingStatus => println(".handleGetRecordingStatus(msg)")
-    case msg: StartCustomPollRequest => println(".handleStartCustomPollRequest(msg)")
-    case msg: StartPollRequest => println(".handleStartPollRequest(msg)")
-    case msg: StopPollRequest => println(".handleStopPollRequest(msg)")
-    case msg: ShowPollResultRequest => println(".handleShowPollResultRequest(msg)")
-    case msg: HidePollResultRequest => println(".handleHidePollResultRequest(msg)")
-    case msg: RespondToPollRequest => println(".handleRespondToPollRequest(msg)")
-    case msg: GetPollRequest => println(".handleGetPollRequest(msg)")
-    case msg: GetCurrentPollRequest => println(".handleGetCurrentPollRequest(msg)")
-    // Breakout rooms
-    case msg: BreakoutRoomsListMessage => println(".handleBreakoutRoomsList(msg)")
-    case msg: CreateBreakoutRooms => println(".handleCreateBreakoutRooms(msg)")
-    case msg: BreakoutRoomCreated => println(".handleBreakoutRoomCreated(msg)")
-    case msg: BreakoutRoomEnded => println(".handleBreakoutRoomEnded(msg)")
-    case msg: RequestBreakoutJoinURLInMessage => println(".handleRequestBreakoutJoinURL(msg)")
-    case msg: BreakoutRoomUsersUpdate => println(".handleBreakoutRoomUsersUpdate(msg)")
-    case msg: SendBreakoutUsersUpdate => println(".handleSendBreakoutUsersUpdate(msg)")
-    case msg: EndAllBreakoutRooms => println(".handleEndAllBreakoutRooms(msg)")
-
-    case msg: ExtendMeetingDuration => println(".handleExtendMeetingDuration(msg)")
-    case msg: SendTimeRemainingUpdate => println(".handleSendTimeRemainingUpdate(msg)")
-    case msg: EndMeeting => println(".handleEndMeeting(msg)")
-
-    // Closed Caption
-    case msg: SendCaptionHistoryRequest => println(".handleSendCaptionHistoryRequest(msg)")
-    case msg: UpdateCaptionOwnerRequest => println(".handleUpdateCaptionOwnerRequest(msg)")
-    case msg: EditCaptionHistoryRequest => println(".handleEditCaptionHistoryRequest(msg)")
   }
 
 }

@@ -2,36 +2,36 @@ package org.bigbluebutton.core
 
 import org.bigbluebutton.core.bus._
 import org.bigbluebutton.core.api._
+
 import scala.collection.JavaConversions._
-import java.util.ArrayList
-import scala.collection.mutable.ArrayBuffer
 import org.bigbluebutton.core.apps.Page
 import org.bigbluebutton.core.apps.Presentation
 import akka.actor.ActorSystem
 import org.bigbluebutton.core.apps.AnnotationVO
-import akka.pattern.{ ask, pipe }
-import akka.util.Timeout
-import scala.concurrent.duration._
-import scala.util.Success
-import scala.util.Failure
-import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.common.messages.IBigBlueButtonMessage
 import org.bigbluebutton.common.messages.StartCustomPollRequestMessage
 import org.bigbluebutton.common.messages.PubSubPingMessage
 import org.bigbluebutton.messages._
-import org.bigbluebutton.messages.payload._
 import akka.event.Logging
+import org.bigbluebutton.core2x.api.IncomingMessage.CreateMeeting2x
+import org.bigbluebutton.core2x.domain.{ Permissions => _, Role => _, _ }
+import org.bigbluebutton.core2x.BigBlueButtonActor2x
+import org.bigbluebutton.core2x.bus.{ BigBlueButtonEvent2x, IncomingEventBus2x }
 import spray.json.JsonParser
 
 class BigBlueButtonInGW(
     val system: ActorSystem,
     eventBus: IncomingEventBus,
     outGW: OutMessageGateway,
+    eventBus2x: IncomingEventBus2x,
     val red5DeskShareIP: String,
     val red5DeskShareApp: String) extends IBigBlueButtonInGW {
 
   val log = Logging(system, getClass)
   val bbbActor = system.actorOf(BigBlueButtonActor.props(system, eventBus, outGW), "bigbluebutton-actor")
+  eventBus.subscribe(bbbActor, "meeting-manager")
+
+  val bbbActor2x = system.actorOf(BigBlueButtonActor2x.props(system, eventBus, outGW), "bigbluebutton-actor2x")
   eventBus.subscribe(bbbActor, "meeting-manager")
 
   def handleBigBlueButtonMessage(message: IBigBlueButtonMessage) {
@@ -71,6 +71,27 @@ class BigBlueButtonInGW(
           msg.payload.isBreakout)
 
         eventBus.publish(BigBlueButtonEvent("meeting-manager", new CreateMeeting(msg.payload.id, mProps)))
+
+        val recProp = MeetingRecordingProp(
+          Recorded(msg.payload.record),
+          msg.payload.autoStartRecording,
+          msg.payload.allowStartStopRecording)
+
+        val mProps2x = new MeetingProperties2x(
+          IntMeetingId(msg.payload.id),
+          ExtMeetingId(msg.payload.externalId),
+          Name(msg.payload.name),
+          VoiceConf(msg.payload.voiceConfId),
+          msg.payload.durationInMinutes,
+          20,
+          false,
+          msg.payload.isBreakout,
+          new MeetingExtensionProp2x(),
+          recProp
+        )
+
+        eventBus2x.publish(BigBlueButtonEvent2x("meeting-manager", new CreateMeeting2x(IntMeetingId(msg.payload.id), mProps2x)))
+
       }
     }
   }

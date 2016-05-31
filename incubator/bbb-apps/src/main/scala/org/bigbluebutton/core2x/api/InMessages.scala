@@ -27,7 +27,6 @@ object IncomingMessage {
   case class MonitorNumberOfUsers(meetingId: IntMeetingId) extends InMessage
   case class SendTimeRemainingUpdate(meetingId: IntMeetingId) extends InMessage
   case class ExtendMeetingDuration(meetingId: IntMeetingId, userId: IntUserId) extends InMessage
-  case class CreateMeeting(meetingId: IntMeetingId, mProps: MeetingProperties) extends InMessage
   case class InitializeMeeting(meetingId: IntMeetingId, recorded: Recorded) extends InMessage
   case class DestroyMeeting(meetingId: IntMeetingId) extends InMessage
   case class StartMeeting(meetingId: IntMeetingId) extends InMessage

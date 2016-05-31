@@ -147,7 +147,7 @@ trait MeetingTestFixtures {
 
   val jbUser = User3x.create(marIntUserId, marExtUserId, marUserName, marRoles)
 
-  val extensionProp = new MeetingExtensionProp
+  val extensionProp = new MeetingExtensionProp2x
   val recordingProp = new MeetingRecordingProp
 
   val piliProps: MeetingProperties2x = MeetingProperties2x(

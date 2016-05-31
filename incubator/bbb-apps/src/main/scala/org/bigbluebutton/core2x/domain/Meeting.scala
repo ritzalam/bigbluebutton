@@ -38,21 +38,6 @@ case class MeetingInfo(
   voiceBridge: String,
   duration: Int)
 
-case class MeetingProperties(
-  id: IntMeetingId,
-  extId: ExtMeetingId,
-  name: Name,
-  recorded: Recorded,
-  voiceConf: VoiceConf,
-  duration: Int,
-  autoStartRecording: Boolean,
-  allowStartStopRecording: Boolean,
-  moderatorPass: String,
-  viewerPass: String,
-  createTime: Long,
-  createDate: String,
-  isBreakout: Boolean)
-
 case class MeetingProperties2x(
   id: IntMeetingId,
   extId: ExtMeetingId,
@@ -62,7 +47,7 @@ case class MeetingProperties2x(
   maxUsers: Int,
   allowVoiceOnly: Boolean,
   isBreakout: Boolean,
-  extensionProp: MeetingExtensionProp,
+  extensionProp: MeetingExtensionProp2x,
   recordingProp: MeetingRecordingProp)
 
 case class MeetingRecordingProp(
@@ -70,7 +55,7 @@ case class MeetingRecordingProp(
   autoStartRecording: Boolean = false,
   allowStartStopRecording: Boolean = true)
 
-case class MeetingExtensionProp(
+case class MeetingExtensionProp2x(
   maxExtensions: Int = 0,
   extendByMinutes: Int = 20,
   sendNotice: Boolean = true)

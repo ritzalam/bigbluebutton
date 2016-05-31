@@ -21,10 +21,10 @@ case class Meeting3x(
 
 object Meeting3x {
   def isExtensionAllowed(
-    extension: MeetingExtensionProp,
+    extension: MeetingExtensionProp2x,
     status: MeetingExtensionStatus): Boolean = status.numExtensions < extension.maxExtensions
 
-  def incNumExtension(extension: MeetingExtensionProp, status: MeetingExtensionStatus): MeetingExtensionStatus = {
+  def incNumExtension(extension: MeetingExtensionProp2x, status: MeetingExtensionStatus): MeetingExtensionStatus = {
     if (status.numExtensions < extension.maxExtensions) {
       modify(status)(_.numExtensions).setTo(status.numExtensions + 1)
     }

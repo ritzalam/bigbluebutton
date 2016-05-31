@@ -1,10 +1,12 @@
 package org.bigbluebutton
 
-import akka.event.{ LoggingAdapter, Logging }
+import akka.event.{ Logging, LoggingAdapter }
 import akka.actor.{ ActorSystem, Props }
+
 import scala.concurrent.duration._
 import redis.RedisClient
-import scala.concurrent.{ Future, Await }
+
+import scala.concurrent.{ Await, Future }
 import org.bigbluebutton.endpoint.redis.RedisPublisher
 import org.bigbluebutton.endpoint.redis.KeepAliveRedisPublisher
 import org.bigbluebutton.endpoint.redis.AppsRedisSubscriberActor
@@ -22,6 +24,7 @@ import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.core.bus._
 import org.bigbluebutton.core.JsonMessageSenderActor
+import org.bigbluebutton.core2x.bus.IncomingEventBus2x
 
 object Boot extends App with SystemConfiguration {
 
@@ -30,6 +33,8 @@ object Boot extends App with SystemConfiguration {
   val logger = Logging(system, getClass)
 
   val eventBus = new IncomingEventBus
+  val eventBus2x = new IncomingEventBus2x
+
   val outgoingEventBus = new OutgoingEventBus
 
   val outGW = new OutMessageGateway(outgoingEventBus)
@@ -49,7 +54,7 @@ object Boot extends App with SystemConfiguration {
   outgoingEventBus.subscribe(recorderActor, "outgoingMessageChannel")
   outgoingEventBus.subscribe(newMessageSenderActor, "outgoingMessageChannel")
 
-  val bbbInGW = new BigBlueButtonInGW(system, eventBus, outGW, red5DeskShareIP, red5DeskShareApp)
+  val bbbInGW = new BigBlueButtonInGW(system, eventBus, outGW, eventBus2x, red5DeskShareIP, red5DeskShareApp)
   val redisMsgReceiver = new RedisMessageReceiver(bbbInGW)
 
   val redisSubscriberActor = system.actorOf(AppsRedisSubscriberActor.props(redisMsgReceiver), "redis-subscriber")

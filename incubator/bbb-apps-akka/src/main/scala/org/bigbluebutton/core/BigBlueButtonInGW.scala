@@ -21,9 +21,10 @@ class BigBlueButtonInGW(
 
   val log = Logging(system, getClass)
 
-  val bbbActor = system.actorOf(
-    BigBlueButtonActor.props(system, eventBus, outGW), "bigbluebutton-actor")
+  val bbbActor = system.actorOf(BigBlueButtonActor.props(system, eventBus, outGW), "bigbluebutton-actor")
+  eventBus.subscribe(bbbActor, "meeting-manager")
 
+  val bbbActor2x = system.actorOf(BigBlueButtonActor2x.props(system, eventBus, outGW), "bigbluebutton-actor2x")
   eventBus.subscribe(bbbActor, "meeting-manager")
 
   def handleBigBlueButtonMessage(message: IBigBlueButtonMessage) {

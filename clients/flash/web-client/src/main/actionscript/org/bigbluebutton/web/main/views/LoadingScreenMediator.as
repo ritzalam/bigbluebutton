@@ -1,10 +1,13 @@
 package org.bigbluebutton.web.main.views {
   
 	import flash.net.URLRequest;
+	
+	import mx.core.FlexGlobals;
 	import org.bigbluebutton.lib.main.commands.JoinMeetingSignal;
 	import org.bigbluebutton.web.main.models.IUISession;
 	import org.bigbluebutton.web.main.services.JoinService;
-  import robotlegs.bender.bundles.mvcs.Mediator;
+	
+	import robotlegs.bender.bundles.mvcs.Mediator;
   
 	public class LoadingScreenMediator extends Mediator {
 		
@@ -20,7 +23,12 @@ package org.bigbluebutton.web.main.views {
 		override public function initialize():void {
 			uiSession.loadingChangeSignal.add(onLoadingChange);
 			onLoadingChange(uiSession.loading, uiSession.loadingMessage);
-      joinMeetingSignal.dispatch("http://192.168.23.53");
+      var pageHost:String = FlexGlobals.topLevelApplication.url.split("/")[0];
+      var pageURL:String = FlexGlobals.topLevelApplication.url.split("/")[2];
+
+      var joinHost: String = pageHost + "//" + pageURL;
+      
+      joinMeetingSignal.dispatch(joinHost);
       
 //			var tempURL:String = "http://192.168.23.53/bigbluebutton/api/join?fullName=Foo&meetingID=random-9342782&password=mp&redirect=true&checksum=0491da5c90460ed8fd1690cbbf15960bd26bc90c";
 //			// Call join service

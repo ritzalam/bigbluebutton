@@ -15,6 +15,9 @@ class UserActorMessageHandler(user: RegisteredUser2x, outGW: OutMessageGateway) 
     def sendResponse(user: RegisteredUser2x): Unit = {
       // TODO: Send response with user status
       outGW.send(new ValidateAuthTokenReply2x(msg.meetingId, msg.userId, msg.token, true))
+
+      handleUserJoinWeb2x(new NewUserPresence2x(msg.meetingId, msg.userId, msg.token, SessionId("sessionid"),
+        PresenceId("flash-" + msg.userId.value), FlashWebUserAgent), meeting)
     }
 
     for {

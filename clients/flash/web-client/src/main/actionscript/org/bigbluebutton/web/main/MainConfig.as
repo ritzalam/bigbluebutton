@@ -67,6 +67,7 @@ package org.bigbluebutton.web.main {
 			signalCommandMap.map(AuthenticationSignal).toCommand(AuthenticationCommandWeb);
 			signalCommandMap.map(ConnectingFinishedSignal).toCommand(ConnectingFinishedCommandWeb);
 			signalCommandMap.map(ConnectingFailedSignal).toCommand(ConnectingFailedCommandWeb);
+
 		}
 	}
 }

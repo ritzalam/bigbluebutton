@@ -4,7 +4,7 @@ package org.bigbluebutton.common.domain
   {
     private var _id:String;
     private var _userAgent:String;
-    private var _data:DataApp;,
+    private var _data:DataApp;
     private var _voice: Voice;
     private var _webCams:WebCamStreams;
     private var _screenShare: ScreenShareStreams;

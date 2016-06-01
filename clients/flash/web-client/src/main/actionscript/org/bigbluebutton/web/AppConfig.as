@@ -1,5 +1,30 @@
 package org.bigbluebutton.web {
 	
+	import org.bigbluebutton.common.command.CallEnterApiCommand;
+	import org.bigbluebutton.common.command.GetVideoProfilesCommand;
+	import org.bigbluebutton.common.command.LoadConfigCommand;
+	import org.bigbluebutton.common.command.LoadConfigCommand2;
+	import org.bigbluebutton.common.model.ConfigModel;
+	import org.bigbluebutton.common.model.IConfigModel;
+	import org.bigbluebutton.common.model.IMyUserModel;
+	import org.bigbluebutton.common.model.IUsersModel;
+	import org.bigbluebutton.common.model.IVideoProfileModel;
+	import org.bigbluebutton.common.model.MyUserModel;
+	import org.bigbluebutton.common.model.UsersModel;
+	import org.bigbluebutton.common.model.VideoProfileModel;
+	import org.bigbluebutton.common.service.ConfigService;
+	import org.bigbluebutton.common.service.EnterApiService;
+	import org.bigbluebutton.common.service.IConfigService;
+	import org.bigbluebutton.common.service.IEnterApiService;
+	import org.bigbluebutton.common.service.IVideoProfileService;
+	import org.bigbluebutton.common.service.VideoProfilesService;
+	import org.bigbluebutton.common.signal.ConfigLoadedSignal;
+	import org.bigbluebutton.common.signal.EnterApiCallFailedSignal;
+	import org.bigbluebutton.common.signal.EnterApiCallSuccessSignal;
+	import org.bigbluebutton.common.signal.LoadConfigSignal;
+	import org.bigbluebutton.common.signal.VideoProfileLoadedSignal;
+	import org.bigbluebutton.common.util.ISessionUtil;
+	import org.bigbluebutton.common.util.SessionUtil;
 	import org.bigbluebutton.lib.chat.models.ChatMessagesSession;
 	import org.bigbluebutton.lib.chat.models.IChatMessagesSession;
 	import org.bigbluebutton.lib.chat.services.ChatMessageService;
@@ -12,8 +37,10 @@ package org.bigbluebutton.web {
 	import org.bigbluebutton.lib.deskshare.services.IDeskshareConnection;
 	import org.bigbluebutton.lib.main.commands.ConnectCommand;
 	import org.bigbluebutton.lib.main.commands.ConnectSignal;
+	import org.bigbluebutton.lib.main.commands.ConnectToBbbAppsCommand;
 	import org.bigbluebutton.lib.main.commands.DisconnectUserCommand;
 	import org.bigbluebutton.lib.main.commands.DisconnectUserSignal;
+	import org.bigbluebutton.lib.main.commands.HandleEnterApiFailedSignalCommand;
 	import org.bigbluebutton.lib.main.models.ConferenceParameters;
 	import org.bigbluebutton.lib.main.models.IConferenceParameters;
 	import org.bigbluebutton.lib.main.models.IUserSession;
@@ -64,12 +91,22 @@ package org.bigbluebutton.web {
 			injector.map(IChatMessageService).toSingleton(ChatMessageService);
 			injector.map(IChatMessagesSession).toSingleton(ChatMessagesSession);
 			injector.map(ISaveData).toSingleton(SaveData);
+      injector.map(IUsersModel).toSingleton(UsersModel);
+      injector.map(IMyUserModel).toSingleton(MyUserModel);
+      injector.map(IConfigModel).toSingleton(ConfigModel);
+      injector.map(IConfigService).toSingleton(ConfigService);
+      injector.map(IEnterApiService).toSingleton(EnterApiService);
+      injector.map(ISessionUtil).toSingleton(SessionUtil);
+      injector.map(IVideoProfileModel).toSingleton(VideoProfileModel);
+      injector.map(IVideoProfileService).toSingleton(VideoProfilesService);
+      
 			// Type mapping
 			injector.map(IBaseConnection).toType(BaseConnection);
 			injector.map(IVoiceConnection).toType(VoiceConnection);
 			injector.map(ILoginService).toType(LoginService);
 			injector.map(IBigBlueButtonConnection).toType(BigBlueButtonConnection);
 			injector.map(IVideoConnection).toType(VideoConnection);
+      
 			// Signal to Command mapping
 			signalCommandMap.map(ConnectSignal).toCommand(ConnectCommand);
 			signalCommandMap.map(ShareMicrophoneSignal).toCommand(ShareMicrophoneCommand);
@@ -77,6 +114,14 @@ package org.bigbluebutton.web {
 			signalCommandMap.map(LoadSlideSignal).toCommand(LoadSlideCommand);
 			signalCommandMap.map(CameraQualitySignal).toCommand(CameraQualityCommand);
 			signalCommandMap.map(DisconnectUserSignal).toCommand(DisconnectUserCommand);
+      
+      signalCommandMap.map(LoadConfigSignal).toCommand(LoadConfigCommand);
+      signalCommandMap.map(LoadConfigSignal).toCommand(LoadConfigCommand2);
+      signalCommandMap.map(ConfigLoadedSignal).toCommand(GetVideoProfilesCommand);
+      signalCommandMap.map(VideoProfileLoadedSignal).toCommand(CallEnterApiCommand);
+      signalCommandMap.map(EnterApiCallSuccessSignal).toCommand(ConnectToBbbAppsCommand);
+      signalCommandMap.map(EnterApiCallFailedSignal).toCommand(HandleEnterApiFailedSignalCommand);
+      
 		}
 	}
 }

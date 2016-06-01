@@ -2,9 +2,9 @@ package org.bigbluebutton.common.domain
 {
   public class Role
   {
-    public static const ModeratorRole = "ModeratorRole";
-    public static const ViewerRole = "ViewerRole";
-    public static const PresenterRole = "PresenterRole";
+    public static const moderatorRole:String = "ModeratorRole";
+    public static const viewerRole:String = "ViewerRole";
+    public static const presenterRole:String = "PresenterRole";
     
   }
 }

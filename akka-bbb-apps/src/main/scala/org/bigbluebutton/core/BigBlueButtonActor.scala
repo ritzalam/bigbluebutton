@@ -167,42 +167,41 @@ class BigBlueButtonActor(val system: ActorSystem,
   }
 
   private def handleGetAllMeetingsRequest(msg: GetAllMeetingsRequest) {
+    val len = meetings.keys.size
+    var currPosition = len - 1
+    var resultArray: Array[MeetingInfo] = new Array[MeetingInfo](len)
 
-    var len = meetings.keys.size
-    println("meetings.size=" + meetings.size)
-    println("len_=" + len)
+    meetings.values.foreach(m => {
+      val id = m.mProps.meetingID
+      val duration = m.mProps.duration
+      val name = m.mProps.meetingName
+      val recorded = m.mProps.recorded
+      val voiceBridge = m.mProps.voiceBridge
 
-    val set = meetings.keySet
-    val arr: Array[String] = new Array[String](len)
-    set.copyToArray(arr)
-    val resultArray: Array[MeetingInfo] = new Array[MeetingInfo](len)
+      val info = new MeetingInfo(id, name, recorded, voiceBridge, duration)
+      resultArray(currPosition) = info
+      currPosition = currPosition - 1
 
-    for (i <- 0 until arr.length) {
-      val id = arr(i)
-      val duration = meetings.get(arr(i)).head.mProps.duration
-      val name = meetings.get(arr(i)).head.mProps.meetingName
-      val recorded = meetings.get(arr(i)).head.mProps.recorded
-      val voiceBridge = meetings.get(arr(i)).head.mProps.voiceBridge
-
-      var info = new MeetingInfo(id, name, recorded, voiceBridge, duration)
-      resultArray(i) = info
+      val html5clientRequesterID = "nodeJSapp"
 
       //send the users
-      self ! (new GetUsers(id, "nodeJSapp"))
+      eventBus.publish(BigBlueButtonEvent(id, new GetUsers(id, html5clientRequesterID)))
 
       //send the presentation
-      self ! (new GetPresentationInfo(id, "nodeJSapp", "nodeJSapp"))
+      eventBus.publish(BigBlueButtonEvent(id, new GetPresentationInfo(id, html5clientRequesterID, html5clientRequesterID)))
 
       //send chat history
-      self ! (new GetChatHistoryRequest(id, "nodeJSapp", "nodeJSapp"))
+      eventBus.publish(BigBlueButtonEvent(id, new GetChatHistoryRequest(id, html5clientRequesterID, html5clientRequesterID)))
 
       //send lock settings
-      self ! (new GetLockSettings(id, "nodeJSapp"))
+      eventBus.publish(BigBlueButtonEvent(id, new GetLockSettings(id, html5clientRequesterID)))
 
       //send desktop sharing info
-      self ! (new DeskShareGetDeskShareInfoRequest(id, "nodeJSapp", "nodeJSapp"))
+      eventBus.publish(BigBlueButtonEvent(id, new DeskShareGetDeskShareInfoRequest(id, html5clientRequesterID, html5clientRequesterID)))
 
-    }
+      // send captions
+      eventBus.publish(BigBlueButtonEvent(id, new SendCaptionHistoryRequest(id, html5clientRequesterID)))
+    })
 
     outGW.send(new GetAllMeetingsReply(resultArray))
   }

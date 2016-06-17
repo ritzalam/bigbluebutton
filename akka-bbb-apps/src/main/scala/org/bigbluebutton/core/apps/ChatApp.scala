@@ -22,6 +22,14 @@ trait ChatApp {
     outGW.send(new SendPublicMessageEvent(mProps.meetingID, mProps.recorded, msg.requesterID, pubMsg))
   }
 
+  def handleSendPublicMessageRequest2x(msg: SendPublicMessageRequest2x) {
+    chatModel.addNewChatMessage2x(msg.message)
+    val pubMsg = msg.message
+
+    outGW.send(new SendPublicMessageEvent2x(mProps.meetingID, mProps.recorded, msg.requesterID,
+      pubMsg))
+  }
+
   def handleSendPrivateMessageRequest(msg: SendPrivateMessageRequest) {
     val privMsg = msg.message.toMap
     outGW.send(new SendPrivateMessageEvent(mProps.meetingID, mProps.recorded, msg.requesterID, privMsg))

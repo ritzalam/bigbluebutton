@@ -18,6 +18,7 @@ import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.common.messages.IBigBlueButtonMessage
 import org.bigbluebutton.common.messages.StartCustomPollRequestMessage
 import org.bigbluebutton.common.messages.PubSubPingMessage
+import org.bigbluebutton.common.messages2x.objects.ChatMessage
 import org.bigbluebutton.messages._
 import org.bigbluebutton.messages.payload._
 import akka.event.Logging
@@ -379,6 +380,11 @@ class BigBlueButtonInGW(
   def sendPublicMessage(meetingID: String, requesterID: String, message: java.util.Map[String, String]) {
     // Convert java Map to Scala Map, then convert Mutable map to immutable map
     eventBus.publish(BigBlueButtonEvent(meetingID, new SendPublicMessageRequest(meetingID, requesterID, mapAsScalaMap(message).toMap)))
+  }
+
+  def sendPublicMessage2x(meetingID: String, requesterID: String, message: ChatMessage) {
+    // Convert java Map to Scala Map, then convert Mutable map to immutable map
+    eventBus.publish(BigBlueButtonEvent(meetingID, new SendPublicMessageRequest2x(meetingID, requesterID, message)))
   }
 
   def sendPrivateMessage(meetingID: String, requesterID: String, message: java.util.Map[String, String]) {

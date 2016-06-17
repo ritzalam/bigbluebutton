@@ -31,6 +31,7 @@ import org.bigbluebutton.common.messages.LockLayoutMessage
 import org.bigbluebutton.core.pubsub.senders.WhiteboardMessageToJsonConverter
 import org.bigbluebutton.common.converters.ToJsonEncoder
 import org.bigbluebutton.common.messages.TransferUserToVoiceConfRequestMessage
+import org.bigbluebutton.common.messages2x.SendPublicChatMessage2x
 
 object MessageSenderActor {
   def props(msgSender: MessageSender): Props =
@@ -46,6 +47,7 @@ class MessageSenderActor(val service: MessageSender)
     case msg: UserEjectedFromMeeting => handleUserEjectedFromMeeting(msg)
     case msg: GetChatHistoryReply => handleGetChatHistoryReply(msg)
     case msg: SendPublicMessageEvent => handleSendPublicMessageEvent(msg)
+    case msg: SendPublicMessageEvent2x => handleSendPublicMessageEvent2x(msg)
     case msg: SendPrivateMessageEvent => handleSendPrivateMessageEvent(msg)
     case msg: MeetingCreated => handleMeetingCreated(msg)
     case msg: VoiceRecordingStarted => handleVoiceRecordingStarted(msg)
@@ -175,6 +177,12 @@ class MessageSenderActor(val service: MessageSender)
 
   private def handleSendPublicMessageEvent(msg: SendPublicMessageEvent) {
     val json = ChatMessageToJsonConverter.sendPublicMessageEventToJson(msg)
+    service.send(MessagingConstants.FROM_CHAT_CHANNEL, json)
+  }
+
+  private def handleSendPublicMessageEvent2x(msg: SendPublicMessageEvent2x) {
+    val chatMessage = new SendPublicChatMessage2x(msg.meetingID, msg.requesterID, msg.message)
+    val json = chatMessage.toJson
     service.send(MessagingConstants.FROM_CHAT_CHANNEL, json)
   }
 

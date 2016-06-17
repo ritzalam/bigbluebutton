@@ -2,6 +2,7 @@ package org.bigbluebutton.core.api;
 
 import java.util.Map;
 import org.bigbluebutton.common.messages.*;
+import org.bigbluebutton.common.messages2x.objects.ChatMessage;
 
 public interface IBigBlueButtonInGW {
 
@@ -98,6 +99,7 @@ public interface IBigBlueButtonInGW {
 	// Chat
 	void getChatHistory(String meetingID, String requesterID, String replyTo);
 	void sendPublicMessage(String meetingID, String requesterID, Map<String, String> message);
+	void sendPublicMessage2x(String meetingID, String requesterID, ChatMessage message);
 	void sendPrivateMessage(String meetingID, String requesterID, Map<String, String> message);
 
 	// Whiteboard

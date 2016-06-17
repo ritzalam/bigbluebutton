@@ -6,6 +6,7 @@ import java.util.Map;
 import org.bigbluebutton.common.messages.GetChatHistoryReplyMessage;
 import org.bigbluebutton.common.messages.SendPrivateChatMessage;
 import org.bigbluebutton.common.messages.SendPublicChatMessage;
+import org.bigbluebutton.common.messages2x.SendPublicChatMessage2x;
 import org.bigbluebutton.red5.client.messaging.BroadcastClientMessage;
 import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
 import org.bigbluebutton.red5.client.messaging.DirectClientMessage;
@@ -40,6 +41,13 @@ public class ChatClientMessageSender {
 							processSendPublicChatMessage(spucm);
 						}
 						break;
+					case SendPublicChatMessage2x.SEND_PUBLIC_CHAT_MESSAGE:
+						SendPublicChatMessage2x spucm2x = SendPublicChatMessage2x.fromJson(message);
+
+						if (spucm2x != null) {
+							processSendPublicChatMessage2x(spucm2x);
+						}
+						break;
 					case SendPrivateChatMessage.SEND_PRIVATE_CHAT_MESSAGE:
 						SendPrivateChatMessage sprcm = SendPrivateChatMessage.fromJson(message);
 
@@ -59,6 +67,22 @@ public class ChatClientMessageSender {
 		}
 	}
 
+    private void processSendPublicChatMessage2x(SendPublicChatMessage2x msg) {
+        Map<String, Object> messageInfo = new HashMap<String, Object>();
+        messageInfo.put(ChatKeyUtil.CHAT_TYPE, msg.payload.message.chatType);
+        messageInfo.put(ChatKeyUtil.FROM_USERID, msg.payload.message.fromUserID);
+        messageInfo.put(ChatKeyUtil.FROM_USERNAME, msg.payload.message.fromUsername);
+        messageInfo.put(ChatKeyUtil.TO_USERID, msg.payload.message.toUserID);
+        messageInfo.put(ChatKeyUtil.TO_USERNAME, msg.payload.message.toUsername);
+        messageInfo.put(ChatKeyUtil.FROM_TIME, msg.payload.message.fromTime);
+        messageInfo.put(ChatKeyUtil.FROM_TZ_OFFSET, msg.payload.message.fromTimezoneOffset);
+        messageInfo.put(ChatKeyUtil.FROM_COLOR, msg.payload.message.fromColor);
+        messageInfo.put(ChatKeyUtil.MESSAGE, msg.payload.message.message);
+
+        BroadcastClientMessage m = new BroadcastClientMessage(msg.payload.meetingID,
+                "ChatReceivePublicMessageCommand", messageInfo);
+        service.sendMessage(m);
+    }
 
 	private void processSendPublicChatMessage(SendPublicChatMessage msg) {
 		Map<String, Object> messageInfo = new HashMap<String, Object>();

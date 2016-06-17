@@ -59,6 +59,25 @@ package org.bigbluebutton.modules.chat.services
         },
         message.toObj()
       );
+
+      // 2x
+      import org.bigbluebutton.main.api.JSLog;
+      var logData:Object = new Object();
+      logData.message = message;
+      logData.json = JSON.stringify(message);
+      JSLog.warn("MessageSender::sendPublicMessage", logData);
+
+      _nc.sendMessage("chat.sendPublicMessage2x",
+        function(result:String):void { // On successful result
+          LOGGER.debug(result);
+          JSLog.warn("MessageSender::sendPublicMessage SUCCESS", new Object());
+        },
+        function(status:String):void { // status - On error occurred
+          LOGGER.error(status);
+          JSLog.warn("MessageSender::sendPublicMessage ERROR", new Object());
+        },
+        JSON.stringify(message)
+      );
     }
     
     public function sendPrivateMessage(message:ChatMessageVO):void

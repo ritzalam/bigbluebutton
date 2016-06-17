@@ -1,34 +1,90 @@
-package org.bigbluebutton.lib.main.services
+package org.bigbluebutton.common.service
 {
   import flash.events.AsyncErrorEvent;
   import flash.events.IOErrorEvent;
   import flash.events.NetStatusEvent;
   import flash.events.SecurityErrorEvent;
+  import flash.events.TimerEvent;
   import flash.net.NetConnection;
   import flash.net.Responder;
+  import flash.utils.Timer;
   
-  import mx.utils.ObjectUtil;
-  
+  import org.bigbluebutton.common.model.IConfigModel;
+  import org.bigbluebutton.common.model.IMeetingModel;
+  import org.bigbluebutton.common.signal.ConnectFailedSignal;
+  import org.bigbluebutton.common.signal.ConnectSuccessSignal;
   import org.bigbluebutton.lib.common.services.DefaultConnectionCallback;
-  import org.bigbluebutton.lib.main.commands.DisconnectUserSignal;
   import org.bigbluebutton.lib.main.models.ConnectionFailedEvent;
-  import org.bigbluebutton.lib.main.utils.DisconnectEnum;
-  import org.osflash.signals.ISignal;
-  import org.osflash.signals.Signal;
 
-  public class BbbAppsConnection
-  {
-    
+  public class BbbAppsConnection {   
     private const LOG:String = "BbbAppsConnection -";
-       
+
+    [Inject]
+    public var configModel:IConfigModel;
+    
+    [Inject]
+    public var meetingModel:IMeetingModel;
+    
+    [Inject]
+    public var connectSuccessSignal:ConnectSuccessSignal;
+    
+    [Inject]
+    public var connectFailedSignal:ConnectFailedSignal;
+    
+    private var connectAttemptTimer:Timer = null;
+    private var netConnection:NetConnection = null;
+    private const connectionTimeout:int = 5000;
+    
+    private var tunnel:Boolean = false;
+    
     protected var _netConnection:NetConnection;
     
     protected var _uri:String;
     
     protected var _onUserCommand:Boolean;
     
+    // http://www.adobe.com/devnet/adobe-media-server/articles/real-time-collaboration.html
+    public function connect():void {
+      var bbbAppUrl:String = configModel.getBbbAppUrl();
+      netConnection = new NetConnection();
+      netConnection.addEventListener(NetStatusEvent.NET_STATUS, connectionHandler);
+      netConnection.addEventListener(NetStatusEvent.NET_STATUS, netStatus);
+      netConnection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, netASyncError);
+      netConnection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, netSecurityError);
+      netConnection.addEventListener(IOErrorEvent.IO_ERROR, netIOError);
+      netConnection.connect(tunnel ? "rtmpt:" : "rtmp:" + bbbAppUrl);
+      
+      connectAttemptTimer = new Timer(connectionTimeout, 1);
+      connectAttemptTimer.addEventListener(TimerEvent.TIMER_COMPLETE, connectAttemptTimeoutHandler);
+      connectAttemptTimer.start();
+     
+    }
     
-    http://www.adobe.com/devnet/adobe-media-server/articles/real-time-collaboration.html
+    private function connectAttemptTimeoutHandler(e:TimerEvent):void {
+      netConnection.close();
+      netConnection = null;
+     
+      if (! tunnel) {
+        tunnel = true;
+        connect();
+      }      
+    }
+    
+    private function connectionHandler(e:NetStatusEvent):void {
+      if (connectAttemptTimer) {
+        connectAttemptTimer.stop();
+        connectAttemptTimer = null;
+      }
+      
+      if ("NetConnection.Connect.Success" == e.info.code)
+      {
+        // RTMFP or RTMP connection succeeded
+      }
+      else if ("NetConnection.Connect.Failed" == e.info.code)
+      {
+        // RTMFP or RTMP connection failed
+      }
+    }
     
     public function init(callback:DefaultConnectionCallback):void {
       _netConnection = new NetConnection();
@@ -38,41 +94,7 @@ package org.bigbluebutton.lib.main.services
       _netConnection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, netSecurityError);
       _netConnection.addEventListener(IOErrorEvent.IO_ERROR, netIOError);
     }
-    
-    
-    public function get connection():NetConnection {
-      return _netConnection;
-    }
-    
-    public function connect(uri:String, ... parameters):void {
-      _uri = uri;
-      // The connect call needs to be done properly. At the moment lock settings
-      // are not implemented in the mobile client, so parameters[7] and parameters[8]
-      // are "faked" in order to connect (without them, I couldn't get the connect 
-      // call to work...) - Adam
-      parameters[7] = false;
-      parameters[8] = false;
-      try {
-        trace("Trying to connect to [" + uri + "] ...");
-        trace("parameters: " + parameters);
-        // passing an array to a method that expects a variable number of parameters
-        // http://stackoverflow.com/a/3852920
-        _netConnection.connect.apply(null, new Array(uri).concat(parameters));
-      } catch (e:ArgumentError) {
-        trace(ObjectUtil.toString(e));
-        // Invalid parameters.
-        switch (e.errorID) {
-          case 2004:
-            trace(LOG + "Error! Invalid server location: " + uri);
-            break;
-          default:
-            trace(LOG + "UNKNOWN Error! Invalid server location: " + uri);
-            break;
-        }
-        sendConnectionFailedSignal(e.message);
-      }
-    }
-    
+     
     public function disconnect(onUserCommand:Boolean):void {
       _onUserCommand = onUserCommand;
       _netConnection.removeEventListener(NetStatusEvent.NET_STATUS, netStatus);
@@ -83,6 +105,10 @@ package org.bigbluebutton.lib.main.services
     }
     
     protected function netStatus(event:NetStatusEvent):void {
+      if (connectAttemptTimer) {
+        connectAttemptTimer.stop();
+        connectAttemptTimer = null;
+      }
       var info:Object = event.info;
       var statusCode:String = info.code;
       switch (statusCode) {

@@ -1,4 +1,4 @@
-package org.bigbluebutton.lib.main.commands
+package org.bigbluebutton.common.command
 {
   import robotlegs.bender.bundles.mvcs.Command;
   

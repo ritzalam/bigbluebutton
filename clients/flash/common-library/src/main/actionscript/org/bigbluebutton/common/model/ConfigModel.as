@@ -10,6 +10,9 @@ package org.bigbluebutton.common.model
     
     private var _config:Config;
    
+    public function getConfigLoadedSignal():ConfigLoadedSignal {
+      return configLoadedSignal;
+    }
     
     public function setConfig(config: Config):void {
       _config = config;
@@ -18,6 +21,10 @@ package org.bigbluebutton.common.model
     
     public function getEnterApiUrl():String {
       return _config.application.host;
+    }
+    
+    public function getBbbAppUrl():String {
+      return _config.application.uri;
     }
   }
 }

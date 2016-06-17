@@ -13,7 +13,6 @@ public abstract class AbstractEventMessage {
     }
 
     public String toJson() {
-        System.out.println("*****toJson ");
         ObjectMapper mapper = JsonFactory.create();
         return mapper.writeValueAsString(this);
     }

@@ -1,5 +1,6 @@
-package org.bigbluebutton.common.messages2x;
+package org.bigbluebutton.common.messages2x.chat;
 
+import org.bigbluebutton.common.messages2x.AbstractEventMessage;
 import org.bigbluebutton.common.messages2x.objects.ChatMessage;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
@@ -11,7 +12,7 @@ public class SendPublicChatMessage2x extends AbstractEventMessage {
 
     public SendPublicChatMessage2x(String meetingID, String requesterID, ChatMessage chatMessage) {
         super();
-        header.name = this.SEND_PUBLIC_CHAT_MESSAGE;
+        header.name = SEND_PUBLIC_CHAT_MESSAGE;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;
@@ -21,8 +22,7 @@ public class SendPublicChatMessage2x extends AbstractEventMessage {
 
     public static SendPublicChatMessage2x fromJson(String message) {
         ObjectMapper mapper = JsonFactory.create();
-        SendPublicChatMessage2x obj = mapper.readValue(message, SendPublicChatMessage2x.class);
-        return obj;
+        return mapper.readValue(message, SendPublicChatMessage2x.class);
     }
 
     public class Payload {

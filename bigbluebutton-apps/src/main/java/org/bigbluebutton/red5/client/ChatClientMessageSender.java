@@ -6,7 +6,7 @@ import java.util.Map;
 import org.bigbluebutton.common.messages.GetChatHistoryReplyMessage;
 import org.bigbluebutton.common.messages.SendPrivateChatMessage;
 import org.bigbluebutton.common.messages.SendPublicChatMessage;
-import org.bigbluebutton.common.messages2x.SendPublicChatMessage2x;
+import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x;
 import org.bigbluebutton.red5.client.messaging.BroadcastClientMessage;
 import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
 import org.bigbluebutton.red5.client.messaging.DirectClientMessage;

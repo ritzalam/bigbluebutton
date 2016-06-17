@@ -6,7 +6,7 @@ import org.boon.json.ObjectMapper;
 public class ChatMessage {
     public String fromColor; //TODO these should not all be String
     public String fromTime;
-    public ChatType chatType; // todo enum?
+    public ChatType chatType;
     public String toUserID;
     public String message;
     public String fromUsername;
@@ -19,7 +19,7 @@ public class ChatMessage {
                                 toUsername, String fromTimezoneOffset) {
         this.fromColor = fromColor;
         this.fromTime = fromTime;
-        this.chatType = chatType; //TODO this is a String in the 1.x implementation
+        this.chatType = chatType;
         this.toUserID= toUserID;
         this.message = message;
         this.fromUsername= fromUsername;
@@ -30,7 +30,6 @@ public class ChatMessage {
 
     public static ChatMessage fromJson(String message) {
         ObjectMapper mapper = JsonFactory.create();
-        ChatMessage obj = mapper.readValue(message, ChatMessage.class);
-        return obj;
+        return mapper.readValue(message, ChatMessage.class);
     }
 }

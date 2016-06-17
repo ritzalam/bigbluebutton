@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.bigbluebutton.common.messages2x.objects.ChatMessage;
 import org.bigbluebutton.common.messages2x.objects.ChatType;
 import org.bigbluebutton.common.messages.MessagingConstants;
-import org.bigbluebutton.common.messages2x.SendPublicChatMessage2x;
+import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x;
 
 public class ChatService {	
 	private static Logger log = Red5LoggerFactory.getLogger( ChatService.class, "bigbluebutton" );

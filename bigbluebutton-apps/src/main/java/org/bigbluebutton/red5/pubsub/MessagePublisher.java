@@ -3,7 +3,7 @@ package org.bigbluebutton.red5.pubsub;
 import java.util.Map;
 
 import org.bigbluebutton.common.messages.*;
-import org.bigbluebutton.common.messages2x.SendPublicChatMessage2x;
+import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x;
 import org.bigbluebutton.red5.pubsub.redis.MessageSender;
 
 public class MessagePublisher {

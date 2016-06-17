@@ -31,7 +31,7 @@ import org.bigbluebutton.common.messages.LockLayoutMessage
 import org.bigbluebutton.core.pubsub.senders.WhiteboardMessageToJsonConverter
 import org.bigbluebutton.common.converters.ToJsonEncoder
 import org.bigbluebutton.common.messages.TransferUserToVoiceConfRequestMessage
-import org.bigbluebutton.common.messages2x.SendPublicChatMessage2x
+import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x
 
 object MessageSenderActor {
   def props(msgSender: MessageSender): Props =

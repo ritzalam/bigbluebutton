@@ -4,7 +4,7 @@ import org.bigbluebutton.common.messages.GetChatHistoryRequestMessage;
 import org.bigbluebutton.common.messages.MessagingConstants;
 import org.bigbluebutton.common.messages.SendPrivateChatMessage;
 import org.bigbluebutton.common.messages.SendPublicChatMessage;
-import org.bigbluebutton.common.messages2x.SendPublicChatMessage2x;
+import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;

@@ -383,7 +383,6 @@ class BigBlueButtonInGW(
   }
 
   def sendPublicMessage2x(meetingID: String, requesterID: String, message: ChatMessage) {
-    // Convert java Map to Scala Map, then convert Mutable map to immutable map
     eventBus.publish(BigBlueButtonEvent(meetingID, new SendPublicMessageRequest2x(meetingID, requesterID, message)))
   }
 

@@ -3,7 +3,7 @@ package org.bigbluebutton.common.model
   import org.bigbluebutton.common.domain.Config;
   import org.bigbluebutton.common.signal.ConfigLoadedSignal;
 
-  public class ConfigModel implements IConfigModel
+  public class ConfigModel
   {
     [Inject]
     public var configLoadedSignal:ConfigLoadedSignal;

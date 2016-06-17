@@ -9,21 +9,30 @@ package org.bigbluebutton.common.service
   import flash.net.Responder;
   import flash.utils.Timer;
   
-  import org.bigbluebutton.common.model.IConfigModel;
-  import org.bigbluebutton.common.model.IMeetingModel;
+  import org.bigbluebutton.common.model.ConfigModel;
+  import org.bigbluebutton.common.model.MeetingModel;
+  import org.bigbluebutton.common.model.MyUserModel;
   import org.bigbluebutton.common.signal.ConnectFailedSignal;
   import org.bigbluebutton.common.signal.ConnectSuccessSignal;
-  import org.bigbluebutton.lib.common.services.DefaultConnectionCallback;
   import org.bigbluebutton.lib.main.models.ConnectionFailedEvent;
+  
+  import robotlegs.bender.framework.api.ILogger;
 
   public class BbbAppsConnection {   
-    private const LOG:String = "BbbAppsConnection -";
+    [Inject]
+    public var logger:ILogger;
 
     [Inject]
-    public var configModel:IConfigModel;
+    public var serverCallbackHandler:ServerCallbackHandler;
     
     [Inject]
-    public var meetingModel:IMeetingModel;
+    public var configModel:ConfigModel;
+    
+    [Inject]
+    public var meetingModel:MeetingModel;
+    
+    [Inject]
+    public var myUserModel:MyUserModel;
     
     [Inject]
     public var connectSuccessSignal:ConnectSuccessSignal;
@@ -33,11 +42,8 @@ package org.bigbluebutton.common.service
     
     private var connectAttemptTimer:Timer = null;
     private var netConnection:NetConnection = null;
-    private const connectionTimeout:int = 5000;
-    
+    private const connectionTimeout:int = 5000; 
     private var tunnel:Boolean = false;
-    
-    protected var _netConnection:NetConnection;
     
     protected var _uri:String;
     
@@ -45,14 +51,29 @@ package org.bigbluebutton.common.service
     
     // http://www.adobe.com/devnet/adobe-media-server/articles/real-time-collaboration.html
     public function connect():void {
-      var bbbAppUrl:String = configModel.getBbbAppUrl();
+
+      logger.debug(" Connect");
       netConnection = new NetConnection();
-      netConnection.addEventListener(NetStatusEvent.NET_STATUS, connectionHandler);
+      netConnection.client = serverCallbackHandler;
       netConnection.addEventListener(NetStatusEvent.NET_STATUS, netStatus);
       netConnection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, netASyncError);
       netConnection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, netSecurityError);
       netConnection.addEventListener(IOErrorEvent.IO_ERROR, netIOError);
-      netConnection.connect(tunnel ? "rtmpt:" : "rtmp:" + bbbAppUrl);
+      
+      
+      var bbbAppUrl:String = configModel.getBbbAppUrl();
+      var rtmpPattern:RegExp = /rtmp:/;
+      
+      if (tunnel) {
+        bbbAppUrl = bbbAppUrl.replace(rtmpPattern, bbbAppUrl);
+      }
+      var uri:String = bbbAppUrl + "/" + myUserModel.internalMeetingId;
+      var lockSettings:Object = {disableCam: false, disableMic: false, disablePrivateChat: false, 
+        disablePublicChat: false, lockedLayout: false, lockOnJoin: false, lockOnJoinConfigurable: false};
+      netConnection.connect(uri, myUserModel.username, myUserModel.role,
+        myUserModel.internalMeetingId, myUserModel.voicebridge, 
+        myUserModel.record, myUserModel.externalUserId,
+        myUserModel.internalUserId, myUserModel.muteOnStart, lockSettings);
       
       connectAttemptTimer = new Timer(connectionTimeout, 1);
       connectAttemptTimer.addEventListener(TimerEvent.TIMER_COMPLETE, connectAttemptTimeoutHandler);
@@ -70,38 +91,13 @@ package org.bigbluebutton.common.service
       }      
     }
     
-    private function connectionHandler(e:NetStatusEvent):void {
-      if (connectAttemptTimer) {
-        connectAttemptTimer.stop();
-        connectAttemptTimer = null;
-      }
-      
-      if ("NetConnection.Connect.Success" == e.info.code)
-      {
-        // RTMFP or RTMP connection succeeded
-      }
-      else if ("NetConnection.Connect.Failed" == e.info.code)
-      {
-        // RTMFP or RTMP connection failed
-      }
-    }
-    
-    public function init(callback:DefaultConnectionCallback):void {
-      _netConnection = new NetConnection();
-      _netConnection.client = callback;
-      _netConnection.addEventListener(NetStatusEvent.NET_STATUS, netStatus);
-      _netConnection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, netASyncError);
-      _netConnection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, netSecurityError);
-      _netConnection.addEventListener(IOErrorEvent.IO_ERROR, netIOError);
-    }
-     
     public function disconnect(onUserCommand:Boolean):void {
       _onUserCommand = onUserCommand;
-      _netConnection.removeEventListener(NetStatusEvent.NET_STATUS, netStatus);
-      _netConnection.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, netASyncError);
-      _netConnection.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, netSecurityError);
-      _netConnection.removeEventListener(IOErrorEvent.IO_ERROR, netIOError);
-      _netConnection.close();
+      netConnection.removeEventListener(NetStatusEvent.NET_STATUS, netStatus);
+      netConnection.removeEventListener(AsyncErrorEvent.ASYNC_ERROR, netASyncError);
+      netConnection.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, netSecurityError);
+      netConnection.removeEventListener(IOErrorEvent.IO_ERROR, netIOError);
+      netConnection.close();
     }
     
     protected function netStatus(event:NetStatusEvent):void {
@@ -113,35 +109,29 @@ package org.bigbluebutton.common.service
       var statusCode:String = info.code;
       switch (statusCode) {
         case "NetConnection.Connect.Success":
-          trace(LOG + " Connection succeeded. Uri: " + _uri);
-          sendConnectionSuccessEvent();
+          logger.debug(" Connection succeeded. Uri: " + _uri);
+          connectSuccessSignal.dispatch();
           break;
         case "NetConnection.Connect.Failed":
-          trace(LOG + " Connection failed. Uri: " + _uri);
-          sendConnectionFailedSignal(ConnectionFailedEvent.CONNECTION_FAILED);
+          logger.debug(" Connection failed. Uri: " + _uri);
           break;
         case "NetConnection.Connect.Closed":
-          trace(LOG + " Connection closed. Uri: " + _uri);
-          sendConnectionFailedSignal(ConnectionFailedEvent.CONNECTION_CLOSED);
+          logger.debug(" Connection closed. Uri: " + _uri);
           break;
         case "NetConnection.Connect.InvalidApp":
-          trace(LOG + " application not found on server. Uri: " + _uri);
-          sendConnectionFailedSignal(ConnectionFailedEvent.INVALID_APP);
+          logger.debug(" application not found on server. Uri: " + _uri);
           break;
         case "NetConnection.Connect.AppShutDown":
-          trace(LOG + " application has been shutdown. Uri: " + _uri);
-          sendConnectionFailedSignal(ConnectionFailedEvent.APP_SHUTDOWN);
+          logger.debug(" application has been shutdown. Uri: " + _uri);
           break;
         case "NetConnection.Connect.Rejected":
-          trace(LOG + " Connection to the server rejected. Uri: " + _uri + ". Check if the red5 specified in the uri exists and is running");
-          sendConnectionFailedSignal(ConnectionFailedEvent.CONNECTION_REJECTED);
+          logger.debug(" Connection to the server rejected. Uri: " + _uri + ". Check if the red5 specified in the uri exists and is running");
           break;
         case "NetConnection.Connect.NetworkChange":
-          trace("Detected network change. User might be on a wireless and temporarily dropped connection. Doing nothing. Just making a note.");
+          logger.debug("Detected network change. User might be on a wireless and temporarily dropped connection. Doing nothing. Just making a note.");
           break;
         default:
-          trace(LOG + " Default status");
-          sendConnectionFailedSignal(ConnectionFailedEvent.UNKNOWN_REASON);
+          logger.debug(" Default status");
           break;
       }
     }
@@ -155,36 +145,36 @@ package org.bigbluebutton.common.service
     }
     
     protected function netSecurityError(event:SecurityErrorEvent):void {
-      trace(LOG + "Security error - " + event.text);
+      logger.debug("Security error - " + event.text);
       sendConnectionFailedSignal(ConnectionFailedEvent.UNKNOWN_REASON);
     }
     
     protected function netIOError(event:IOErrorEvent):void {
-      trace(LOG + "Input/output error - " + event.text);
+      logger.debug("Input/output error - " + event.text);
       sendConnectionFailedSignal(ConnectionFailedEvent.UNKNOWN_REASON);
     }
     
     protected function netASyncError(event:AsyncErrorEvent):void {
-      trace(LOG + "Asynchronous code error - " + event.error + " on " + _uri);
-      trace(event.toString());
+      logger.debug("Asynchronous code error - " + event.error + " on " + _uri);
+      logger.debug(event.toString());
       sendConnectionFailedSignal(ConnectionFailedEvent.UNKNOWN_REASON);
     }
     
-    public function sendMessage(service:String, onSuccess:Function, onFailure:Function, message:Object = null):void {
-      trace(LOG + "SENDING MESSAGE: [" + service + "]");
+    public function sendMessage(service:String, message:Object):void {
+      logger.debug("SENDING MESSAGE: [" + service + "]");
       var responder:Responder = new Responder(function(result:Object):void { // On successful result
-        onSuccess("SUCCESSFULLY SENT: [" + service + "].");
+        trace("SUCCESSFULLY SENT: [" + service + "].");
       }, function(status:Object):void { // status - On error occurred
         var errorReason:String = "FAILED TO SEND: [" + service + "]:";
         for (var x:Object in status) {
           errorReason += "\n - " + x + " : " + status[x];
         }
-        onFailure(errorReason);
+        trace(errorReason);
       });
       if (message == null) {
-        _netConnection.call(service, responder);
+        netConnection.call(service, responder);
       } else {
-        _netConnection.call(service, responder, message);
+        netConnection.call(service, responder, message);
       }
     }
   }

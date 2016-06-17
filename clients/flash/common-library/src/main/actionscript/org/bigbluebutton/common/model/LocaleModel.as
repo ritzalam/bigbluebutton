@@ -10,7 +10,7 @@ package org.bigbluebutton.common.model
   import org.bigbluebutton.common.signal.LoadedAppAndLocaleVersionsSignal;
   import org.bigbluebutton.common.signal.LocaleChangedSignal;
 
-  public class LocaleModel implements ILocaleModel
+  public class LocaleModel
   {
     private var MASTER_LOCALE:String = "en_US";
     private var resourceManager:IResourceManager;

@@ -8,7 +8,7 @@ package org.bigbluebutton.common.service
   import mx.core.FlexGlobals;
   import mx.utils.URLUtil;
   
-  import org.bigbluebutton.common.model.ILocaleModel;
+  import org.bigbluebutton.common.model.LocaleModel;
   import org.bigbluebutton.common.signal.LocaleXmlLoadedSignal;
 
   public class LocaleXmlLoaderService implements ILocaleXmlLoaderService
@@ -17,7 +17,7 @@ package org.bigbluebutton.common.service
     public static const VERSION:String = "0.9.0";
     
     [Inject]
-    public var localeModel:ILocaleModel;
+    public var localeModel:LocaleModel;
    
     [Inject]
     public var localeXmlLoadedSignal:LocaleXmlLoadedSignal;

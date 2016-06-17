@@ -2,111 +2,56 @@ package org.bigbluebutton.common.model
 {
   import org.bigbluebutton.common.signal.EnterApiCallSuccessSignal;
 
-  public class MyUserModel implements IMyUserModel
+  public class MyUserModel
   {
     [Inject]
     public var enterApiCallSuccessSignal:EnterApiCallSuccessSignal;
     
-    private var _meetingName:String;
-    
-    private var _externMeetingID:String;
-    
-    /**
-     * The name of the conference
-     */
-    private var _conference:String;
-    
-    /**
-     * The username of the local user
-     */
-    private var _username:String;
-    
-    /**
-     * The role of the local user. Could be MODERATOR or VIEWER
-     */
-    private var _role:String;
-    
-    /**
-     * The room unique id, as specified in the API /create call.
-     */
-    private var _room:String;
-    
-    /**
-     * Voice conference bridge for the client
-     */
-    private var _webvoiceconf:String;
-    
-    /**
-     * Voice conference bridge that external SIP clients use. Usually the same as webvoiceconf
-     */
-    private var _voicebridge:String;
-    
-    /**
-     *  The welcome string, as passed in through the API /create call.
-     */
-    private var _welcome:String;
-    
-    private var _meetingID:String;
-    
-    /**
-     * External unique user id.
-     */
-    private var _externUserID:String;
-    
-    /**
-     * Internal unique user id.
-     */
-    private var _internalUserID:String;
-    
-    private var _logoutUrl:String;
-    /**
-     * The unique userid internal to bbb-client.
-     */
-    private var _userid:String;
-    
-    private var _record:Boolean;
-    
-    private var _authToken:String;
-    
-    private var _metadata:Object;
-    
-    private var _muteOnStart:Boolean;
-    
-    private var _avatarUrl:String;
-    
-    public function MyUserModel()
-    {
-    }
+    public var meetingName:String;
+    public var externalMeetingId:String;
+    public var internalMeetingId:String;
+    public var voicebridge:String;
+    public var welcome:String;
+    public var username:String;
+    public var role:String;
+    public var externalUserId:String;
+    public var internalUserId:String;
+    public var logoutUrl:String;
+    public var record:Boolean;
+    public var authToken:String;
+    public var metadata:Object;
+    public var muteOnStart:Boolean;
+    public var avatarUrl:String;
+
     
     public function load(obj:Object):void {
-      _meetingName = obj.conferenceName;
-      _externMeetingID = obj.externMeetingID;
-      _conference = obj.conference;
-      _username = obj.username;
-      _role = obj.role;
-      _room = obj.room;
-      _webvoiceconf = obj.webvoiceconf;
-      _voicebridge = obj.voicebridge;
-      _welcome = obj.welcome;
-      _meetingID = obj.meetingID;
-      _externUserID = obj.externUserID;
-      _internalUserID = obj.internalUserId;
-      _logoutUrl = obj.logoutUrl;
-      _record = !(obj.record == "false");
-      _avatarUrl = obj.avatarURL;
-      _authToken = obj.authToken;
+      meetingName = obj.conferenceName;
+      externalMeetingId = obj.externMeetingID;
+      internalMeetingId = obj.meetingID;
+      role = obj.role;
+      voicebridge = obj.voicebridge;
+      welcome = obj.welcome;
+      username = obj.username;
+      externalUserId = obj.externUserID;
+      internalUserId = obj.internalUserId;
+      logoutUrl = obj.logoutUrl;
+      record = !(obj.record == "false");
+      avatarUrl = obj.avatarURL;
+      authToken = obj.authToken;
       
-      _metadata = new Object();
+      metadata = new Object();
       for (var n:String in obj.metadata) {
         for (var id:String in obj.metadata[n]) {
-          _metadata[id] = obj.metadata[n][id];
+          metadata[id] = obj.metadata[n][id];
         }
       }
       try {
-        _muteOnStart = (obj.muteOnStart as String).toUpperCase() == "TRUE";
+        muteOnStart = (obj.muteOnStart as String).toUpperCase() == "TRUE";
       } catch (e:Error) {
-        _muteOnStart = false;
+        muteOnStart = false;
       }
+      
+      trace("************* !!!!!! MyUserModel ENTER API SUCCESS");
       
       enterApiCallSuccessSignal.dispatch();
     }

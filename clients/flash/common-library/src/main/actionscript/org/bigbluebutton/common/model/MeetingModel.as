@@ -1,6 +1,6 @@
 package org.bigbluebutton.common.model
 {
-  public class MeetingModel implements IMeetingModel
+  public class MeetingModel
   {
     public function MeetingModel()
     {

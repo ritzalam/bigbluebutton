@@ -4,23 +4,21 @@ package org.bigbluebutton.web.main.views {
   
   import mx.core.FlexGlobals;
   
-  import org.bigbluebutton.common.command.CallEnterApiCommand;
-  import org.bigbluebutton.common.command.GetVideoProfilesCommand;
-  import org.bigbluebutton.common.command.LoadLocaleXmlCommand;
-  import org.bigbluebutton.common.model.IConfigModel;
   import org.bigbluebutton.common.signal.ConfigLoadedSignal;
   import org.bigbluebutton.common.signal.EnterApiCallSuccessSignal;
   import org.bigbluebutton.common.signal.LoadConfigSignal;
   import org.bigbluebutton.common.signal.LocaleChangedSignal;
   import org.bigbluebutton.common.signal.LocaleXmlLoadedSignal;
   import org.bigbluebutton.common.signal.VideoProfileLoadedSignal;
-  import org.bigbluebutton.lib.main.commands.ConnectToBbbAppsCommand;
   import org.bigbluebutton.lib.main.commands.JoinMeetingSignal;
   import org.bigbluebutton.web.main.models.IUISession;
   
   import robotlegs.bender.bundles.mvcs.Mediator;
+  import robotlegs.bender.framework.api.ILogger;
   
   public class LoadingScreenMediator extends Mediator {
+    [Inject]
+    public var logger:ILogger;
     
     [Inject]
     public var view:LoadingScreen;
@@ -63,33 +61,33 @@ package org.bigbluebutton.web.main.views {
       
       var joinHost: String = pageHost + "//" + pageURL;
       
-      joinMeetingSignal.dispatch(joinHost);
+      //joinMeetingSignal.dispatch(joinHost);
       
       loadConfigSignal.dispatch();  
       
     }
     
     private function onLocaleChanged():void {
+      logger.debug("onLocaleChanged");
       view.stateLabel.text = "onLocaleChanged";
-      trace("onLocaleChanged");
     }
     
     private function onConfigLoadedSignal():void {
+      logger.debug("onConfigLoadedSignal");
       view.stateLabel.text = "onConfigLoadedSignal";
-      trace("onConfigLoadedSignal");
     }
     
     private function onVideoProfileLoadedSignal():void {
+      logger.debug("onVideoProfileLoadedSignal");
       view.stateLabel.text = "onVideoProfileLoadedSignal";
-      trace("onVideoProfileLoadedSignal");
     }
     private function onLocaleXmlLoadedSignal():void {
-      view.stateLabel.text = "onLocaleXmlLoadedSignal";
-      trace("onLocaleXmlLoadedSignal");
+      logger.debug("onLocaleXmlLoadedSignal");
+      view.stateLabel.text = "onLocaleXmlLoadedSignal";   
     }
     private function onEnterApiCallSuccessSignal():void {
+      logger.debug("onEnterApiCallSuccessSignal");
       view.stateLabel.text = "onEnterApiCallSuccessSignal";
-      trace("onEnterApiCallSuccessSignal");
     }
     
     private function onLoadingChange(loading:Boolean, message:String):void {
@@ -108,6 +106,11 @@ package org.bigbluebutton.web.main.views {
     override public function destroy():void {
       super.destroy();
       uiSession.loadingChangeSignal.remove(onLoadingChange);
+      localeChangedSignal.remove(onLocaleChanged);
+      configLoadedSignal.remove(onConfigLoadedSignal);
+      videoProfileLoadedSignal.remove(onVideoProfileLoadedSignal);
+      localeXmlLoadedSignal.remove(onLocaleXmlLoadedSignal);
+      enterApiCallSuccessSignal.remove(onEnterApiCallSuccessSignal);
       //view.dispose();
       view = null;
     }

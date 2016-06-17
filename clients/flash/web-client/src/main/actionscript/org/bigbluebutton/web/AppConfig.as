@@ -7,16 +7,14 @@ package org.bigbluebutton.web {
 	import org.bigbluebutton.common.command.LoadConfigCommand;
 	import org.bigbluebutton.common.command.LoadConfigCommand2;
 	import org.bigbluebutton.common.command.LoadLocaleXmlCommand;
+	import org.bigbluebutton.common.command.ValidateAuthTokenCommand;
 	import org.bigbluebutton.common.model.ConfigModel;
-	import org.bigbluebutton.common.model.IConfigModel;
-	import org.bigbluebutton.common.model.ILocaleModel;
-	import org.bigbluebutton.common.model.IMyUserModel;
-	import org.bigbluebutton.common.model.IUsersModel;
-	import org.bigbluebutton.common.model.IVideoProfileModel;
 	import org.bigbluebutton.common.model.LocaleModel;
+	import org.bigbluebutton.common.model.MeetingModel;
 	import org.bigbluebutton.common.model.MyUserModel;
 	import org.bigbluebutton.common.model.UsersModel;
 	import org.bigbluebutton.common.model.VideoProfileModel;
+	import org.bigbluebutton.common.service.BbbAppsConnection;
 	import org.bigbluebutton.common.service.ConfigService;
 	import org.bigbluebutton.common.service.EnterApiService;
 	import org.bigbluebutton.common.service.IConfigService;
@@ -24,8 +22,11 @@ package org.bigbluebutton.web {
 	import org.bigbluebutton.common.service.ILocaleXmlLoaderService;
 	import org.bigbluebutton.common.service.IVideoProfileService;
 	import org.bigbluebutton.common.service.LocaleXmlLoaderService;
+	import org.bigbluebutton.common.service.ServerCallbackHandler;
 	import org.bigbluebutton.common.service.VideoProfilesService;
 	import org.bigbluebutton.common.signal.ConfigLoadedSignal;
+	import org.bigbluebutton.common.signal.ConnectFailedSignal;
+	import org.bigbluebutton.common.signal.ConnectSuccessSignal;
 	import org.bigbluebutton.common.signal.EnterApiCallFailedSignal;
 	import org.bigbluebutton.common.signal.EnterApiCallSuccessSignal;
 	import org.bigbluebutton.common.signal.LoadConfigSignal;
@@ -103,21 +104,20 @@ package org.bigbluebutton.web {
 
       injector.map(IConfigService).toSingleton(ConfigService);
       injector.map(IEnterApiService).toSingleton(EnterApiService);
-      injector.map(ISessionUtil).toSingleton(SessionUtil);
-      injector.map(IVideoProfileModel).toSingleton(VideoProfileModel);
+      injector.map(ISessionUtil).toSingleton(SessionUtil);     
       injector.map(IVideoProfileService).toSingleton(VideoProfilesService);
       injector.map(ILocaleXmlLoaderService).toSingleton(LocaleXmlLoaderService);
-      
-      //injector.map(IUsersModel).toSingleton(UsersModel);
-      //injector.map(IMyUserModel).toSingleton(MyUserModel);
-      //injector.map(IConfigModel).toSingleton(ConfigModel);
-      //injector.map(ILocaleModel).toSingleton(LocaleModel);
+
       
       // Map models.
       injector.map(LocaleModel).asSingleton();
       injector.map(UsersModel).asSingleton();
       injector.map(MyUserModel).asSingleton();
       injector.map(ConfigModel).asSingleton();
+      injector.map(VideoProfileModel).asSingleton();
+      injector.map(MeetingModel).asSingleton();
+      injector.map(BbbAppsConnection).asSingleton();
+      injector.map(ServerCallbackHandler).asSingleton();
       
 			// Type mapping
 			injector.map(IBaseConnection).toType(BaseConnection);
@@ -142,6 +142,7 @@ package org.bigbluebutton.web {
       signalCommandMap.map(LocaleXmlLoadedSignal).toCommand(CallEnterApiCommand);
       signalCommandMap.map(EnterApiCallSuccessSignal).toCommand(ConnectToBbbAppsCommand);
       signalCommandMap.map(EnterApiCallFailedSignal).toCommand(HandleEnterApiFailedSignalCommand);
+      signalCommandMap.map(ConnectSuccessSignal).toCommand(ValidateAuthTokenCommand);
       
       // Map independent notification signals.
       // We need to map some signals that doesn't have a corresponding command in order for them
@@ -154,6 +155,9 @@ package org.bigbluebutton.web {
       //  http://knowledge.robotlegs.org/discussions/questions/2353-injecting-mediator-into-command-is-this-possible
       signalCommandMap.map(LocaleChangedSignal).toCommand(DoNothingCommand);
       signalCommandMap.map(LoadedAppAndLocaleVersionsSignal).toCommand(DoNothingCommand);
+      
+      signalCommandMap.map(ConnectFailedSignal).toCommand(DoNothingCommand);
+      
       
 		}
 	}

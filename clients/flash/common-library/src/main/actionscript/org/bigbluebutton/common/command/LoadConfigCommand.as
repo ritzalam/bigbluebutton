@@ -19,6 +19,7 @@ package org.bigbluebutton.common.command
     }
     
     override public function execute():void {
+      trace("************* !!!!!! LOAD CONFIG COMMAND 1");
       configService.loadConfig(sessionUtil.getTopLevelUrl(), sessionUtil.getSessionToken());
     }
   }

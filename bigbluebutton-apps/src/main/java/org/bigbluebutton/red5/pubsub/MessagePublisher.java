@@ -3,6 +3,7 @@ package org.bigbluebutton.red5.pubsub;
 import java.util.Map;
 
 import org.bigbluebutton.common.messages.*;
+import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x;
 import org.bigbluebutton.red5.pubsub.redis.MessageSender;
 
 public class MessagePublisher {
@@ -227,6 +228,11 @@ public class MessagePublisher {
 		SendPublicChatMessage msg = new SendPublicChatMessage(meetingID, requesterID, message);
 		sender.send(MessagingConstants.TO_CHAT_CHANNEL, msg.toJson());
 	}
+
+    public void sendPublicMessage2x(SendPublicChatMessage2x msg) {
+        // System.out.println("___MessagePublisher::sendPublicMessage msg=" + msg.toJson());
+        sender.send(MessagingConstants.TO_CHAT_CHANNEL, msg.toJson());
+    }
 
 	public void sendPrivateMessage(String meetingID, String requesterID, Map<String, String> message) {
 		SendPrivateChatMessage msg = new SendPrivateChatMessage(meetingID, requesterID, message);

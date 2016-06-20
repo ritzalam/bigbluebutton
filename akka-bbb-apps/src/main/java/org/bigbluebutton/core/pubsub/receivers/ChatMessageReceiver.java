@@ -4,6 +4,7 @@ import org.bigbluebutton.common.messages.GetChatHistoryRequestMessage;
 import org.bigbluebutton.common.messages.MessagingConstants;
 import org.bigbluebutton.common.messages.SendPrivateChatMessage;
 import org.bigbluebutton.common.messages.SendPublicChatMessage;
+import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
@@ -31,8 +32,16 @@ public class ChatMessageReceiver implements MessageHandler{
 						GetChatHistoryRequestMessage msg = GetChatHistoryRequestMessage.fromJson(message);
 						bbbGW.getChatHistory(msg.meetingId, msg.requesterId, msg.replyTo);
 					} else if (SendPublicChatMessage.SEND_PUBLIC_CHAT_MESSAGE.equals(messageName)){
+						// System.out.println("___SendPublicChatMessage (1x) " + message);
 						SendPublicChatMessage msg = SendPublicChatMessage.fromJson(message);
 						bbbGW.sendPublicMessage(msg.meetingId, msg.requesterId, msg.messageInfo);
+					} else if (SendPublicChatMessage2x.SEND_PUBLIC_CHAT_MESSAGE.equals(messageName)){
+						// System.out.println("___SendPublicChatMessage2x " + message);
+						SendPublicChatMessage2x msg = SendPublicChatMessage2x.fromJson(message);
+						// msg.payload.message.message = "2x:" + msg.payload.message.message;
+						// System.out.println("^^^SendPublicChatMessage2x toJSON " + msg.toJson());
+						bbbGW.sendPublicMessage2x(msg.payload.meetingID, msg.payload.requesterID,
+								msg.payload.message);
 					} else if (SendPrivateChatMessage.SEND_PRIVATE_CHAT_MESSAGE.equals(messageName)){
 						SendPrivateChatMessage msg = SendPrivateChatMessage.fromJson(message);
 						bbbGW.sendPrivateMessage(msg.meetingId, msg.requesterId, msg.messageInfo);

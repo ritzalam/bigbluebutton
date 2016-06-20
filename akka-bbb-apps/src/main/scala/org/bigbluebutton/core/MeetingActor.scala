@@ -124,6 +124,7 @@ class MeetingActor(val mProps: MeetingProperties,
     case msg: InitAudioSettings => liveMeeting.handleInitAudioSettings(msg)
     case msg: GetChatHistoryRequest => liveMeeting.handleGetChatHistoryRequest(msg)
     case msg: SendPublicMessageRequest => liveMeeting.handleSendPublicMessageRequest(msg)
+    case msg: SendPublicMessageRequest2x => liveMeeting.handleSendPublicMessageRequest2x(msg)
     case msg: SendPrivateMessageRequest => liveMeeting.handleSendPrivateMessageRequest(msg)
     case msg: UserConnectedToGlobalAudio => liveMeeting.handleUserConnectedToGlobalAudio(msg)
     case msg: UserDisconnectedFromGlobalAudio => liveMeeting.handleUserDisconnectedFromGlobalAudio(msg)

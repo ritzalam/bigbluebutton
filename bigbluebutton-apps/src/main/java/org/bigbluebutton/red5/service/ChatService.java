@@ -28,6 +28,11 @@ import org.red5.logging.Red5LoggerFactory;
 import org.red5.server.api.Red5;
 import org.slf4j.Logger;
 
+import org.bigbluebutton.common.messages2x.objects.ChatMessage;
+import org.bigbluebutton.common.messages2x.objects.ChatType;
+import org.bigbluebutton.common.messages.MessagingConstants;
+import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x;
+
 public class ChatService {	
 	private static Logger log = Red5LoggerFactory.getLogger( ChatService.class, "bigbluebutton" );
 	
@@ -46,7 +51,25 @@ public class ChatService {
 	private BigBlueButtonSession getBbbSession() {
 		return (BigBlueButtonSession) Red5.getConnectionLocal().getAttribute(Constants.SESSION);
 	}
-	
+
+    public void sendPublicMessage2x(String json) {
+        String meetingID = Red5.getConnectionLocal().getScope().getName();
+        String requesterID = getBbbSession().getInternalUserID();
+
+        ChatMessage chatObj = ChatMessage.fromJson(json);
+
+        SendPublicChatMessage2x msg = new SendPublicChatMessage2x(meetingID, requesterID, chatObj);
+
+        // The message is being ignored in the red5 application to avoid copying it to any
+        // another application which that may cause a memory issue
+        if (chatObj.message.length() <= maxMessageLength) {
+            red5BBBInGw.sendPublicMessage2x(msg);
+        } else {
+            log.warn("sendPublicMessage maximum allowed message length exceeded (length: [" +
+                    chatObj.message.length() + "], message: [" + chatObj.message + "])");
+        }
+    }
+
 	public void sendPublicMessage(Map<String, Object> msg) {
 		
 		String chatType = msg.get(ChatKeyUtil.CHAT_TYPE).toString(); 

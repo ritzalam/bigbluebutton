@@ -9,7 +9,7 @@ import org.junit.Test;
 public class SendPublicChatMessage2xTest {
 
     @Test
-    public void SendPublicChatMessage2() {
+    public void SendPublicChatMessage2x() {
 
         String meetingID = "abc123";
         String requesterID = "dqbdcadojnsh_2";

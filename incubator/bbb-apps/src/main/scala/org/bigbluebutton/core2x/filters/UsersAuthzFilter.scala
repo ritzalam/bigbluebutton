@@ -30,7 +30,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
     }
   }
 
-  abstract override def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
+  abstract override def handleValidateAuthToken2x(msg: ValidateAuthTokenRequestInMessage): Unit = {
     RegisteredUsers2x.findWithToken(msg.token, state.registeredUsers.toVector) match {
       case Some(u) =>
         super.handleValidateAuthToken2x(msg)

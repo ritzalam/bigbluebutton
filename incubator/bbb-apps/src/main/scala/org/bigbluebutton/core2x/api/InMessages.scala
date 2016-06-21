@@ -87,6 +87,11 @@ object IncomingMessage {
   // Users
   /////////////////////////////////////////////////////////////////////////////////
 
+  case class ValidateAuthTokenRequestInMessage(
+    meetingId: IntMeetingId,
+    userId: IntUserId,
+    token: AuthToken) extends InMessage
+
   case class ValidateAuthToken(
     meetingId: IntMeetingId, userId: IntUserId, token: AuthToken,
     correlationId: String, sessionId: String) extends InMessage

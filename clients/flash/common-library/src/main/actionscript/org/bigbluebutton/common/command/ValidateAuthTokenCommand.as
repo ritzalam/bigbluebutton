@@ -2,6 +2,7 @@ package org.bigbluebutton.common.command
 {
   import org.bigbluebutton.common.model.MyUserModel;
   import org.bigbluebutton.common.service.BbbAppsConnection;
+  import org.bigbluebutton.common.service.network.messages.ValidateAuthTokenRequestMessage;
   
   import robotlegs.bender.bundles.mvcs.Command;
   
@@ -19,10 +20,10 @@ package org.bigbluebutton.common.command
     }
     
     override public function execute():void {
-      var message:Object = new Object();
-      message["userId"] = myUserModel.internalUserId;
-      message["authToken"] = myUserModel.authToken;
-      connection.sendMessage("validateToken", message);
+      var message:ValidateAuthTokenRequestMessage = 
+        new ValidateAuthTokenRequestMessage(myUserModel.internalUserId, myUserModel.authToken);
+ 
+      connection.sendJsonMessage(message);
     }
   }
 }

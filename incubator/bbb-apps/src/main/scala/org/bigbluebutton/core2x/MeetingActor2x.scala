@@ -78,7 +78,7 @@ class MeetingActor2x(
 
   def receive = {
     case msg: RegisterUser2xCommand => handleRegisterUser2x(msg)
-    case msg: ValidateAuthToken => handleValidateAuthToken2x(msg)
+    case msg: ValidateAuthTokenRequestInMessage => handleValidateAuthToken2x(msg)
     case msg: NewUserPresence2x => handleUserJoinWeb2x(msg)
     case msg: EjectUserFromMeeting => handleEjectUserFromMeeting(msg)
   }

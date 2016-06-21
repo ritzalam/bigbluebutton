@@ -24,7 +24,8 @@ import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.core.bus._
 import org.bigbluebutton.core.JsonMessageSenderActor
-import org.bigbluebutton.core2x.bus.IncomingEventBus2x
+import org.bigbluebutton.core2x.RedisMessageHandlerActor
+import org.bigbluebutton.core2x.bus.{ IncomingEventBus2x, IncomingJsonMessageBus }
 
 object Boot extends App with SystemConfiguration {
 
@@ -54,7 +55,11 @@ object Boot extends App with SystemConfiguration {
   outgoingEventBus.subscribe(recorderActor, "outgoingMessageChannel")
   outgoingEventBus.subscribe(newMessageSenderActor, "outgoingMessageChannel")
 
-  val bbbInGW = new BigBlueButtonInGW(system, eventBus, outGW, eventBus2x, red5DeskShareIP, red5DeskShareApp)
+  val incomingJsonMessageBus = new IncomingJsonMessageBus
+  val redisMessageHandlerActor = system.actorOf(RedisMessageHandlerActor.props(eventBus2x, incomingJsonMessageBus))
+  incomingJsonMessageBus.subscribe(redisMessageHandlerActor, "incoming-json-message")
+
+  val bbbInGW = new BigBlueButtonInGW(system, eventBus, outGW, eventBus2x, incomingJsonMessageBus, red5DeskShareIP, red5DeskShareApp)
   val redisMsgReceiver = new RedisMessageReceiver(bbbInGW)
 
   val redisSubscriberActor = system.actorOf(AppsRedisSubscriberActor.props(redisMsgReceiver), "redis-subscriber")

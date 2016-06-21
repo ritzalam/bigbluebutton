@@ -5,6 +5,8 @@ import org.bigbluebutton.common.messages.*;
 
 public interface IBigBlueButtonInGW {
 
+	void handleReceivedJsonMessage(String name, String json);
+
 	void handleJsonMessage(String json);
 	void handleBigBlueButtonMessage(IBigBlueButtonMessage message);
 

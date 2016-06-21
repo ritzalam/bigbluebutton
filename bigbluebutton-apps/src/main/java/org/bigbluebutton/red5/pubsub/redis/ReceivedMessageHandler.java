@@ -62,7 +62,6 @@ public class ReceivedMessageHandler {
 	}
 	
 	public void handleMessage(String pattern, String channel, String message) {
-	  System.out.println("RECEIVED:\n" + message);
 		ReceivedMessage rm = new ReceivedMessage(pattern, channel, message);
 		receivedMessages.add(rm);
 	}

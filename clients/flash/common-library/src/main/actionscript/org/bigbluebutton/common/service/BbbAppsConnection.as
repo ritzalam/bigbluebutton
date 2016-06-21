@@ -12,6 +12,7 @@ package org.bigbluebutton.common.service
   import org.bigbluebutton.common.model.ConfigModel;
   import org.bigbluebutton.common.model.MeetingModel;
   import org.bigbluebutton.common.model.MyUserModel;
+  import org.bigbluebutton.common.service.network.messages.IJsonMessage;
   import org.bigbluebutton.common.signal.ConnectFailedSignal;
   import org.bigbluebutton.common.signal.ConnectSuccessSignal;
   import org.bigbluebutton.lib.main.models.ConnectionFailedEvent;
@@ -39,6 +40,8 @@ package org.bigbluebutton.common.service
     
     [Inject]
     public var connectFailedSignal:ConnectFailedSignal;
+    
+    private const MESSAGE_FROM_CLIENT:String = "messageFromClientRemoteCall";
     
     private var connectAttemptTimer:Timer = null;
     private var netConnection:NetConnection = null;
@@ -176,6 +179,23 @@ package org.bigbluebutton.common.service
       } else {
         netConnection.call(service, responder, message);
       }
+    }
+    
+    public function sendJsonMessage(json:IJsonMessage):void {
+      
+      logger.debug("SENDING MESSAGE: [" + json.toJson() + "]");
+      var responder:Responder = new Responder(function(result:Object):void { // On successful result
+        trace("SUCCESSFULLY SENT: [" + json.toJson() + "].");
+      }, function(status:Object):void { // status - On error occurred
+        var errorReason:String = "FAILED TO SEND: [" + json.toJson() + "]:";
+        for (var x:Object in status) {
+          errorReason += "\n - " + x + " : " + status[x];
+        }
+        trace(errorReason);
+      });
+
+      netConnection.call(MESSAGE_FROM_CLIENT, responder, json.toJson());
+
     }
   }
 }

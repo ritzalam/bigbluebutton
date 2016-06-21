@@ -16,7 +16,7 @@ import akka.event.Logging
 import org.bigbluebutton.core2x.api.IncomingMessage.CreateMeeting2x
 import org.bigbluebutton.core2x.domain.{ Permissions => _, Role => _, _ }
 import org.bigbluebutton.core2x.BigBlueButtonActor2x
-import org.bigbluebutton.core2x.bus.{ BigBlueButtonEvent2x, IncomingEventBus2x }
+import org.bigbluebutton.core2x.bus._
 import spray.json.JsonParser
 
 class BigBlueButtonInGW(
@@ -24,6 +24,7 @@ class BigBlueButtonInGW(
     eventBus: IncomingEventBus,
     outGW: OutMessageGateway,
     eventBus2x: IncomingEventBus2x,
+    incomingJsonMessageBus: IncomingJsonMessageBus,
     val red5DeskShareIP: String,
     val red5DeskShareApp: String) extends IBigBlueButtonInGW {
 
@@ -90,10 +91,15 @@ class BigBlueButtonInGW(
           recProp
         )
 
-        eventBus2x.publish(BigBlueButtonEvent2x("meeting-manager", new CreateMeeting2x(IntMeetingId(msg.payload.id), mProps2x)))
+        eventBus2x.publish(BigBlueButtonInMessage("meeting-manager", new CreateMeeting2x(IntMeetingId(msg.payload.id), mProps2x)))
 
       }
     }
+  }
+
+  def handleReceivedJsonMessage(name: String, json: String): Unit = {
+    val receivedJsonMessage = new ReceivedJsonMessage(name, json)
+    incomingJsonMessageBus.publish(IncomingJsonMessage("incoming-json-message", receivedJsonMessage))
   }
 
   def handleJsonMessage(json: String) {

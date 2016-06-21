@@ -33,7 +33,7 @@ trait UsersHandler2x {
     outGW.send(new UserRegisteredEvent2x(state.props.id, state.props.recordingProp.recorded, regUser))
   }
 
-  def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
+  def handleValidateAuthToken2x(msg: ValidateAuthTokenRequestInMessage): Unit = {
     def handle(regUser: RegisteredUser2x): Unit = {
       val userHandler = new UserActorMessageHandler(regUser, outGW)
       userHandlers += msg.userId.value -> userHandler

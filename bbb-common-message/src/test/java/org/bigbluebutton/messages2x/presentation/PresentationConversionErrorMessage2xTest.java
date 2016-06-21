@@ -16,8 +16,8 @@ public class PresentationConversionErrorMessage2xTest {
         PresentationCode code = PresentationCode.CONVERT;
         MessageKey messageKey = MessageKey.CONVERSION_COMPLETED;
         String presentationName = "1to6.pdf";
-        int numPages = 6;
-        int maxNumPages = 200;
+        Integer numPages = 6;
+        Integer maxNumPages = 200;
 
         PresentationConversionErrorMessage2x msg1 = new PresentationConversionErrorMessage2x(meetingID,
                 presentationID, code, messageKey, presentationName, numPages, maxNumPages);
@@ -27,8 +27,9 @@ public class PresentationConversionErrorMessage2xTest {
         PresentationConversionErrorMessage2x msg2 = PresentationConversionErrorMessage2x.fromJson
                 (json1);
 
-        Assert.assertEquals(msg2.header.name, PresentationConversionErrorMessage2x.PRESENTATION_CONVERSION_ERROR);
-        Assert.assertEquals(msg2.payload.meetingID, meetingID);
-        Assert.assertEquals(msg2.payload.numPages, 6);
+        Assert.assertEquals(PresentationConversionErrorMessage2x.PRESENTATION_CONVERSION_ERROR,
+                msg2.header.name);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(new Integer(6), msg2.payload.numPages);
     }
 }

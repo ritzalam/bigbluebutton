@@ -12,8 +12,8 @@ public class PresentationConversionErrorMessage2x extends AbstractEventMessage {
 
     public PresentationConversionErrorMessage2x(String meetingID, String presentationID,
                                               PresentationCode code, MessageKey messageKey,
-                                              String presentationName, int numPages,
-                                              int maxNumPages) {
+                                              String presentationName, Integer numPages,
+                                                Integer maxNumPages) {
         super();
         header.name = PRESENTATION_CONVERSION_ERROR;
 
@@ -38,7 +38,7 @@ public class PresentationConversionErrorMessage2x extends AbstractEventMessage {
         public MessageKey messageKey;
         public String presentationID;
         public String presentationName;
-        public int numPages;
-        public int maxNumPages;
+        public Integer numPages;
+        public Integer maxNumPages;
     }
 }

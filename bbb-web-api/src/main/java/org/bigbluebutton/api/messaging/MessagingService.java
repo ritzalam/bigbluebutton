@@ -32,14 +32,17 @@ public interface MessagingService {
 	void createMeeting(String meetingID, String externalMeetingID, String meetingName, Boolean recorded, 
 			      String voiceBridge, Integer duration, Boolean autoStartRecording,
 			      Boolean allowStartStopRecording, String moderatorPass, String viewerPass,
-			      Long createTime, String createDate, Boolean isBreakout);
+			      Long createTime, String createDate, Boolean isBreakout, Integer maxUsers, Boolean allowVoiceOnly);
 	void endMeeting(String meetingId);
 	void send(String channel, String message);
 	void sendPolls(String meetingId, String title, String question, String questionType, List<String> answers);
 	String storeSubscription(String meetingId, String externalMeetingID, String callbackURL);
 	boolean removeSubscription(String meetingId, String subscriptionId);
 	List<Map<String,String>> listSubscriptions(String meetingId);
-	void registerUser(String meetingID, String internalUserId, String fullname, String role, String externUserID, String authToken, String avatarURL);
+	void registerUser(String meetingID, String internalUserId, String fullname, List<String> roles,
+					  String externUserID, String authToken, String avatarURL,
+					  String logoutUrl, String welcomeMessage,
+					  List<String> dialInNumbers, String configXml, String externalData);
 	void sendKeepAlive(String system, Long timestamp);
 	void sendStunTurnInfo(String meetingId, String internalUserId, Set<StunServer> stuns, Set<TurnEntry> turns);
 }

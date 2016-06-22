@@ -5,26 +5,41 @@ import java.util.Map;
 import org.bigbluebutton.common.messages.*;
 import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x;
 import org.bigbluebutton.messages.ValidateAuthTokenRequestMessage;
+import org.bigbluebutton.red5.*;
+import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
+import org.bigbluebutton.red5.handlers.ValidateAuthTokenRequestMessageHandler;
 import org.bigbluebutton.red5.pubsub.redis.MessageSender;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
+import org.red5.server.api.Red5;
 
 public class MessagePublisher {
-
+    private ConnectionInvokerService connInvokerService;
     private MessageSender sender;
 
     public void setMessageSender(MessageSender sender) {
         this.sender = sender;
     }
 
+    public void setConnInvokerService(ConnectionInvokerService connInvokerService) {
+        this.connInvokerService = connInvokerService;
+    }
+
     public void handleJsonMessage(String json) {
+        BigBlueButtonSession bbbSession =
+                (BigBlueButtonSession) Red5.getConnectionLocal().getAttribute(org.bigbluebutton.red5.Constants.SESSION);
+
+        String meetingId = bbbSession.getRoom();
+        String userId = bbbSession.getInternalUserID();
+
         ObjectMapper mapper = JsonFactory.create();
         Map msg = mapper.readValue(json, Map.class);
         Map header = (Map) msg.get("header");
 
         String msgName = (String) header.get("name");
         if (msgName.equals(ValidateAuthTokenRequestMessage.NAME)) {
-            ValidateAuthTokenRequestMessage vatMsg = ValidateAuthTokenRequestMessage.fromJson(json);
+            ValidateAuthTokenRequestMessageHandler handle = new ValidateAuthTokenRequestMessageHandler(sender, connInvokerService);
+            handle.handle(meetingId, userId, json);
         }
     }
 

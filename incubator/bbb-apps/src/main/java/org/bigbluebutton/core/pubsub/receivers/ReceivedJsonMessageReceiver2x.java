@@ -15,13 +15,19 @@ public class ReceivedJsonMessageReceiver2x implements MessageHandler {
 
     @Override
     public void handleMessage(String pattern, String channel, String json) {
+        System.out.println("RECEIVED: \n" + json + "\n");
         ObjectMapper mapper = JsonFactory.create();
         Map msg = mapper.readValue(json, Map.class);
         Map header = (Map) msg.get("header");
-        String msgName = (String) header.get("name");
-        if (msgName != null && !msgName.isEmpty()) {
-            bbbGW.handleReceivedJsonMessage(msgName, json);
+        if (header != null && header.containsKey("name")) {
+            String msgName = (String) header.get("name");
+            if (msgName != null && !msgName.isEmpty()) {
+                bbbGW.handleReceivedJsonMessage(msgName, json);
+                return;
+            }
         }
+
+        System.out.println("Cannot handle message \n" + json + "\n");
 
     }
 }

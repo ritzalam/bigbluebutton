@@ -21,7 +21,8 @@ package org.bigbluebutton.common.command
     
     override public function execute():void {
       var message:ValidateAuthTokenRequestMessage = 
-        new ValidateAuthTokenRequestMessage(myUserModel.internalUserId, myUserModel.authToken);
+        new ValidateAuthTokenRequestMessage(myUserModel.internalMeetingId, 
+          myUserModel.internalUserId, myUserModel.authToken);
  
       connection.sendJsonMessage(message);
     }

@@ -15,4 +15,10 @@ class UserHandlers {
   def get(userId: IntUserId): Option[UserActorMessageHandler] = {
     userHandlers.get(userId.value)
   }
+
+  def remove(userId: IntUserId): Option[UserActorMessageHandler] = {
+    val handler = userHandlers.get(userId.value)
+    handler foreach (h => userHandlers -= userId.value)
+    handler
+  }
 }

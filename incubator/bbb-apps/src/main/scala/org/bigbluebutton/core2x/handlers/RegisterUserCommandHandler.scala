@@ -1,7 +1,7 @@
 package org.bigbluebutton.core2x.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core2x.api.IncomingMessage.RegisterUser2xCommand
+import org.bigbluebutton.core2x.api.IncomingMessage.RegisterUserRequestInMessage
 import org.bigbluebutton.core2x.api.OutGoingMessage.UserRegisteredEvent2x
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, PinNumberGenerator, RegisteredUsers2x }
 
@@ -9,7 +9,7 @@ trait RegisterUserCommandHandler {
   val state: MeetingStateModel
   val outGW: OutMessageGateway
 
-  def handleRegisterUser2x(msg: RegisterUser2xCommand): Unit = {
+  def handleRegisterUser2x(msg: RegisterUserRequestInMessage): Unit = {
     val pinNumber = PinNumberGenerator.generatePin(state.props.voiceConf, state.status.get)
     val regUser = RegisteredUsers2x.create(
       msg.userId,

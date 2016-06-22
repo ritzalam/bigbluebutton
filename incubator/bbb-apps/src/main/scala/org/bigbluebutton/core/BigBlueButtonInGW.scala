@@ -13,7 +13,7 @@ import org.bigbluebutton.common.messages.StartCustomPollRequestMessage
 import org.bigbluebutton.common.messages.PubSubPingMessage
 import org.bigbluebutton.messages._
 import akka.event.Logging
-import org.bigbluebutton.core2x.api.IncomingMessage.CreateMeeting2x
+import org.bigbluebutton.core2x.api.IncomingMessage.CreateMeetingRequestInMessage
 import org.bigbluebutton.core2x.domain.{ Permissions => _, Role => _, _ }
 import org.bigbluebutton.core2x.BigBlueButtonActor2x
 import org.bigbluebutton.core2x.bus._
@@ -29,11 +29,11 @@ class BigBlueButtonInGW(
     val red5DeskShareApp: String) extends IBigBlueButtonInGW {
 
   val log = Logging(system, getClass)
-  val bbbActor = system.actorOf(BigBlueButtonActor.props(system, eventBus, outGW), "bigbluebutton-actor")
-  eventBus.subscribe(bbbActor, "meeting-manager")
+  //  val bbbActor = system.actorOf(BigBlueButtonActor.props(system, eventBus, outGW), "bigbluebutton-actor")
+  //  eventBus.subscribe(bbbActor, "meeting-manager")
 
-  val bbbActor2x = system.actorOf(BigBlueButtonActor2x.props(system, eventBus, outGW), "bigbluebutton-actor2x")
-  eventBus.subscribe(bbbActor, "meeting-manager")
+  val bbbActor2x = system.actorOf(BigBlueButtonActor2x.props(system, eventBus2x, outGW), "bigbluebutton-actor2x")
+  eventBus2x.subscribe(bbbActor2x, "meeting-manager")
 
   def handleBigBlueButtonMessage(message: IBigBlueButtonMessage) {
     message match {
@@ -71,7 +71,7 @@ class BigBlueButtonInGW(
           red5DeskShareIP, red5DeskShareApp,
           msg.payload.isBreakout)
 
-        eventBus.publish(BigBlueButtonEvent("meeting-manager", new CreateMeeting(msg.payload.id, mProps)))
+        //        eventBus.publish(BigBlueButtonEvent("meeting-manager", new CreateMeeting(msg.payload.id, mProps)))
 
         val recProp = MeetingRecordingProp(
           Recorded(msg.payload.record),
@@ -91,22 +91,23 @@ class BigBlueButtonInGW(
           recProp
         )
 
-        eventBus2x.publish(BigBlueButtonInMessage("meeting-manager", new CreateMeeting2x(IntMeetingId(msg.payload.id), mProps2x)))
+        eventBus2x.publish(BigBlueButtonInMessage("meeting-manager", new CreateMeetingRequestInMessage(IntMeetingId(msg.payload.id), mProps2x)))
 
       }
     }
   }
 
   def handleReceivedJsonMessage(name: String, json: String): Unit = {
+    println("INGW: \n" + json)
     val receivedJsonMessage = new ReceivedJsonMessage(name, json)
     incomingJsonMessageBus.publish(IncomingJsonMessage("incoming-json-message", receivedJsonMessage))
   }
 
   def handleJsonMessage(json: String) {
-    JsonMessageDecoder.decode(json) match {
-      case Some(validMsg) => forwardMessage(validMsg)
-      case None => log.error("Unhandled json message: {}", json)
-    }
+    //    JsonMessageDecoder.decode(json) match {
+    //      case Some(validMsg) => forwardMessage(validMsg)
+    //      case None => log.error("Unhandled json message: {}", json)
+    //    }
   }
 
   def forwardMessage(msg: InMessage) = {
@@ -526,23 +527,23 @@ class BigBlueButtonInGW(
    * *****************************************************************
    */
   def deskShareStarted(conferenceName: String, callerId: String, callerIdName: String) {
-    bbbActor ! new DeskShareStartedRequest(conferenceName, callerId, callerIdName)
+    //    bbbActor ! new DeskShareStartedRequest(conferenceName, callerId, callerIdName)
   }
 
   def deskShareStopped(conferenceName: String, callerId: String, callerIdName: String) {
-    bbbActor ! new DeskShareStoppedRequest(conferenceName, callerId, callerIdName)
+    //    bbbActor ! new DeskShareStoppedRequest(conferenceName, callerId, callerIdName)
   }
 
   def deskShareRTMPBroadcastStarted(conferenceName: String, streamname: String, videoWidth: Int, videoHeight: Int, timestamp: String) {
-    bbbActor ! new DeskShareRTMPBroadcastStartedRequest(conferenceName, streamname, videoWidth, videoHeight, timestamp)
+    //    bbbActor ! new DeskShareRTMPBroadcastStartedRequest(conferenceName, streamname, videoWidth, videoHeight, timestamp)
   }
 
   def deskShareRTMPBroadcastStopped(conferenceName: String, streamname: String, videoWidth: Int, videoHeight: Int, timestamp: String) {
-    bbbActor ! new DeskShareRTMPBroadcastStoppedRequest(conferenceName, streamname, videoWidth, videoHeight, timestamp)
+    //    bbbActor ! new DeskShareRTMPBroadcastStoppedRequest(conferenceName, streamname, videoWidth, videoHeight, timestamp)
   }
 
   def deskShareGetInfoRequest(meetingId: String, requesterId: String, replyTo: String): Unit = {
-    bbbActor ! new DeskShareGetDeskShareInfoRequest(meetingId, requesterId, replyTo)
+    //    bbbActor ! new DeskShareGetDeskShareInfoRequest(meetingId, requesterId, replyTo)
   }
 
   // Polling
@@ -573,14 +574,14 @@ class BigBlueButtonInGW(
    */
 
   def sendCaptionHistory(meetingID: String, requesterID: String) {
-    bbbActor ! new SendCaptionHistoryRequest(meetingID, requesterID)
+    //    bbbActor ! new SendCaptionHistoryRequest(meetingID, requesterID)
   }
 
   def updateCaptionOwner(meetingID: String, locale: String, ownerID: String) {
-    bbbActor ! new UpdateCaptionOwnerRequest(meetingID, locale, ownerID)
+    //    bbbActor ! new UpdateCaptionOwnerRequest(meetingID, locale, ownerID)
   }
 
   def editCaptionHistory(meetingID: String, userID: String, startIndex: Integer, endIndex: Integer, locale: String, text: String) {
-    bbbActor ! new EditCaptionHistoryRequest(meetingID, userID, startIndex, endIndex, locale, text)
+    //    bbbActor ! new EditCaptionHistoryRequest(meetingID, userID, startIndex, endIndex, locale, text)
   }
 }

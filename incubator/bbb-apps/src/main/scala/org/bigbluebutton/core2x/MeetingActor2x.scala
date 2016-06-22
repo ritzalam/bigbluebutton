@@ -4,16 +4,16 @@ import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.bus.IncomingEventBus
 import org.bigbluebutton.core2x.domain.MeetingProperties2x
-import org.bigbluebutton.core2x.filters.UsersHandlerFilter
 import org.bigbluebutton.core2x.models.MeetingStateModel
 import org.bigbluebutton.core2x.api.IncomingMessage._
+import org.bigbluebutton.core2x.bus.IncomingEventBus2x
 import org.bigbluebutton.core2x.handlers._
 
 import scala.concurrent.duration._
 
 object MeetingActorInternal2x {
   def props(mProps: MeetingProperties2x,
-    eventBus: IncomingEventBus,
+    eventBus: IncomingEventBus2x,
     outGW: OutMessageGateway): Props =
     Props(classOf[MeetingActorInternal2x], mProps, eventBus, outGW)
 }
@@ -21,7 +21,7 @@ object MeetingActorInternal2x {
 // This actor is an internal audit actor for each meeting actor that
 // periodically sends messages to the meeting actor
 class MeetingActorInternal2x(val mProps: MeetingProperties2x,
-  val eventBus: IncomingEventBus, val outGW: OutMessageGateway)
+  val eventBus: IncomingEventBus2x, val outGW: OutMessageGateway)
     extends Actor with ActorLogging {
 
   import context.dispatcher
@@ -58,7 +58,7 @@ class MeetingActorInternal2x(val mProps: MeetingProperties2x,
 object MeetingActor2x {
   def props(
     props: MeetingProperties2x,
-    bus: IncomingEventBus,
+    bus: IncomingEventBus2x,
     outGW: OutMessageGateway,
     state: MeetingStateModel): Props =
     Props(classOf[MeetingActor2x], props, bus, outGW, state)
@@ -66,7 +66,7 @@ object MeetingActor2x {
 
 class MeetingActor2x(
   val props: MeetingProperties2x,
-  val bus: IncomingEventBus,
+  val bus: IncomingEventBus2x,
   val outGW: OutMessageGateway,
   val state: MeetingStateModel) extends Actor with ActorLogging
     with ValidateAuthTokenCommandFilter
@@ -76,8 +76,13 @@ class MeetingActor2x(
 
   val userHandlers = new UserHandlers
 
+  log.debug("MeetingActor2x [" + props.id.value + "]")
+  /** Subscribe to meeting and voice events. **/
+  bus.subscribe(self, props.id.value)
+  bus.subscribe(self, props.voiceConf.value)
+
   def receive = {
-    case msg: RegisterUser2xCommand => handleRegisterUser2x(msg)
+    case msg: RegisterUserRequestInMessage => handleRegisterUser2x(msg)
     case msg: ValidateAuthTokenRequestInMessage => handleValidateAuthToken2x(msg)
     case msg: NewUserPresence2x => handleUserJoinWeb2x(msg)
     case msg: EjectUserFromMeeting => handleEjectUserFromMeeting(msg)

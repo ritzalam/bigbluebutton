@@ -64,6 +64,7 @@ public class Meeting {
 	private final ConcurrentMap<String, Long> registeredUsers;
 	private final ConcurrentMap<String, Config> configs;
 	private final Boolean isBreakout;
+	private final Boolean allowVoiceOnly = false;
 	
 	private long lastUserLeftOn = 0;
 	
@@ -246,7 +247,11 @@ public class Meeting {
 	public boolean hasUserJoined() {
 		return userHasJoined;
 	}
-	
+
+	public Boolean getAllowVoiceOnly() {
+		return allowVoiceOnly;
+	}
+
 	public void userJoined(User user) {
 	    userHasJoined = true;
 	    this.users.put(user.getInternalUserId(), user);

@@ -174,7 +174,7 @@ trait MeetingTestFixtures {
   val captions = new CaptionModel
   val extension: MeetingExtensionStatus = new MeetingExtensionStatus
 
-  val du30RegisterUserCommand = RegisterUser2xCommand(
+  val du30RegisterUserCommand = RegisterUserRequestInMessage(
     piliIntMeetingId,
     du30IntUserId,
     du30UserName,

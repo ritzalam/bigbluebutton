@@ -13,7 +13,7 @@ trait UsersHandler2x {
 
   private var userHandlers = new collection.immutable.HashMap[String, UserActorMessageHandler]
 
-  def handleRegisterUser2x(msg: RegisterUser2xCommand): Unit = {
+  def handleRegisterUser2x(msg: RegisterUserRequestInMessage): Unit = {
     val pinNumber = PinNumberGenerator.generatePin(state.props.voiceConf, state.status.get)
     val regUser = RegisteredUsers2x.create(
       msg.userId,

@@ -434,8 +434,14 @@ class ApiController {
     session[sessionToken] = sessionToken
     meetingService.addUserSession(sessionToken, us);
 
+    ArrayList<String> dialInNumbers = new ArrayList<String>();
+    ArrayList<String> roles = new ArrayList<String>();
+    roles.add(us.role);
+
     // Register user into the meeting.
-    meetingService.registerUser(us.meetingID, us.internalUserId, us.fullname, us.role, us.externUserID, us.authToken, us.avatarURL)
+    meetingService.registerUser(us.meetingID, us.internalUserId, us.fullname, roles, us.externUserID,
+            us.authToken, us.avatarURL, us.logoutUrl, us.welcome, dialInNumbers,
+            "CONFIG_XML_PLACEHOLDER", "USER_DATA_PLACEHOLDER")
 
     log.info("Session user token for " + us.fullname + " [" + session[sessionToken]+ "]")
     session.setMaxInactiveInterval(SESSION_TIMEOUT);

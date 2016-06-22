@@ -3,10 +3,11 @@ package org.bigbluebutton.core2x
 import akka.actor.ActorSystem
 import akka.testkit.{ DefaultTimeout, ImplicitSender, TestKit }
 import com.typesafe.config.ConfigFactory
-import org.bigbluebutton.core.{ OutMessageGateway, TestKitUsageSpec, StopSystemAfterAll }
+import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
 import org.bigbluebutton.core2x.api.IncomingMessage._
 import org.bigbluebutton.core.bus.{ IncomingEventBus, OutgoingEventBus }
 import org.bigbluebutton.core2x.api.OutGoingMessage._
+import org.bigbluebutton.core2x.bus.IncomingEventBus2x
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsers2x, Users3x }
 import org.scalatest.{ Matchers, WordSpecLike }
 
@@ -17,7 +18,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
     with DefaultTimeout with ImplicitSender with WordSpecLike
     with Matchers with StopSystemAfterAll with MeetingTestFixtures {
 
-  val eventBus = new IncomingEventBus
+  val eventBus = new IncomingEventBus2x
   val outgoingEventBus = new OutgoingEventBus
   val outGW = new OutMessageGateway(outgoingEventBus)
   outgoingEventBus.subscribe(testActor, "outgoingMessageChannel")

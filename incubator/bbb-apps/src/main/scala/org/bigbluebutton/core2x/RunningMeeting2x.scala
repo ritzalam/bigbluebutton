@@ -3,17 +3,18 @@ package org.bigbluebutton.core2x
 import akka.actor.ActorContext
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.bus.IncomingEventBus
+import org.bigbluebutton.core2x.bus.IncomingEventBus2x
 import org.bigbluebutton.core2x.domain.{ MeetingExtensionStatus, MeetingProperties2x }
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, _ }
 
 object RunningMeeting2x {
   def apply(mProps: MeetingProperties2x, outGW: OutMessageGateway,
-    eventBus: IncomingEventBus)(implicit context: ActorContext) =
+    eventBus: IncomingEventBus2x)(implicit context: ActorContext) =
     new RunningMeeting2x(mProps, outGW, eventBus)(context)
 }
 
 class RunningMeeting2x(val mProps: MeetingProperties2x, val outGW: OutMessageGateway,
-    val eventBus: IncomingEventBus)(implicit val context: ActorContext) {
+    val eventBus: IncomingEventBus2x)(implicit val context: ActorContext) {
 
   val abilities: MeetingPermissions = new MeetingPermissions
   val registeredUsers = new RegisteredUsers2x

@@ -226,6 +226,7 @@ public class BigBlueButtonApplication extends MultiThreadedApplicationAdapter {
 
     public void messageFromClientRemoteCall(String json) {
         log.debug("messageFromClientRemoteCall: \n" + json + "\n");
+        red5InGW.handleJsonMessage(json);
     }
 
     public void validateToken(Map<String, String> msg) {

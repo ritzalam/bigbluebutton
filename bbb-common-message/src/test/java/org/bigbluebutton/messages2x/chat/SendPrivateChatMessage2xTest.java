@@ -35,7 +35,7 @@ public class SendPrivateChatMessage2xTest {
 
         SendPrivateChatMessage2x msg2 = SendPrivateChatMessage2x.fromJson(json1);
 
-        Assert.assertEquals(SendPrivateChatMessage2x.SEND_PRIVATE_CHAT_MESSAGE, msg1.header.name);
+        Assert.assertEquals(SendPrivateChatMessage2x.NAME, msg1.header.name);
         Assert.assertEquals(fromUserID, msg2.payload.message.fromUserID);
         Assert.assertEquals(meetingID, msg1.payload.meetingID);
         Assert.assertEquals(ChatType.PRIVATE_CHAT, msg1.payload.message.chatType);

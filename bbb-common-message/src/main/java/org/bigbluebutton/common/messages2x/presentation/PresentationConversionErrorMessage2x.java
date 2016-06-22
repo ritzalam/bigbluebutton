@@ -7,7 +7,7 @@ import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
 public class PresentationConversionErrorMessage2x extends AbstractEventMessage {
-    public static final String PRESENTATION_CONVERSION_ERROR = "PresentationConversionErrorMessage";
+    public static final String NAME = "PresentationConversionErrorMessage";
     public final Payload payload;
 
     public PresentationConversionErrorMessage2x(String meetingID, String presentationID,
@@ -15,7 +15,7 @@ public class PresentationConversionErrorMessage2x extends AbstractEventMessage {
                                               String presentationName, Integer numPages,
                                                 Integer maxNumPages) {
         super();
-        header.name = PRESENTATION_CONVERSION_ERROR;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

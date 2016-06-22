@@ -6,12 +6,12 @@ import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
 public class PresentationSharedMessage2x extends AbstractEventMessage {
-    public static final String PRESENTATION_SHARED_MESSAGE = "PresentationSharedMessage";
+    public static final String NAME = "PresentationSharedMessage";
     public final Payload payload;
 
     public PresentationSharedMessage2x(String meetingID, Presentation presentation) {
         super();
-        header.name = PRESENTATION_SHARED_MESSAGE;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

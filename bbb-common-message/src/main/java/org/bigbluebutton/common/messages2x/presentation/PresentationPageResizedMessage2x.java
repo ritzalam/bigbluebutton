@@ -8,12 +8,12 @@ import org.boon.json.annotations.JsonInclude;
 
 public class PresentationPageResizedMessage2x extends AbstractEventMessage{
 
-    public static final String PRESENTATION_PAGE_RESIZED_MESSAGE = "PresentationPageResizedMessage";
+    public static final String NAME = "PresentationPageResizedMessage";
     public final Payload payload;
 
     public PresentationPageResizedMessage2x(String meetingID, PresentationPage page) {
         super();
-        header.name = PRESENTATION_PAGE_RESIZED_MESSAGE;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

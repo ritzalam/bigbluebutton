@@ -22,7 +22,7 @@ public class GetChatHistoryRequestMessage2xTest {
 
         GetChatHistoryRequestMessage2x msg2 = GetChatHistoryRequestMessage2x.fromJson(json1);
 
-        Assert.assertEquals(GetChatHistoryRequestMessage2x.GET_CHAT_HISTORY_REQUEST, msg1.header.name);
+        Assert.assertEquals(GetChatHistoryRequestMessage2x.NAME, msg1.header.name);
         Assert.assertEquals(meetingID, msg1.payload.meetingID);
         Assert.assertEquals(replyTo, msg1.payload.replyTo);
         Assert.assertEquals(requesterID, msg1.payload.requesterID);

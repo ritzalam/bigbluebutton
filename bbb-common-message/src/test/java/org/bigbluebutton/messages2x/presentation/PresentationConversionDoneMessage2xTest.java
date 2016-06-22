@@ -60,7 +60,7 @@ public class PresentationConversionDoneMessage2xTest {
         System.out.println(json1);
         PresentationConversionDoneMessage2x msg2 = PresentationConversionDoneMessage2x.fromJson(json1);
 
-        Assert.assertEquals(PresentationConversionDoneMessage2x.PRESENTATION_CONVERSION_DONE, msg1.header.name);
+        Assert.assertEquals(PresentationConversionDoneMessage2x.NAME, msg1.header.name);
         Assert.assertEquals(meetingID, msg1.payload.meetingID);
         Assert.assertEquals(2, msg1.payload.presentation.pages.length);
         Assert.assertTrue(msg1.payload.presentation.current);

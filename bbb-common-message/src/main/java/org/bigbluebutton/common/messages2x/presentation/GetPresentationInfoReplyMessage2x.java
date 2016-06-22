@@ -8,14 +8,13 @@ import org.boon.json.ObjectMapper;
 
 public class GetPresentationInfoReplyMessage2x extends AbstractEventMessage {
 
-    public static final String GET_PRESENTATION_INFO_REPLY_MESSAGE =
-            "GetPresentationInfoReplyMessage";
+    public static final String NAME = "GetPresentationInfoReplyMessage";
     public final Payload payload;
 
     public GetPresentationInfoReplyMessage2x(String meetingID, String requesterID, Presenter
             presenter, Presentation[] presentations) {
         super();
-        header.name = GET_PRESENTATION_INFO_REPLY_MESSAGE;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

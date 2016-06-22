@@ -5,12 +5,12 @@ import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
 public class PresentationRemovedMessage2x extends AbstractEventMessage {
-    public static final String PRESENTATION_REMOVED_MESSAGE = "PresentationRemovedMessage";
+    public static final String NAME = "PresentationRemovedMessage";
     public final Payload payload;
 
     public PresentationRemovedMessage2x(String meetingID, String presentationID) {
         super();
-        header.name = PRESENTATION_REMOVED_MESSAGE;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

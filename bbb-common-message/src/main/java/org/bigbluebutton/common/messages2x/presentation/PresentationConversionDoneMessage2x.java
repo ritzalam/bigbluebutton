@@ -8,13 +8,13 @@ import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
 public class PresentationConversionDoneMessage2x extends AbstractEventMessage {
-    public static final String PRESENTATION_CONVERSION_DONE = "PresentationConversionDoneMessage";
+    public static final String NAME = "PresentationConversionDoneMessage";
     public final Payload payload;
 
     public PresentationConversionDoneMessage2x(String meetingID, PresentationCode code,
                                                MessageKey messageKey, Presentation presentation) {
         super();
-        header.name = PRESENTATION_CONVERSION_DONE;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

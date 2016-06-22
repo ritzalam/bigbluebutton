@@ -7,12 +7,12 @@ import org.boon.json.ObjectMapper;
 
 public class GoToSlideMessage2x extends AbstractEventMessage {
 
-    public static final String GO_TO_SLIDE_MESSAGE = "GoToSlideMessage";
+    public static final String NAME = "GoToSlideMessage";
     public final Payload payload;
 
     public GoToSlideMessage2x(String meetingID, PresentationPage slide) {
         super();
-        header.name = GO_TO_SLIDE_MESSAGE;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

@@ -1,15 +1,15 @@
-package org.bigbluebutton.common.messages2x.presentation;
+package org.bigbluebutton.common.messages2x.whiteboard;
 
 import org.bigbluebutton.common.messages2x.AbstractEventMessage;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
-public class GetPresentationInfoRequestMessage2x extends AbstractEventMessage {
-
-    public static final String NAME = "GetPresentationInfoRequestMessage2x";
+public class IsWhiteboardEnabledRequestMessage2x extends AbstractEventMessage {
+    public static final String NAME = "IsWhiteboardEnabledRequestMessage";
     public final Payload payload;
 
-    public GetPresentationInfoRequestMessage2x(String meetingID, String requesterID, String replyTo) {
+    public IsWhiteboardEnabledRequestMessage2x(String meetingID, String requesterID, String
+            replyTo) {
         super();
         header.name = NAME;
 
@@ -19,9 +19,9 @@ public class GetPresentationInfoRequestMessage2x extends AbstractEventMessage {
         payload.replyTo = replyTo;
     }
 
-    public static GetPresentationInfoRequestMessage2x fromJson(String message) {
+    public static IsWhiteboardEnabledRequestMessage2x fromJson(String message) {
         ObjectMapper mapper = JsonFactory.create();
-        return mapper.readValue(message, GetPresentationInfoRequestMessage2x.class);
+        return mapper.readValue(message, IsWhiteboardEnabledRequestMessage2x.class);
     }
 
     public class Payload {

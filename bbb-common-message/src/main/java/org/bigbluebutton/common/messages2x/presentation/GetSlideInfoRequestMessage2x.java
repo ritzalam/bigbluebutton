@@ -6,13 +6,12 @@ import org.boon.json.ObjectMapper;
 
 public class GetSlideInfoRequestMessage2x extends AbstractEventMessage {
 
-    public static final String GET_SLIDE_INFO_REQUEST_MESSAGE =
-            "GetSlideInfoRequestMessage2x";
+    public static final String NAME = "GetSlideInfoRequestMessage2x";
     public final GetSlideInfoRequestMessage2x.Payload payload;
 
     public GetSlideInfoRequestMessage2x(String meetingID, String requesterID, String replyTo) {
         super();
-        header.name = GET_SLIDE_INFO_REQUEST_MESSAGE;
+        header.name = NAME;
 
         this.payload = new GetSlideInfoRequestMessage2x.Payload();
         payload.meetingID = meetingID;

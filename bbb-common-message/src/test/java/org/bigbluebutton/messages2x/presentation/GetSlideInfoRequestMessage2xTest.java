@@ -21,7 +21,7 @@ public class GetSlideInfoRequestMessage2xTest {
 
         GetSlideInfoRequestMessage2x msg2 = GetSlideInfoRequestMessage2x.fromJson(json1);
 
-        Assert.assertEquals(GetSlideInfoRequestMessage2x.GET_SLIDE_INFO_REQUEST_MESSAGE,
+        Assert.assertEquals(GetSlideInfoRequestMessage2x.NAME,
                 msg1.header.name);
         Assert.assertEquals(meetingID, msg1.payload.meetingID);
         Assert.assertEquals(replyTo, msg1.payload.replyTo);

@@ -7,13 +7,13 @@ import org.boon.json.ObjectMapper;
 
 public class GetSlideInfoReplyMessage2x extends AbstractEventMessage {
 
-    public static final String GET_SLIDE_INFO_REPLY = "GetSlideInfoReplyMessage";
+    public static final String NAME = "GetSlideInfoReplyMessage";
     public final Payload payload;
 
     public GetSlideInfoReplyMessage2x(String meetingID, String requesterID,
                                       PresentationPage slide) {
         super();
-        header.name = GET_SLIDE_INFO_REPLY;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

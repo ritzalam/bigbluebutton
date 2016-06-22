@@ -19,7 +19,7 @@ public class PresentationRemovedMessage2xTest {
         System.out.println(json1);
         PresentationRemovedMessage2x msg2 = PresentationRemovedMessage2x.fromJson(json1);
 
-        Assert.assertEquals(PresentationRemovedMessage2x.PRESENTATION_REMOVED_MESSAGE,
+        Assert.assertEquals(PresentationRemovedMessage2x.NAME,
                 msg2.header.name);
         Assert.assertEquals(meetingID, msg2.payload.meetingID);
         Assert.assertEquals(presentationID, msg2.payload.presentationID);

@@ -7,12 +7,12 @@ import org.boon.json.ObjectMapper;
 
 public class SendPrivateChatMessage2x extends AbstractEventMessage {
 
-    public static final String SEND_PRIVATE_CHAT_MESSAGE = "SendPrivateChatMessage";
+    public static final String NAME = "SendPrivateChatMessage";
     public final Payload payload;
 
     public SendPrivateChatMessage2x(String meetingID, String requesterID, ChatMessage chatMessage) {
         super();
-        header.name = SEND_PRIVATE_CHAT_MESSAGE;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

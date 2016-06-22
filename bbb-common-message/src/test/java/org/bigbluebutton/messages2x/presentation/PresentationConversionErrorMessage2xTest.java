@@ -27,7 +27,7 @@ public class PresentationConversionErrorMessage2xTest {
         PresentationConversionErrorMessage2x msg2 = PresentationConversionErrorMessage2x.fromJson
                 (json1);
 
-        Assert.assertEquals(PresentationConversionErrorMessage2x.PRESENTATION_CONVERSION_ERROR,
+        Assert.assertEquals(PresentationConversionErrorMessage2x.NAME,
                 msg2.header.name);
         Assert.assertEquals(meetingID, msg2.payload.meetingID);
         Assert.assertEquals(new Integer(6), msg2.payload.numPages);

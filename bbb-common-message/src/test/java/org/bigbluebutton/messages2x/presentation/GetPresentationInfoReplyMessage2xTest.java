@@ -103,7 +103,7 @@ public class GetPresentationInfoReplyMessage2xTest {
 
         GetPresentationInfoReplyMessage2x msg2 = GetPresentationInfoReplyMessage2x.fromJson(json1);
 
-        Assert.assertEquals(GetPresentationInfoReplyMessage2x.GET_PRESENTATION_INFO_REPLY_MESSAGE,
+        Assert.assertEquals(GetPresentationInfoReplyMessage2x.NAME,
                 msg1.header.name);
         Assert.assertEquals(meetingID, msg1.payload.meetingID);
         Assert.assertEquals(requesterID, msg1.payload.requesterID);

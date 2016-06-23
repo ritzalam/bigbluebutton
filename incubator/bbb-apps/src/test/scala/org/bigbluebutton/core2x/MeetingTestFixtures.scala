@@ -38,8 +38,8 @@ trait MeetingTestFixtures {
     du30Welcome,
     du30DialNums,
     PinNumber(85115001),
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val du30User = User3x.create(du30IntUserId, du30ExtUserId, du30UserName, du30Roles)
 
@@ -64,8 +64,8 @@ trait MeetingTestFixtures {
     mdsWelcome,
     mdsDialNums,
     PinNumber(85115002),
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val mdsUser = User3x.create(mdsIntUserId, mdsExtUserId, mdsUserName, mdsRoles)
 
@@ -90,8 +90,8 @@ trait MeetingTestFixtures {
     graceWelcome,
     graceDialNums,
     PinNumber(85115003),
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val graceUser = User3x.create(graceIntUserId, graceExtUserId, graceUserName, graceRoles)
 
@@ -116,8 +116,8 @@ trait MeetingTestFixtures {
     marWelcome,
     marDialNums,
     PinNumber(85115004),
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val marUser = User3x.create(marIntUserId, marExtUserId, marUserName, marRoles)
 
@@ -142,8 +142,8 @@ trait MeetingTestFixtures {
     jbWelcome,
     jbDialNums,
     PinNumber(85115005),
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val jbUser = User3x.create(marIntUserId, marExtUserId, marUserName, marRoles)
 
@@ -185,8 +185,8 @@ trait MeetingTestFixtures {
     du30LogoutUrl,
     du30Welcome,
     du30DialNums,
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val du30ValidateAuthTokenCommand = new ValidateAuthToken(
     piliIntMeetingId,

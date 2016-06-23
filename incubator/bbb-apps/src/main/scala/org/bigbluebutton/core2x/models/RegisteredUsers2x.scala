@@ -9,15 +9,15 @@ object RegisteredUsers2x {
     welcome: Welcome,
     dialNumbers: Set[DialNumber],
     pinNumber: PinNumber,
-    config: Set[String],
-    extData: Set[String]): RegisteredUser2x = {
+    config: String,
+    extData: String): RegisteredUser2x = {
     new RegisteredUser2x(userId, extId, name, roles, token, avatar: Avatar,
       logoutUrl: LogoutUrl,
       welcome: Welcome,
       dialNumbers: Set[DialNumber],
       pinNumber: PinNumber,
-      config: Set[String],
-      extData: Set[String])
+      config: String,
+      extData: String)
   }
 
   def findWithToken(token: AuthToken, users: Vector[RegisteredUser2x]): Option[RegisteredUser2x] = {

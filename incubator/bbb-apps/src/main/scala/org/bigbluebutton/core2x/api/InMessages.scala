@@ -101,8 +101,8 @@ object IncomingMessage {
     logoutUrl: LogoutUrl,
     welcome: Welcome,
     dialNumbers: Set[DialNumber],
-    config: Set[String],
-    extData: Set[String]) extends InMessage2x
+    config: String,
+    extData: String) extends InMessage2x
   case class RegisterUser(
     meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[String],
     extUserId: ExtUserId, authToken: AuthToken) extends InMessage2x

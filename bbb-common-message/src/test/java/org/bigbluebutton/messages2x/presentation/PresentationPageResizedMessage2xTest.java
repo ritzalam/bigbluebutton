@@ -31,9 +31,9 @@ public class PresentationPageResizedMessage2xTest {
                 page1);
 
         String json1 = msg1.toJson();
-        System.out.println(json1);
+        // System.out.println(json1);
         PresentationPageResizedMessage2x msg2 = PresentationPageResizedMessage2x.fromJson(json1);
-        System.out.println("___" + msg2.payload.page.xOffset);
+        // System.out.println("___" + msg2.payload.page.xOffset);
 
         Assert.assertEquals(PresentationPageResizedMessage2x.NAME,
                 msg2.header.name);

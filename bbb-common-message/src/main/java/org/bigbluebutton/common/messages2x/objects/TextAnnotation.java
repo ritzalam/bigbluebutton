@@ -15,12 +15,12 @@ public class TextAnnotation {
     public Double calcedFontSize;
     public String dataPoints; // why String? TODO
     public AnnotationStatus status;
-    public String shapeID;
-    public final ShapeType shapeType = ShapeType.TEXT;
+    public String annotationID;
+    public final AnnotationType annotationType = AnnotationType.TEXT;
 
     public TextAnnotation(String text, Double textBoxHeight, Double textBoxWidth, Integer
             fontColor, Integer fontSize, Double x, Double y, Double calcedFontSize, String
-            dataPoints, AnnotationStatus status, String shapeID) {
+            dataPoints, AnnotationStatus status, String annotationID) {
         this.text = text;
         this.textBoxHeight = textBoxHeight;
         this.textBoxWidth = textBoxWidth;
@@ -31,7 +31,7 @@ public class TextAnnotation {
         this.calcedFontSize = calcedFontSize;
         this.dataPoints = dataPoints;
         this.status = status;
-        this.shapeID = shapeID;
+        this.annotationID = annotationID;
     }
 
     public static TextAnnotation fromJson(String message) {

@@ -24,7 +24,7 @@ public class SendSlideGeneratedMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         SendSlideGeneratedMessage2x msg2 = SendSlideGeneratedMessage2x.fromJson(json1);
 

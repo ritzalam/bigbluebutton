@@ -17,7 +17,7 @@ public class EnableWhiteboardRequestMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         EnableWhiteboardRequestMessage2x msg2 = EnableWhiteboardRequestMessage2x.fromJson(json1);
 

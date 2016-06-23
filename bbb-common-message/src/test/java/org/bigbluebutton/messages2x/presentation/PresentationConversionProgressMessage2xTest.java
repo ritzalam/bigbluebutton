@@ -21,7 +21,7 @@ public class PresentationConversionProgressMessage2xTest {
                 presentationID, code, messageKey, presentationName);
 
         String json1 = msg1.toJson();
-        System.out.println(json1);
+        // System.out.println(json1);
         PresentationConversionProgressMessage2x msg2 = PresentationConversionProgressMessage2x.fromJson(json1);
 
         Assert.assertEquals(PresentationConversionProgressMessage2x.NAME,

@@ -17,7 +17,7 @@ public class PresentationCursorUpdateMessage2xTest  {
                 xPercent, yPercent);
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         PresentationCursorUpdateMessage2x msg2 = PresentationCursorUpdateMessage2x.fromJson(json1);
 

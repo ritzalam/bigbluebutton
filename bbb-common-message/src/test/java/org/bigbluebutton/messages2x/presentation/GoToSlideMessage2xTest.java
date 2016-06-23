@@ -31,7 +31,7 @@ public class GoToSlideMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         GoToSlideMessage2x msg2 = GoToSlideMessage2x.fromJson(json1);
 

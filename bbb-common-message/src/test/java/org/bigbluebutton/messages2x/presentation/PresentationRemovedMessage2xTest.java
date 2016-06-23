@@ -16,7 +16,7 @@ public class PresentationRemovedMessage2xTest {
                 presentationID);
 
         String json1 = msg1.toJson();
-        System.out.println(json1);
+        // System.out.println(json1);
         PresentationRemovedMessage2x msg2 = PresentationRemovedMessage2x.fromJson(json1);
 
         Assert.assertEquals(PresentationRemovedMessage2x.NAME,

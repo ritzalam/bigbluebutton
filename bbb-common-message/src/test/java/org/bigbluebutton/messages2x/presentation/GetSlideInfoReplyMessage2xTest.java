@@ -32,7 +32,7 @@ public class GetSlideInfoReplyMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         GetSlideInfoReplyMessage2x msg2 = GetSlideInfoReplyMessage2x.fromJson(json1);
 

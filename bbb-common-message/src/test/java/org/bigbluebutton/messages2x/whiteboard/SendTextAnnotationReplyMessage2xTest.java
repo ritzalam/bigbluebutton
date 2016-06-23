@@ -1,7 +1,7 @@
 package org.bigbluebutton.messages2x.whiteboard;
 
 import org.bigbluebutton.common.messages2x.objects.AnnotationStatus;
-import org.bigbluebutton.common.messages2x.objects.ShapeType;
+import org.bigbluebutton.common.messages2x.objects.AnnotationType;
 import org.bigbluebutton.common.messages2x.objects.TextAnnotation;
 import org.bigbluebutton.common.messages2x.whiteboard.SendTextAnnotationReplyMessage2x;
 import org.junit.Assert;
@@ -26,17 +26,17 @@ public class SendTextAnnotationReplyMessage2xTest {
         Double calcedFontSize = 2.7863777;
         String dataPoints = "84.52381,41.795666"; // why String? TODO
         AnnotationStatus status = AnnotationStatus.DRAW_END;
-        String shapeID = "bla_shape_132";
+        String annotationID = "bla_shape_132";
 
         TextAnnotation shape = new TextAnnotation(text, textBoxHeight, textBoxWidth, fontColor,
-                fontSize, x, y, calcedFontSize, dataPoints, status, shapeID);
+                fontSize, x, y, calcedFontSize, dataPoints, status, annotationID);
 
         SendTextAnnotationReplyMessage2x msg1 = new SendTextAnnotationReplyMessage2x(meetingID,
                 requesterID, whiteboardID, shape);
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         SendTextAnnotationReplyMessage2x msg2 = SendTextAnnotationReplyMessage2x.fromJson(json1);
 
@@ -52,8 +52,8 @@ public class SendTextAnnotationReplyMessage2xTest {
         Assert.assertEquals(calcedFontSize, msg2.payload.shape.calcedFontSize);
         Assert.assertEquals(dataPoints, msg2.payload.shape.dataPoints);
         Assert.assertEquals(status, msg2.payload.shape.status);
-        Assert.assertEquals(shapeID, msg2.payload.shape.shapeID);
-        Assert.assertEquals(ShapeType.TEXT, msg2.payload.shape.shapeType);
+        Assert.assertEquals(annotationID, msg2.payload.shape.annotationID);
+        Assert.assertEquals(AnnotationType.TEXT, msg2.payload.shape.annotationType);
 
         Assert.assertEquals(whiteboardID, msg2.payload.whiteboardID);
         Assert.assertEquals(requesterID, msg2.payload.requesterID);

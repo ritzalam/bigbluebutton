@@ -5,7 +5,7 @@ import org.boon.json.ObjectMapper;
 
 public class ShapeAnnotation {
 
-    public ShapeType shapeType;
+    public AnnotationType annotationType;
     public Double[] points;
     public Integer color;
     public Boolean transparency;
@@ -13,10 +13,10 @@ public class ShapeAnnotation {
     public String shapeID;
     public Integer thickness;
 
-    public ShapeAnnotation(ShapeType shapeType, Double[] points, Integer color,
+    public ShapeAnnotation(AnnotationType annotationType, Double[] points, Integer color,
                            Boolean transparency, AnnotationStatus status,
                            String shapeID, Integer thickness) {
-        this.shapeType = shapeType;
+        this.annotationType = annotationType;
         this.points = points;
         this.color = color;
         this.transparency = transparency;

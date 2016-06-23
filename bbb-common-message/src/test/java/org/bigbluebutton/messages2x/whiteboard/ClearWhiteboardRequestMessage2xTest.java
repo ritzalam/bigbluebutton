@@ -18,7 +18,7 @@ public class ClearWhiteboardRequestMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         ClearWhiteboardRequestMessage2x msg2 = ClearWhiteboardRequestMessage2x.fromJson(json1);
 

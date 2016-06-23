@@ -17,7 +17,7 @@ public class SharePresentationMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         SharePresentationMessage2x msg2 = SharePresentationMessage2x.fromJson(json1);
 

@@ -18,7 +18,7 @@ public class GetChatHistoryRequestMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         GetChatHistoryRequestMessage2x msg2 = GetChatHistoryRequestMessage2x.fromJson(json1);
 

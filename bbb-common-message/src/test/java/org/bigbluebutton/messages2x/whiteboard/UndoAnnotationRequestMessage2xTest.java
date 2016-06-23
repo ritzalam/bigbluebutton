@@ -17,7 +17,7 @@ public class UndoAnnotationRequestMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         UndoAnnotationRequestMessage2x msg2 = UndoAnnotationRequestMessage2x.fromJson(json1);
 

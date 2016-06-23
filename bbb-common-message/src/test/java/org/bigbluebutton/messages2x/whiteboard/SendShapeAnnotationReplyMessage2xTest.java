@@ -1,8 +1,8 @@
 package org.bigbluebutton.messages2x.whiteboard;
 
 import org.bigbluebutton.common.messages2x.objects.AnnotationStatus;
+import org.bigbluebutton.common.messages2x.objects.AnnotationType;
 import org.bigbluebutton.common.messages2x.objects.ShapeAnnotation;
-import org.bigbluebutton.common.messages2x.objects.ShapeType;
 import org.bigbluebutton.common.messages2x.whiteboard.SendShapeAnnotationReplyMessage2x;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class SendShapeAnnotationReplyMessage2xTest {
         String requesterID = "req123";
         String whiteboardID = "wbd123";
 
-        ShapeType shapeType = ShapeType.TRIANGLE;
+        AnnotationType annotationType = AnnotationType.TRIANGLE;
         Double[] points = new Double[] { 86.71893, 10.835914, 89.04181, 28.034056 };
 
         Integer color = 0;
@@ -25,7 +25,7 @@ public class SendShapeAnnotationReplyMessage2xTest {
         String shapeID = "bla_shape_132";
         Integer thickness = 1;
 
-        ShapeAnnotation shape = new ShapeAnnotation(shapeType, points, color, transparency,
+        ShapeAnnotation shape = new ShapeAnnotation(annotationType, points, color, transparency,
                 status, shapeID, thickness);
 
         SendShapeAnnotationReplyMessage2x msg1 = new SendShapeAnnotationReplyMessage2x(meetingID,
@@ -33,13 +33,13 @@ public class SendShapeAnnotationReplyMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         SendShapeAnnotationReplyMessage2x msg2 = SendShapeAnnotationReplyMessage2x.fromJson(json1);
 
         Assert.assertEquals(SendShapeAnnotationReplyMessage2x.NAME, msg2.header.name);
         Assert.assertEquals(meetingID, msg2.payload.meetingID);
-        Assert.assertEquals(ShapeType.TRIANGLE, msg2.payload.shape.shapeType);
+        Assert.assertEquals(AnnotationType.TRIANGLE, msg2.payload.shape.annotationType);
         Assert.assertArrayEquals(points, msg2.payload.shape.points);
         Assert.assertEquals(color, msg2.payload.shape.color);
         Assert.assertEquals(transparency, msg2.payload.shape.transparency);

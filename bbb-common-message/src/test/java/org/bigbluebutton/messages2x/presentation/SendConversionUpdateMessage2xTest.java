@@ -22,7 +22,7 @@ public class SendConversionUpdateMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         SendConversionUpdateMessage2x msg2 = SendConversionUpdateMessage2x.fromJson(json1);
 

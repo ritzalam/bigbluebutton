@@ -51,7 +51,7 @@ public class PresentationSharedMessage2xTest {
         PresentationSharedMessage2x msg1 = new PresentationSharedMessage2x(meetingID, presentation);
 
         String json1 = msg1.toJson();
-        System.out.println(json1);
+        // System.out.println(json1);
         PresentationSharedMessage2x msg2 = PresentationSharedMessage2x.fromJson(json1);
 
         Assert.assertEquals(PresentationSharedMessage2x.NAME,

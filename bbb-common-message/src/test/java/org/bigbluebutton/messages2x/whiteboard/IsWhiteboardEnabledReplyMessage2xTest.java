@@ -17,7 +17,7 @@ public class IsWhiteboardEnabledReplyMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         IsWhiteboardEnabledReplyMessage2x msg2 = IsWhiteboardEnabledReplyMessage2x.fromJson(json1);
 

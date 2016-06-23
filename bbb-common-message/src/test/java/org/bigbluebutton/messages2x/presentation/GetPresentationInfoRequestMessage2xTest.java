@@ -18,7 +18,7 @@ public class GetPresentationInfoRequestMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         GetPresentationInfoRequestMessage2x msg2 = GetPresentationInfoRequestMessage2x.fromJson(json1);
 

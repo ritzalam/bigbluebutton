@@ -22,7 +22,7 @@ public class PresentationPageGeneratedMessage2xTest {
                 (meetingID, presentationID, numPages, code, messageKey, presentationName,
                         pagesCompleted);
         String json1 = msg1.toJson();
-        System.out.println(json1);
+        // System.out.println(json1);
         PresentationPageGeneratedMessage2x msg2 = PresentationPageGeneratedMessage2x.fromJson(json1);
 
         Assert.assertEquals(PresentationPageGeneratedMessage2x.NAME,

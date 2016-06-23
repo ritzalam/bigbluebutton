@@ -32,7 +32,7 @@ public class SendPublicChatMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         SendPublicChatMessage2x msg2 = SendPublicChatMessage2x.fromJson(json1);
 

@@ -76,16 +76,23 @@ class MeetingActor2x(
 
   val userHandlers = new UserHandlers
 
-  log.debug("MeetingActor2x [" + props.id.value + "]")
   /** Subscribe to meeting and voice events. **/
   bus.subscribe(self, props.id.value)
   bus.subscribe(self, props.voiceConf.value)
 
   def receive = {
-    case msg: RegisterUserRequestInMessage => handleRegisterUser2x(msg)
-    case msg: ValidateAuthTokenRequestInMessage => handleValidateAuthToken2x(msg)
-    case msg: NewUserPresence2x => handleUserJoinWeb2x(msg)
-    case msg: EjectUserFromMeeting => handleEjectUserFromMeeting(msg)
+    case msg: RegisterUserRequestInMessage =>
+      log.debug("Handling RegisterUserRequestInMessage")
+      handleRegisterUser2x(msg)
+    case msg: ValidateAuthTokenRequestInMessage =>
+      log.debug("Handling ValidateAuthTokenRequestInMessage")
+      handleValidateAuthToken2x(msg)
+    case msg: NewUserPresence2x =>
+      log.debug("Handling NewUserPresence2x")
+      handleUserJoinWeb2x(msg)
+    case msg: EjectUserFromMeeting =>
+      log.debug("Handling EjectUserFromMeeting")
+      handleEjectUserFromMeeting(msg)
   }
 
 }

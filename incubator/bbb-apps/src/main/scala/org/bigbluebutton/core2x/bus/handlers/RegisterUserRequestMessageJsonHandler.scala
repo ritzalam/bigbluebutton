@@ -16,6 +16,7 @@ trait RegisterUserRequestMessageJsonHandler extends UnhandledReceivedJsonMessage
   override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
 
     def publish(meetingId: IntMeetingId, msg: RegisterUserRequestInMessage): Unit = {
+      log.debug("publishing message [RegisterUserRequestInMessage]")
       eventBus.publish(
         BigBlueButtonInMessage(meetingId.value, msg))
     }

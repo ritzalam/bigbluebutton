@@ -27,7 +27,7 @@ public class PresentationPageGeneratedMessage2xTest {
 
         Assert.assertEquals(PresentationPageGeneratedMessage2x.NAME,
                 msg2.header.name);
-        Assert.assertEquals(meetingID, msg1.payload.meetingID);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
         Assert.assertEquals(new Integer(4), msg2.payload.pagesCompleted);
         Assert.assertEquals(new Integer(4), msg2.payload.numPages);
         Assert.assertEquals(code, msg2.payload.code);

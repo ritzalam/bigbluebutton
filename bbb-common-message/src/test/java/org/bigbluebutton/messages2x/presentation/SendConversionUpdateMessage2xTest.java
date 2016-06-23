@@ -26,11 +26,11 @@ public class SendConversionUpdateMessage2xTest {
 
         SendConversionUpdateMessage2x msg2 = SendConversionUpdateMessage2x.fromJson(json1);
 
-        Assert.assertEquals(SendConversionUpdateMessage2x.NAME, msg1.header.name);
-        Assert.assertEquals(meetingID, msg1.payload.meetingID);
-        Assert.assertEquals(code, msg1.payload.code);
-        Assert.assertEquals(messageKey, msg1.payload.messageKey);
-        Assert.assertEquals(presName, msg1.payload.presName);
-        Assert.assertEquals(presentationID, msg1.payload.presentationID);
+        Assert.assertEquals(SendConversionUpdateMessage2x.NAME, msg2.header.name);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(code, msg2.payload.code);
+        Assert.assertEquals(messageKey, msg2.payload.messageKey);
+        Assert.assertEquals(presName, msg2.payload.presName);
+        Assert.assertEquals(presentationID, msg2.payload.presentationID);
     }
 }

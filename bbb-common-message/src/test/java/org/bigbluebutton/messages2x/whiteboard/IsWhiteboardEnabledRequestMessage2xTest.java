@@ -23,10 +23,10 @@ public class IsWhiteboardEnabledRequestMessage2xTest {
         IsWhiteboardEnabledRequestMessage2x msg2 = IsWhiteboardEnabledRequestMessage2x.fromJson(json1);
 
         Assert.assertEquals(IsWhiteboardEnabledRequestMessage2x.NAME,
-                msg1.header.name);
-        Assert.assertEquals(meetingID, msg1.payload.meetingID);
-        Assert.assertEquals(replyTo, msg1.payload.replyTo);
-        Assert.assertEquals(requesterID, msg1.payload.requesterID);
+                msg2.header.name);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(replyTo, msg2.payload.replyTo);
+        Assert.assertEquals(requesterID, msg2.payload.requesterID);
     }
 
 }

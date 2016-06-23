@@ -35,9 +35,8 @@ public class GoToSlideMessage2xTest {
 
         GoToSlideMessage2x msg2 = GoToSlideMessage2x.fromJson(json1);
 
-        Assert.assertEquals(GoToSlideMessage2x.NAME,
-                msg1.header.name);
-        Assert.assertEquals(meetingID, msg1.payload.meetingID);
-        Assert.assertEquals(yOffset, msg1.payload.slide.yOffset);
+        Assert.assertEquals(GoToSlideMessage2x.NAME, msg2.header.name);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(yOffset, msg2.payload.slide.yOffset);
     }
 }

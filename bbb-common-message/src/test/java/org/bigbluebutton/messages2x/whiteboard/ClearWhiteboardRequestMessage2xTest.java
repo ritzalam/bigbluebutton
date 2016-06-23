@@ -22,11 +22,10 @@ public class ClearWhiteboardRequestMessage2xTest {
 
         ClearWhiteboardRequestMessage2x msg2 = ClearWhiteboardRequestMessage2x.fromJson(json1);
 
-        Assert.assertEquals(ClearWhiteboardRequestMessage2x.NAME,
-                msg1.header.name);
-        Assert.assertEquals(meetingID, msg1.payload.meetingID);
-        Assert.assertEquals(whiteboardID, msg1.payload.whiteboardID);
-        Assert.assertEquals(requesterID, msg1.payload.requesterID);
+        Assert.assertEquals(ClearWhiteboardRequestMessage2x.NAME, msg2.header.name);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(whiteboardID, msg2.payload.whiteboardID);
+        Assert.assertEquals(requesterID, msg2.payload.requesterID);
     }
 
 }

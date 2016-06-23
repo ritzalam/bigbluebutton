@@ -37,7 +37,7 @@ public class PresentationPageResizedMessage2xTest {
 
         Assert.assertEquals(PresentationPageResizedMessage2x.NAME,
                 msg2.header.name);
-        Assert.assertEquals(meetingID, msg1.payload.meetingID);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
         Assert.assertEquals(new Integer(100), msg2.payload.page.widthRatio);
         Assert.assertEquals(new Integer(0), msg2.payload.page.xOffset);
         Assert.assertEquals(new Integer(1), msg2.payload.page.yOffset);

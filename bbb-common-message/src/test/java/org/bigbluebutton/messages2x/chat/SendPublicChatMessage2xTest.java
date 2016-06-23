@@ -36,9 +36,9 @@ public class SendPublicChatMessage2xTest {
 
         SendPublicChatMessage2x msg2 = SendPublicChatMessage2x.fromJson(json1);
 
-        Assert.assertEquals(msg1.header.name, SendPublicChatMessage2x.NAME);
+        Assert.assertEquals(SendPublicChatMessage2x.NAME, msg2.header.name);
         Assert.assertEquals(msg1.payload.message.fromUserID, msg2.payload.message.fromUserID);
-        Assert.assertEquals(msg1.payload.meetingID, meetingID);
-        Assert.assertEquals(msg1.payload.message.chatType, chatType);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(chatType, msg2.payload.message.chatType);
     }
 }

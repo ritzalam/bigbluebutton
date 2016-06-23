@@ -28,13 +28,13 @@ public class SendConversionCompletedMessage2xTest {
 
         SendConversionCompletedMessage2x msg2 = SendConversionCompletedMessage2x.fromJson(json1);
 
-        Assert.assertEquals(SendConversionCompletedMessage2x.NAME, msg1.header.name);
-        Assert.assertEquals(meetingID, msg1.payload.meetingID);
-        Assert.assertEquals(new Integer(5), msg1.payload.numPages);
-        Assert.assertEquals(presBaseURL, msg1.payload.presBaseURL);
-        Assert.assertEquals(code, msg1.payload.code);
-        Assert.assertEquals(messageKey, msg1.payload.messageKey);
-        Assert.assertEquals(presName, msg1.payload.presName);
-        Assert.assertEquals(presentationID, msg1.payload.presentationID);
+        Assert.assertEquals(SendConversionCompletedMessage2x.NAME, msg2.header.name);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(new Integer(5), msg2.payload.numPages);
+        Assert.assertEquals(presBaseURL, msg2.payload.presBaseURL);
+        Assert.assertEquals(code, msg2.payload.code);
+        Assert.assertEquals(messageKey, msg2.payload.messageKey);
+        Assert.assertEquals(presName, msg2.payload.presName);
+        Assert.assertEquals(presentationID, msg2.payload.presentationID);
     }
 }

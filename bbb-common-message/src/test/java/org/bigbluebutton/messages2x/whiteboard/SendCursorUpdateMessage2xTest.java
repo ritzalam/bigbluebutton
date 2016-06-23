@@ -21,10 +21,10 @@ public class SendCursorUpdateMessage2xTest {
 
         SendCursorUpdateMessage2x msg2 = SendCursorUpdateMessage2x.fromJson(json1);
 
-        Assert.assertEquals(SendCursorUpdateMessage2x.NAME, msg1.header.name);
-        Assert.assertEquals(meetingID, msg1.payload.meetingID);
-        Assert.assertEquals(xPercent, msg1.payload.xPercent);
-        Assert.assertEquals(yPercent, msg1.payload.yPercent);
+        Assert.assertEquals(SendCursorUpdateMessage2x.NAME, msg2.header.name);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(xPercent, msg2.payload.xPercent);
+        Assert.assertEquals(yPercent, msg2.payload.yPercent);
     }
 
 }

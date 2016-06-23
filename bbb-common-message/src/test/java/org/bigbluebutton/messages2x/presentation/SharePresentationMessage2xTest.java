@@ -21,9 +21,9 @@ public class SharePresentationMessage2xTest {
 
         SharePresentationMessage2x msg2 = SharePresentationMessage2x.fromJson(json1);
 
-        Assert.assertEquals(SharePresentationMessage2x.NAME, msg1.header.name);
-        Assert.assertEquals(meetingID, msg1.payload.meetingID);
-        Assert.assertEquals(share, msg1.payload.share);
-        Assert.assertEquals(presentationID, msg1.payload.presentationID);
+        Assert.assertEquals(SharePresentationMessage2x.NAME, msg2.header.name);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(share, msg2.payload.share);
+        Assert.assertEquals(presentationID, msg2.payload.presentationID);
     }
 }

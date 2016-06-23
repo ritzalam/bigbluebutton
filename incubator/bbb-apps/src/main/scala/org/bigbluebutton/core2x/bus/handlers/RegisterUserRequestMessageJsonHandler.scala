@@ -61,8 +61,14 @@ trait RegisterUserRequestMessageJsonHandlerHelper {
 
   def extractRoles(body: UserInfoBody): Set[Role2x] = {
     import scala.collection.convert.wrapAsScala._
+    // convert the list to a set
     val r = asScalaBuffer(body.roles).toSet
-    r.map(b => StringToRoleHelper.convert(b).get)
+    // convert the roles from string to role. This results into
+    // Option(Role), Option(Role), None
+    val x = r.map(b => StringToRoleHelper.convert(b))
+    // Flatten to remove Option and None from above
+    // http://stackoverflow.com/questions/10104558/how-to-filter-nones-out-of-listoption
+    x.flatten
   }
 
   def extractDialInNumbers(body: UserInfoBody): Set[DialNumber] = {

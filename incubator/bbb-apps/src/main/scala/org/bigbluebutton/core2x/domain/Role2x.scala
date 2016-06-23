@@ -2,7 +2,7 @@ package org.bigbluebutton.core2x.domain
 
 object StringToRoleHelper {
   def convert(role: String): Option[Role2x] = {
-    val res = role match {
+    val res = role.toLowerCase match {
       case "moderator" => Some(ModeratorRole)
       case "viewer" => Some(ViewerRole)
       case "presenter" => Some(PresenterRole)

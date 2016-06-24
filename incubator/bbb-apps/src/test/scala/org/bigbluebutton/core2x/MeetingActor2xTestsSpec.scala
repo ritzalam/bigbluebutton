@@ -88,7 +88,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
         meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
         meetingActorRef ! du30ValidateAuthTokenCommand
-        expectMsgClass(classOf[ValidateAuthTokenReply2x])
+        expectMsgClass(classOf[ValidateAuthTokenSuccessReplyOutMessage])
       }
     }
   }
@@ -112,7 +112,7 @@ class MeetingActor2xTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec
         meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
         meetingActorRef ! du30ValidateAuthTokenCommand
-        expectMsgClass(classOf[ValidateAuthTokenReply2x])
+        expectMsgClass(classOf[ValidateAuthTokenSuccessReplyOutMessage])
         meetingActorRef ! du30UserJoinCommand
         expectMsgPF() {
           case event: UserJoinedEvent2x =>

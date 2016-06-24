@@ -188,12 +188,10 @@ trait MeetingTestFixtures {
     "config1",
     "data12")
 
-  val du30ValidateAuthTokenCommand = new ValidateAuthToken(
+  val du30ValidateAuthTokenCommand = new ValidateAuthTokenRequestInMessage(
     piliIntMeetingId,
     du30IntUserId,
-    du30AuthToken,
-    "none",
-    "none")
+    du30AuthToken)
 
   val du30UserJoinCommand: NewUserPresence2x = new NewUserPresence2x(
     piliIntMeetingId,

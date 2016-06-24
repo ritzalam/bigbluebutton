@@ -1,7 +1,5 @@
 package org.bigbluebutton.core2x.handlers.user
 
-import akka.actor.{ ActorContext, ActorLogging }
-import akka.event.Logging
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.api.IncomingMessage._

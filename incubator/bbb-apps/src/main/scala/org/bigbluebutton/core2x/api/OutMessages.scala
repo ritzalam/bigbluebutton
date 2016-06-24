@@ -103,6 +103,14 @@ object OutGoingMessage {
   case class ValidateAuthTokenTimedOut(
     meetingId: IntMeetingId, requesterId: IntUserId,
     token: String, valid: Boolean, correlationId: String) extends IOutMessage
+  case class ValidateAuthTokenSuccessReplyOutMessage(
+    meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
+    extUserId: ExtUserId, authToken: AuthToken, avatar: Avatar,
+    logoutUrl: LogoutUrl,
+    welcome: Welcome,
+    dialNumbers: Set[DialNumber],
+    config: String,
+    extData: String) extends IOutMessage
   case class ValidateAuthTokenReply2x(
     meetingId: IntMeetingId, requesterId: IntUserId,
     token: AuthToken, valid: Boolean) extends IOutMessage

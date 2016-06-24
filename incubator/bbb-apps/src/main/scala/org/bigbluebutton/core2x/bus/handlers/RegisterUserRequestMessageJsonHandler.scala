@@ -66,7 +66,7 @@ trait RegisterUserRequestMessageJsonHandlerHelper {
     val r = asScalaBuffer(body.roles).toSet
     // convert the roles from string to role. This results into
     // Option(Role), Option(Role), None
-    val x = r.map(b => StringToRoleHelper.convert(b))
+    val x = r.map(b => ConvertRoleHelper.convert(b))
     // Flatten to remove Option and None from above
     // http://stackoverflow.com/questions/10104558/how-to-filter-nones-out-of-listoption
     x.flatten

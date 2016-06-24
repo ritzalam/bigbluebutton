@@ -1,8 +1,8 @@
-package org.bigbluebutton.core2x.bus.handlers
+package org.bigbluebutton.core2x
 
 import java.util
 
-trait HandlerTestFixtures {
+trait JsonConversionTestFixtures {
   val piliIntMeetingId = "pili-pinas-2016"
 
   val du30IntUserId = "du30"

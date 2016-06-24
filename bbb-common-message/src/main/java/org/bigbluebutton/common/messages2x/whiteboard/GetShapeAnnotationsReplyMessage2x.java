@@ -7,7 +7,7 @@ import org.boon.json.ObjectMapper;
 
 public class GetShapeAnnotationsReplyMessage2x extends AbstractEventMessage {
 
-    public static final String NAME = "GetAnnotationsReplyMessage";
+    public static final String NAME = "GetShapeAnnotationsReplyMessage";
     public final Payload payload;
 
     public GetShapeAnnotationsReplyMessage2x(String meetingID, String requesterID,

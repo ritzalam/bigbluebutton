@@ -4,7 +4,6 @@ import org.bigbluebutton.common.messages2x.objects.AnnotationStatus;
 import org.bigbluebutton.common.messages2x.objects.AnnotationType;
 import org.bigbluebutton.common.messages2x.objects.ShapeAnnotation;
 import org.bigbluebutton.common.messages2x.whiteboard.GetShapeAnnotationsReplyMessage2x;
-import org.bigbluebutton.common.messages2x.whiteboard.SendShapeAnnotationReplyMessage2x;
 import org.junit.Assert;
 import org.junit.Test;
 

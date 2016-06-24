@@ -1,14 +1,7 @@
 package org.bigbluebutton.red5.pubsub.redis;
 
 import org.bigbluebutton.common.messages.MessagingConstants;
-import org.bigbluebutton.red5.client.MeetingClientMessageSender;
-import org.bigbluebutton.red5.client.PollingClientMessageSender;
-import org.bigbluebutton.red5.client.PresentationClientMessageSender;
-import org.bigbluebutton.red5.client.UserClientMessageSender;
-import org.bigbluebutton.red5.client.ChatClientMessageSender;
-import org.bigbluebutton.red5.client.WhiteboardClientMessageSender;
-import org.bigbluebutton.red5.client.CaptionClientMessageSender;
-import org.bigbluebutton.red5.client.DeskShareMessageSender;
+import org.bigbluebutton.red5.client.*;
 import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
 import org.bigbluebutton.red5.monitoring.BbbAppsIsKeepAliveHandler;
 import org.red5.logging.Red5LoggerFactory;
@@ -27,9 +20,14 @@ public class RedisPubSubMessageHandler implements MessageHandler {
 	private BbbAppsIsKeepAliveHandler bbbAppsIsKeepAliveHandler;
 	private PollingClientMessageSender pollingMessageSender;
 	private CaptionClientMessageSender captionMessageSender;
+
+	private ClientJsonMessageSender clientJsonMessageSender;
 	
 	public void setConnectionInvokerService(ConnectionInvokerService s) {
 		this.service = s;
+
+		clientJsonMessageSender = new ClientJsonMessageSender(service);
+
 		userMessageSender = new UserClientMessageSender(service);
 		meetingMessageSender = new MeetingClientMessageSender(service);
 		chatMessageSender = new ChatClientMessageSender(service);
@@ -46,6 +44,9 @@ public class RedisPubSubMessageHandler implements MessageHandler {
 	
 	@Override
 	public void handleMessage(String pattern, String channel, String message) {
+
+		clientJsonMessageSender.handleUsersMessage(message);
+
 //		System.out.println("in red5 getting message: " + channel + " " + message);
 		if (channel.equalsIgnoreCase(MessagingConstants.FROM_CHAT_CHANNEL)) {
 			chatMessageSender.handleChatMessage(message);
@@ -54,7 +55,6 @@ public class RedisPubSubMessageHandler implements MessageHandler {
 		} else if (channel.equalsIgnoreCase(MessagingConstants.FROM_MEETING_CHANNEL)) {
 			meetingMessageSender.handleMeetingMessage(message);
 		} else if (channel.equalsIgnoreCase(MessagingConstants.FROM_USERS_CHANNEL)) {
-			log.info("trace 0 : " + message);
 			userMessageSender.handleUsersMessage(message);
 		} else if (channel.equalsIgnoreCase(MessagingConstants.FROM_WHITEBOARD_CHANNEL)) {
 			whiteboardMessageSender.handleWhiteboardMessage(message);

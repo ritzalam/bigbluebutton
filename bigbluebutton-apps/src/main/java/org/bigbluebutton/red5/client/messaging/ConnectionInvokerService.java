@@ -169,11 +169,12 @@ public class ConnectionInvokerService {
   }
    
   private void sendDirectMessage(final DirectClientMessage msg) {
-    if (log.isTraceEnabled()) {
+    //if (log.isTraceEnabled()) {
       Gson gson = new Gson();
       String json = gson.toJson(msg.getMessage());
       log.trace("Handle direct message: " + msg.getMessageName() + " msg=" + json);
-    }
+    log.debug("Handle direct message: " + msg.getMessageName() + " msg=" + json);
+   // }
 
     final String sessionId = CONN + msg.getUserID();
     Runnable sender = new Runnable() {

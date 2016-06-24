@@ -33,6 +33,8 @@ package org.bigbluebutton.common.service
     
     public function onMessageFromServer(messageName:String, result:Object):void {
       logger.debug("RECEIVED MESSAGE: [" + messageName + "]");
+      var msg:Object = JSON.parse(result.msg);
+      logger.debug("MESSAGE: \n" + ObjectUtil.toString(msg) + "\n");
       //notifyListeners(messageName, result);
       usersMessageHandler.onMessage(messageName, result);
     }

@@ -43,6 +43,7 @@ class MessageSenderActor(val service: MessageSender)
   val encoder = new ToJsonEncoder()
 
   def receive = {
+
     case msg: UserEjectedFromMeeting => handleUserEjectedFromMeeting(msg)
     case msg: GetChatHistoryReply => handleGetChatHistoryReply(msg)
     case msg: SendPublicMessageEvent => handleSendPublicMessageEvent(msg)

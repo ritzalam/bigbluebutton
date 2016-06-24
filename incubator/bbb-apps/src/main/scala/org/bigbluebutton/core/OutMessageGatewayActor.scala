@@ -1,16 +1,9 @@
 package org.bigbluebutton.core
 
 import akka.actor.Actor
-import akka.actor.ActorRef
 import akka.actor.ActorLogging
 import akka.actor.Props
 import org.bigbluebutton.core.api._
-import java.util.concurrent.TimeUnit
-import org.bigbluebutton.core.util._
-import scala.concurrent.duration._
-import org.bigbluebutton.core.apps.{ PollApp, UsersApp, PresentationApp, LayoutApp, ChatApp, WhiteboardApp, CaptionApp }
-import org.bigbluebutton.core.apps.{ ChatModel, LayoutModel, UsersModel, PollModel, WhiteboardModel, CaptionModel }
-import org.bigbluebutton.core.apps.PresentationModel
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 
 object OutMessageGatewayActor {

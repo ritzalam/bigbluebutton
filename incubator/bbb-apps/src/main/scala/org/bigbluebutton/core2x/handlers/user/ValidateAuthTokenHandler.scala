@@ -7,15 +7,19 @@ import org.bigbluebutton.core2x.domain.{ DialNumber, _ }
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsers2x }
 
 trait ValidateAuthTokenHandler {
+  this: UserActorMessageHandler =>
+
   val outGW: OutMessageGateway
 
   def handleValidateAuthToken2x(msg: ValidateAuthTokenRequestInMessage, meeting: MeetingStateModel): Unit = {
+
     def sendResponse(user: RegisteredUser2x): Unit = {
       val reply = new ValidateAuthTokenSuccessReplyOutMessage(
         msg.meetingId, msg.userId, user.name, user.roles,
         user.extId, user.authToken, user.avatar,
         user.logoutUrl, user.welcome, user.dialNumbers,
         user.config, user.extData)
+      println("Sending ValidateAuthTokenSuccessReplyOutMessage")
       outGW.send(reply)
     }
 

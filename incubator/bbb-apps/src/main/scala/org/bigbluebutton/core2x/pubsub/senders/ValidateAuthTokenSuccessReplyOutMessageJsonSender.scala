@@ -1,8 +1,9 @@
 package org.bigbluebutton.core2x.pubsub.senders
 
 import java.util
-
+import org.bigbluebutton.common.messages.MessagingConstants
 import org.bigbluebutton.core.MessageSender
+import org.bigbluebutton.core2x.MessageSenderActor2x
 import org.bigbluebutton.core2x.api.OutGoingMessage.ValidateAuthTokenSuccessReplyOutMessage
 import org.bigbluebutton.core2x.domain.{ ConvertRoleHelper, DialNumber, Role2x }
 import org.bigbluebutton.messages.{ MessageType, ValidateAuthTokenSuccessMessage }
@@ -11,16 +12,18 @@ import org.bigbluebutton.messages.vo.UserInfoBody
 
 trait ValidateAuthTokenSuccessReplyOutMessageJsonSender
     extends ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelper {
+  this: MessageSenderActor2x =>
 
   val service: MessageSender
 
   def handleValidateAuthTokenSuccessReplyOutMessage(msg: ValidateAuthTokenSuccessReplyOutMessage) {
-    println("**** handleValidateAuthTokenReply *****")
-    //val json = validateAuthTokenReplyToJson(msg)
-    //println("************** Publishing [" + json + "] *******************")
-    //service.send(MessagingConstants.FROM_USERS_CHANNEL, json)
-  }
+    log.debug("**** handleValidateAuthTokenReply *****")
 
+    val message: ValidateAuthTokenSuccessMessage = convert(msg)
+    val json = message.toJson
+    log.debug(json)
+    service.send(MessagingConstants.FROM_USERS_CHANNEL, json)
+  }
 }
 
 trait ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelper {

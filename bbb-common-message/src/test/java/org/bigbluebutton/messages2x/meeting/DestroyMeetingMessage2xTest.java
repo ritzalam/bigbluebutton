@@ -1,6 +1,6 @@
-package org.bigbluebutton.messages2x;
+package org.bigbluebutton.messages2x.meeting;
 
-import org.bigbluebutton.common.messages2x.DestroyMeetingMessage2x;
+import org.bigbluebutton.common.messages2x.meeting.DestroyMeetingMessage2x;
 import org.junit.Assert;
 import org.junit.Test;
 

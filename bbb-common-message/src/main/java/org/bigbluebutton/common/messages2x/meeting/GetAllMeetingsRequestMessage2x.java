@@ -1,5 +1,6 @@
-package org.bigbluebutton.common.messages2x;
+package org.bigbluebutton.common.messages2x.meeting;
 
+import org.bigbluebutton.common.messages2x.AbstractEventMessage;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 

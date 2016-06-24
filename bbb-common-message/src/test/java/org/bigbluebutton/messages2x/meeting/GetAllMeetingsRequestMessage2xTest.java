@@ -1,6 +1,6 @@
-package org.bigbluebutton.messages2x;
+package org.bigbluebutton.messages2x.meeting;
 
-import org.bigbluebutton.common.messages2x.GetAllMeetingsRequestMessage2x;
+import org.bigbluebutton.common.messages2x.meeting.GetAllMeetingsRequestMessage2x;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -9,7 +9,7 @@ import org.junit.Test;
 public class SendPublicChatMessage2xTest {
 
     @Test
-    public void SendPublicChatMessage2() {
+    public void SendPublicChatMessage2x() {
 
         String meetingID = "abc123";
         String requesterID = "dqbdcadojnsh_2";
@@ -32,13 +32,13 @@ public class SendPublicChatMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         SendPublicChatMessage2x msg2 = SendPublicChatMessage2x.fromJson(json1);
 
-        Assert.assertEquals(msg1.header.name, SendPublicChatMessage2x.SEND_PUBLIC_CHAT_MESSAGE);
+        Assert.assertEquals(SendPublicChatMessage2x.NAME, msg2.header.name);
         Assert.assertEquals(msg1.payload.message.fromUserID, msg2.payload.message.fromUserID);
-        Assert.assertEquals(msg1.payload.meetingID, meetingID);
-        Assert.assertEquals(msg1.payload.message.chatType, chatType);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(chatType, msg2.payload.message.chatType);
     }
 }

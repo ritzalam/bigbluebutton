@@ -7,12 +7,12 @@ import org.boon.json.ObjectMapper;
 
 public class SendPublicChatMessage2x extends AbstractEventMessage {
 
-    public static final String SEND_PUBLIC_CHAT_MESSAGE = "SendPublicChatMessage";
+    public static final String NAME = "SendPublicChatMessage";
     public final Payload payload;
 
     public SendPublicChatMessage2x(String meetingID, String requesterID, ChatMessage chatMessage) {
         super();
-        header.name = SEND_PUBLIC_CHAT_MESSAGE;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

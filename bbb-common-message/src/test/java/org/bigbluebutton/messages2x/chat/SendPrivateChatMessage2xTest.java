@@ -31,13 +31,13 @@ public class SendPrivateChatMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         SendPrivateChatMessage2x msg2 = SendPrivateChatMessage2x.fromJson(json1);
 
-        Assert.assertEquals(msg1.header.name, SendPrivateChatMessage2x.SEND_PRIVATE_CHAT_MESSAGE);
-        Assert.assertEquals(msg1.payload.message.fromUserID, msg2.payload.message.fromUserID);
-        Assert.assertEquals(msg1.payload.meetingID, meetingID);
-        Assert.assertEquals(msg1.payload.message.chatType, ChatType.PRIVATE_CHAT);
+        Assert.assertEquals(SendPrivateChatMessage2x.NAME, msg2.header.name);
+        Assert.assertEquals(fromUserID, msg2.payload.message.fromUserID);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(ChatType.PRIVATE_CHAT, msg2.payload.message.chatType);
     }
 }

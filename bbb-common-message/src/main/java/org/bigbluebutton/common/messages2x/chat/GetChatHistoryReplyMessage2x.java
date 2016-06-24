@@ -7,13 +7,13 @@ import org.boon.json.ObjectMapper;
 
 public class GetChatHistoryReplyMessage2x extends AbstractEventMessage {
 
-    public static final String GET_CHAT_HISTORY_REPLY = "GetChatHistoryReplyMessage";
+    public static final String NAME = "GetChatHistoryReplyMessage";
     public final Payload payload;
 
     public GetChatHistoryReplyMessage2x(String meetingID, String requesterID, ChatMessage[]
             chatHistory) {
         super();
-        header.name = GET_CHAT_HISTORY_REPLY;
+        header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;

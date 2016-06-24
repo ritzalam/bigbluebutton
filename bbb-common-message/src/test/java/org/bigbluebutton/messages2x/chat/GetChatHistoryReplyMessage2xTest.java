@@ -60,13 +60,13 @@ public class GetChatHistoryReplyMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         GetChatHistoryReplyMessage2x msg2 = GetChatHistoryReplyMessage2x.fromJson(json1);
 
-        Assert.assertEquals(msg1.header.name, GetChatHistoryReplyMessage2x.GET_CHAT_HISTORY_REPLY);
-        Assert.assertEquals(msg1.payload.chatHistory.length, 3);
-        Assert.assertEquals(msg1.payload.meetingID, meetingID);
-        Assert.assertEquals(msg1.payload.chatHistory[0].message, message1);
+        Assert.assertEquals(GetChatHistoryReplyMessage2x.NAME, msg2.header.name);
+        Assert.assertEquals(3, msg2.payload.chatHistory.length);
+        Assert.assertEquals(meetingID, msg2.payload.meetingID);
+        Assert.assertEquals(message1, msg2.payload.chatHistory[0].message);
     }
 }

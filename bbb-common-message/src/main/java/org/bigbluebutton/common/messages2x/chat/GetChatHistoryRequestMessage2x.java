@@ -1,32 +1,31 @@
 package org.bigbluebutton.common.messages2x.chat;
 
 import org.bigbluebutton.common.messages2x.AbstractEventMessage;
-import org.bigbluebutton.common.messages2x.objects.ChatMessage;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
-public class SendPrivateChatMessage2x extends AbstractEventMessage {
+public class GetChatHistoryRequestMessage2x extends AbstractEventMessage {
 
-    public static final String NAME = "SendPrivateChatMessage";
+    public static final String NAME = "GetChatHistoryRequestMessage";
     public final Payload payload;
 
-    public SendPrivateChatMessage2x(String meetingID, String requesterID, ChatMessage chatMessage) {
+    public GetChatHistoryRequestMessage2x(String meetingID, String requesterID, String replyTo) {
         super();
         header.name = NAME;
 
         this.payload = new Payload();
         payload.meetingID = meetingID;
         payload.requesterID = requesterID;
-        payload.message = chatMessage;
+        payload.replyTo = replyTo;
     }
 
-    public static SendPrivateChatMessage2x fromJson(String message) {
+    public static GetChatHistoryRequestMessage2x fromJson(String message) {
         ObjectMapper mapper = JsonFactory.create();
-        return mapper.readValue(message, SendPrivateChatMessage2x.class);
+        return mapper.readValue(message, GetChatHistoryRequestMessage2x.class);
     }
 
     public class Payload {
-        public ChatMessage message;
+        public String replyTo;
         public String meetingID;
         public String requesterID;
     }

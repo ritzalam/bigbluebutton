@@ -1,7 +1,6 @@
 package org.bigbluebutton.messages2x;
 
 import org.bigbluebutton.common.messages2x.PubSubPongMessage2x;
-import org.boon.core.Sys;
 import org.junit.Assert;
 import org.junit.Test;
 

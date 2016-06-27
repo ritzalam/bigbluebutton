@@ -18,7 +18,7 @@ public class PresenterAssignedMessage2xTest {
 
         String json1 = msg1.toJson();
 
-        System.out.println(json1);
+        // System.out.println(json1);
 
         PresenterAssignedMessage2x msg2 = PresenterAssignedMessage2x.fromJson(json1);
 

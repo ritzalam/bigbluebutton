@@ -1,6 +1,6 @@
 package org.bigbluebutton.common.receivers
 {
-  import org.bigbluebutton.common.handlers.ValidateAuthTokenReplyHandler;
+  import org.bigbluebutton.common.handlers.ValidateAuthTokenSuccessMessageHandler;
   import org.bigbluebutton.common.handlers.ValidateAuthTokenTimedOutHandler;
   import org.bigbluebutton.lib.common.models.IMessageListener;
   
@@ -12,7 +12,7 @@ package org.bigbluebutton.common.receivers
     public var logger:ILogger;
     
     [Inject]
-    public var validateAuthTokenReplyHandler:ValidateAuthTokenReplyHandler;
+    public var validateAuthTokenSuccessMessageHandler:ValidateAuthTokenSuccessMessageHandler;
     
     [Inject]
     public var validateAuthTokenTimedOutHandler:ValidateAuthTokenTimedOutHandler;
@@ -23,8 +23,8 @@ package org.bigbluebutton.common.receivers
         case "validateAuthTokenTimedOut":
           validateAuthTokenTimedOutHandler.handle(message);
           break;
-        case "validateAuthTokenReply":
-          validateAuthTokenReplyHandler.handle(message);
+        case "ValidateAuthTokenSuccessMessage":
+          validateAuthTokenSuccessMessageHandler.handle(message);
           break;
 /*        case "voiceUserTalking":
           handleVoiceUserTalking(message);

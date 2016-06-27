@@ -45,7 +45,7 @@ public class RedisPubSubMessageHandler implements MessageHandler {
 	@Override
 	public void handleMessage(String pattern, String channel, String message) {
 
-		clientJsonMessageSender.handleUsersMessage(message);
+		clientJsonMessageSender.handleJSONMessage(message);
 
 //		System.out.println("in red5 getting message: " + channel + " " + message);
 		if (channel.equalsIgnoreCase(MessagingConstants.FROM_CHAT_CHANNEL)) {

@@ -16,7 +16,7 @@ public class ClientJsonMessageSender {
         this.service = service;
     }
 
-    public void handleUsersMessage(String message) {
+    public void handleJSONMessage(String message) {
         JsonParser parser = new JsonParser();
         JsonObject obj = (JsonObject) parser.parse(message);
 
@@ -87,8 +87,8 @@ public class ClientJsonMessageSender {
             Gson gson = new Gson();
             message.put("msg", gson.toJson(jsonObjectMessage));
 
-           // DirectClientMessage m = new DirectClientMessage(meetingId, receiverId, messageName, message);
-           // service.sendMessage(m);
+           // TODO: Handle system message
+
         }
     }
 

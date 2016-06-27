@@ -38,8 +38,9 @@ public class MessagePublisher {
 
         String msgName = (String) header.get("name");
         if (msgName.equals(ValidateAuthTokenRequestMessage.NAME)) {
-            ValidateAuthTokenRequestMessageHandler handle = new ValidateAuthTokenRequestMessageHandler(sender, connInvokerService);
-            handle.handle(meetingId, userId, json);
+            ValidateAuthTokenRequestMessageHandler handler =
+                    new ValidateAuthTokenRequestMessageHandler(sender, connInvokerService);
+            handler.handle(meetingId, userId, json);
         }
     }
 

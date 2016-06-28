@@ -3,7 +3,7 @@ package org.bigbluebutton.core
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core.bus.BigBlueButtonOutMessage
-import org.bigbluebutton.core.api.IOutMessage
+import org.bigbluebutton.core2x.api.OutGoingMessage.IOutMessage
 
 object OutMessageGateway {
   def apply(outgoingEventBus: OutgoingEventBus) =

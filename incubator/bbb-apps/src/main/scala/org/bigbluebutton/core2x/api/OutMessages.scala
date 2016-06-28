@@ -1,9 +1,10 @@
 package org.bigbluebutton.core2x.api
 
-import org.bigbluebutton.core.api.IOutMessage
 import org.bigbluebutton.core2x.domain._
 
 object OutGoingMessage {
+
+  trait IOutMessage
 
   case class VoiceRecordingStarted(
     meetingId: IntMeetingId, recorded: Recorded,

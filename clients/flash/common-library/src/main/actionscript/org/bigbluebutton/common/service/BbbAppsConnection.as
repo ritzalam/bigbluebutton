@@ -54,7 +54,6 @@ package org.bigbluebutton.common.service
     
     // http://www.adobe.com/devnet/adobe-media-server/articles/real-time-collaboration.html
     public function connect():void {
-
       logger.debug(" Connect");
       netConnection = new NetConnection();
       netConnection.client = serverCallbackHandler;
@@ -62,8 +61,7 @@ package org.bigbluebutton.common.service
       netConnection.addEventListener(AsyncErrorEvent.ASYNC_ERROR, netASyncError);
       netConnection.addEventListener(SecurityErrorEvent.SECURITY_ERROR, netSecurityError);
       netConnection.addEventListener(IOErrorEvent.IO_ERROR, netIOError);
-      
-      
+           
       var bbbAppUrl:String = configModel.getBbbAppUrl();
       var rtmpPattern:RegExp = /rtmp:/;
       

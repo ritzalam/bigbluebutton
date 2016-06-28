@@ -29,6 +29,7 @@ class UserJoinMeetingRequestInMessageActorTestSpec extends TestKit(ActorSystem("
         val state: MeetingStateModel = new MeetingStateModel(piliProps,
           abilities, registeredUsers, users, chats, layouts, polls, whiteboards,
           presentations, breakoutRooms, captions, new MeetingStatus)
+
         val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
         meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])

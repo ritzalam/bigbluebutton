@@ -32,33 +32,6 @@ public class RedisMessageReceiver {
     }
 
     private void setupReceivers() {
-        ChatMessageReceiver chatRx = new ChatMessageReceiver(bbbGW);
-        receivers.add(chatRx);
-
-        LockMessageReceiver lockRx = new LockMessageReceiver(bbbGW);
-        receivers.add(lockRx);
-
-        PresentationMessageListener presRx = new PresentationMessageListener(bbbGW);
-        receivers.add(presRx);
-
-        UsersMessageReceiver usersRx = new UsersMessageReceiver(bbbGW);
-        receivers.add(usersRx);
-
-        WhiteboardMessageReceiver whiteboardRx = new WhiteboardMessageReceiver(bbbGW);
-        receivers.add(whiteboardRx);
-
-        DeskShareMessageReceiver deskShareRx = new DeskShareMessageReceiver(bbbGW);
-        receivers.add(deskShareRx);
-
-        PollingMessageReceiver pollRx = new PollingMessageReceiver(bbbGW);
-        receivers.add(pollRx);
-
-        MeetingMessageReceiver meetingRx = new MeetingMessageReceiver(bbbGW);
-        receivers.add(meetingRx);
-
-        CaptionMessageReceiver captionRx = new CaptionMessageReceiver(bbbGW);
-        receivers.add(captionRx);
-
         ReceivedJsonMessageReceiver2x jsonRx = new ReceivedJsonMessageReceiver2x(bbbGW);
         receivers.add(jsonRx);
     }

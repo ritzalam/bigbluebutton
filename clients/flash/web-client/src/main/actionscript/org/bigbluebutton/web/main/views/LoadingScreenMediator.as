@@ -61,8 +61,7 @@ package org.bigbluebutton.web.main.views {
       
       var joinHost: String = pageHost + "//" + pageURL;
       
-      //joinMeetingSignal.dispatch(joinHost);
-      
+      // Kick-off bootstrap sequence.
       loadConfigSignal.dispatch();  
       
     }

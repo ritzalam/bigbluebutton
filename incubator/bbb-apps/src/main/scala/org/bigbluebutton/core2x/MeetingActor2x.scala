@@ -2,7 +2,6 @@ package org.bigbluebutton.core2x
 
 import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core.bus.IncomingEventBus
 import org.bigbluebutton.core2x.domain.MeetingProperties2x
 import org.bigbluebutton.core2x.models.MeetingStateModel
 import org.bigbluebutton.core2x.api.IncomingMessage._

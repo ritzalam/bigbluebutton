@@ -2,7 +2,6 @@ package org.bigbluebutton.core2x
 
 import akka.actor.ActorContext
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core.bus.IncomingEventBus
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
 import org.bigbluebutton.core2x.domain.{ MeetingExtensionStatus, MeetingProperties2x }
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, _ }

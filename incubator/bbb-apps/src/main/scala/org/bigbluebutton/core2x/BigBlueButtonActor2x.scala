@@ -27,7 +27,7 @@ class BigBlueButtonActor2x(val system: ActorSystem,
 
   def receive = {
     case msg: CreateMeetingRequestInMessage => handleCreateMeeting(msg)
-    // case _ => // do nothing
+    case unhandled => log.warning("Unhandled message:\n" + unhandled)
   }
 
   private def handleCreateMeeting(msg: CreateMeetingRequestInMessage): Unit = {
@@ -36,9 +36,9 @@ class BigBlueButtonActor2x(val system: ActorSystem,
         log.info("Create meeting request. meetingId={}", msg.mProps.id)
         val m = RunningMeeting2x(msg.mProps, outGW, eventBus)
         meetings += m.mProps.id.value -> m
-        outGW.send(new MeetingCreated(m.mProps.id, m.mProps))
+        outGW.send(new MeetingCreatedEventOutMessage(m.mProps.id, m.mProps))
       case Some(m) =>
-        log.info("Meeting already created. meetingID={}", msg.mProps.id)
+        log.info("Meeting already created. meetingId={}", msg.mProps.id)
       // do nothing
     }
   }

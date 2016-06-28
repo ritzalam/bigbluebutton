@@ -46,14 +46,14 @@ trait UsersHandler2x {
 
   }
 
-  def handleUserJoinWeb2x(msg: NewUserPresence2x): Unit = {
+  def handleUserJoinWeb2x(msg: UserJoinMeetingRequestInMessage): Unit = {
 
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
 
-    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserJoinWeb2x(msg, state) }
+    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserJoinMeetingMessage(msg, state) }
 
     // TODO: Keep track if there are still web users in the meeting.
     //          if (Users2x.numberOfWebUsers(meeting.state.users.toVector) > 0) {
@@ -346,7 +346,7 @@ trait UsersHandler2x {
     } yield saveAndSend(user)
 */ }
 
-  def handleEjectUserFromMeeting(msg: EjectUserFromMeeting) {
+  def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMessage) {
     def removeAndEject(user: User3x): Unit = {
       // remove user from list of users
       state.users.remove(user.id)
@@ -354,13 +354,13 @@ trait UsersHandler2x {
       state.registeredUsers.remove(msg.userId)
 
       // Send message to user that he has been ejected.
-      outGW.send(new UserEjectedFromMeeting(state.props.id,
+      outGW.send(new UserEjectedFromMeetingEventOutMessage(state.props.id,
         state.props.recordingProp.recorded,
         msg.userId, msg.ejectedBy))
       // Tell system to disconnect user.
       outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
       // Tell all others that user has left the meeting.
-      outGW.send(new UserLeft2x(state.props.id,
+      outGW.send(new UserLeftEventOutMessage(state.props.id,
         state.props.recordingProp.recorded,
         msg.userId))
     }

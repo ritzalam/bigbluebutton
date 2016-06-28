@@ -193,7 +193,7 @@ trait MeetingTestFixtures {
     du30IntUserId,
     du30AuthToken)
 
-  val du30UserJoinCommand: NewUserPresence2x = new NewUserPresence2x(
+  val du30UserJoinCommand: UserJoinMeetingRequestInMessage = new UserJoinMeetingRequestInMessage(
     piliIntMeetingId,
     du30IntUserId,
     du30AuthToken,

@@ -1,28 +1,30 @@
 package org.bigbluebutton.core2x.handlers.user
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core2x.api.IncomingMessage.NewUserPresence2x
-import org.bigbluebutton.core2x.api.OutGoingMessage.UserJoinedEvent2x
-import org.bigbluebutton.core2x.domain.{ PresenterRole, User3x }
+import org.bigbluebutton.core2x.api.IncomingMessage.UserJoinMeetingRequestInMessage
+import org.bigbluebutton.core2x.api.OutGoingMessage.{ PresenterAssignedEventOutMessage, UserJoinedEvent2x }
+import org.bigbluebutton.core2x.domain.{ Presenter, PresenterRole, User3x }
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsers2x, Users3x }
 
-trait UserJoinedHandler {
+trait UserJoinMeetingMessageHandler {
   val outGW: OutMessageGateway
 
-  def handleUserJoinWeb2x(msg: NewUserPresence2x, meeting: MeetingStateModel): Unit = {
-    def becomePresenter(user: User3x): Unit = {
-      // TODO: Become presenter if only moderator in meeting
+  def handleUserJoinMeetingMessage(msg: UserJoinMeetingRequestInMessage, meeting: MeetingStateModel): Unit = {
+    def becomePresenterIfNeeded(user: User3x): Unit = {
+      // Become presenter if only moderator in meeting
       if (user.isModerator && !Users3x.hasPresenter(meeting.users.toVector)) {
         val u = User3x.add(user, PresenterRole)
         meeting.users.save(u)
         // Send presenter assigned message
+        val newPresenter = new Presenter(u.id, u.name, u.id)
+        outGW.send(new PresenterAssignedEventOutMessage(msg.meetingId, meeting.props.recordingProp.recorded, newPresenter))
       }
     }
 
     def process(user: User3x): Unit = {
       meeting.users.save(user)
       outGW.send(new UserJoinedEvent2x(msg.meetingId, meeting.props.recordingProp.recorded, user))
-      becomePresenter(user)
+      becomePresenterIfNeeded(user)
     }
 
     Users3x.findWithId(msg.userId, meeting.users.toVector) match {

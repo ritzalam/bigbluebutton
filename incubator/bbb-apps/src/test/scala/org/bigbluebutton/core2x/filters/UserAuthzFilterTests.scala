@@ -30,7 +30,7 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar with MeetingTestFi
     val mockOutGW = mock[OutMessageGateway]
     // Create the class under test and pass the mock to it
     val classUnderTest = new UsersHandlerFilterDummy(state, mockOutGW)
-    val ejectUserMsg = new EjectUserFromMeeting(piliIntMeetingId, marIntUserId, du30IntUserId)
+    val ejectUserMsg = new EjectUserFromMeetingInMessage(piliIntMeetingId, marIntUserId, du30IntUserId)
     // Use the class under test
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg)
     // Then verify the class under test used the mock object as expected
@@ -66,7 +66,7 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar with MeetingTestFi
     // Create the class under test and pass the mock to it
     val classUnderTest = new UsersHandlerFilterDummy(state, mockOutGW)
 
-    val ejectUserMsg = new EjectUserFromMeeting(piliIntMeetingId, marIntUserId, mdsIntUserId)
+    val ejectUserMsg = new EjectUserFromMeetingInMessage(piliIntMeetingId, marIntUserId, mdsIntUserId)
 
     // Use the class under test
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg)

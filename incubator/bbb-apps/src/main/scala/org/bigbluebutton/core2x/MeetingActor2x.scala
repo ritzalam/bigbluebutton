@@ -71,7 +71,7 @@ class MeetingActor2x(
   val state: MeetingStateModel) extends Actor with ActorLogging
     with ValidateAuthTokenCommandFilter
     with RegisterUserCommandHandler
-    with UserJoinedCommandHandlerFilter
+    with UserJoinMeetingRequestHandlerFilter
     with EjectUserFromMeetingCommandFilter {
 
   val userHandlers = new UserHandlers
@@ -87,10 +87,10 @@ class MeetingActor2x(
     case msg: ValidateAuthTokenRequestInMessage =>
       log.debug("Handling ValidateAuthTokenRequestInMessage")
       handleValidateAuthToken2x(msg)
-    case msg: NewUserPresence2x =>
+    case msg: UserJoinMeetingRequestInMessage =>
       log.debug("Handling NewUserPresence2x")
-      handleUserJoinWeb2x(msg)
-    case msg: EjectUserFromMeeting =>
+      handleUserJoinMeetingRequestInMessage(msg)
+    case msg: EjectUserFromMeetingInMessage =>
       log.debug("Handling EjectUserFromMeeting")
       handleEjectUserFromMeeting(msg)
   }

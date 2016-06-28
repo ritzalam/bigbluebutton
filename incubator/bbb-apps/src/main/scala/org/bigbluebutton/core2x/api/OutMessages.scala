@@ -17,7 +17,7 @@ object OutGoingMessage {
   case class GetRecordingStatusReply(
     meetingId: IntMeetingId, recorded: Recorded,
     userId: IntUserId, recording: Boolean) extends IOutMessage
-  case class MeetingCreated(meetingId: IntMeetingId, mProps: MeetingProperties2x) extends IOutMessage
+  case class MeetingCreatedEventOutMessage(meetingId: IntMeetingId, mProps: MeetingProperties2x) extends IOutMessage
   case class MeetingMuted(
     meetingId: IntMeetingId, recorded: Recorded, meetingMuted: Boolean) extends IOutMessage
   case class MeetingEnded(
@@ -82,14 +82,12 @@ object OutGoingMessage {
     meetingId: IntMeetingId, recorded: Recorded, user: RegisteredUser2x) extends IOutMessage
   case class UserRegistered(
     meetingId: IntMeetingId, recorded: Recorded, user: RegisteredUser) extends IOutMessage
-  case class UserLeft2x(
+  case class UserLeftEventOutMessage(
     meetingId: IntMeetingId, recorded: Recorded, userId: IntUserId) extends IOutMessage
-  case class UserLeft(
-    meetingId: IntMeetingId, recorded: Recorded, user: UserVO) extends IOutMessage
-  case class UserEjectedFromMeeting(
+  case class UserEjectedFromMeetingEventOutMessage(
     meetingId: IntMeetingId, recorded: Recorded,
     userId: IntUserId, ejectedBy: IntUserId) extends IOutMessage
-  case class PresenterAssigned(
+  case class PresenterAssignedEventOutMessage(
     meetingId: IntMeetingId, recorded: Recorded,
     presenter: Presenter) extends IOutMessage
   case class EjectAllVoiceUsers(

@@ -13,6 +13,7 @@ import org.bigbluebutton.common.messages.StartCustomPollRequestMessage
 import org.bigbluebutton.common.messages.PubSubPingMessage
 import org.bigbluebutton.messages._
 import akka.event.Logging
+import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core2x.api.IncomingMessage.CreateMeetingRequestInMessage
 import org.bigbluebutton.core2x.domain.{ Permissions => _, Role => _, _ }
 import org.bigbluebutton.core2x.BigBlueButtonActor2x
@@ -24,23 +25,21 @@ class BigBlueButtonInGW(
     eventBus: IncomingEventBus,
     outGW: OutMessageGateway,
     eventBus2x: IncomingEventBus2x,
-    incomingJsonMessageBus: IncomingJsonMessageBus,
-    val red5DeskShareIP: String,
-    val red5DeskShareApp: String) extends IBigBlueButtonInGW {
+    incomingJsonMessageBus: IncomingJsonMessageBus) extends IBigBlueButtonInGW with SystemConfiguration {
 
   val log = Logging(system, getClass)
   //  val bbbActor = system.actorOf(BigBlueButtonActor.props(system, eventBus, outGW), "bigbluebutton-actor")
   //  eventBus.subscribe(bbbActor, "meeting-manager")
 
   val bbbActor2x = system.actorOf(BigBlueButtonActor2x.props(system, eventBus2x, outGW), "bigbluebutton-actor2x")
-  eventBus2x.subscribe(bbbActor2x, "meeting-manager")
+  eventBus2x.subscribe(bbbActor2x, meetingManagerChannel)
 
   def handleBigBlueButtonMessage(message: IBigBlueButtonMessage) {
     message match {
       case msg: StartCustomPollRequestMessage => {
         eventBus.publish(
           BigBlueButtonEvent(
-            "meeting-manager",
+            meetingManagerChannel,
             new StartCustomPollRequest(
               msg.payload.meetingId,
               msg.payload.requesterId,
@@ -50,7 +49,7 @@ class BigBlueButtonInGW(
       case msg: PubSubPingMessage => {
         eventBus.publish(
           BigBlueButtonEvent(
-            "meeting-manager",
+            meetingManagerChannel,
             new PubSubPing(msg.payload.system, msg.payload.timestamp)))
       }
 
@@ -91,7 +90,7 @@ class BigBlueButtonInGW(
           recProp
         )
 
-        eventBus2x.publish(BigBlueButtonInMessage("meeting-manager", new CreateMeetingRequestInMessage(IntMeetingId(msg.payload.id), mProps2x)))
+        eventBus2x.publish(BigBlueButtonInMessage(meetingManagerChannel, new CreateMeetingRequestInMessage(IntMeetingId(msg.payload.id), mProps2x)))
 
       }
     }

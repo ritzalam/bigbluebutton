@@ -12,18 +12,10 @@ object MessageSenderActor2x {
 
 class MessageSenderActor2x(val service: MessageSender)
     extends Actor with ActorLogging
-    with MeetingCreatedEventSender
-    with UserJoinedEventSender
-    with UserRegisteredEventSender
-    with ValidateAuthTokenSuccessReplyOutMessageJsonSender
-    with ValidateAuthTokenTimedOutEventSender {
+    with ValidateAuthTokenSuccessReplyOutMessageJsonSender {
 
   def receive = {
-    case msg: MeetingCreated => handleMeetingCreated(msg)
-    case msg: UserRegisteredEvent2x => handleUserRegistered(msg)
     case msg: ValidateAuthTokenSuccessReplyOutMessage => handleValidateAuthTokenSuccessReplyOutMessage(msg)
-    case msg: ValidateAuthTokenTimedOut => handleValidateAuthTokenTimedOut(msg)
-    case msg: UserJoinedEvent2x => handleUserJoinedEvent2x(msg)
     case _ => // do nothing
   }
 

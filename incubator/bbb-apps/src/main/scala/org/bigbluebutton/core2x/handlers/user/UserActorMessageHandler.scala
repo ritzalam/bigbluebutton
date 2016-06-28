@@ -11,11 +11,11 @@ class UserActorMessageHandler(
   val outGW: OutMessageGateway)
     extends SystemConfiguration
     with ValidateAuthTokenHandler
-    with UserJoinedHandler {
+    with UserJoinMeetingMessageHandler {
 
   val userState: UserState = new UserState(user)
 
-  def handleEjectUserFromMeeting(msg: EjectUserFromMeeting, meeting: MeetingStateModel): Unit = {
+  def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMessage, meeting: MeetingStateModel): Unit = {
 
   }
 

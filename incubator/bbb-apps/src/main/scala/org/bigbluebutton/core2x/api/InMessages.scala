@@ -106,7 +106,7 @@ object IncomingMessage {
   case class RegisterUser(
     meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[String],
     extUserId: ExtUserId, authToken: AuthToken) extends InMessage2x
-  case class NewUserPresence2x(
+  case class UserJoinMeetingRequestInMessage(
     meetingId: IntMeetingId,
     userId: IntUserId,
     token: AuthToken,
@@ -146,7 +146,7 @@ object IncomingMessage {
     meetingId: IntMeetingId, requesterId: IntUserId) extends InMessage2x
   case class UserEmojiStatus(
     meetingId: IntMeetingId, userId: IntUserId, emojiStatus: EmojiStatus) extends InMessage2x
-  case class EjectUserFromMeeting(
+  case class EjectUserFromMeetingInMessage(
     meetingId: IntMeetingId, userId: IntUserId, ejectedBy: IntUserId) extends InMessage2x
   case class UserShareWebcam(
     meetingId: IntMeetingId, userId: IntUserId, stream: String) extends InMessage2x

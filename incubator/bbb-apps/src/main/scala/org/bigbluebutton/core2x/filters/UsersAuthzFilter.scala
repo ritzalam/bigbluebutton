@@ -14,7 +14,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
   object DefaultAbilitiesFilter extends DefaultAbilitiesFilter
   val abilitiesFilter = DefaultAbilitiesFilter
 
-  abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeeting): Unit = {
+  abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMessage): Unit = {
     Users3x.findWithId(msg.ejectedBy, state.users.toVector) foreach { user =>
 
       val abilities = abilitiesFilter.calcEffectiveAbilities(
@@ -39,7 +39,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
     }
   }
 
-  abstract override def handleUserJoinWeb2x(msg: NewUserPresence2x): Unit = {
+  abstract override def handleUserJoinWeb2x(msg: UserJoinMeetingRequestInMessage): Unit = {
     RegisteredUsers2x.findWithToken(msg.token, state.registeredUsers.toVector) match {
       case Some(u) =>
         super.handleUserJoinWeb2x(msg)

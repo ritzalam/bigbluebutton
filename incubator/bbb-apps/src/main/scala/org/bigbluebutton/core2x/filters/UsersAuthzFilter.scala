@@ -1,8 +1,8 @@
 package org.bigbluebutton.core2x.filters
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core2x.api.IncomingMessage._
-import org.bigbluebutton.core2x.api.OutGoingMessage._
+import org.bigbluebutton.core2x.api.IncomingMsg._
+import org.bigbluebutton.core2x.api.OutGoingMsg._
 import org.bigbluebutton.core2x.domain.{ CanEjectUser }
 import org.bigbluebutton.core2x.handlers.{ UsersHandler2x }
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsersModel, UsersModel }
@@ -30,7 +30,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
     }
   }
 
-  abstract override def handleValidateAuthToken2x(msg: ValidateAuthTokenRequestInMessage): Unit = {
+  abstract override def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage): Unit = {
     RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector) match {
       case Some(u) =>
         super.handleValidateAuthToken2x(msg)
@@ -39,7 +39,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
     }
   }
 
-  abstract override def handleUserJoinWeb2x(msg: UserJoinMeetingRequestInMessage): Unit = {
+  abstract override def handleUserJoinWeb2x(msg: UserJoinMeetingInMessage): Unit = {
     RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector) match {
       case Some(u) =>
         super.handleUserJoinWeb2x(msg)

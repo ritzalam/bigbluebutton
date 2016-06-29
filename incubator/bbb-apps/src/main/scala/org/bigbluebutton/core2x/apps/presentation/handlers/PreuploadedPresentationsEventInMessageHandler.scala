@@ -1,7 +1,7 @@
 package org.bigbluebutton.core2x.apps.presentation.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core2x.api.IncomingMessage.PreuploadedPresentationsEventInMessage
+import org.bigbluebutton.core2x.api.IncomingMsg.PreuploadedPresentationsEventInMessage
 import org.bigbluebutton.core2x.models.MeetingStateModel
 
 trait PreuploadedPresentationsEventInMessageHandler {

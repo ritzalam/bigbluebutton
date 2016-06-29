@@ -1,15 +1,15 @@
 package org.bigbluebutton.core2x.handlers.user
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core2x.api.IncomingMessage.UserJoinMeetingRequestInMessage
-import org.bigbluebutton.core2x.api.OutGoingMessage.{ PresenterAssignedEventOutMessage, UserJoinedEvent2x }
+import org.bigbluebutton.core2x.api.IncomingMsg.UserJoinMeetingInMessage
+import org.bigbluebutton.core2x.api.OutGoingMsg.{ PresenterAssignedEventOutMsg, UserJoinedEvent2x }
 import org.bigbluebutton.core2x.domain.{ Presenter, PresenterRole, User3x }
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsersModel, UsersModel }
 
 trait UserJoinMeetingMessageHandler {
   val outGW: OutMessageGateway
 
-  def handleUserJoinMeetingMessage(msg: UserJoinMeetingRequestInMessage, meeting: MeetingStateModel): Unit = {
+  def handleUserJoinMeetingMessage(msg: UserJoinMeetingInMessage, meeting: MeetingStateModel): Unit = {
     def becomePresenterIfNeeded(user: User3x): Unit = {
       // Become presenter if only moderator in meeting
       if (user.isModerator && !UsersModel.hasPresenter(meeting.usersModel.toVector)) {
@@ -17,7 +17,7 @@ trait UserJoinMeetingMessageHandler {
         meeting.usersModel.save(u)
         // Send presenter assigned message
         val newPresenter = new Presenter(u.id, u.name, u.id)
-        outGW.send(new PresenterAssignedEventOutMessage(msg.meetingId, meeting.props.recordingProp.recorded, newPresenter))
+        outGW.send(new PresenterAssignedEventOutMsg(msg.meetingId, meeting.props.recordingProp.recorded, newPresenter))
       }
     }
 

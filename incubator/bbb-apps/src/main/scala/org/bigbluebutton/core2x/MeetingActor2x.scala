@@ -4,7 +4,7 @@ import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.domain.MeetingProperties2x
 import org.bigbluebutton.core2x.models.MeetingStateModel
-import org.bigbluebutton.core2x.api.IncomingMessage._
+import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
 import org.bigbluebutton.core2x.handlers._
 
@@ -80,13 +80,13 @@ class MeetingActor2x(
   bus.subscribe(self, props.voiceConf.value)
 
   def receive = {
-    case msg: RegisterUserRequestInMessage =>
+    case msg: RegisterUserInMessage =>
       log.debug("Handling RegisterUserRequestInMessage")
       handleRegisterUser2x(msg)
-    case msg: ValidateAuthTokenRequestInMessage =>
+    case msg: ValidateAuthTokenInMessage =>
       log.debug("Handling ValidateAuthTokenRequestInMessage")
       handleValidateAuthToken2x(msg)
-    case msg: UserJoinMeetingRequestInMessage =>
+    case msg: UserJoinMeetingInMessage =>
       log.debug("Handling NewUserPresence2x")
       handleUserJoinMeetingRequestInMessage(msg)
     case msg: EjectUserFromMeetingInMessage =>

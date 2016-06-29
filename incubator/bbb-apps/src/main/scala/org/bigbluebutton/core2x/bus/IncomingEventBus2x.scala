@@ -3,9 +3,9 @@ package org.bigbluebutton.core2x.bus
 import akka.actor.ActorRef
 import akka.event.EventBus
 import akka.event.LookupClassification
-import org.bigbluebutton.core2x.api.IncomingMessage.InMessage2x
+import org.bigbluebutton.core2x.api.IncomingMsg.InMsg
 
-case class BigBlueButtonInMessage(val topic: String, val payload: InMessage2x)
+case class BigBlueButtonInMessage(val topic: String, val payload: InMsg)
 
 class IncomingEventBus2x extends EventBus with LookupClassification {
   type Event = BigBlueButtonInMessage

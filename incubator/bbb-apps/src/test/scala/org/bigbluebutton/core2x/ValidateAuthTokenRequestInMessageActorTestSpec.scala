@@ -6,7 +6,7 @@ import com.typesafe.config.ConfigFactory
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
-import org.bigbluebutton.core2x.api.OutGoingMessage.{ DisconnectUser2x, UserRegisteredEvent2x, ValidateAuthTokenSuccessReplyOutMessage }
+import org.bigbluebutton.core2x.api.OutGoingMsg.{ DisconnectUser2x, UserRegisteredEvent2x, ValidateAuthTokenSuccessReplyOutMsg }
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus }
 import org.scalatest.{ Matchers, WordSpecLike }
@@ -47,7 +47,7 @@ class ValidateAuthTokenRequestInMessageActorTestSpec extends TestKit(ActorSystem
         meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
         meetingActorRef ! du30ValidateAuthTokenCommand
-        expectMsgClass(classOf[ValidateAuthTokenSuccessReplyOutMessage])
+        expectMsgClass(classOf[ValidateAuthTokenSuccessReplyOutMsg])
       }
     }
   }

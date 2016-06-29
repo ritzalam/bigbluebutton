@@ -1,6 +1,6 @@
 package org.bigbluebutton.core2x
 
-import org.bigbluebutton.core2x.api.IncomingMessage._
+import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core2x.apps.presentation.PresentationModel
 import org.bigbluebutton.core2x.domain.{ VoiceConf, Welcome, _ }
 import org.bigbluebutton.core2x.models.{ MeetingStatus => _, _ }
@@ -175,7 +175,7 @@ trait MeetingTestFixtures {
   val captions = new CaptionModel
   val extension: MeetingExtensionStatus = new MeetingExtensionStatus
 
-  val du30RegisterUserCommand = RegisterUserRequestInMessage(
+  val du30RegisterUserCommand = RegisterUserInMessage(
     piliIntMeetingId,
     du30IntUserId,
     du30UserName,
@@ -189,12 +189,12 @@ trait MeetingTestFixtures {
     "config1",
     "data12")
 
-  val du30ValidateAuthTokenCommand = new ValidateAuthTokenRequestInMessage(
+  val du30ValidateAuthTokenCommand = new ValidateAuthTokenInMessage(
     piliIntMeetingId,
     du30IntUserId,
     du30AuthToken)
 
-  val du30UserJoinCommand: UserJoinMeetingRequestInMessage = new UserJoinMeetingRequestInMessage(
+  val du30UserJoinCommand: UserJoinMeetingInMessage = new UserJoinMeetingInMessage(
     piliIntMeetingId,
     du30IntUserId,
     du30AuthToken,

@@ -1,8 +1,8 @@
 package org.bigbluebutton.core2x.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core2x.api.IncomingMessage.EjectUserFromMeetingInMessage
-import org.bigbluebutton.core2x.api.OutGoingMessage.{ DisconnectUser2x, UserEjectedFromMeetingEventOutMessage, UserLeftEventOutMessage }
+import org.bigbluebutton.core2x.api.IncomingMsg.EjectUserFromMeetingInMessage
+import org.bigbluebutton.core2x.api.OutGoingMsg.{ DisconnectUser2x, UserEjectedFromMeetingEventOutMsg, UserLeftEventOutMsg }
 import org.bigbluebutton.core2x.domain.{ CanEjectUser, User3x }
 import org.bigbluebutton.core2x.filters.DefaultAbilitiesFilter
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, UsersModel }
@@ -19,13 +19,13 @@ trait EjectUserFromMeetingCommandHandler {
       state.registeredUsersModel.remove(msg.userId)
 
       // Send message to user that he has been ejected.
-      outGW.send(new UserEjectedFromMeetingEventOutMessage(state.props.id,
+      outGW.send(new UserEjectedFromMeetingEventOutMsg(state.props.id,
         state.props.recordingProp.recorded,
         msg.userId, msg.ejectedBy))
       // Tell system to disconnect user.
       outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
       // Tell all others that user has left the meeting.
-      outGW.send(new UserLeftEventOutMessage(state.props.id,
+      outGW.send(new UserLeftEventOutMsg(state.props.id,
         state.props.recordingProp.recorded,
         msg.userId))
     }

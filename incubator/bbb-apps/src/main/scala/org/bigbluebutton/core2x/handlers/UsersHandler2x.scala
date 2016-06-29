@@ -1,8 +1,8 @@
 package org.bigbluebutton.core2x.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core2x.api.IncomingMessage._
-import org.bigbluebutton.core2x.api.OutGoingMessage._
+import org.bigbluebutton.core2x.api.IncomingMsg._
+import org.bigbluebutton.core2x.api.OutGoingMsg._
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.core2x.handlers.user.UserActorMessageHandler
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, PinNumberGenerator, RegisteredUsersModel, UsersModel }
@@ -13,7 +13,7 @@ trait UsersHandler2x {
 
   private var userHandlers = new collection.immutable.HashMap[String, UserActorMessageHandler]
 
-  def handleRegisterUser2x(msg: RegisterUserRequestInMessage): Unit = {
+  def handleRegisterUser2x(msg: RegisterUserInMessage): Unit = {
     val pinNumber = PinNumberGenerator.generatePin(state.props.voiceConf, state.status.get)
     val regUser = RegisteredUsersModel.create(
       msg.userId,
@@ -33,7 +33,7 @@ trait UsersHandler2x {
     outGW.send(new UserRegisteredEvent2x(state.props.id, state.props.recordingProp.recorded, regUser))
   }
 
-  def handleValidateAuthToken2x(msg: ValidateAuthTokenRequestInMessage): Unit = {
+  def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage): Unit = {
     def handle(regUser: RegisteredUser2x): Unit = {
       val userHandler = new UserActorMessageHandler(regUser, outGW)
       userHandlers += msg.userId.value -> userHandler
@@ -46,7 +46,7 @@ trait UsersHandler2x {
 
   }
 
-  def handleUserJoinWeb2x(msg: UserJoinMeetingRequestInMessage): Unit = {
+  def handleUserJoinWeb2x(msg: UserJoinMeetingInMessage): Unit = {
 
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
@@ -354,13 +354,13 @@ trait UsersHandler2x {
       state.registeredUsersModel.remove(msg.userId)
 
       // Send message to user that he has been ejected.
-      outGW.send(new UserEjectedFromMeetingEventOutMessage(state.props.id,
+      outGW.send(new UserEjectedFromMeetingEventOutMsg(state.props.id,
         state.props.recordingProp.recorded,
         msg.userId, msg.ejectedBy))
       // Tell system to disconnect user.
       outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
       // Tell all others that user has left the meeting.
-      outGW.send(new UserLeftEventOutMessage(state.props.id,
+      outGW.send(new UserLeftEventOutMsg(state.props.id,
         state.props.recordingProp.recorded,
         msg.userId))
     }

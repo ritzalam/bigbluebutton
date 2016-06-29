@@ -2,8 +2,8 @@ package org.bigbluebutton.core2x.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.UserHandlers
-import org.bigbluebutton.core2x.api.IncomingMessage.UserJoinMeetingRequestInMessage
-import org.bigbluebutton.core2x.api.OutGoingMessage.DisconnectUser2x
+import org.bigbluebutton.core2x.api.IncomingMsg.UserJoinMeetingInMessage
+import org.bigbluebutton.core2x.api.OutGoingMsg.DisconnectUser2x
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsersModel }
 
 trait UserJoinMeetingRequestHandler {
@@ -11,7 +11,7 @@ trait UserJoinMeetingRequestHandler {
   val outGW: OutMessageGateway
   val userHandlers: UserHandlers
 
-  def handleUserJoinMeetingRequestInMessage(msg: UserJoinMeetingRequestInMessage): Unit = {
+  def handleUserJoinMeetingRequestInMessage(msg: UserJoinMeetingInMessage): Unit = {
 
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
@@ -38,7 +38,7 @@ trait UserJoinMeetingRequestHandlerFilter extends UserJoinMeetingRequestHandler 
   val state: MeetingStateModel
   val outGW: OutMessageGateway
 
-  abstract override def handleUserJoinMeetingRequestInMessage(msg: UserJoinMeetingRequestInMessage): Unit = {
+  abstract override def handleUserJoinMeetingRequestInMessage(msg: UserJoinMeetingInMessage): Unit = {
     RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector) match {
       case Some(u) =>
         super.handleUserJoinMeetingRequestInMessage(msg)

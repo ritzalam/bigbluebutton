@@ -1,7 +1,7 @@
 package org.bigbluebutton.core2x.bus.handlers
 
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
-import org.bigbluebutton.core2x.api.IncomingMessage.ValidateAuthTokenRequestInMessage
+import org.bigbluebutton.core2x.api.IncomingMsg.ValidateAuthTokenInMessage
 import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ AuthToken, IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.ValidateAuthTokenRequestMessage
@@ -16,7 +16,7 @@ trait ValidateAuthTokenRequestMessageJsonHandler extends UnhandledReceivedJsonMe
       log.debug("Publishing ValidateAuthTokenRequestInMessage [ " + meetingId.value)
       eventBus.publish(
         BigBlueButtonInMessage(meetingId.value,
-          new ValidateAuthTokenRequestInMessage(
+          new ValidateAuthTokenInMessage(
             meetingId,
             senderId,
             authToken)))

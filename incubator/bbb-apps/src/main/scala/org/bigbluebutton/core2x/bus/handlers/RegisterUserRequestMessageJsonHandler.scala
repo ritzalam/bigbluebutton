@@ -1,7 +1,7 @@
 package org.bigbluebutton.core2x.bus.handlers
 
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
-import org.bigbluebutton.core2x.api.IncomingMessage.RegisterUserRequestInMessage
+import org.bigbluebutton.core2x.api.IncomingMsg.RegisterUserInMessage
 import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.RegisterUserRequestMessage
@@ -15,7 +15,7 @@ trait RegisterUserRequestMessageJsonHandler extends UnhandledReceivedJsonMessage
 
   override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
 
-    def publish(meetingId: IntMeetingId, msg: RegisterUserRequestInMessage): Unit = {
+    def publish(meetingId: IntMeetingId, msg: RegisterUserInMessage): Unit = {
       log.debug("publishing message [RegisterUserRequestInMessage]")
       eventBus.publish(
         BigBlueButtonInMessage(meetingId.value, msg))
@@ -36,7 +36,7 @@ trait RegisterUserRequestMessageJsonHandler extends UnhandledReceivedJsonMessage
 
 trait RegisterUserRequestMessageJsonHandlerHelper {
 
-  def convertMessage(msg: RegisterUserRequestMessage): Option[RegisterUserRequestInMessage] = {
+  def convertMessage(msg: RegisterUserRequestMessage): Option[RegisterUserInMessage] = {
     for {
       header <- Option(msg.header)
       meetingId <- Option(header.meetingId)
@@ -52,7 +52,7 @@ trait RegisterUserRequestMessageJsonHandlerHelper {
       dialNumbers = extractDialInNumbers(body)
       config <- Option(body.config)
       extData <- Option(body.externalData)
-    } yield new RegisterUserRequestInMessage(
+    } yield new RegisterUserInMessage(
       IntMeetingId(meetingId), IntUserId(userId),
       Name(name), roles, ExtUserId(extUserId),
       AuthToken(authToken), Avatar(avatar),

@@ -4,8 +4,8 @@ import akka.actor.{ Actor, ActorLogging, ActorSystem, Props }
 import akka.util.Timeout
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core2x.api.IncomingMessage._
-import org.bigbluebutton.core2x.api.OutGoingMessage._
+import org.bigbluebutton.core2x.api.IncomingMsg._
+import org.bigbluebutton.core2x.api.OutGoingMsg._
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
 
 import scala.concurrent.duration._
@@ -36,7 +36,7 @@ class BigBlueButtonActor2x(val system: ActorSystem,
         log.info("Create meeting request. meetingId={}", msg.mProps.id)
         val m = RunningMeeting2x(msg.mProps, outGW, eventBus)
         meetings += m.mProps.id.value -> m
-        outGW.send(new MeetingCreatedEventOutMessage(m.mProps.id, m.mProps))
+        outGW.send(new MeetingCreatedEventOutMsg(m.mProps.id, m.mProps))
       case Some(m) =>
         log.info("Meeting already created. meetingId={}", msg.mProps.id)
       // do nothing

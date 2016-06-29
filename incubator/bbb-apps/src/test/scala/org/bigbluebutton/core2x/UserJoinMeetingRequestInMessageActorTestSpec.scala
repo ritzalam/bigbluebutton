@@ -6,7 +6,7 @@ import com.typesafe.config.ConfigFactory
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
-import org.bigbluebutton.core2x.api.OutGoingMessage.{ PresenterAssignedEventOutMessage, UserJoinedEvent2x, UserRegisteredEvent2x, ValidateAuthTokenSuccessReplyOutMessage }
+import org.bigbluebutton.core2x.api.OutGoingMsg.{ PresenterAssignedEventOutMsg, UserJoinedEvent2x, UserRegisteredEvent2x, ValidateAuthTokenSuccessReplyOutMsg }
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus }
 import org.scalatest.{ Matchers, WordSpecLike }
@@ -34,17 +34,17 @@ class UserJoinMeetingRequestInMessageActorTestSpec extends TestKit(ActorSystem("
         meetingActorRef ! du30RegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
         meetingActorRef ! du30ValidateAuthTokenCommand
-        expectMsgClass(classOf[ValidateAuthTokenSuccessReplyOutMessage])
+        expectMsgClass(classOf[ValidateAuthTokenSuccessReplyOutMsg])
         meetingActorRef ! du30UserJoinCommand
         //expectMsgAllClassOf(classOf[UserJoinedEvent2x], classOf[PresenterChangedEventOutMessage])
         expectMsgPF() {
           case event: UserJoinedEvent2x =>
             assert(event.meetingId == piliIntMeetingId)
-          case presEvent: PresenterAssignedEventOutMessage =>
+          case presEvent: PresenterAssignedEventOutMsg =>
             assert(presEvent.presenter.id == du30UserJoinCommand.userId)
         }
         expectMsgPF() {
-          case presEvent: PresenterAssignedEventOutMessage =>
+          case presEvent: PresenterAssignedEventOutMsg =>
             assert(presEvent.presenter.id == du30UserJoinCommand.userId)
         }
         //expectMsgClass(classOf[PresenterChangedEventOutMessage])

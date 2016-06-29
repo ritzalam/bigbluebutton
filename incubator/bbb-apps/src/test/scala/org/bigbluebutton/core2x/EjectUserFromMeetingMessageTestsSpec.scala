@@ -5,9 +5,9 @@ import akka.testkit.{ DefaultTimeout, ImplicitSender, TestKit }
 import com.typesafe.config.ConfigFactory
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
-import org.bigbluebutton.core2x.api.IncomingMessage._
+import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core.bus.OutgoingEventBus
-import org.bigbluebutton.core2x.api.OutGoingMessage._
+import org.bigbluebutton.core2x.api.OutGoingMsg._
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
 import org.scalatest.{ Matchers, WordSpecLike }
@@ -47,9 +47,9 @@ class EjectUserFromMeetingMessageTestsSpec extends TestKit(ActorSystem("MeetingA
         val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
         meetingActorRef ! ejectUserMsg
         //expectMsgAllClassOf(classOf[UserEjectedFromMeeting], classOf[DisconnectUser2x], classOf[UserLeft2x])
-        expectMsgClass(classOf[UserEjectedFromMeetingEventOutMessage])
+        expectMsgClass(classOf[UserEjectedFromMeetingEventOutMsg])
         expectMsgClass(classOf[DisconnectUser2x])
-        expectMsgClass(classOf[UserLeftEventOutMessage])
+        expectMsgClass(classOf[UserLeftEventOutMsg])
 
         assert(state.usersModel.toVector.length == 2)
         assert(state.registeredUsersModel.toVector.length == 2)

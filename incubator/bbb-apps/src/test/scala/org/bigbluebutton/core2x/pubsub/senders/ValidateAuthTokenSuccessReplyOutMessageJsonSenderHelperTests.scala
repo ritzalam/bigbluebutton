@@ -2,7 +2,7 @@ package org.bigbluebutton.core2x.pubsub.senders
 
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core2x.JsonConversionTestFixtures
-import org.bigbluebutton.core2x.api.OutGoingMessage.ValidateAuthTokenSuccessReplyOutMessage
+import org.bigbluebutton.core2x.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMsg
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.{ MessageType, ValidateAuthTokenSuccessMessage }
 import org.bigbluebutton.messages.body.MessageHeaderToClient
@@ -35,7 +35,7 @@ class ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelperTests extends UnitS
   it should "convert message" in {
     object Helper extends ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelper
 
-    val outMsg = ValidateAuthTokenSuccessReplyOutMessage(
+    val outMsg = ValidateAuthTokenSuccessReplyOutMsg(
       IntMeetingId("demomeeting"), IntUserId("userid1"), Name("Juan Tamad"),
       Set(ModeratorRole), ExtUserId("extuserid1"), AuthToken("LetMeIn!"),
       Avatar("http://www.myavatar.com/12345"),

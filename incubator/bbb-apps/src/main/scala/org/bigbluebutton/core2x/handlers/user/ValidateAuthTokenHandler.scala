@@ -4,7 +4,7 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.api.IncomingMessage.ValidateAuthTokenRequestInMessage
 import org.bigbluebutton.core2x.api.OutGoingMessage.{ ValidateAuthTokenReply2x, ValidateAuthTokenSuccessReplyOutMessage }
 import org.bigbluebutton.core2x.domain.{ DialNumber, _ }
-import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsers2x }
+import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsersModel }
 
 trait ValidateAuthTokenHandler {
   this: UserActorMessageHandler =>
@@ -24,7 +24,7 @@ trait ValidateAuthTokenHandler {
     }
 
     for {
-      user <- RegisteredUsers2x.findWithToken(msg.token, meeting.registeredUsers.toVector)
+      user <- RegisteredUsersModel.findWithToken(msg.token, meeting.registeredUsersModel.toVector)
     } yield sendResponse(user)
   }
 }

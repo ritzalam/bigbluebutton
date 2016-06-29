@@ -5,7 +5,7 @@ import org.bigbluebutton.core2x.api.IncomingMessage.EjectUserFromMeetingInMessag
 import org.bigbluebutton.core2x.api.OutGoingMessage.{ DisconnectUser2x, UserEjectedFromMeetingEventOutMessage, UserLeftEventOutMessage }
 import org.bigbluebutton.core2x.domain.{ CanEjectUser, User3x }
 import org.bigbluebutton.core2x.filters.DefaultAbilitiesFilter
-import org.bigbluebutton.core2x.models.{ MeetingStateModel, Users3x }
+import org.bigbluebutton.core2x.models.{ MeetingStateModel, UsersModel }
 
 trait EjectUserFromMeetingCommandHandler {
   val state: MeetingStateModel
@@ -14,9 +14,9 @@ trait EjectUserFromMeetingCommandHandler {
   def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMessage) {
     def removeAndEject(user: User3x): Unit = {
       // remove user from list of users
-      state.users.remove(user.id)
+      state.usersModel.remove(user.id)
       // remove user from registered users to prevent re-joining
-      state.registeredUsers.remove(msg.userId)
+      state.registeredUsersModel.remove(msg.userId)
 
       // Send message to user that he has been ejected.
       outGW.send(new UserEjectedFromMeetingEventOutMessage(state.props.id,
@@ -31,7 +31,7 @@ trait EjectUserFromMeetingCommandHandler {
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, state.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, state.usersModel.toVector)
     } yield removeAndEject(user)
   }
 }
@@ -44,7 +44,7 @@ trait EjectUserFromMeetingCommandFilter extends EjectUserFromMeetingCommandHandl
   val abilitiesFilter = DefaultAbilitiesFilter
 
   abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMessage): Unit = {
-    Users3x.findWithId(msg.ejectedBy, state.users.toVector) foreach { user =>
+    UsersModel.findWithId(msg.ejectedBy, state.usersModel.toVector) foreach { user =>
 
       val abilities = abilitiesFilter.calcEffectiveAbilities(
         user.roles,

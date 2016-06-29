@@ -20,7 +20,7 @@ class UserActorMessageHandler(
   }
 
   def handleUserLeave2xCommand(msg: UserLeave2xCommand, meeting: MeetingStateModel): Unit = {
-    Users3x.findWithId(msg.userId, meeting.users.toVector) match {
+    UsersModel.findWithId(msg.userId, meeting.usersModel.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
         val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
@@ -39,7 +39,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
     } yield send(userState.get.tokens)
 
   }
@@ -50,7 +50,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
 
@@ -62,7 +62,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
 
@@ -74,7 +74,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
   }

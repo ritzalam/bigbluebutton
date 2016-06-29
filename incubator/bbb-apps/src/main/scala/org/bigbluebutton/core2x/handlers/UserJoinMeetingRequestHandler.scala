@@ -4,7 +4,7 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.UserHandlers
 import org.bigbluebutton.core2x.api.IncomingMessage.UserJoinMeetingRequestInMessage
 import org.bigbluebutton.core2x.api.OutGoingMessage.DisconnectUser2x
-import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsers2x }
+import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsersModel }
 
 trait UserJoinMeetingRequestHandler {
   val state: MeetingStateModel
@@ -39,7 +39,7 @@ trait UserJoinMeetingRequestHandlerFilter extends UserJoinMeetingRequestHandler 
   val outGW: OutMessageGateway
 
   abstract override def handleUserJoinMeetingRequestInMessage(msg: UserJoinMeetingRequestInMessage): Unit = {
-    RegisteredUsers2x.findWithToken(msg.token, state.registeredUsers.toVector) match {
+    RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector) match {
       case Some(u) =>
         super.handleUserJoinMeetingRequestInMessage(msg)
       case None =>

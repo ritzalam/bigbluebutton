@@ -2,7 +2,7 @@ package org.bigbluebutton.core2x.models
 
 import org.bigbluebutton.core2x.domain.{ RegisteredUser2x, _ }
 
-object RegisteredUsers2x {
+object RegisteredUsersModel {
   def create(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[Role2x],
     token: AuthToken, avatar: Avatar,
     logoutUrl: LogoutUrl,
@@ -29,7 +29,7 @@ object RegisteredUsers2x {
   }
 }
 
-class RegisteredUsers2x {
+class RegisteredUsersModel {
   private var regUsers = new collection.immutable.HashMap[String, RegisteredUser2x]
 
   def toVector: Vector[RegisteredUser2x] = regUsers.values.toVector
@@ -40,7 +40,7 @@ class RegisteredUsers2x {
   }
 
   def remove(id: IntUserId): Option[RegisteredUser2x] = {
-    val ru = RegisteredUsers2x.findWithUserId(id, toVector)
+    val ru = RegisteredUsersModel.findWithUserId(id, toVector)
     ru foreach { u => regUsers -= u.authToken.value }
     ru
   }

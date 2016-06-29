@@ -1,5 +1,7 @@
 package org.bigbluebutton.core2x.api
 
+import org.bigbluebutton.core2x.apps.presentation.domain.{ PresentationId }
+import org.bigbluebutton.core2x.apps.presentation.{ Presentation }
 import org.bigbluebutton.core2x.domain._
 import spray.json.JsObject
 
@@ -198,37 +200,41 @@ object IncomingMessage {
   //////////////////////////////////////////////////////////////////////////////////////
   // Presentation
   /////////////////////////////////////////////////////////////////////////////////////
+  case class PreuploadedPresentationsEventInMessage(meetingId: IntMeetingId,
+    presentations: Seq[PreuploadedPresentation]) extends InMessage2x
+  case class PreuploadedPresentation(id: PresentationId, name: String, default: Boolean)
 
-  case class ClearPresentation(
-    meetingId: IntMeetingId) extends InMessage2x
-  case class RemovePresentation(
-    meetingId: IntMeetingId, presentationId: PresentationId) extends InMessage2x
-  case class GetPresentationInfo(
-    meetingId: IntMeetingId, requesterId: IntUserId, replyTo: String) extends InMessage2x
-  case class SendCursorUpdate(
-    meetingId: IntMeetingId, xPercent: Double, yPercent: Double) extends InMessage2x
-  case class ResizeAndMoveSlide(
-    meetingId: IntMeetingId, xOffset: Double, yOffset: Double,
+  case class PresentationConversionUpdateEventInMessage(meetingId: IntMeetingId, messageKey: String,
+    code: String, presentationId: PresentationId) extends InMessage2x
+  case class PresentationPageGeneratedEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String,
+    presentationId: PresentationId, numberOfPages: Int,
+    pagesCompleted: Int) extends InMessage2x
+  case class PresentationPageCountErrorEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String,
+    presentationId: PresentationId, numberOfPages: Int,
+    maxNumberPages: Int) extends InMessage2x
+  case class PresentationConversionCompletedEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String,
+    presentation: Presentation) extends InMessage2x
+
+  case class ClearPresentation(meetingId: IntMeetingId) extends InMessage2x
+  case class RemovePresentation(meetingId: IntMeetingId, presentationId: PresentationId) extends InMessage2x
+  case class GetPresentationInfo(meetingId: IntMeetingId, requesterId: IntUserId, replyTo: String) extends InMessage2x
+  case class SendCursorUpdate(meetingId: IntMeetingId, xPercent: Double, yPercent: Double) extends InMessage2x
+  case class ResizeAndMoveSlide(meetingId: IntMeetingId, xOffset: Double, yOffset: Double,
     widthRatio: Double, heightRatio: Double) extends InMessage2x
-  case class GotoSlide(
-    meetingId: IntMeetingId, page: String) extends InMessage2x
-  case class SharePresentation(
-    meetingId: IntMeetingId, presentationId: PresentationId, share: Boolean) extends InMessage2x
-  case class GetSlideInfo(
-    meetingId: IntMeetingId, requesterId: IntUserId, replyTo: String) extends InMessage2x
-  case class PreuploadedPresentations(
-    meetingId: IntMeetingId, presentations: Seq[Presentation]) extends InMessage2x
-  case class PresentationConversionUpdate(
-    meetingId: IntMeetingId, messageKey: String, code: String,
+  case class GotoSlide(meetingId: IntMeetingId, page: String) extends InMessage2x
+  case class SharePresentation(meetingId: IntMeetingId, presentationId: PresentationId,
+    share: Boolean) extends InMessage2x
+  case class GetSlideInfo(meetingId: IntMeetingId, requesterId: IntUserId, replyTo: String) extends InMessage2x
+  case class PreuploadedPresentations(meetingId: IntMeetingId, presentations: Seq[Presentation]) extends InMessage2x
+  case class PresentationConversionUpdate(meetingId: IntMeetingId, messageKey: String, code: String,
     presentationId: PresentationId, presName: String) extends InMessage2x
-  case class PresentationPageCountError(
-    meetingId: IntMeetingId, messageKey: String, code: String, presentationId: PresentationId,
-    numberOfPages: Int, maxNumberPages: Int, presName: String) extends InMessage2x
-  case class PresentationSlideGenerated(
-    meetingId: IntMeetingId, messageKey: String, code: String, presentationId: PresentationId,
-    numberOfPages: Int, pagesCompleted: Int, presName: String) extends InMessage2x
-  case class PresentationConversionCompleted(
-    meetingId: IntMeetingId, messageKey: String, code: String,
+  case class PresentationPageCountError(meetingId: IntMeetingId, messageKey: String, code: String,
+    presentationId: PresentationId, numberOfPages: Int, maxNumberPages: Int,
+    presName: String) extends InMessage2x
+  case class PresentationSlideGenerated(meetingId: IntMeetingId, messageKey: String, code: String,
+    presentationId: PresentationId, numberOfPages: Int, pagesCompleted: Int,
+    presName: String) extends InMessage2x
+  case class PresentationConversionCompleted(meetingId: IntMeetingId, messageKey: String, code: String,
     presentation: Presentation) extends InMessage2x
 
   /////////////////////////////////////////////////////////////////////////////////////

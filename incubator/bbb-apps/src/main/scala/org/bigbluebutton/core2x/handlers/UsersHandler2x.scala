@@ -5,7 +5,7 @@ import org.bigbluebutton.core2x.api.IncomingMessage._
 import org.bigbluebutton.core2x.api.OutGoingMessage._
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.core2x.handlers.user.UserActorMessageHandler
-import org.bigbluebutton.core2x.models.{ MeetingStateModel, PinNumberGenerator, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core2x.models.{ MeetingStateModel, PinNumberGenerator, RegisteredUsersModel, UsersModel }
 
 trait UsersHandler2x {
   val state: MeetingStateModel
@@ -15,7 +15,7 @@ trait UsersHandler2x {
 
   def handleRegisterUser2x(msg: RegisterUserRequestInMessage): Unit = {
     val pinNumber = PinNumberGenerator.generatePin(state.props.voiceConf, state.status.get)
-    val regUser = RegisteredUsers2x.create(
+    val regUser = RegisteredUsersModel.create(
       msg.userId,
       msg.extUserId,
       msg.name,
@@ -29,7 +29,7 @@ trait UsersHandler2x {
       msg.config,
       msg.extData)
 
-    state.registeredUsers.add(regUser)
+    state.registeredUsersModel.add(regUser)
     outGW.send(new UserRegisteredEvent2x(state.props.id, state.props.recordingProp.recorded, regUser))
   }
 
@@ -41,7 +41,7 @@ trait UsersHandler2x {
     }
 
     for {
-      regUser <- RegisteredUsers2x.findWithToken(msg.token, state.registeredUsers.toVector)
+      regUser <- RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector)
     } yield handle(regUser)
 
   }
@@ -349,9 +349,9 @@ trait UsersHandler2x {
   def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMessage) {
     def removeAndEject(user: User3x): Unit = {
       // remove user from list of users
-      state.users.remove(user.id)
+      state.usersModel.remove(user.id)
       // remove user from registered users to prevent re-joining
-      state.registeredUsers.remove(msg.userId)
+      state.registeredUsersModel.remove(msg.userId)
 
       // Send message to user that he has been ejected.
       outGW.send(new UserEjectedFromMeetingEventOutMessage(state.props.id,
@@ -366,7 +366,7 @@ trait UsersHandler2x {
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, state.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, state.usersModel.toVector)
     } yield removeAndEject(user)
   }
 

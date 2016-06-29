@@ -20,37 +20,6 @@ class BigBlueButtonInGW(
 
   val log = Logging(system, getClass)
 
-  val bbbActor2x = system.actorOf(BigBlueButtonActor2x.props(system, eventBus2x, outGW), "bigbluebutton-actor2x")
-  eventBus2x.subscribe(bbbActor2x, meetingManagerChannel)
-
-  def handleBigBlueButtonMessage(message: IBigBlueButtonMessage) {
-    message match {
-
-      case msg: CreateMeetingRequest => {
-        val recProp = MeetingRecordingProp(
-          Recorded(msg.payload.record),
-          msg.payload.autoStartRecording,
-          msg.payload.allowStartStopRecording)
-
-        val mProps2x = new MeetingProperties2x(
-          IntMeetingId(msg.payload.id),
-          ExtMeetingId(msg.payload.externalId),
-          Name(msg.payload.name),
-          VoiceConf(msg.payload.voiceConfId),
-          msg.payload.durationInMinutes,
-          20,
-          false,
-          msg.payload.isBreakout,
-          new MeetingExtensionProp2x(),
-          recProp
-        )
-
-        eventBus2x.publish(BigBlueButtonInMessage(meetingManagerChannel, new CreateMeetingRequestInMessage(IntMeetingId(msg.payload.id), mProps2x)))
-
-      }
-    }
-  }
-
   def handleReceivedJsonMessage(name: String, json: String): Unit = {
     println("INGW: \n" + json)
     val receivedJsonMessage = new ReceivedJsonMessage(name, json)

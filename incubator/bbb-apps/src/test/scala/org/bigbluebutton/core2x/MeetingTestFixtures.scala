@@ -1,6 +1,7 @@
 package org.bigbluebutton.core2x
 
 import org.bigbluebutton.core2x.api.IncomingMessage._
+import org.bigbluebutton.core2x.apps.presentation.PresentationModel
 import org.bigbluebutton.core2x.domain.{ VoiceConf, Welcome, _ }
 import org.bigbluebutton.core2x.models.{ MeetingStatus => _, _ }
 
@@ -27,7 +28,7 @@ trait MeetingTestFixtures {
   val du30Welcome = Welcome("Hello World!")
   val du30DialNums: Set[DialNumber] = Set(DialNumber("6135551234"))
 
-  val du30RegisteredUser = RegisteredUsers2x.create(
+  val du30RegisteredUser = RegisteredUsersModel.create(
     du30IntUserId,
     du30ExtUserId,
     du30UserName,
@@ -53,7 +54,7 @@ trait MeetingTestFixtures {
   val mdsWelcome = Welcome("Hello World!")
   val mdsDialNums = Set(DialNumber("6135551234"))
 
-  val mdsRegisteredUser = RegisteredUsers2x.create(
+  val mdsRegisteredUser = RegisteredUsersModel.create(
     mdsIntUserId,
     mdsExtUserId,
     mdsUserName,
@@ -79,7 +80,7 @@ trait MeetingTestFixtures {
   val graceWelcome = Welcome("Hello World!")
   val graceDialNums = Set(DialNumber("6135551234"))
 
-  val graceRegisteredUser = RegisteredUsers2x.create(
+  val graceRegisteredUser = RegisteredUsersModel.create(
     graceIntUserId,
     graceExtUserId,
     graceUserName,
@@ -105,7 +106,7 @@ trait MeetingTestFixtures {
   val marWelcome = Welcome("Hello World!")
   val marDialNums = Set(DialNumber("6135551234"))
 
-  val marRegisteredUser = RegisteredUsers2x.create(
+  val marRegisteredUser = RegisteredUsersModel.create(
     marIntUserId,
     marExtUserId,
     marUserName,
@@ -131,7 +132,7 @@ trait MeetingTestFixtures {
   val jbWelcome = Welcome("Hello World!")
   val jbDialNums = Set(DialNumber("6135551234"))
 
-  val jbRegisteredUser = RegisteredUsers2x.create(
+  val jbRegisteredUser = RegisteredUsersModel.create(
     jbIntUserId,
     jbExtUserId,
     jbUserName,
@@ -163,8 +164,8 @@ trait MeetingTestFixtures {
     recordingProp)
 
   val abilities: MeetingPermissions = new MeetingPermissions
-  val registeredUsers = new RegisteredUsers2x
-  val users = new Users3x
+  val registeredUsers = new RegisteredUsersModel
+  val users = new UsersModel
   val chats = new ChatModel
   val layouts = new LayoutModel
   val polls = new PollModel

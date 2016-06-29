@@ -4,7 +4,7 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.api.IncomingMessage.UserJoinMeetingRequestInMessage
 import org.bigbluebutton.core2x.api.OutGoingMessage.{ PresenterAssignedEventOutMessage, UserJoinedEvent2x }
 import org.bigbluebutton.core2x.domain.{ Presenter, PresenterRole, User3x }
-import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core2x.models.{ MeetingStateModel, RegisteredUsersModel, UsersModel }
 
 trait UserJoinMeetingMessageHandler {
   val outGW: OutMessageGateway
@@ -12,9 +12,9 @@ trait UserJoinMeetingMessageHandler {
   def handleUserJoinMeetingMessage(msg: UserJoinMeetingRequestInMessage, meeting: MeetingStateModel): Unit = {
     def becomePresenterIfNeeded(user: User3x): Unit = {
       // Become presenter if only moderator in meeting
-      if (user.isModerator && !Users3x.hasPresenter(meeting.users.toVector)) {
+      if (user.isModerator && !UsersModel.hasPresenter(meeting.usersModel.toVector)) {
         val u = User3x.add(user, PresenterRole)
-        meeting.users.save(u)
+        meeting.usersModel.save(u)
         // Send presenter assigned message
         val newPresenter = new Presenter(u.id, u.name, u.id)
         outGW.send(new PresenterAssignedEventOutMessage(msg.meetingId, meeting.props.recordingProp.recorded, newPresenter))
@@ -22,12 +22,12 @@ trait UserJoinMeetingMessageHandler {
     }
 
     def process(user: User3x): Unit = {
-      meeting.users.save(user)
+      meeting.usersModel.save(user)
       outGW.send(new UserJoinedEvent2x(msg.meetingId, meeting.props.recordingProp.recorded, user))
       becomePresenterIfNeeded(user)
     }
 
-    Users3x.findWithId(msg.userId, meeting.users.toVector) match {
+    UsersModel.findWithId(msg.userId, meeting.usersModel.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
         val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
@@ -35,7 +35,7 @@ trait UserJoinMeetingMessageHandler {
       // TODO: Send reconnecting message
       case None =>
         for {
-          ru <- RegisteredUsers2x.findWithToken(msg.token, meeting.registeredUsers.toVector)
+          ru <- RegisteredUsersModel.findWithToken(msg.token, meeting.registeredUsersModel.toVector)
           u = User3x.create(msg.userId, ru.extId, ru.name, ru.roles)
           presence = User3x.create(msg.presenceId, msg.userAgent)
           user = User3x.add(u, presence)

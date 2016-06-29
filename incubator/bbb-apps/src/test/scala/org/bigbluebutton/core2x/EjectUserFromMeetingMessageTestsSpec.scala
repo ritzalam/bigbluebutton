@@ -9,7 +9,7 @@ import org.bigbluebutton.core2x.api.IncomingMessage._
 import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core2x.api.OutGoingMessage._
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
-import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
 import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._
@@ -27,12 +27,12 @@ class EjectUserFromMeetingMessageTestsSpec extends TestKit(ActorSystem("MeetingA
   "A MeetingActor" should {
     "Eject the user when receiving eject user command" in {
       within(500 millis) {
-        val testRegUsers = new RegisteredUsers2x
+        val testRegUsers = new RegisteredUsersModel
         testRegUsers.add(du30RegisteredUser)
         testRegUsers.add(mdsRegisteredUser)
         testRegUsers.add(marRegisteredUser)
 
-        val testUsers = new Users3x
+        val testUsers = new UsersModel
         testUsers.save(du30User)
         testUsers.save(mdsUser)
         testUsers.save(marUser)
@@ -51,8 +51,8 @@ class EjectUserFromMeetingMessageTestsSpec extends TestKit(ActorSystem("MeetingA
         expectMsgClass(classOf[DisconnectUser2x])
         expectMsgClass(classOf[UserLeftEventOutMessage])
 
-        assert(state.users.toVector.length == 2)
-        assert(state.registeredUsers.toVector.length == 2)
+        assert(state.usersModel.toVector.length == 2)
+        assert(state.registeredUsersModel.toVector.length == 2)
       }
     }
   }

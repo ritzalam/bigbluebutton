@@ -1,5 +1,7 @@
 package org.bigbluebutton.core2x.api
 
+import org.bigbluebutton.core2x.apps.presentation.domain.PresentationId
+import org.bigbluebutton.core2x.apps.presentation.{ Page, Presentation }
 import org.bigbluebutton.core2x.domain._
 
 object OutGoingMessage {
@@ -205,8 +207,8 @@ object OutGoingMessage {
     meetingId: IntMeetingId, recorded: Recorded) extends IOutMessage
   case class RemovePresentationOutMsg(
     meetingId: IntMeetingId, recorded: Recorded, presentationId: PresentationId) extends IOutMessage
-  case class GetPresentationInfoOutMsg(meetingId: IntMeetingId, recorded: Recorded, requesterId: IntUserId,
-    info: CurrentPresentationInfo, replyTo: ReplyTo) extends IOutMessage
+  //  case class GetPresentationInfoOutMsg(meetingId: IntMeetingId, recorded: Recorded, requesterId: IntUserId,
+  //    info: CurrentPresentationInfo, replyTo: ReplyTo) extends IOutMessage
   case class SendCursorUpdateOutMsg(
     meetingId: IntMeetingId, recorded: Recorded, xPercent: Double, yPercent: Double) extends IOutMessage
   case class ResizeAndMoveSlideOutMsg(

@@ -45,17 +45,9 @@ object User3x {
   }
 }
 
-case class User3x(
-    id: IntUserId,
-    externalId: ExtUserId,
-    name: Name,
-    emojiStatus: EmojiStatus,
-    roles: Set[Role2x],
-    presence: Set[Presence2x],
-    permissions: UserAbilities,
-    roleData: Set[RoleData],
-    config: Set[String],
-    externalData: Set[String]) {
+case class User3x(id: IntUserId, externalId: ExtUserId, name: Name, emojiStatus: EmojiStatus, roles: Set[Role2x],
+    presence: Set[Presence2x], permissions: UserAbilities, roleData: Set[RoleData],
+    config: Set[String], externalData: Set[String]) {
 
   def isModerator: Boolean = roles.contains(ModeratorRole)
 }

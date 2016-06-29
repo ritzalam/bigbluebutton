@@ -214,28 +214,21 @@ object IncomingMessage {
     maxNumberPages: Int) extends InMessage2x
   case class PresentationConversionCompletedEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String,
     presentation: Presentation) extends InMessage2x
-
-  case class ClearPresentation(meetingId: IntMeetingId) extends InMessage2x
-  case class RemovePresentation(meetingId: IntMeetingId, presentationId: PresentationId) extends InMessage2x
-  case class GetPresentationInfo(meetingId: IntMeetingId, requesterId: IntUserId, replyTo: String) extends InMessage2x
-  case class SendCursorUpdate(meetingId: IntMeetingId, xPercent: Double, yPercent: Double) extends InMessage2x
-  case class ResizeAndMoveSlide(meetingId: IntMeetingId, xOffset: Double, yOffset: Double,
+  case class ClearPresentationInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+    presentationId: PresentationId) extends InMessage2x
+  case class RemovePresentation(meetingId: IntMeetingId, senderId: IntUserId,
+    presentationId: PresentationId) extends InMessage2x
+  case class GetPresentationInfoInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+    presentationId: PresentationId) extends InMessage2x
+  case class SendCursorUpdateInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String,
+    xPercent: Double, yPercent: Double) extends InMessage2x
+  case class ResizeAndMovePageInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+    xOffset: Double, yOffset: Double, pageId: String,
     widthRatio: Double, heightRatio: Double) extends InMessage2x
-  case class GotoSlide(meetingId: IntMeetingId, page: String) extends InMessage2x
-  case class SharePresentation(meetingId: IntMeetingId, presentationId: PresentationId,
+  case class GoToPageInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String) extends InMessage2x
+  case class SharePresentationInMessage(meetingId: IntMeetingId, senderId: IntUserId, presentationId: PresentationId,
     share: Boolean) extends InMessage2x
-  case class GetSlideInfo(meetingId: IntMeetingId, requesterId: IntUserId, replyTo: String) extends InMessage2x
-  case class PreuploadedPresentations(meetingId: IntMeetingId, presentations: Seq[Presentation]) extends InMessage2x
-  case class PresentationConversionUpdate(meetingId: IntMeetingId, messageKey: String, code: String,
-    presentationId: PresentationId, presName: String) extends InMessage2x
-  case class PresentationPageCountError(meetingId: IntMeetingId, messageKey: String, code: String,
-    presentationId: PresentationId, numberOfPages: Int, maxNumberPages: Int,
-    presName: String) extends InMessage2x
-  case class PresentationSlideGenerated(meetingId: IntMeetingId, messageKey: String, code: String,
-    presentationId: PresentationId, numberOfPages: Int, pagesCompleted: Int,
-    presName: String) extends InMessage2x
-  case class PresentationConversionCompleted(meetingId: IntMeetingId, messageKey: String, code: String,
-    presentation: Presentation) extends InMessage2x
+  case class GetPageInfoInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String) extends InMessage2x
 
   /////////////////////////////////////////////////////////////////////////////////////
   // Polling

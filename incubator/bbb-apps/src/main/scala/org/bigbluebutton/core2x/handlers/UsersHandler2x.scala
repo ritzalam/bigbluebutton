@@ -36,7 +36,7 @@ trait UsersHandler2x {
   def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage): Unit = {
     def handle(regUser: RegisteredUser2x): Unit = {
       val userHandler = new UserActorMessageHandler(regUser, outGW)
-      userHandlers += msg.userId.value -> userHandler
+      userHandlers += msg.senderId.value -> userHandler
       userHandler.handleValidateAuthToken2x(msg, state)
     }
 
@@ -53,7 +53,7 @@ trait UsersHandler2x {
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
 
-    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserJoinMeetingMessage(msg, state) }
+    userHandlers.get(msg.senderId.value) foreach { handler => handler.handleUserJoinMeetingMessage(msg, state) }
 
     // TODO: Keep track if there are still web users in the meeting.
     //          if (Users2x.numberOfWebUsers(meeting.state.users.toVector) > 0) {
@@ -68,8 +68,8 @@ trait UsersHandler2x {
 
   }
 
-  def handleUserLeave2xCommand(msg: UserLeave2xCommand): Unit = {
-    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserLeave2xCommand(msg, state) }
+  def handleUserLeave2xCommand(msg: UserLeaveMeetingInMessage): Unit = {
+    userHandlers.get(msg.senderId.value) foreach { handler => handler.handleUserLeave2xCommand(msg, state) }
 
     //    if (meeting.hasUser(msg.userId)) {
     //      val user = meeting.removeUser(msg.userId)
@@ -111,8 +111,8 @@ trait UsersHandler2x {
     //    }
   }
 
-  def handleViewWebCamRequest2x(msg: ViewWebCamRequest2x) {
-    userHandlers.get(msg.userId.value) foreach { handler => handler.handleViewWebCamRequest2x(msg, state) }
+  def handleViewWebCamRequest2x(msg: UserViewWebCamRequestInMsg) {
+    userHandlers.get(msg.senderId.value) foreach { handler => handler.handleViewWebCamRequest2x(msg, state) }
 
     /*    meeting.getUser(msg.userId) foreach { user =>
       val streams = user.webcamStreams + msg.stream
@@ -124,8 +124,8 @@ trait UsersHandler2x {
     }
 */ }
 
-  def handleShareWebCamRequest2x(msg: ShareWebCamRequest2x) {
-    userHandlers.get(msg.userId.value) foreach { handler => handler.handleShareWebCamRequest2x(msg, state) }
+  def handleShareWebCamRequest2x(msg: UserShareWebCamRequestInMsg) {
+    userHandlers.get(msg.senderId.value) foreach { handler => handler.handleShareWebCamRequest2x(msg, state) }
 
     /*    meeting.getUser(msg.userId) foreach { user =>
       val streams = user.webcamStreams + msg.stream
@@ -137,8 +137,8 @@ trait UsersHandler2x {
     }
 */ }
 
-  def handleUserShareWebCam2x(msg: UserShareWebCam2x) {
-    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserShareWebCam2x(msg, state) }
+  def handleUserShareWebCam2x(msg: UserStartedPublishWebCamInMsg) {
+    userHandlers.get(msg.senderId.value) foreach { handler => handler.handleUserShareWebCam2x(msg, state) }
 
     /*    meeting.getUser(msg.userId) foreach { user =>
       val streams = user.webcamStreams + msg.stream
@@ -150,8 +150,8 @@ trait UsersHandler2x {
     }
 */ }
 
-  def handleUserUnShareWebCam2x(msg: UserUnShareWebCam2x) {
-    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserUnShareWebCam2x(msg, state) }
+  def handleUserUnShareWebCam2x(msg: UserStoppedPublishWebCamInMsg) {
+    userHandlers.get(msg.senderId.value) foreach { handler => handler.handleUserUnShareWebCam2x(msg, state) }
     /*    meeting.getUser(msg.userId) foreach { user =>
       val streamName = user.webcamStreams find (w => w == msg.stream) foreach { streamName =>
         val streams = user.webcamStreams - streamName
@@ -333,7 +333,7 @@ trait UsersHandler2x {
     }
 */ }
 
-  def handleUserEmojiStatus(msg: UserEmojiStatus) {
+  def handleUserEmojiStatus(msg: UserChangeEmojiStatus) {
     /*
     def saveAndSend(user: User3x): Unit = {
       meeting.state.users.save(user)
@@ -346,37 +346,31 @@ trait UsersHandler2x {
     } yield saveAndSend(user)
 */ }
 
-  def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMessage) {
+  def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMsg) {
     def removeAndEject(user: User3x): Unit = {
       // remove user from list of users
       state.usersModel.remove(user.id)
       // remove user from registered users to prevent re-joining
-      state.registeredUsersModel.remove(msg.userId)
+      state.registeredUsersModel.remove(msg.senderId)
 
       // Send message to user that he has been ejected.
       outGW.send(new UserEjectedFromMeetingEventOutMsg(state.props.id,
         state.props.recordingProp.recorded,
-        msg.userId, msg.ejectedBy))
+        msg.senderId, msg.ejectedBy))
       // Tell system to disconnect user.
-      outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
+      outGW.send(new DisconnectUser2x(msg.meetingId, msg.senderId))
       // Tell all others that user has left the meeting.
       outGW.send(new UserLeftEventOutMsg(state.props.id,
         state.props.recordingProp.recorded,
-        msg.userId))
+        msg.senderId))
     }
 
     for {
-      user <- UsersModel.findWithId(msg.userId, state.usersModel.toVector)
+      user <- UsersModel.findWithId(msg.senderId, state.usersModel.toVector)
     } yield removeAndEject(user)
   }
 
-  def handleChangeUserStatus(msg: ChangeUserStatus): Unit = {
-    //    if (meeting.hasUser(msg.userId)) {
-    //      sender.sendUserStatusChangeMessage(props.id, props.recorded, msg.userId, msg.status, msg.value)
-    //    }
-  }
-
-  def handleGetUsers(msg: GetUsers): Unit = {
+  def handleGetUsers(msg: GetUsersInMeetingInMsg): Unit = {
     //    sender.sendGetUsersReplyMessage(msg.meetingId, msg.requesterId, meeting.getUsers)
   }
 
@@ -385,7 +379,7 @@ trait UsersHandler2x {
     //    sender.sendUserLeftMessage(props.id, props.recorded, user)
   }
 
-  def handleUserJoin2(msg: UserJoining): Unit = {
+  def handleUserJoin2(msg: UserJoinMeetingInMessage): Unit = {
     //    log.debug("Received user joined meeting. metingId=" + props.id + " userId=" + msg.userId)
 
     //    val regUser = meeting.findWithToken(msg.token)
@@ -650,7 +644,7 @@ trait UsersHandler2x {
     //    }
   }
 
-  def handleAssignPresenter(msg: AssignPresenter): Unit = {
+  def handleAssignPresenter(msg: UserAssignPresenterInMsg): Unit = {
     //    assignNewPresenter(msg.newPresenterId, msg.newPresenterName, msg.assignedBy)
   }
 

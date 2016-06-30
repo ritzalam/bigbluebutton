@@ -1,5 +1,7 @@
 package org.bigbluebutton.core2x.domain
 
+import org.bigbluebutton.core2x.api.SessionId
+
 sealed trait Presence
 case class FlashBrowserPresence(
   id: IntUserId,

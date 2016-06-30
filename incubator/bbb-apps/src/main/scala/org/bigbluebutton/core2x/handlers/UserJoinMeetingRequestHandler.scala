@@ -18,7 +18,7 @@ trait UserJoinMeetingRequestHandler {
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
 
-    userHandlers.get(msg.userId) foreach { handler => handler.handleUserJoinMeetingMessage(msg, state) }
+    userHandlers.get(msg.senderId) foreach { handler => handler.handleUserJoinMeetingMessage(msg, state) }
 
     // TODO: Keep track if there are still web users in the meeting.
     //          if (Users2x.numberOfWebUsers(meeting.state.users.toVector) > 0) {
@@ -43,7 +43,7 @@ trait UserJoinMeetingRequestHandlerFilter extends UserJoinMeetingRequestHandler 
       case Some(u) =>
         super.handleUserJoinMeetingRequestInMessage(msg)
       case None =>
-        outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
+        outGW.send(new DisconnectUser2x(msg.meetingId, msg.senderId))
     }
   }
 }

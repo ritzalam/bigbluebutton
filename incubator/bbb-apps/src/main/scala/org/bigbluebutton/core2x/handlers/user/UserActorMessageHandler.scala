@@ -15,12 +15,12 @@ class UserActorMessageHandler(
 
   val userState: UserState = new UserState(user)
 
-  def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMessage, meeting: MeetingStateModel): Unit = {
+  def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMsg, meeting: MeetingStateModel): Unit = {
 
   }
 
-  def handleUserLeave2xCommand(msg: UserLeave2xCommand, meeting: MeetingStateModel): Unit = {
-    UsersModel.findWithId(msg.userId, meeting.usersModel.toVector) match {
+  def handleUserLeave2xCommand(msg: UserLeaveMeetingInMessage, meeting: MeetingStateModel): Unit = {
+    UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
         val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
@@ -31,7 +31,7 @@ class UserActorMessageHandler(
     }
   }
 
-  def handleViewWebCamRequest2x(msg: ViewWebCamRequest2x, meeting: MeetingStateModel): Unit = {
+  def handleViewWebCamRequest2x(msg: UserViewWebCamRequestInMsg, meeting: MeetingStateModel): Unit = {
     def send(tokens: Set[String]): Unit = {
       if (tokens.contains(msg.token)) {
         // send media info
@@ -39,42 +39,42 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
+      user <- UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector)
     } yield send(userState.get.tokens)
 
   }
 
-  def handleShareWebCamRequest2x(msg: ShareWebCamRequest2x, meeting: MeetingStateModel): Unit = {
+  def handleShareWebCamRequest2x(msg: UserShareWebCamRequestInMsg, meeting: MeetingStateModel): Unit = {
     def send(): Unit = {
 
     }
 
     for {
-      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
+      user <- UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
 
   }
 
-  def handleUserShareWebCam2x(msg: UserShareWebCam2x, meeting: MeetingStateModel): Unit = {
+  def handleUserShareWebCam2x(msg: UserStartedPublishWebCamInMsg, meeting: MeetingStateModel): Unit = {
     def send(): Unit = {
 
     }
 
     for {
-      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
+      user <- UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
 
   }
 
-  def handleUserUnShareWebCam2x(msg: UserUnShareWebCam2x, meeting: MeetingStateModel): Unit = {
+  def handleUserUnShareWebCam2x(msg: UserStoppedPublishWebCamInMsg, meeting: MeetingStateModel): Unit = {
     def send(): Unit = {
 
     }
 
     for {
-      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
+      user <- UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
   }

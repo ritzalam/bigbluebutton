@@ -1,6 +1,7 @@
 package org.bigbluebutton.core2x.domain
 
 import com.softwaremill.quicklens._
+import org.bigbluebutton.core2x.api.SessionId
 
 trait PresenceUserAgent
 case object FlashWebUserAgent extends PresenceUserAgent

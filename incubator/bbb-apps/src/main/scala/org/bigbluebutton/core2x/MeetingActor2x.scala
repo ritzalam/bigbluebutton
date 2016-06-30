@@ -89,7 +89,7 @@ class MeetingActor2x(
     case msg: UserJoinMeetingInMessage =>
       log.debug("Handling NewUserPresence2x")
       handleUserJoinMeetingRequestInMessage(msg)
-    case msg: EjectUserFromMeetingInMessage =>
+    case msg: EjectUserFromMeetingInMsg =>
       log.debug("Handling EjectUserFromMeeting")
       handleEjectUserFromMeeting(msg)
   }

@@ -42,7 +42,7 @@ class EjectUserFromMeetingMessageTestsSpec extends TestKit(ActorSystem("MeetingA
           polls, whiteboards, presentations, breakoutRooms, captions,
           new MeetingStatus)
 
-        val ejectUserMsg = new EjectUserFromMeetingInMessage(piliIntMeetingId, marIntUserId, du30IntUserId)
+        val ejectUserMsg = new EjectUserFromMeetingInMsg(piliIntMeetingId, marIntUserId, du30IntUserId)
 
         val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
         meetingActorRef ! ejectUserMsg

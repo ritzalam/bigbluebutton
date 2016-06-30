@@ -31,7 +31,7 @@ class UserActorMessageHandlerTests extends UnitSpec with MockitoSugar with Meeti
     // Create the class under test and pass the mock to it
     val classUnderTest = new UserActorMessageHandler(du30RegisteredUser, mockOutGW)
 
-    val ejectUserMsg = new EjectUserFromMeetingInMessage(piliIntMeetingId, marIntUserId, du30IntUserId)
+    val ejectUserMsg = new EjectUserFromMeetingInMsg(piliIntMeetingId, marIntUserId, du30IntUserId)
 
     // Use the class under test
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg, state)

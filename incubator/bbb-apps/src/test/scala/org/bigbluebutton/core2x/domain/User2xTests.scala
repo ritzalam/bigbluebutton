@@ -1,6 +1,7 @@
 package org.bigbluebutton.core2x.domain
 
 import org.bigbluebutton.core.UnitSpec
+import org.bigbluebutton.core2x.api.SessionId
 
 class User2xTests extends UnitSpec {
   val flashListenOnly = Voice4x(VoiceUserId("flash-web-listen-only-session-id"))

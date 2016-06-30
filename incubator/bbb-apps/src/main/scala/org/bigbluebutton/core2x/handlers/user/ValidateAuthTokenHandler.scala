@@ -15,7 +15,7 @@ trait ValidateAuthTokenHandler {
 
     def sendResponse(user: RegisteredUser2x): Unit = {
       val reply = new ValidateAuthTokenSuccessReplyOutMsg(
-        msg.meetingId, msg.userId, user.name, user.roles,
+        msg.meetingId, msg.senderId, user.name, user.roles,
         user.extId, user.authToken, user.avatar,
         user.logoutUrl, user.welcome, user.dialNumbers,
         user.config, user.extData)

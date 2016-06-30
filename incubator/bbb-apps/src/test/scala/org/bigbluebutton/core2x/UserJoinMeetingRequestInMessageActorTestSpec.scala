@@ -41,11 +41,11 @@ class UserJoinMeetingRequestInMessageActorTestSpec extends TestKit(ActorSystem("
           case event: UserJoinedEvent2x =>
             assert(event.meetingId == piliIntMeetingId)
           case presEvent: PresenterAssignedEventOutMsg =>
-            assert(presEvent.presenter.id == du30UserJoinCommand.userId)
+            assert(presEvent.presenter.id == du30UserJoinCommand.senderId)
         }
         expectMsgPF() {
           case presEvent: PresenterAssignedEventOutMsg =>
-            assert(presEvent.presenter.id == du30UserJoinCommand.userId)
+            assert(presEvent.presenter.id == du30UserJoinCommand.senderId)
         }
         //expectMsgClass(classOf[PresenterChangedEventOutMessage])
       }

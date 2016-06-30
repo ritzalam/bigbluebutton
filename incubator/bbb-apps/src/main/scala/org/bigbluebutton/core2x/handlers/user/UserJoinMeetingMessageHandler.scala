@@ -27,7 +27,7 @@ trait UserJoinMeetingMessageHandler {
       becomePresenterIfNeeded(user)
     }
 
-    UsersModel.findWithId(msg.userId, meeting.usersModel.toVector) match {
+    UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
         val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
@@ -36,7 +36,7 @@ trait UserJoinMeetingMessageHandler {
       case None =>
         for {
           ru <- RegisteredUsersModel.findWithToken(msg.token, meeting.registeredUsersModel.toVector)
-          u = User3x.create(msg.userId, ru.extId, ru.name, ru.roles)
+          u = User3x.create(msg.senderId, ru.extId, ru.name, ru.roles)
           presence = User3x.create(msg.presenceId, msg.userAgent)
           user = User3x.add(u, presence)
         } yield process(user)

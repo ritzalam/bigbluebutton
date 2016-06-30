@@ -3,7 +3,6 @@ package org.bigbluebutton.core2x.api
 import org.bigbluebutton.core2x.apps.presentation.domain.{ PresentationId }
 import org.bigbluebutton.core2x.apps.presentation.{ Presentation }
 import org.bigbluebutton.core2x.domain._
-import spray.json.JsObject
 
 object IncomingMsg {
 
@@ -13,7 +12,17 @@ object IncomingMsg {
   // System
   /////////////////////////////////////////////////////////////////////////////
 
+  /**
+   * Test if connection to pubsub is not broken.
+   * @param system
+   * @param timestamp
+   */
   case class PubSubPingMessageInMsg(system: String, timestamp: Long) extends InMsg
+
+  /**
+   * Audit check to make sure the other components are still working.
+   * @param aliveId
+   */
   case class KeepAliveMessageInMsg(aliveId: String) extends InMsg
 
   case class IsMeetingActorAliveMessage(meetingId: String) extends InMsg
@@ -22,17 +31,44 @@ object IncomingMsg {
   // Meeting
   /////////////////////////////////////////////////////////////////////////////
 
+  /**
+   * Request to create a new meeting.
+   * @param meetingId
+   * @param mProps
+   */
   case class CreateMeetingRequestInMsg(meetingId: IntMeetingId, mProps: MeetingProperties2x) extends InMsg
+
+  /**
+   * Request to end the meeting from the 3rd-party applications.
+   * @param meetingId
+   */
   case class EndMeetingInMsg(meetingId: IntMeetingId) extends InMsg
 
-  case class MonitorNumberOfUsers(meetingId: IntMeetingId) extends InMsg
-  case class SendTimeRemainingUpdate(meetingId: IntMeetingId) extends InMsg
-  case class ExtendMeetingDuration(meetingId: IntMeetingId, userId: IntUserId) extends InMsg
-  case class InitializeMeeting(meetingId: IntMeetingId, recorded: Recorded) extends InMsg
-  case class DestroyMeeting(meetingId: IntMeetingId) extends InMsg
-  case class StartMeeting(meetingId: IntMeetingId) extends InMsg
+  /**
+   * Audit to monitor the number of users in the meeting. Used to decide to end the meeting
+   * when all users have left for a period of time.
+   * @param meetingId
+   */
+  case class MonitorNumberOfUsersInMsg(meetingId: IntMeetingId) extends InMsg
 
-  case class LockSetting(meetingId: IntMeetingId, locked: Boolean, settings: Map[String, Boolean]) extends InMsg
+  /**
+   * Audit message to tell meeting to inform users of remaining time of the meeting.
+   * @param meetingId
+   */
+  case class SendTimeRemainingUpdateInMsg(meetingId: IntMeetingId) extends InMsg
+
+  /**
+   * Extend the meeting for a certain period of time.
+   * @param meetingId
+   * @param senderId
+   */
+  case class ExtendMeetingDurationInMsg(meetingId: IntMeetingId, senderId: IntUserId) extends InMsg
+
+  //case class InitializeMeeting(meetingId: IntMeetingId, recorded: Recorded) extends InMsg
+  //case class DestroyMeeting(meetingId: IntMeetingId) extends InMsg
+  //case class StartMeeting(meetingId: IntMeetingId) extends InMsg
+
+  //case class LockSetting(meetingId: IntMeetingId, locked: Boolean, settings: Map[String, Boolean]) extends InMsg
 
   //////////////////////////////////////////////////////////////////////////////////////
   // Breakout room
@@ -88,88 +124,145 @@ object IncomingMsg {
   // Users
   /////////////////////////////////////////////////////////////////////////////////
 
-  case class ValidateAuthTokenInMessage(meetingId: IntMeetingId, userId: IntUserId,
+  /**
+   * Request to validate a user's authorization token.
+   * @param meetingId
+   * @param senderId
+   * @param token
+   */
+  case class ValidateAuthTokenInMessage(meetingId: IntMeetingId, senderId: IntUserId,
     token: AuthToken) extends InMsg
 
+  /**
+   * Register a user into the meeting.
+   * @param meetingId
+   * @param userId
+   * @param name
+   * @param roles
+   * @param extUserId
+   * @param authToken
+   * @param avatar
+   * @param logoutUrl
+   * @param welcome
+   * @param dialNumbers
+   * @param config
+   * @param extData
+   */
   case class RegisterUserInMessage(meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
     extUserId: ExtUserId, authToken: AuthToken, avatar: Avatar, logoutUrl: LogoutUrl, welcome: Welcome,
     dialNumbers: Set[DialNumber], config: String, extData: String) extends InMsg
 
-  case class UserJoinMeetingInMessage(meetingId: IntMeetingId, userId: IntUserId, token: AuthToken,
+  /**
+   * User joining the meeting from a specific client.
+   */
+  case class UserJoinMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, token: AuthToken,
     sessionId: SessionId, presenceId: PresenceId, userAgent: PresenceUserAgent) extends InMsg
 
-  case class UserLeave2xCommand(meetingId: IntMeetingId, userId: IntUserId, sessionId: SessionId,
-    presenceId: PresenceId, userAgent: PresenceUserAgent) extends InMsg
-
-  case class UserPresenceLeft2x(
-    meetingId: IntMeetingId,
-    userId: IntUserId,
-    sessionId: SessionId,
-    presenceId: PresenceId,
-    userAgent: PresenceUserAgent) extends InMsg
-
-  case class ShareWebCamRequest2x(
-    meetingId: IntMeetingId, userId: IntUserId,
+  /**
+   * User leaving the meeting from a specific client. Only this client will leave the meeting.
+   * @param meetingId
+   * @param senderId
+   * @param sessionId
+   * @param presenceId
+   */
+  case class UserLeaveMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, sessionId: SessionId,
     presenceId: PresenceId) extends InMsg
 
-  case class ViewWebCamRequest2x(
-    meetingId: IntMeetingId, userId: IntUserId,
+  /**
+   * User leaving the meeting. Remove user from meeting by closing other clients if any.
+   * We keep track of which client the user requested to logout from the meeting.
+   * @param meetingId
+   * @param senderId
+   * @param sessionId
+   * @param presenceId
+   */
+  case class UserLogoutMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, sessionId: SessionId,
+    presenceId: PresenceId) extends InMsg
+
+  /**
+   * User request to share webcam.
+   * @param meetingId
+   * @param senderId
+   * @param presenceId
+   */
+  case class UserShareWebCamRequestInMsg(meetingId: IntMeetingId, senderId: IntUserId, presenceId: PresenceId) extends InMsg
+
+  /**
+   * User request to view webcam stream.
+   * @param meetingId
+   * @param senderId
+   * @param presenceId
+   * @param streamId
+   * @param token
+   */
+  case class UserViewWebCamRequestInMsg(meetingId: IntMeetingId, senderId: IntUserId,
     presenceId: PresenceId, streamId: String, token: String) extends InMsg
 
-  case class UserShareWebCam2x(
-    meetingId: IntMeetingId, userId: IntUserId,
-    presenceId: PresenceId, stream: String) extends InMsg
+  /**
+   * User started publishing webcam.
+   * @param meetingId
+   * @param senderId
+   * @param presenceId
+   * @param stream
+   */
+  case class UserStartedPublishWebCamInMsg(meetingId: IntMeetingId, senderId: IntUserId,
+    presenceId: PresenceId, stream: Stream) extends InMsg
 
-  case class UserUnShareWebCam2x(
-    meetingId: IntMeetingId, userId: IntUserId,
-    presenceId: PresenceId, stream: String) extends InMsg
+  /**
+   * User stopped publishing webcam.
+   * @param meetingId
+   * @param senderId
+   * @param presenceId
+   * @param streamId
+   */
+  case class UserStoppedPublishWebCamInMsg(meetingId: IntMeetingId, senderId: IntUserId,
+    presenceId: PresenceId, streamId: String) extends InMsg
 
-  case class UserJoining(
-    meetingId: IntMeetingId, userId: IntUserId, token: AuthToken) extends InMsg
+  /**
+   * Get the users in the meeting.
+   * @param meetingId
+   * @param senderId
+   */
+  case class GetUsersInMeetingInMsg(meetingId: IntMeetingId, senderId: IntUserId) extends InMsg
 
-  case class UserLeaving(
-    meetingId: IntMeetingId, userId: IntUserId, sessionId: String) extends InMsg
+  /**
+   * Change user's emoji status.
+   * @param meetingId
+   * @param senderId
+   * @param emojiStatus
+   */
+  case class UserChangeEmojiStatus(meetingId: IntMeetingId, senderId: IntUserId, emojiStatus: EmojiStatus) extends InMsg
 
-  case class GetUsers(
-    meetingId: IntMeetingId, requesterId: IntUserId) extends InMsg
+  /**
+   * Eject user from meeting.
+   * @param meetingId
+   * @param senderId
+   * @param ejectedBy
+   */
+  case class EjectUserFromMeetingInMsg(
+    meetingId: IntMeetingId, senderId: IntUserId, ejectedBy: IntUserId) extends InMsg
 
-  case class UserEmojiStatus(
-    meetingId: IntMeetingId, userId: IntUserId, emojiStatus: EmojiStatus) extends InMsg
+  case class UserAssignPresenterInMsg(
+    meetingId: IntMeetingId, presenterId: IntUserId, assignedBy: IntUserId) extends InMsg
 
-  case class EjectUserFromMeetingInMessage(
-    meetingId: IntMeetingId, userId: IntUserId, ejectedBy: IntUserId) extends InMsg
+  case class SetRecordingStatusInMsg(
+    meetingId: IntMeetingId, senderId: IntUserId, recording: Boolean) extends InMsg
 
-  case class UserShareWebcam(
-    meetingId: IntMeetingId, userId: IntUserId, stream: String) extends InMsg
-
-  case class UserUnshareWebcam(
-    meetingId: IntMeetingId, userId: IntUserId, stream: String) extends InMsg
-
-  case class ChangeUserStatus(
-    meetingId: IntMeetingId, userId: IntUserId, status: String, value: Object) extends InMsg
-
-  case class AssignPresenter(
-    meetingId: IntMeetingId, newPresenterId: IntUserId,
-    newPresenterName: Name, assignedBy: IntUserId) extends InMsg
-
-  case class SetRecordingStatus(
-    meetingId: IntMeetingId, userId: IntUserId, recording: Boolean) extends InMsg
-
-  case class GetRecordingStatus(
-    meetingId: IntMeetingId, userId: IntUserId) extends InMsg
+  case class GetRecordingStatusInMsg(
+    meetingId: IntMeetingId, senderId: IntUserId) extends InMsg
 
   //////////////////////////////////////////////////////////////////////////////////
   // Chat
   /////////////////////////////////////////////////////////////////////////////////
 
-  case class GetChatHistoryRequest(
-    meetingId: IntMeetingId, requesterId: IntUserId, replyTo: String) extends InMsg
+  case class ChatGetHistoryInMsg(
+    meetingId: IntMeetingId, senderId: IntUserId, replyTo: String) extends InMsg
 
-  case class SendPublicMessageRequest(
-    meetingId: IntMeetingId, requesterId: IntUserId, message: Map[String, String]) extends InMsg
+  case class ChatSendPublicMessageInMsg(
+    meetingId: IntMeetingId, senderId: IntUserId, message: Map[String, String]) extends InMsg
 
-  case class SendPrivateMessageRequest(
-    meetingId: IntMeetingId, requesterId: IntUserId, message: Map[String, String]) extends InMsg
+  case class ChatSendPrivateMessageInMsg(
+    meetingId: IntMeetingId, senderId: IntUserId, message: Map[String, String]) extends InMsg
 
   case class UserConnectedToGlobalAudio(
     meetingId: IntMeetingId,

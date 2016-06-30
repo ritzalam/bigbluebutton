@@ -39,7 +39,7 @@ trait ValidateAuthTokenCommandFilter extends ValidateAuthTokenCommandHandler {
         super.handleValidateAuthToken2x(msg)
       case None =>
         log.debug("Received ValidateAuthTokenRequestInMessage. Filter failed. Disconnecting.")
-        outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
+        outGW.send(new DisconnectUser2x(msg.meetingId, msg.senderId))
     }
   }
 }

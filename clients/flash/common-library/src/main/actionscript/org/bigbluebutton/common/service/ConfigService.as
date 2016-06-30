@@ -9,14 +9,14 @@ package org.bigbluebutton.common.service
   import flash.net.URLVariables;
   
   import org.bigbluebutton.common.domain.Config;
-  import org.bigbluebutton.common.model.IConfigModel;
+  import org.bigbluebutton.common.model.ConfigModel;
 
   public class ConfigService implements IConfigService
   {
     public static const LOG:String = "ConfigService - ";
     
     [Inject]
-    public var configModel:IConfigModel;
+    public var configModel:ConfigModel;
       
     private var urlLoader:URLLoader;
     private var reqVars:URLVariables = new URLVariables();

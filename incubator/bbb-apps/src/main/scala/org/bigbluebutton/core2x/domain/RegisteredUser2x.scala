@@ -10,6 +10,6 @@ case class RegisteredUser2x(id: IntUserId,
   welcome: Welcome,
   dialNumbers: Set[DialNumber],
   pinNumber: PinNumber,
-  config: Set[String],
-  extData: Set[String])
+  config: String,
+  extData: String)
 

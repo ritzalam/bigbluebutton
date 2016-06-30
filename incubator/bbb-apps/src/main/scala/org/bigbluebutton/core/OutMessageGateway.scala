@@ -1,19 +1,18 @@
 package org.bigbluebutton.core
 
-import akka.actor.ActorRef
-import akka.actor.ActorContext
+import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core.bus.BigBlueButtonOutMessage
-import org.bigbluebutton.core.api.IOutMessage
+import org.bigbluebutton.core2x.api.OutGoingMsg.OutMsg
 
 object OutMessageGateway {
   def apply(outgoingEventBus: OutgoingEventBus) =
     new OutMessageGateway(outgoingEventBus)
 }
 
-class OutMessageGateway(outgoingEventBus: OutgoingEventBus) {
+class OutMessageGateway(outgoingEventBus: OutgoingEventBus) extends SystemConfiguration {
 
-  def send(msg: IOutMessage) {
-    outgoingEventBus.publish(BigBlueButtonOutMessage("outgoingMessageChannel", msg))
+  def send(msg: OutMsg) {
+    outgoingEventBus.publish(BigBlueButtonOutMessage(outgoingMessageChannel, msg))
   }
 }

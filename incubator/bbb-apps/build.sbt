@@ -61,9 +61,10 @@ libraryDependencies ++= {
     "commons-codec"             %  "commons-codec"                        % "1.8",
     "joda-time"                 %  "joda-time"                            % "2.3",
     "com.google.code.gson"      %  "gson"                                 % "2.5",
+    "io.fastjson"               %  "boon"                                 % "0.33",
     "redis.clients"             %  "jedis"                                % "2.7.2",
     "org.apache.commons"        %  "commons-lang3"                        % "3.2",
-    "org.bigbluebutton"         %  "bbb-common-message"                   % "0.0.18-SNAPSHOT",
+    "org.bigbluebutton"         %  "bbb-common-message"                   % "0.0.19-SNAPSHOT",
     "io.spray"                 %%  "spray-json"                           % "1.3.2",
     "com.softwaremill.quicklens" %% "quicklens"                           % "1.4.6",
     "org.mockito"              %   "mockito-core"                         % "2.0.52-beta"  % "test"

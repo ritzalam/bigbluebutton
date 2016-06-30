@@ -7,14 +7,17 @@ package org.bigbluebutton.common.service
   import flash.net.URLRequest;
   import flash.net.URLRequestMethod;
   
-  import org.bigbluebutton.common.model.IVideoProfileModel;
+  import org.bigbluebutton.common.model.VideoProfileModel;
+  
+  import robotlegs.bender.framework.api.ILogger;
 
   public class VideoProfilesService implements IVideoProfileService
   {
-    private static const LOG:String = "VideoProfilesService - ";
+    [Inject]
+    public var logger:ILogger;
     
     [Inject]
-    public var videoProfile:IVideoProfileModel;
+    public var videoProfile:VideoProfileModel;
     
     private var urlLoader:URLLoader;
     
@@ -32,15 +35,15 @@ package org.bigbluebutton.common.service
     }
     
     private function httpStatusHandler(event:HTTPStatusEvent):void {
-      trace(LOG + "httpStatusHandler: {0}", [event]);
+      logger.debug("httpStatusHandler: " + event.toString());
     }
     
     private function ioErrorHandler(event:IOErrorEvent):void {
-      trace(LOG + "ioErrorHandler: {0}", [event]);
+      logger.debug("ioErrorHandler: " + event.toString());
     }
     
     private function handleComplete(e:Event):void {
-      trace(LOG + "handleComplete: {0}", [new XML(e.target.data)]);
+      //logger.debug("handleComplete: {0}", [new XML(e.target.data)]);
       videoProfile.parseProfilesXml(new XML(e.target.data))
     }
   }

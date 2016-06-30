@@ -2,43 +2,36 @@ package org.bigbluebutton.core2x.handlers.user
 
 import org.bigbluebutton.core.{ OutMessageGateway, UnitSpec }
 import org.bigbluebutton.core2x.MeetingTestFixtures
-import org.bigbluebutton.core2x.api.IncomingMessage._
-import org.bigbluebutton.core2x.api.OutGoingMessage._
-import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core2x.api.IncomingMsg._
+import org.bigbluebutton.core2x.api.OutGoingMsg._
+import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 
 class UserActorMessageHandlerTests extends UnitSpec with MockitoSugar with MeetingTestFixtures {
   it should "eject user if user has ability" in {
 
-    val testRegUsers = new RegisteredUsers2x
+    val testRegUsers = new RegisteredUsersModel
     testRegUsers.add(du30RegisteredUser)
     testRegUsers.add(mdsRegisteredUser)
     testRegUsers.add(marRegisteredUser)
 
-    val testUsers = new Users3x
+    val testUsers = new UsersModel
     testUsers.save(du30User)
     testUsers.save(mdsUser)
     testUsers.save(marUser)
 
-    val state: MeetingStateModel = new MeetingStateModel(piliProps,
-      abilities,
-      testRegUsers,
-      testUsers,
-      chats,
-      layouts,
-      polls,
-      whiteboards,
-      presentations,
-      breakoutRooms,
-      captions,
+    val state: MeetingStateModel = new MeetingStateModel(piliProps, abilities, testRegUsers,
+      testUsers, chats, layouts, polls,
+      whiteboards, presentations,
+      breakoutRooms, captions,
       new MeetingStatus)
 
     val mockOutGW = mock[OutMessageGateway]
     // Create the class under test and pass the mock to it
     val classUnderTest = new UserActorMessageHandler(du30RegisteredUser, mockOutGW)
 
-    val ejectUserMsg = new EjectUserFromMeeting(piliIntMeetingId, marIntUserId, du30IntUserId)
+    val ejectUserMsg = new EjectUserFromMeetingInMessage(piliIntMeetingId, marIntUserId, du30IntUserId)
 
     // Use the class under test
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg, state)

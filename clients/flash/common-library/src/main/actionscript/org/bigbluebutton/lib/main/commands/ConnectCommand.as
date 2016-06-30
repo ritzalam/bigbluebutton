@@ -15,9 +15,11 @@ package org.bigbluebutton.lib.main.commands {
 	import org.bigbluebutton.lib.whiteboard.services.IWhiteboardService;
 	
 	import robotlegs.bender.bundles.mvcs.Command;
+	import robotlegs.bender.framework.api.ILogger;
 	
 	public class ConnectCommand extends Command {
-		private const LOG:String = "ConnectCommand::";
+    [Inject]
+    public var logger:ILogger;
 		
 		[Inject]
 		public var userSession:IUserSession;
@@ -84,7 +86,7 @@ package org.bigbluebutton.lib.main.commands {
 		
 		
 		private function connectionSuccess():void {
-			trace(LOG + "successConnected()");
+      logger.debug("successConnected()");
 			userSession.mainConnection = connection;
 			chatService.setupMessageSenderReceiver();
 			whiteboardService.setupMessageSenderReceiver();
@@ -151,7 +153,7 @@ package org.bigbluebutton.lib.main.commands {
 		}
 		
 		private function joiningMeetingFailure():void {
-			trace(LOG + "joiningMeetingFailure() -- Failed to join the meeting!!!");
+      logger.debug("joiningMeetingFailure() -- Failed to join the meeting!!!");
 			userSession.successJoiningMeetingSignal.remove(joiningMeetingSuccess);
 			userSession.failureJoiningMeetingSignal.remove(joiningMeetingFailure);
 		}
@@ -162,14 +164,14 @@ package org.bigbluebutton.lib.main.commands {
 		}
 		
 		private function connectionFailure(reason:String):void {
-			trace(LOG + "connectionFailure()");
+      logger.debug("connectionFailure()");
 			connectingFailedSignal.dispatch("connectionFailed");
 			connection.connectionSuccessSignal.remove(connectionSuccess);
 			connection.connectionFailureSignal.remove(connectionFailure);
 		}
 		
 		private function videoConnectedSuccess():void {
-			trace(LOG + "successVideoConnected()");
+      logger.debug("successVideoConnected()");
 			if (userSession.videoAutoStart && userSession.skipCamSettingsCheck) {
 				shareCameraSignal.dispatch(!userSession.userList.me.hasStream, userSession.videoConnection.cameraPosition);
 			}
@@ -178,7 +180,7 @@ package org.bigbluebutton.lib.main.commands {
 		}
 		
 		private function videoConnectionFailure(reason:String):void {
-			trace(LOG + "videoConnectionFailure()");
+      logger.debug("videoConnectionFailure()");
 			videoConnection.connectionFailureSignal.remove(videoConnectionFailure);
 			videoConnection.connectionSuccessSignal.remove(videoConnectedSuccess);
 		}

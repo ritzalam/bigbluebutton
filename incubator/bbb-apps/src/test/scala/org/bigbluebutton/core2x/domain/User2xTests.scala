@@ -37,12 +37,4 @@ class User2xTests extends UnitSpec {
 
     assert(newUser.presence.size == 2)
   }
-
-  //  it should "not eject user" in {
-  //    object DefPerm extends DefaultPermissionsFilter
-  //    val perm: Set[Permission2x] = Set(CanRaiseHand)
-  //
-  //    assert(DefPerm.can(CanEjectUser, perm) != true)
-  //  }
-
 }

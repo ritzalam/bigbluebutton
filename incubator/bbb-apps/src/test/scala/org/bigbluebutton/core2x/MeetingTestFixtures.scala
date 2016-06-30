@@ -1,6 +1,7 @@
 package org.bigbluebutton.core2x
 
-import org.bigbluebutton.core2x.api.IncomingMessage._
+import org.bigbluebutton.core2x.api.IncomingMsg._
+import org.bigbluebutton.core2x.apps.presentation.PresentationModel
 import org.bigbluebutton.core2x.domain.{ VoiceConf, Welcome, _ }
 import org.bigbluebutton.core2x.models.{ MeetingStatus => _, _ }
 
@@ -27,7 +28,7 @@ trait MeetingTestFixtures {
   val du30Welcome = Welcome("Hello World!")
   val du30DialNums: Set[DialNumber] = Set(DialNumber("6135551234"))
 
-  val du30RegisteredUser = RegisteredUsers2x.create(
+  val du30RegisteredUser = RegisteredUsersModel.create(
     du30IntUserId,
     du30ExtUserId,
     du30UserName,
@@ -38,8 +39,8 @@ trait MeetingTestFixtures {
     du30Welcome,
     du30DialNums,
     PinNumber(85115001),
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val du30User = User3x.create(du30IntUserId, du30ExtUserId, du30UserName, du30Roles)
 
@@ -53,7 +54,7 @@ trait MeetingTestFixtures {
   val mdsWelcome = Welcome("Hello World!")
   val mdsDialNums = Set(DialNumber("6135551234"))
 
-  val mdsRegisteredUser = RegisteredUsers2x.create(
+  val mdsRegisteredUser = RegisteredUsersModel.create(
     mdsIntUserId,
     mdsExtUserId,
     mdsUserName,
@@ -64,8 +65,8 @@ trait MeetingTestFixtures {
     mdsWelcome,
     mdsDialNums,
     PinNumber(85115002),
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val mdsUser = User3x.create(mdsIntUserId, mdsExtUserId, mdsUserName, mdsRoles)
 
@@ -79,7 +80,7 @@ trait MeetingTestFixtures {
   val graceWelcome = Welcome("Hello World!")
   val graceDialNums = Set(DialNumber("6135551234"))
 
-  val graceRegisteredUser = RegisteredUsers2x.create(
+  val graceRegisteredUser = RegisteredUsersModel.create(
     graceIntUserId,
     graceExtUserId,
     graceUserName,
@@ -90,8 +91,8 @@ trait MeetingTestFixtures {
     graceWelcome,
     graceDialNums,
     PinNumber(85115003),
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val graceUser = User3x.create(graceIntUserId, graceExtUserId, graceUserName, graceRoles)
 
@@ -105,7 +106,7 @@ trait MeetingTestFixtures {
   val marWelcome = Welcome("Hello World!")
   val marDialNums = Set(DialNumber("6135551234"))
 
-  val marRegisteredUser = RegisteredUsers2x.create(
+  val marRegisteredUser = RegisteredUsersModel.create(
     marIntUserId,
     marExtUserId,
     marUserName,
@@ -116,8 +117,8 @@ trait MeetingTestFixtures {
     marWelcome,
     marDialNums,
     PinNumber(85115004),
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val marUser = User3x.create(marIntUserId, marExtUserId, marUserName, marRoles)
 
@@ -131,7 +132,7 @@ trait MeetingTestFixtures {
   val jbWelcome = Welcome("Hello World!")
   val jbDialNums = Set(DialNumber("6135551234"))
 
-  val jbRegisteredUser = RegisteredUsers2x.create(
+  val jbRegisteredUser = RegisteredUsersModel.create(
     jbIntUserId,
     jbExtUserId,
     jbUserName,
@@ -142,8 +143,8 @@ trait MeetingTestFixtures {
     jbWelcome,
     jbDialNums,
     PinNumber(85115005),
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
   val jbUser = User3x.create(marIntUserId, marExtUserId, marUserName, marRoles)
 
@@ -163,8 +164,8 @@ trait MeetingTestFixtures {
     recordingProp)
 
   val abilities: MeetingPermissions = new MeetingPermissions
-  val registeredUsers = new RegisteredUsers2x
-  val users = new Users3x
+  val registeredUsers = new RegisteredUsersModel
+  val users = new UsersModel
   val chats = new ChatModel
   val layouts = new LayoutModel
   val polls = new PollModel
@@ -174,7 +175,7 @@ trait MeetingTestFixtures {
   val captions = new CaptionModel
   val extension: MeetingExtensionStatus = new MeetingExtensionStatus
 
-  val du30RegisterUserCommand = RegisterUser2xCommand(
+  val du30RegisterUserCommand = RegisterUserInMessage(
     piliIntMeetingId,
     du30IntUserId,
     du30UserName,
@@ -185,17 +186,15 @@ trait MeetingTestFixtures {
     du30LogoutUrl,
     du30Welcome,
     du30DialNums,
-    Set("config1", "config2"),
-    Set("data12", "data2"))
+    "config1",
+    "data12")
 
-  val du30ValidateAuthTokenCommand = new ValidateAuthToken(
+  val du30ValidateAuthTokenCommand = new ValidateAuthTokenInMessage(
     piliIntMeetingId,
     du30IntUserId,
-    du30AuthToken,
-    "none",
-    "none")
+    du30AuthToken)
 
-  val du30UserJoinCommand: NewUserPresence2x = new NewUserPresence2x(
+  val du30UserJoinCommand: UserJoinMeetingInMessage = new UserJoinMeetingInMessage(
     piliIntMeetingId,
     du30IntUserId,
     du30AuthToken,

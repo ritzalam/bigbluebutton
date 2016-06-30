@@ -3,7 +3,7 @@ package org.bigbluebutton.common.model
   import org.bigbluebutton.common.signal.VideoProfileLoadedSignal;
   import org.bigbluebutton.lib.video.models.VideoProfile;
 
-  public class VideoProfileModel implements IVideoProfileModel
+  public class VideoProfileModel
   {
     [Inject]
     public var videoProfileLoadedSignal:VideoProfileLoadedSignal;

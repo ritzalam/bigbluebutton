@@ -2,13 +2,12 @@ package org.bigbluebutton.endpoint.redis
 
 import akka.actor.Props
 import java.net.InetSocketAddress
+
 import redis.actors.RedisSubscriberActor
-import redis.api.pubsub.{ PMessage, Message }
-import scala.concurrent.duration._
-import akka.actor.ActorRef
-import akka.actor.actorRef2Scala
+import redis.api.pubsub.{ Message, PMessage }
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.pubsub.receivers.RedisMessageReceiver
+import org.bigbluebutton.core2x.bus.{ IncomingJsonMessage, IncomingJsonMessageBus, ReceivedJsonMessage }
 import redis.api.servers.ClientSetname
 
 object AppsRedisSubscriberActor extends SystemConfiguration {
@@ -22,11 +21,15 @@ object AppsRedisSubscriberActor extends SystemConfiguration {
       channels, patterns).withDispatcher("akka.rediscala-subscriber-worker-dispatcher")
 }
 
-class AppsRedisSubscriberActor(msgReceiver: RedisMessageReceiver, redisHost: String,
+class AppsRedisSubscriberActor(
+  msgReceiver: RedisMessageReceiver,
+  redisHost: String,
   redisPort: Int,
   channels: Seq[String] = Nil, patterns: Seq[String] = Nil)
     extends RedisSubscriberActor(
-      new InetSocketAddress(redisHost, redisPort),
+      new InetSocketAddress(
+        redisHost,
+        redisPort),
       channels, patterns) {
 
   // Set the name of this client to be able to distinguish when doing

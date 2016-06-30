@@ -1,6 +1,6 @@
 package org.bigbluebutton.common.command
 {
-  import org.bigbluebutton.common.model.IConfigModel;
+  import org.bigbluebutton.common.model.ConfigModel;
   import org.bigbluebutton.common.service.IEnterApiService;
   import org.bigbluebutton.common.util.ISessionUtil;
   
@@ -15,7 +15,7 @@ package org.bigbluebutton.common.command
     public var sessionUtil:ISessionUtil;
     
     [Inject]
-    public var configModel:IConfigModel;
+    public var configModel:ConfigModel;
     
     public function CallEnterApiCommand()
     {

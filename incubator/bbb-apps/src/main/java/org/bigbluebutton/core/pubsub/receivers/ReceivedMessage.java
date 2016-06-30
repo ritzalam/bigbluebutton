@@ -2,27 +2,27 @@ package org.bigbluebutton.core.pubsub.receivers;
 
 public class ReceivedMessage {
 
-	private final String pattern;
-	private final String channel;
-	private final String message;
-	
-	public ReceivedMessage(String pattern, String channel, String message) {
-		this.pattern = pattern;
-		this.channel = channel;
-		this.message = message;
-	}
+    private final String pattern;
+    private final String channel;
+    private final String message;
 
-	public String getPattern() {
-		return pattern;
-	}
+    public ReceivedMessage(String pattern, String channel, String message) {
+        this.pattern = pattern;
+        this.channel = channel;
+        this.message = message;
+    }
 
-	public String getChannel() {
-		return channel;
-	}
+    public String getPattern() {
+        return pattern;
+    }
 
-	public String getMessage() {
-		return message;
-	}
-	
+    public String getChannel() {
+        return channel;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
 
 }

@@ -1,30 +1,17 @@
 package org.bigbluebutton
 
-import akka.event.{ Logging, LoggingAdapter }
-import akka.actor.{ ActorSystem, Props }
-
-import scala.concurrent.duration._
-import redis.RedisClient
-
-import scala.concurrent.{ Await, Future }
+import akka.event.Logging
+import akka.actor.ActorSystem
 import org.bigbluebutton.endpoint.redis.RedisPublisher
 import org.bigbluebutton.endpoint.redis.KeepAliveRedisPublisher
 import org.bigbluebutton.endpoint.redis.AppsRedisSubscriberActor
-import org.bigbluebutton.core.api.MessageOutGateway
-import org.bigbluebutton.core.api.IBigBlueButtonInGW
-import org.bigbluebutton.core.BigBlueButtonInGW
-import org.bigbluebutton.core.MessageSender
-import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core.MessageSenderActor
-import org.bigbluebutton.core.RecorderActor
+import org.bigbluebutton.core.{ BigBlueButtonInGW, MessageSender, OutMessageGateway }
 import org.bigbluebutton.core.pubsub.receivers.RedisMessageReceiver
-import org.bigbluebutton.core.api.OutMessageListener2
-import org.bigbluebutton.core.pubsub.senders._
 import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.core.bus._
-import org.bigbluebutton.core.JsonMessageSenderActor
-import org.bigbluebutton.core2x.bus.IncomingEventBus2x
+import org.bigbluebutton.core2x.{ BigBlueButtonActor2x, MessageSenderActor2x, RedisMessageHandlerActor }
+import org.bigbluebutton.core2x.bus.{ IncomingEventBus2x, IncomingJsonMessageBus }
 
 object Boot extends App with SystemConfiguration {
 
@@ -32,7 +19,6 @@ object Boot extends App with SystemConfiguration {
   implicit val executor = system.dispatcher
   val logger = Logging(system, getClass)
 
-  val eventBus = new IncomingEventBus
   val eventBus2x = new IncomingEventBus2x
 
   val outgoingEventBus = new OutgoingEventBus
@@ -46,15 +32,20 @@ object Boot extends App with SystemConfiguration {
   val recorderApp = new RecorderApplication(redisDispatcher)
   recorderApp.start()
 
-  val messageSenderActor = system.actorOf(MessageSenderActor.props(msgSender), "messageSenderActor")
-  val recorderActor = system.actorOf(RecorderActor.props(recorderApp), "recorderActor")
-  val newMessageSenderActor = system.actorOf(JsonMessageSenderActor.props(msgSender), "newMessageSenderActor")
+  //val recorderActor = system.actorOf(RecorderActor.props(recorderApp), "recorderActor")
+  val newMessageSenderActor = system.actorOf(MessageSenderActor2x.props(msgSender), "newMessageSenderActor")
 
-  outgoingEventBus.subscribe(messageSenderActor, "outgoingMessageChannel")
-  outgoingEventBus.subscribe(recorderActor, "outgoingMessageChannel")
-  outgoingEventBus.subscribe(newMessageSenderActor, "outgoingMessageChannel")
+  //outgoingEventBus.subscribe(recorderActor, outgoingMessageChannel)
+  outgoingEventBus.subscribe(newMessageSenderActor, outgoingMessageChannel)
 
-  val bbbInGW = new BigBlueButtonInGW(system, eventBus, outGW, eventBus2x, red5DeskShareIP, red5DeskShareApp)
+  val incomingJsonMessageBus = new IncomingJsonMessageBus
+  val redisMessageHandlerActor = system.actorOf(RedisMessageHandlerActor.props(eventBus2x, incomingJsonMessageBus))
+  incomingJsonMessageBus.subscribe(redisMessageHandlerActor, "incoming-json-message")
+
+  val bbbActor2x = system.actorOf(BigBlueButtonActor2x.props(system, eventBus2x, outGW), "bigbluebutton-actor2x")
+  eventBus2x.subscribe(bbbActor2x, meetingManagerChannel)
+
+  val bbbInGW = new BigBlueButtonInGW(system, outGW, eventBus2x, incomingJsonMessageBus)
   val redisMsgReceiver = new RedisMessageReceiver(bbbInGW)
 
   val redisSubscriberActor = system.actorOf(AppsRedisSubscriberActor.props(redisMsgReceiver), "redis-subscriber")

@@ -1,11 +1,11 @@
 package org.bigbluebutton.core2x.filters
 
-import org.bigbluebutton.core2x.api.IncomingMessage._
-import org.bigbluebutton.core2x.api.OutGoingMessage._
+import org.bigbluebutton.core2x.api.IncomingMsg._
+import org.bigbluebutton.core2x.api.OutGoingMsg._
 import org.bigbluebutton.core2x.domain.MeetingExtensionStatus
 import org.bigbluebutton.core.{ OutMessageGateway, UnitSpec }
 import org.bigbluebutton.core2x.MeetingTestFixtures
-import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
 import org.scalatest.mock.MockitoSugar
 import org.mockito.Mockito._
 
@@ -13,43 +13,38 @@ class UsersHandlerFilterDummy(val state: MeetingStateModel, val outGW: OutMessag
 
 class UserAuthzFilterTests extends UnitSpec with MockitoSugar with MeetingTestFixtures {
   it should "eject user if user has ability" in {
-
-    val testRegUsers = new RegisteredUsers2x
+    val testRegUsers = new RegisteredUsersModel
     testRegUsers.add(du30RegisteredUser)
     testRegUsers.add(mdsRegisteredUser)
     testRegUsers.add(marRegisteredUser)
 
-    val testUsers = new Users3x
+    val testUsers = new UsersModel
     testUsers.save(du30User)
     testUsers.save(mdsUser)
     testUsers.save(marUser)
 
     val state: MeetingStateModel = new MeetingStateModel(piliProps,
       abilities, testRegUsers, testUsers, chats, layouts,
-      polls, whiteboards, presentations, breakoutRooms, captions,
-      new MeetingStatus)
+      polls, whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
     val mockOutGW = mock[OutMessageGateway]
     // Create the class under test and pass the mock to it
     val classUnderTest = new UsersHandlerFilterDummy(state, mockOutGW)
-
-    val ejectUserMsg = new EjectUserFromMeeting(piliIntMeetingId, marIntUserId, du30IntUserId)
-
+    val ejectUserMsg = new EjectUserFromMeetingInMessage(piliIntMeetingId, marIntUserId, du30IntUserId)
     // Use the class under test
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg)
-
     // Then verify the class under test used the mock object as expected
     // The disconnect user shouldn't be called as user has ability to eject another user
     verify(mockOutGW, never()).send(new DisconnectUser2x(ejectUserMsg.meetingId, ejectUserMsg.ejectedBy))
   }
 
   it should "not eject user if user has no ability" in {
-    val testRegUsers = new RegisteredUsers2x
+    val testRegUsers = new RegisteredUsersModel
     testRegUsers.add(du30RegisteredUser)
     testRegUsers.add(mdsRegisteredUser)
     testRegUsers.add(marRegisteredUser)
 
-    val testUsers = new Users3x
+    val testUsers = new UsersModel
     testUsers.save(du30User)
     testUsers.save(mdsUser)
     testUsers.save(marUser)
@@ -71,7 +66,7 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar with MeetingTestFi
     // Create the class under test and pass the mock to it
     val classUnderTest = new UsersHandlerFilterDummy(state, mockOutGW)
 
-    val ejectUserMsg = new EjectUserFromMeeting(piliIntMeetingId, marIntUserId, mdsIntUserId)
+    val ejectUserMsg = new EjectUserFromMeetingInMessage(piliIntMeetingId, marIntUserId, mdsIntUserId)
 
     // Use the class under test
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg)

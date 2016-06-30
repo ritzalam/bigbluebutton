@@ -1,11 +1,11 @@
 package org.bigbluebutton.core2x.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core2x.api.IncomingMessage._
-import org.bigbluebutton.core2x.api.OutGoingMessage._
+import org.bigbluebutton.core2x.api.IncomingMsg._
+import org.bigbluebutton.core2x.api.OutGoingMsg._
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.core2x.handlers.user.UserActorMessageHandler
-import org.bigbluebutton.core2x.models.{ MeetingStateModel, PinNumberGenerator, RegisteredUsers2x, Users3x }
+import org.bigbluebutton.core2x.models.{ MeetingStateModel, PinNumberGenerator, RegisteredUsersModel, UsersModel }
 
 trait UsersHandler2x {
   val state: MeetingStateModel
@@ -13,9 +13,9 @@ trait UsersHandler2x {
 
   private var userHandlers = new collection.immutable.HashMap[String, UserActorMessageHandler]
 
-  def handleRegisterUser2x(msg: RegisterUser2xCommand): Unit = {
+  def handleRegisterUser2x(msg: RegisterUserInMessage): Unit = {
     val pinNumber = PinNumberGenerator.generatePin(state.props.voiceConf, state.status.get)
-    val regUser = RegisteredUsers2x.create(
+    val regUser = RegisteredUsersModel.create(
       msg.userId,
       msg.extUserId,
       msg.name,
@@ -29,11 +29,11 @@ trait UsersHandler2x {
       msg.config,
       msg.extData)
 
-    state.registeredUsers.add(regUser)
+    state.registeredUsersModel.add(regUser)
     outGW.send(new UserRegisteredEvent2x(state.props.id, state.props.recordingProp.recorded, regUser))
   }
 
-  def handleValidateAuthToken2x(msg: ValidateAuthToken): Unit = {
+  def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage): Unit = {
     def handle(regUser: RegisteredUser2x): Unit = {
       val userHandler = new UserActorMessageHandler(regUser, outGW)
       userHandlers += msg.userId.value -> userHandler
@@ -41,19 +41,19 @@ trait UsersHandler2x {
     }
 
     for {
-      regUser <- RegisteredUsers2x.findWithToken(msg.token, state.registeredUsers.toVector)
+      regUser <- RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector)
     } yield handle(regUser)
 
   }
 
-  def handleUserJoinWeb2x(msg: NewUserPresence2x): Unit = {
+  def handleUserJoinWeb2x(msg: UserJoinMeetingInMessage): Unit = {
 
     // Check if there is a registered user with token
     // Check if there is a user already in the list of users, if so, might be a reconnect
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
 
-    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserJoinWeb2x(msg, state) }
+    userHandlers.get(msg.userId.value) foreach { handler => handler.handleUserJoinMeetingMessage(msg, state) }
 
     // TODO: Keep track if there are still web users in the meeting.
     //          if (Users2x.numberOfWebUsers(meeting.state.users.toVector) > 0) {
@@ -346,27 +346,27 @@ trait UsersHandler2x {
     } yield saveAndSend(user)
 */ }
 
-  def handleEjectUserFromMeeting(msg: EjectUserFromMeeting) {
+  def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMessage) {
     def removeAndEject(user: User3x): Unit = {
       // remove user from list of users
-      state.users.remove(user.id)
+      state.usersModel.remove(user.id)
       // remove user from registered users to prevent re-joining
-      state.registeredUsers.remove(msg.userId)
+      state.registeredUsersModel.remove(msg.userId)
 
       // Send message to user that he has been ejected.
-      outGW.send(new UserEjectedFromMeeting(state.props.id,
+      outGW.send(new UserEjectedFromMeetingEventOutMsg(state.props.id,
         state.props.recordingProp.recorded,
         msg.userId, msg.ejectedBy))
       // Tell system to disconnect user.
       outGW.send(new DisconnectUser2x(msg.meetingId, msg.userId))
       // Tell all others that user has left the meeting.
-      outGW.send(new UserLeft2x(state.props.id,
+      outGW.send(new UserLeftEventOutMsg(state.props.id,
         state.props.recordingProp.recorded,
         msg.userId))
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, state.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, state.usersModel.toVector)
     } yield removeAndEject(user)
   }
 

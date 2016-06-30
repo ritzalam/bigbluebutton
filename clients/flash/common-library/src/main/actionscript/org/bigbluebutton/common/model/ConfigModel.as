@@ -3,13 +3,16 @@ package org.bigbluebutton.common.model
   import org.bigbluebutton.common.domain.Config;
   import org.bigbluebutton.common.signal.ConfigLoadedSignal;
 
-  public class ConfigModel implements IConfigModel
+  public class ConfigModel
   {
     [Inject]
     public var configLoadedSignal:ConfigLoadedSignal;
     
     private var _config:Config;
    
+    public function getConfigLoadedSignal():ConfigLoadedSignal {
+      return configLoadedSignal;
+    }
     
     public function setConfig(config: Config):void {
       _config = config;
@@ -18,6 +21,10 @@ package org.bigbluebutton.common.model
     
     public function getEnterApiUrl():String {
       return _config.application.host;
+    }
+    
+    public function getBbbAppUrl():String {
+      return _config.application.uri;
     }
   }
 }

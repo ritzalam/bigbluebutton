@@ -10,22 +10,25 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import mx.events.FlexEvent;
-			
-			import org.bigbluebutton.lib.whiteboard.views.WhiteboardConfig;
-			import org.bigbluebutton.web.AppConfig;
-			import org.bigbluebutton.web.chat.ChatConfig;
-			import org.bigbluebutton.web.main.MainConfig;
-			import org.bigbluebutton.web.presentation.PresentationConfig;
-			import org.bigbluebutton.web.user.UserConfig;
-			import org.bigbluebutton.web.video.VideoConfig;
-			
-			import robotlegs.bender.bundles.mvcs.MVCSBundle;
-			import robotlegs.bender.extensions.contextView.ContextView;
-			import robotlegs.bender.extensions.signalCommandMap.SignalCommandMapExtension;
-			import robotlegs.bender.framework.api.IContext;
-			import robotlegs.bender.framework.api.LogLevel;
-			import robotlegs.bender.framework.impl.Context;
+      import mx.events.FlexEvent;
+      
+      import org.bigbluebutton.common.handlers.CommonHandlersConfig;
+      import org.bigbluebutton.common.receivers.CommonReceiversConfig;
+      import org.bigbluebutton.lib.whiteboard.views.WhiteboardConfig;
+      import org.bigbluebutton.web.AppConfig;
+      import org.bigbluebutton.web.chat.ChatConfig;
+      import org.bigbluebutton.web.main.MainConfig;
+      import org.bigbluebutton.web.presentation.PresentationConfig;
+      import org.bigbluebutton.web.user.UserConfig;
+      import org.bigbluebutton.web.video.VideoConfig;
+      
+      import robotlegs.bender.bundles.mvcs.MVCSBundle;
+      import robotlegs.bender.extensions.contextView.ContextView;
+      import robotlegs.bender.extensions.enhancedLogging.impl.TraceLogTarget;
+      import robotlegs.bender.extensions.signalCommandMap.SignalCommandMapExtension;
+      import robotlegs.bender.framework.api.IContext;
+      import robotlegs.bender.framework.api.LogLevel;
+      import robotlegs.bender.framework.impl.Context;
 			
 			protected var context:IContext;
 			
@@ -35,6 +38,8 @@
 			
 			private function setupContext():void {
 				context = new Context().install(MVCSBundle, SignalCommandMapExtension)
+          .configure(CommonReceiversConfig)
+          .configure(CommonHandlersConfig)
 					.configure(AppConfig)
 					.configure(MainConfig)
 					.configure(PresentationConfig)
@@ -49,6 +54,7 @@
 				// is set in the MVCSBundle. The default log level traces out the framework 
 				// actions, which can assist in learning Robotlegs.
 				setLogLevel();
+
 			}
 			
 			/**
@@ -57,7 +63,8 @@
 			private function setLogLevel():void {
 				// setting the logLevel to WARN means that robotlegs
 				// will also notify us about ERROR & FATAL.
-				context.logLevel = LogLevel.WARN;
+				context.logLevel = LogLevel.DEBUG;
+        context.addLogTarget(new TraceLogTarget(context));
 			}
 		]]>
 	</fx:Script>

@@ -8,15 +8,19 @@ package org.bigbluebutton.common.service
   import flash.net.URLRequest;
   import flash.net.URLRequestMethod;
   import flash.net.URLVariables;
-  import org.bigbluebutton.common.model.IMyUserModel;
+  
+  import org.bigbluebutton.common.model.MyUserModel;
   import org.bigbluebutton.common.signal.EnterApiCallFailedSignal;
+  
+  import robotlegs.bender.framework.api.ILogger;
 
   public class EnterApiService implements IEnterApiService
   {
-    public static const LOG:String = "EnterApiService - ";
+    [Inject]
+    public var logger:ILogger;
     
     [Inject]
-    public var myUserModel:IMyUserModel;
+    public var myUserModel:MyUserModel;
     
     [Inject]
     public var enterApiFailedSignal:EnterApiCallFailedSignal;
@@ -32,14 +36,14 @@ package org.bigbluebutton.common.service
     
     private function fetch(url:String, reqVars: URLVariables,
                           dataFormat:String = URLLoaderDataFormat.TEXT):void {
-      trace(LOG + "Fetching " + url);
+      logger.debug("Fetching " + url);
       var urlRequest:URLRequest = new URLRequest();
       urlRequest.method = URLRequestMethod.GET;
       
       urlRequest.url = url;
       
       if (reqVars != null) {
-        trace(LOG + "reqVars " + reqVars.toString());
+        logger.debug("reqVars " + reqVars.toString());
         urlRequest.data = reqVars;
       }
       
@@ -59,17 +63,27 @@ package org.bigbluebutton.common.service
     }
     
     private function httpResponseStatusHandler(e:HTTPStatusEvent):void {
-      trace(LOG + "httpResponseStatusHandler from url=" + _url + " respUrl=" + e.responseURL);
+      logger.debug("httpResponseStatusHandler from url=" + _url + " respUrl=" + e.responseURL);
     }
     
     private function httpStatusHandler(e:HTTPStatusEvent):void {
-      trace(LOG + "httpStatusHandler from url=" + _url);
+      logger.debug("httpStatusHandler from url=" + _url);
     }
     
     private function handleComplete(e:Event):void {
-      var result:Object = JSON.parse(e.target.data as String);
+      logger.debug("handleComplete: " + e.target.data as String);
+      var response:Object = JSON.parse(e.target.data as String);
+      var result:Object = response.response;
       if (result.returncode == 'SUCCESS') {
-        var user:Object = {username: result.fullname, conference: result.conference, conferenceName: result.confname, externMeetingID: result.externMeetingID, meetingID: result.meetingID, externUserID: result.externUserID, internalUserId: result.internalUserID, role: result.role, room: result.room, authToken: result.authToken, record: result.record, webvoiceconf: result.webvoiceconf, dialnumber: result.dialnumber, voicebridge: result.voicebridge, mode: result.mode, welcome: result.welcome, logoutUrl: result.logoutUrl, defaultLayout: result.defaultLayout, avatarURL: result.avatarURL};
+        var user:Object = {username: result.fullname, conference: result.conference, 
+          conferenceName: result.confname, externMeetingID: result.externMeetingID, 
+          meetingID: result.meetingID, externUserID: result.externUserID, 
+          internalUserId: result.internalUserID, role: result.role, room: result.room, 
+          authToken: result.authToken, record: result.record, 
+          webvoiceconf: result.webvoiceconf, dialnumber: result.dialnumber, 
+          voicebridge: result.voicebridge, mode: result.mode, 
+          welcome: result.welcome, logoutUrl: result.logoutUrl, 
+          defaultLayout: result.defaultLayout, avatarURL: result.avatarURL};
         user.customdata = new Object();
         if (result.customdata) {
           for (var key:String in result.customdata) {
@@ -78,7 +92,7 @@ package org.bigbluebutton.common.service
         }
         myUserModel.load(user);
       } else {
-        trace("Join FAILED");
+        logger.debug("Join FAILED");
         enterApiFailedSignal.dispatch("API_ERROR");
       }
     }

@@ -79,9 +79,9 @@ dependencies {
     compile 'com.google.code.gson:gson:2.5'
     compile 'commons-httpclient:commons-httpclient:3.1'
 
-    compile 'org.bigbluebutton:bbb-common-message:0.0.18-SNAPSHOT'
+    compile 'org.bigbluebutton:bbb-common-message:0.0.19-SNAPSHOT'
     compile 'com.zaxxer:nuprocess:1.0.4'
-
+    compile 'io.fastjson:boon:0.33'
     compile 'org.json:json:20160212'
 
     // XML creation speedup

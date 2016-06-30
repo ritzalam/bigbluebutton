@@ -114,6 +114,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
     
     <bean id="red5Publisher" class="org.bigbluebutton.red5.pubsub.MessagePublisher">
         <property name="messageSender" ref="red5RedisSender"/>
+        <property name="connInvokerService"><ref bean="connInvokerService"/></property>
     </bean>
 
     <bean id="redisPubSubMessageHandler" class="org.bigbluebutton.red5.pubsub.redis.RedisPubSubMessageHandler">

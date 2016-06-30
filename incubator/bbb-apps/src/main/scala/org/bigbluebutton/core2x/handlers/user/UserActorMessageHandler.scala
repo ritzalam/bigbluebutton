@@ -2,8 +2,7 @@ package org.bigbluebutton.core2x.handlers.user
 
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core2x.api.IncomingMessage._
-import org.bigbluebutton.core2x.api.OutGoingMessage._
+import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core2x.domain.{ User3x, _ }
 import org.bigbluebutton.core2x.models._
 
@@ -12,16 +11,16 @@ class UserActorMessageHandler(
   val outGW: OutMessageGateway)
     extends SystemConfiguration
     with ValidateAuthTokenHandler
-    with UserJoinedHandler {
+    with UserJoinMeetingMessageHandler {
 
   val userState: UserState = new UserState(user)
 
-  def handleEjectUserFromMeeting(msg: EjectUserFromMeeting, meeting: MeetingStateModel): Unit = {
+  def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMessage, meeting: MeetingStateModel): Unit = {
 
   }
 
   def handleUserLeave2xCommand(msg: UserLeave2xCommand, meeting: MeetingStateModel): Unit = {
-    Users3x.findWithId(msg.userId, meeting.users.toVector) match {
+    UsersModel.findWithId(msg.userId, meeting.usersModel.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
         val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
@@ -40,7 +39,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
     } yield send(userState.get.tokens)
 
   }
@@ -51,7 +50,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
 
@@ -63,7 +62,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
 
@@ -75,7 +74,7 @@ class UserActorMessageHandler(
     }
 
     for {
-      user <- Users3x.findWithId(msg.userId, meeting.users.toVector)
+      user <- UsersModel.findWithId(msg.userId, meeting.usersModel.toVector)
       presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
     } yield send()
   }

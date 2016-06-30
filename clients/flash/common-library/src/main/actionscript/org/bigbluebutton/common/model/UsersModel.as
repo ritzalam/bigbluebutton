@@ -5,7 +5,7 @@ package org.bigbluebutton.common.model
   import org.osflash.signals.ISignal;
   import org.osflash.signals.Signal;
 
-  public class UsersModel implements IUsersModel
+  public class UsersModel
   {
     private var _users:ArrayCollection = new ArrayCollection();
     

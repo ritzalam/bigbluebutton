@@ -7,7 +7,7 @@ import org.bigbluebutton.common.messages.IBigBlueButtonMessage
 import org.bigbluebutton.messages._
 import akka.event.Logging
 import org.bigbluebutton.SystemConfiguration
-import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMessage
+import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMsg
 import org.bigbluebutton.core2x.domain.{ Permissions => _, Role => _, _ }
 import org.bigbluebutton.core2x.BigBlueButtonActor2x
 import org.bigbluebutton.core2x.bus._

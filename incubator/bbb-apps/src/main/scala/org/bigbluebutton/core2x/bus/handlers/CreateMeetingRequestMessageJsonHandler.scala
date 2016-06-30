@@ -2,7 +2,7 @@ package org.bigbluebutton.core2x.bus.handlers
 
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
-import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMessage
+import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMsg
 import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.CreateMeetingRequestMessage
@@ -60,7 +60,7 @@ trait CreateMeetingRequestMessageJsonHandler extends UnhandledReceivedJsonMessag
 
     def publish(props: MeetingProperties2x): Unit = {
       eventBus.publish(
-        BigBlueButtonInMessage(meetingManagerChannel, new CreateMeetingRequestInMessage(props.id, props)))
+        BigBlueButtonInMessage(meetingManagerChannel, new CreateMeetingRequestInMsg(props.id, props)))
     }
 
     if (msg.name == CreateMeetingRequestMessage.NAME) {

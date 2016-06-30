@@ -6,7 +6,7 @@ import com.typesafe.config.ConfigFactory
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
-import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMessage
+import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMsg
 import org.bigbluebutton.core2x.api.OutGoingMsg.MeetingCreatedEventOutMsg
 import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x }
 import org.scalatest.{ Matchers, WordSpecLike }
@@ -29,7 +29,7 @@ class CreateMeetingRequestInMessageActorTestSpec extends TestKit(ActorSystem("Bi
         val bbbActorRef = system.actorOf(BigBlueButtonActor2x.props(system, eventBus, outGW))
         eventBus.subscribe(bbbActorRef, meetingManagerChannel)
 
-        val msg = new CreateMeetingRequestInMessage(piliProps.id, piliProps)
+        val msg = new CreateMeetingRequestInMsg(piliProps.id, piliProps)
         eventBus.publish(BigBlueButtonInMessage(meetingManagerChannel, msg))
 
         expectMsgClass(classOf[MeetingCreatedEventOutMsg])

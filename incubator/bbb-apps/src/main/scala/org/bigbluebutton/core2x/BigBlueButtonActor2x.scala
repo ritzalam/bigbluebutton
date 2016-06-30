@@ -26,11 +26,11 @@ class BigBlueButtonActor2x(val system: ActorSystem,
   private var meetings = new collection.immutable.HashMap[String, RunningMeeting2x]
 
   def receive = {
-    case msg: CreateMeetingRequestInMessage => handleCreateMeeting(msg)
+    case msg: CreateMeetingRequestInMsg => handleCreateMeeting(msg)
     case unhandled => log.warning("Unhandled message:\n" + unhandled)
   }
 
-  private def handleCreateMeeting(msg: CreateMeetingRequestInMessage): Unit = {
+  private def handleCreateMeeting(msg: CreateMeetingRequestInMsg): Unit = {
     meetings.get(msg.meetingId.value) match {
       case None =>
         log.info("Create meeting request. meetingId={}", msg.mProps.id)

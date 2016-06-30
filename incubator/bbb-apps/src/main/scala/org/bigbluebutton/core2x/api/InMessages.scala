@@ -6,9 +6,6 @@ import org.bigbluebutton.core2x.domain._
 import spray.json.JsObject
 
 object IncomingMsg {
-  case class InMessageHeader(name: String)
-  case class InHeaderAndJsonPayload(header: InMessageHeader, payload: JsObject)
-  case class MessageProcessException(message: String) extends Exception(message)
 
   trait InMsg
 
@@ -16,15 +13,17 @@ object IncomingMsg {
   // System
   /////////////////////////////////////////////////////////////////////////////
 
-  case class PubSubPing(system: String, timestamp: Long) extends InMsg
+  case class PubSubPingMessageInMsg(system: String, timestamp: Long) extends InMsg
+  case class KeepAliveMessageInMsg(aliveId: String) extends InMsg
+
   case class IsMeetingActorAliveMessage(meetingId: String) extends InMsg
-  case class KeepAliveMessage(aliveID: String) extends InMsg
 
   //////////////////////////////////////////////////////////////////////////////
   // Meeting
   /////////////////////////////////////////////////////////////////////////////
 
-  case class CreateMeetingRequestInMessage(meetingId: IntMeetingId, mProps: MeetingProperties2x) extends InMsg
+  case class CreateMeetingRequestInMsg(meetingId: IntMeetingId, mProps: MeetingProperties2x) extends InMsg
+  case class EndMeetingInMsg(meetingId: IntMeetingId) extends InMsg
 
   case class MonitorNumberOfUsers(meetingId: IntMeetingId) extends InMsg
   case class SendTimeRemainingUpdate(meetingId: IntMeetingId) extends InMsg
@@ -32,7 +31,7 @@ object IncomingMsg {
   case class InitializeMeeting(meetingId: IntMeetingId, recorded: Recorded) extends InMsg
   case class DestroyMeeting(meetingId: IntMeetingId) extends InMsg
   case class StartMeeting(meetingId: IntMeetingId) extends InMsg
-  case class EndMeeting(meetingId: IntMeetingId) extends InMsg
+
   case class LockSetting(meetingId: IntMeetingId, locked: Boolean, settings: Map[String, Boolean]) extends InMsg
 
   //////////////////////////////////////////////////////////////////////////////////////
@@ -97,55 +96,65 @@ object IncomingMsg {
     dialNumbers: Set[DialNumber], config: String, extData: String) extends InMsg
 
   case class UserJoinMeetingInMessage(meetingId: IntMeetingId, userId: IntUserId, token: AuthToken,
-    sessionId: SessionId, presenceId: PresenceId,
-    userAgent: PresenceUserAgent) extends InMsg
+    sessionId: SessionId, presenceId: PresenceId, userAgent: PresenceUserAgent) extends InMsg
 
-  case class UserLeave2xCommand(
-    meetingId: IntMeetingId,
-    userId: IntUserId,
-    sessionId: SessionId,
-    presenceId: PresenceId,
-    userAgent: PresenceUserAgent) extends InMsg
+  case class UserLeave2xCommand(meetingId: IntMeetingId, userId: IntUserId, sessionId: SessionId,
+    presenceId: PresenceId, userAgent: PresenceUserAgent) extends InMsg
+
   case class UserPresenceLeft2x(
     meetingId: IntMeetingId,
     userId: IntUserId,
     sessionId: SessionId,
     presenceId: PresenceId,
     userAgent: PresenceUserAgent) extends InMsg
+
   case class ShareWebCamRequest2x(
     meetingId: IntMeetingId, userId: IntUserId,
     presenceId: PresenceId) extends InMsg
+
   case class ViewWebCamRequest2x(
     meetingId: IntMeetingId, userId: IntUserId,
     presenceId: PresenceId, streamId: String, token: String) extends InMsg
+
   case class UserShareWebCam2x(
     meetingId: IntMeetingId, userId: IntUserId,
     presenceId: PresenceId, stream: String) extends InMsg
+
   case class UserUnShareWebCam2x(
     meetingId: IntMeetingId, userId: IntUserId,
     presenceId: PresenceId, stream: String) extends InMsg
 
   case class UserJoining(
     meetingId: IntMeetingId, userId: IntUserId, token: AuthToken) extends InMsg
+
   case class UserLeaving(
     meetingId: IntMeetingId, userId: IntUserId, sessionId: String) extends InMsg
+
   case class GetUsers(
     meetingId: IntMeetingId, requesterId: IntUserId) extends InMsg
+
   case class UserEmojiStatus(
     meetingId: IntMeetingId, userId: IntUserId, emojiStatus: EmojiStatus) extends InMsg
+
   case class EjectUserFromMeetingInMessage(
     meetingId: IntMeetingId, userId: IntUserId, ejectedBy: IntUserId) extends InMsg
+
   case class UserShareWebcam(
     meetingId: IntMeetingId, userId: IntUserId, stream: String) extends InMsg
+
   case class UserUnshareWebcam(
     meetingId: IntMeetingId, userId: IntUserId, stream: String) extends InMsg
+
   case class ChangeUserStatus(
     meetingId: IntMeetingId, userId: IntUserId, status: String, value: Object) extends InMsg
+
   case class AssignPresenter(
     meetingId: IntMeetingId, newPresenterId: IntUserId,
     newPresenterName: Name, assignedBy: IntUserId) extends InMsg
+
   case class SetRecordingStatus(
     meetingId: IntMeetingId, userId: IntUserId, recording: Boolean) extends InMsg
+
   case class GetRecordingStatus(
     meetingId: IntMeetingId, userId: IntUserId) extends InMsg
 
@@ -155,14 +164,18 @@ object IncomingMsg {
 
   case class GetChatHistoryRequest(
     meetingId: IntMeetingId, requesterId: IntUserId, replyTo: String) extends InMsg
+
   case class SendPublicMessageRequest(
     meetingId: IntMeetingId, requesterId: IntUserId, message: Map[String, String]) extends InMsg
+
   case class SendPrivateMessageRequest(
     meetingId: IntMeetingId, requesterId: IntUserId, message: Map[String, String]) extends InMsg
+
   case class UserConnectedToGlobalAudio(
     meetingId: IntMeetingId,
     /** Not used. Just to satisfy trait **/
     voiceConf: String, userId: IntUserId, name: Name) extends InMsg
+
   case class UserDisconnectedFromGlobalAudio(
     meetingId: IntMeetingId,
     /** Not used. Just to satisfy trait **/
@@ -174,11 +187,14 @@ object IncomingMsg {
 
   case class GetCurrentLayoutRequest(
     meetingId: IntMeetingId, requesterId: IntUserId) extends InMsg
+
   case class SetLayoutRequest(
     meetingId: IntMeetingId, requesterId: IntUserId, layoutID: String) extends InMsg
+
   case class LockLayoutRequest(
     meetingId: IntMeetingId, setById: IntUserId, lock: Boolean, viewersOnly: Boolean,
     layout: Option[String]) extends InMsg
+
   case class BroadcastLayoutRequest(
     meetingId: IntMeetingId, requesterId: IntUserId, layout: String) extends InMsg
 
@@ -187,32 +203,43 @@ object IncomingMsg {
   /////////////////////////////////////////////////////////////////////////////////////
   case class PreuploadedPresentationsEventInMessage(meetingId: IntMeetingId,
     presentations: Seq[PreuploadedPresentation]) extends InMsg
+
   case class PreuploadedPresentation(id: PresentationId, name: String, default: Boolean)
 
   case class PresentationConversionUpdateEventInMessage(meetingId: IntMeetingId, messageKey: String,
     code: String, presentationId: PresentationId) extends InMsg
+
   case class PresentationPageGeneratedEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String,
     presentationId: PresentationId, numberOfPages: Int,
     pagesCompleted: Int) extends InMsg
+
   case class PresentationPageCountErrorEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String,
     presentationId: PresentationId, numberOfPages: Int,
     maxNumberPages: Int) extends InMsg
+
   case class PresentationConversionCompletedEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String,
     presentation: Presentation) extends InMsg
+
   case class ClearPresentationInMessage(meetingId: IntMeetingId, senderId: IntUserId,
     presentationId: PresentationId) extends InMsg
+
   case class RemovePresentation(meetingId: IntMeetingId, senderId: IntUserId,
     presentationId: PresentationId) extends InMsg
+
   case class GetPresentationInfoInMessage(meetingId: IntMeetingId, senderId: IntUserId,
     presentationId: PresentationId) extends InMsg
+
   case class SendCursorUpdateInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String,
     xPercent: Double, yPercent: Double) extends InMsg
+
   case class ResizeAndMovePageInMessage(meetingId: IntMeetingId, senderId: IntUserId,
     xOffset: Double, yOffset: Double, pageId: String,
     widthRatio: Double, heightRatio: Double) extends InMsg
+
   case class GoToPageInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String) extends InMsg
   case class SharePresentationInMessage(meetingId: IntMeetingId, senderId: IntUserId, presentationId: PresentationId,
     share: Boolean) extends InMsg
+
   case class GetPageInfoInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String) extends InMsg
 
   /////////////////////////////////////////////////////////////////////////////////////

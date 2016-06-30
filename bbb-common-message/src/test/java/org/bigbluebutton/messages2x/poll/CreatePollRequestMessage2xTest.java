@@ -1,6 +1,6 @@
-package org.bigbluebutton.messages2x.meeting;
+package org.bigbluebutton.messages2x.poll;
 
-import org.bigbluebutton.common.messages2x.meeting.CreatePollRequestMessage2x;
+import org.bigbluebutton.common.messages2x.poll.CreatePollRequestMessage2x;
 import org.bigbluebutton.common.messages2x.objects.PollType;
 import org.junit.Assert;
 import org.junit.Test;

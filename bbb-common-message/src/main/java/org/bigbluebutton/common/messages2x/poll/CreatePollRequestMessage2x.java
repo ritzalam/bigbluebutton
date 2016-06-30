@@ -1,4 +1,4 @@
-package org.bigbluebutton.common.messages2x.meeting;
+package org.bigbluebutton.common.messages2x.poll;
 
 import org.bigbluebutton.common.messages2x.AbstractEventMessage;
 import org.bigbluebutton.common.messages2x.objects.PollType;

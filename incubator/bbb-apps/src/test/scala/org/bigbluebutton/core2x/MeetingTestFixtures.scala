@@ -4,6 +4,7 @@ import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core2x.apps.presentation.PresentationModel
 import org.bigbluebutton.core2x.domain.{ VoiceConf, Welcome, _ }
 import org.bigbluebutton.core2x.models.{ MeetingStatus => _, _ }
+import java.util.Date
 
 trait MeetingTestFixtures {
   val piliIntMeetingId = IntMeetingId("pili-pinas-2016")
@@ -201,4 +202,8 @@ trait MeetingTestFixtures {
     SessionId("session-1"),
     PresenceId("presence-1"),
     FlashWebUserAgent)
+
+  val du30PubSubPingCommand = new PubSubPingMessageInMsg(
+    "system1",
+    new Date().getTime())
 }

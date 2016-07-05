@@ -17,6 +17,8 @@ class RedisMessageHandlerActor(
     with ValidateAuthTokenRequestMessageJsonHandler
     with CreateMeetingRequestMessageJsonHandler
     with PubSubPingMessageJsonHandler
+    with KeepAliveMessageJsonHandler
+    with UserJoinMeetingMessageJsonHandler
     with RegisterUserRequestMessageJsonHandler {
 
   def receive = {

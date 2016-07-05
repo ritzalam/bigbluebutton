@@ -206,4 +206,8 @@ trait MeetingTestFixtures {
   val du30PubSubPingCommand = new PubSubPingMessageInMsg(
     "system1",
     new Date().getTime())
+
+  val du30KeepAliveCommand = new KeepAliveMessageInMsg(
+    "alive-id-002")
+
 }

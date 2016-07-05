@@ -1,4 +1,4 @@
-package org.bigbluebutton.core2x
+package org.bigbluebutton.core2x.bus.handlers
 
 import akka.actor.ActorSystem
 import akka.testkit.{ DefaultTimeout, ImplicitSender, TestKit }
@@ -9,6 +9,7 @@ import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUs
 import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMsg
 import org.bigbluebutton.core2x.api.OutGoingMsg.MeetingCreatedEventOutMsg
 import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x }
+import org.bigbluebutton.core2x.{ BigBlueButtonActor2x, MeetingTestFixtures }
 import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._

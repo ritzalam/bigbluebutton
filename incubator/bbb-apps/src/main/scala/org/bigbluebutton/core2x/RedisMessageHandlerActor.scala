@@ -2,6 +2,7 @@ package org.bigbluebutton.core2x
 
 import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core2x.bus.handlers._
+import org.bigbluebutton.core2x.bus.handlers.presentation._
 import org.bigbluebutton.core2x.bus.{ IncomingEventBus2x, IncomingJsonMessageBus, ReceivedJsonMessage }
 
 object RedisMessageHandlerActor {
@@ -14,12 +15,25 @@ class RedisMessageHandlerActor(
   val incomingJsonMessageBus: IncomingJsonMessageBus)
     extends Actor with ActorLogging
     with UnhandledReceivedJsonMessageHandler
-    with ValidateAuthTokenRequestMessageJsonHandler
+
+    // presentation.*
+    with ClearPresentationEventMessageHandler
+    with GetPageInfoEventMessageHandler
+    with GetPresentationInfoEventMessageHandler
+    with GoToPageEventMessageHandler
+    with PresentationConversionUpdateEventMessageHandler
+    with PresentationPageCountErrorEventMessageHandler
+    with PresentationPageGeneratedEventMessageHandler
+    with PreuploadedPresentationsEventMessageHandler
+    with RemovePresentationEventMessageHandler
+
     with CreateMeetingRequestMessageJsonHandler
-    with PubSubPingMessageJsonHandler
     with KeepAliveMessageJsonHandler
+    with PubSubPingMessageJsonHandler
+    with ReceivedJsonMessageHandler
+    with RegisterUserRequestMessageJsonHandler
     with UserJoinMeetingMessageJsonHandler
-    with RegisterUserRequestMessageJsonHandler {
+    with ValidateAuthTokenRequestMessageJsonHandler {
 
   def receive = {
     case msg: ReceivedJsonMessage => handleReceivedJsonMessage(msg)

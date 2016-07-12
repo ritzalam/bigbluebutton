@@ -2,9 +2,11 @@ package org.bigbluebutton.core2x
 
 import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core2x.apps.presentation.PresentationModel
-import org.bigbluebutton.core2x.domain.{ VoiceConf, Welcome, _ }
-import org.bigbluebutton.core2x.models.{ MeetingStatus => _, _ }
+import org.bigbluebutton.core2x.domain._
+import org.bigbluebutton.core2x.models._
 import java.util.Date
+
+import org.bigbluebutton.core2x.apps.presentation.domain._
 
 trait MeetingTestFixtures {
   val piliIntMeetingId = IntMeetingId("pili-pinas-2016")
@@ -209,5 +211,55 @@ trait MeetingTestFixtures {
 
   val du30KeepAliveCommand = new KeepAliveMessageInMsg(
     "alive-id-002")
+
+  val piliMessageKeyCompleted = "CONVERSION_COMPLETED"
+  val piliMessageKeyError = "CONVERSION_ERROR" //todo recheck
+  val piliMessageCode = "CONVERT"
+  val piliPresentationId = PresentationId("presentationId001-123")
+
+  val du30PresentationConversionUpdateCommand = new PresentationConversionUpdateEventInMessage(
+    piliIntMeetingId, piliMessageKeyCompleted, piliMessageCode, piliPresentationId)
+
+  val du30PresentationPageGeneratedCommand = new PresentationPageGeneratedEventInMessage(
+    piliIntMeetingId, piliMessageKeyCompleted, piliMessageCode, piliPresentationId, 55, 44)
+
+  val du30PresentationPageCountErrorCommand = new PresentationPageCountErrorEventInMessage(
+    piliIntMeetingId, piliMessageKeyError, piliMessageCode, piliPresentationId, 55, 44)
+
+  val du30ClearPresentationCommand = new ClearPresentationEventInMessage(piliIntMeetingId, mdsIntUserId,
+    piliPresentationId)
+
+  val du30RemovePresentationCommand = new RemovePresentationEventInMessage(piliIntMeetingId,
+    mdsIntUserId, piliPresentationId)
+
+  val du30GetPresentationInfoCommand = new GetPresentationInfoEventInMessage(piliIntMeetingId,
+    mdsIntUserId, piliPresentationId)
+
+
+  val piliPageId = "presentationId001/page3"
+  val piliXPercentage = 78.15715
+  val piliYPercentage = 42.424242
+
+  val du30SendCursorUpdateCommand = new SendCursorUpdateEventInMessage(piliIntMeetingId,
+    mdsIntUserId, piliPageId, piliXPercentage, piliYPercentage)
+
+  val du30GoToPageCommand = new GoToPageInEventInMessage(piliIntMeetingId, mdsIntUserId, piliPageId)
+
+  val du30GetPageInfoCommand = new GetPageInfoEventInMessage(piliIntMeetingId, mdsIntUserId,
+    piliPageId)
+
+  val piliShare = true
+
+  val du30SharePresentationCommand = new SharePresentationEventInMessage(piliIntMeetingId,
+    mdsIntUserId, piliPresentationId, piliShare)
+
+  val piliXOffset = XOffset(45.1245)
+  val piliYOffset = YOffset(75.1245)
+  val piliWidthRatio = WidthRatio(42.1523)
+  val piliHeightRatio = HeightRatio(11.523)
+
+  val du30ResizeAndMovePageCommand = new ResizeAndMovePageEventInMessage(piliIntMeetingId,
+    mdsIntUserId, piliXOffset, piliYOffset, piliPageId, piliWidthRatio, piliHeightRatio)
+
 
 }

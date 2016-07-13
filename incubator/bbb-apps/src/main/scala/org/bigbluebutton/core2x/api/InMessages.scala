@@ -1,7 +1,7 @@
 package org.bigbluebutton.core2x.api
 
 import org.bigbluebutton.core2x.apps.presentation.domain._
-import org.bigbluebutton.core2x.apps.presentation.Presentation
+import org.bigbluebutton.core2x.apps.presentation.{ Presentation, PreuploadedPresentation }
 import org.bigbluebutton.core2x.domain._
 
 object IncomingMsg {
@@ -203,8 +203,6 @@ object IncomingMsg {
   case class PreuploadedPresentationsEventInMessage(meetingId: IntMeetingId,
     presentations: Set[PreuploadedPresentation]) extends InMsg
 
-  case class PreuploadedPresentation(id: PresentationId, name: String, default: Boolean)
-
   case class PresentationConversionUpdateEventInMessage(meetingId: IntMeetingId, messageKey: String,
     code: String, presentationId: PresentationId) extends InMsg
 
@@ -212,10 +210,12 @@ object IncomingMsg {
     code: String, presentationId: PresentationId, numberOfPages: Int, pagesCompleted: Int)
       extends InMsg
 
-  case class PresentationPageCountErrorEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String, presentationId: PresentationId, numberOfPages: Int, maxNumberPages: Int)
-    extends InMsg
+  case class PresentationPageCountErrorEventInMessage(meetingId: IntMeetingId, messageKey: String,
+    code: String, presentationId: PresentationId, numberOfPages: Int, maxNumberPages: Int)
+      extends InMsg
 
-  case class PresentationConversionCompletedEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String, presentation: Presentation) extends InMsg
+  case class PresentationConversionCompletedEventInMessage(meetingId: IntMeetingId,
+    messageKey: String, code: String, presentation: Presentation) extends InMsg
 
   case class ClearPresentationEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
     presentationId: PresentationId) extends InMsg
@@ -226,7 +226,8 @@ object IncomingMsg {
   case class GetPresentationInfoEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
     presentationId: PresentationId) extends InMsg
 
-  case class SendCursorUpdateEventInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String, xPercent: Double, yPercent: Double) extends InMsg
+  case class SendCursorUpdateEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+    pageId: String, xPercent: Double, yPercent: Double) extends InMsg
 
   case class ResizeAndMovePageEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
     xOffset: XOffset, yOffset: YOffset, pageId: String,
@@ -240,7 +241,8 @@ object IncomingMsg {
     presentationId: PresentationId,
     share: Boolean) extends InMsg
 
-  case class GetPageInfoEventInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String) extends InMsg
+  case class GetPageInfoEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+    pageId: String) extends InMsg
 
   /////////////////////////////////////////////////////////////////////////////////////
   // Polling

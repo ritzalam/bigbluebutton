@@ -1,7 +1,7 @@
 package org.bigbluebutton.core2x
 
 import org.bigbluebutton.core2x.api.IncomingMsg._
-import org.bigbluebutton.core2x.apps.presentation.PresentationModel
+import org.bigbluebutton.core2x.apps.presentation.{Page, Presentation, PresentationModel}
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.core2x.models._
 import java.util.Date
@@ -261,5 +261,17 @@ trait MeetingTestFixtures {
   val du30ResizeAndMovePageCommand = new ResizeAndMovePageEventInMessage(piliIntMeetingId,
     mdsIntUserId, piliXOffset, piliYOffset, piliPageId, piliWidthRatio, piliHeightRatio)
 
+  val piliPresentationName = "Demo Presentation"
+  val piliCurrentPresentation = true
+  val piliDefault = false
+  var piliPages: Set[Page] = null
+  piliPages = piliPages + new Page("pageId001", 1, ThumbUrl("someThumbUrl1"), SwfUrl("someSwfUrl1"),
+    TextUrl("SomeTextUrl1"), SvgUrl("SomeSvgUrl1"))
+  piliPages = piliPages + new Page("pageId002", 2, ThumbUrl("someThumbUrl2"), SwfUrl("someSwfUrl2"),
+    TextUrl("SomeTextUrl2"), SvgUrl("SomeSvgUrl2"))
 
+  val piliPresentation001: Presentation = new Presentation(piliPresentationId,
+    piliPresentationName, piliCurrentPresentation, piliPages, piliDefault)
+  val du30PresentationConversionCompletedCommand = new PresentationConversionCompletedEventInMessage(piliIntMeetingId,
+    piliMessageKeyCompleted, piliMessageCode, piliPresentation001)
 }

@@ -21,6 +21,7 @@ class RedisMessageHandlerActor(
     with GetPageInfoEventMessageHandler
     with GetPresentationInfoEventMessageHandler
     with GoToPageEventMessageHandler
+    with PresentationConversionCompletedEventMessageHandler
     with PresentationConversionUpdateEventMessageHandler
     with PresentationPageCountErrorEventMessageHandler
     with PresentationPageGeneratedEventMessageHandler

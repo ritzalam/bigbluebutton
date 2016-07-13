@@ -2,7 +2,7 @@ package org.bigbluebutton.messages.presentation;
 
 import org.bigbluebutton.messages.AbstractMessage;
 import org.bigbluebutton.messages.body.MessageHeader;
-import org.bigbluebutton.messages.vo.PreuploadedPresentationVO;
+import org.bigbluebutton.messages.vo.PreuploadedPresentationBody;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
@@ -27,8 +27,8 @@ public class PreuploadedPresentationsEventMessage extends AbstractMessage {
     }
 
     public static class Body {
-        public List<PreuploadedPresentationVO> presentations;
-        public Body(List<PreuploadedPresentationVO> presentations) {
+        public List<PreuploadedPresentationBody> presentations;
+        public Body(List<PreuploadedPresentationBody> presentations) {
             this.presentations = presentations;
         }
     }

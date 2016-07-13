@@ -1,18 +1,14 @@
 package org.bigbluebutton.core2x.bus.handlers.presentation
 
-import java.util
-
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
-import org.bigbluebutton.core2x.api.IncomingMsg.{
-  PreuploadedPresentation,
-  PreuploadedPresentationsEventInMessage
-}
+import org.bigbluebutton.core2x.api.IncomingMsg.PreuploadedPresentationsEventInMessage
+import org.bigbluebutton.core2x.apps.presentation.PreuploadedPresentation
 import org.bigbluebutton.core2x.apps.presentation.domain.PresentationId
 import org.bigbluebutton.core2x.bus.handlers.UnhandledReceivedJsonMessageHandler
 import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.IntMeetingId
 import org.bigbluebutton.messages.presentation.PreuploadedPresentationsEventMessage
-import org.bigbluebutton.messages.vo.PreuploadedPresentationVO
+import org.bigbluebutton.messages.vo.PreuploadedPresentationBody
 
 trait PreuploadedPresentationsEventMessageHandler extends UnhandledReceivedJsonMessageHandler
     with PreuploadedPresentationsEventMessageHandlerHelper {
@@ -49,25 +45,26 @@ trait PreuploadedPresentationsEventMessageHandlerHelper {
       meetingId <- Option(header.meetingId)
       senderId <- Option(header.senderId) //TODO where is it to be used?
       body <- Option(msg.body)
-      presentations <- extractPreuploadedPresentations(body.presentations)
+      // presentations <- extractPreuploadedPresentations(body.presentations)
+      presentations <- for (p <- body.presentations) yield convertAPreuploadedPresentation(p)
     } yield new PreuploadedPresentationsEventInMessage(IntMeetingId(meetingId), presentations)
   }
 
-  def extractPreuploadedPresentations(list: util.List[PreuploadedPresentationVO]): Set[PreuploadedPresentation] = {
-    import scala.collection.convert.wrapAsScala._
-    // convert the list to a set
-    val r = asScalaBuffer(list).toSet
+  //  def extractPreuploadedPresentations(list: util.List[PreuploadedPresentationBody]): Set[PreuploadedPresentation] = {
+  //    import scala.collection.convert.wrapAsScala._
+  //    // convert the list to a set
+  //    val r = asScalaBuffer(list).toSet
+  //
+  //    var res = Set[Option[PreuploadedPresentation]]()
+  //
+  //    r.map(b => {
+  //      res = res + convertAPreuploadedPresentation(b) //TODO rework
+  //    })
+  //
+  //    res.flatten
+  //  }
 
-    var res = Set[Option[PreuploadedPresentation]]()
-
-    r.map(b => {
-      res = res + convertAPreuploadedPresentation(b) //TODO rework
-    })
-
-    res.flatten
-  }
-
-  def convertAPreuploadedPresentation(p: PreuploadedPresentationVO): Option[PreuploadedPresentation] = {
+  def convertAPreuploadedPresentation(p: PreuploadedPresentationBody): Option[PreuploadedPresentation] = {
     for {
       presentationId <- Option(p.presentationId)
       presentationName <- Option(p.presentationName)

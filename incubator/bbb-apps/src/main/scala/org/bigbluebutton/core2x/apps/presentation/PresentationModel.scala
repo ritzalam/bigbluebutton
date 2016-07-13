@@ -78,7 +78,10 @@ object Presentation {
   }
 }
 
-case class Presentation(val id: PresentationId, val name: String, current: Boolean = false, val pages: Set[Page], default: Boolean)
+case class Presentation(val id: PresentationId, val name: String, current: Boolean = false,
+  val pages: Set[Page], default: Boolean)
+
+case class PreuploadedPresentation(id: PresentationId, name: String, default: Boolean)
 
 object Page {
   def setCoordinate(coordinate: Coordinate, page: Page): Page = {

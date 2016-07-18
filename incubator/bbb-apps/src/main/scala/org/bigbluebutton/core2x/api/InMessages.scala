@@ -30,6 +30,8 @@ object IncomingMsg {
   case class InitializeMeeting(meetingId: IntMeetingId, recorded: Recorded) extends InMsg
   case class DestroyMeeting(meetingId: IntMeetingId) extends InMsg
   case class StartMeeting(meetingId: IntMeetingId) extends InMsg
+  case class GetAllMeetingsRequest(
+    meetingId: IntMeetingId /** Not used. Just to satisfy trait **/ ) extends InMsg
 
   case class LockSetting(meetingId: IntMeetingId, locked: Boolean, settings: Map[String, Boolean]) extends InMsg
 
@@ -325,8 +327,6 @@ object IncomingMsg {
     meetingId: IntMeetingId, requesterId: IntUserId, enable: Boolean) extends InMsg
   case class IsWhiteboardEnabledRequest(
     meetingId: IntMeetingId, requesterId: IntUserId, replyTo: String) extends InMsg
-  case class GetAllMeetingsRequest(
-    meetingId: IntMeetingId /** Not used. Just to satisfy trait **/ ) extends InMsg
 
   // Caption
   case class SendCaptionHistoryRequest(

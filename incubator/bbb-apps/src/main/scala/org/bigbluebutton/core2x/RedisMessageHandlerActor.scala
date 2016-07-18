@@ -1,9 +1,12 @@
 package org.bigbluebutton.core2x
 
-import akka.actor.{ Actor, ActorLogging, Props }
+import akka.actor.{Actor, ActorLogging, Props}
 import org.bigbluebutton.core2x.bus.handlers._
 import org.bigbluebutton.core2x.bus.handlers.presentation._
-import org.bigbluebutton.core2x.bus.{ IncomingEventBus2x, IncomingJsonMessageBus, ReceivedJsonMessage }
+import org.bigbluebutton.core2x.bus.{IncomingEventBus2x, IncomingJsonMessageBus, ReceivedJsonMessage}
+import org.bigbluebutton.core2x.handlers._
+import org.bigbluebutton.core2x.handlers.presentation._
+import org.bigbluebutton.core2x.handlers.whiteboard.SendWhiteboardAnnotationRequestEventMessageHandler
 
 object RedisMessageHandlerActor {
   def props(eventBus: IncomingEventBus2x, incomingJsonMessageBus: IncomingJsonMessageBus): Props =
@@ -27,6 +30,9 @@ class RedisMessageHandlerActor(
     with PresentationPageGeneratedEventMessageHandler
     with PreuploadedPresentationsEventMessageHandler
     with RemovePresentationEventMessageHandler
+
+    // whiteboard.*
+    with SendWhiteboardAnnotationRequestEventMessageHandler
 
     with CreateMeetingRequestMessageJsonHandler
     with KeepAliveMessageJsonHandler

@@ -1,16 +1,18 @@
 package org.bigbluebutton.messages;
 
-
+import org.bigbluebutton.messages.body.MessageHeader;
 import org.bigbluebutton.messages.payload.MeetingProperties;
 
-public class CreateMeetingCommandMessage {
+public class CreateMeetingCommandMessage extends AbstractMessage {
     public final static String NAME = "CreateMeetingCommandMessage";
 
-    public final Header header;
+    public final MessageHeader header;
     public final CreateMeetingCommandMessagePayload payload;
 
-    public CreateMeetingCommandMessage(CreateMeetingCommandMessagePayload payload) {
-        this.header = new Header(NAME);
+    public CreateMeetingCommandMessage(MessageHeader header,
+                                       CreateMeetingCommandMessagePayload payload) {
+        super();
+        this.header = header;
         this.payload = payload;
     }
 

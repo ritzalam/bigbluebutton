@@ -3,12 +3,12 @@ package org.bigbluebutton.core2x.handlers.presentation
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
 import org.bigbluebutton.core2x.api.IncomingMsg.PresentationConversionCompletedEventInMessage
 import org.bigbluebutton.core2x.apps.presentation.domain._
-import org.bigbluebutton.core2x.apps.presentation.{Page, Presentation}
-import org.bigbluebutton.core2x.bus.{BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage}
+import org.bigbluebutton.core2x.apps.presentation.{ Page, Presentation }
+import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.IntMeetingId
 import org.bigbluebutton.core2x.handlers.UnhandledReceivedJsonMessageHandler
 import org.bigbluebutton.messages.presentation.PresentationConversionCompletedEventMessage
-import org.bigbluebutton.messages.vo.{PageBody, PresentationBody}
+import org.bigbluebutton.messages.vo.{ PageBody, PresentationBody }
 
 trait PresentationConversionCompletedEventMessageHandler extends UnhandledReceivedJsonMessageHandler with PresentationConversionCompletedEventMessageHandlerHelper {
   this: RedisMessageHandlerActor =>

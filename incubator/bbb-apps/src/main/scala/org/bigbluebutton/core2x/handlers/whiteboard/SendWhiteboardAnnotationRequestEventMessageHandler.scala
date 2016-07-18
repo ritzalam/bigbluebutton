@@ -2,15 +2,13 @@ package org.bigbluebutton.core2x.handlers.whiteboard
 
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
 import org.bigbluebutton.core2x.api.IncomingMsg.SendWhiteboardAnnotationRequest
-import org.bigbluebutton.core2x.bus.{BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage}
-import org.bigbluebutton.core2x.domain.{AnnotationVO, IntMeetingId, IntUserId}
+import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
+import org.bigbluebutton.core2x.domain.{ AnnotationVO, IntMeetingId, IntUserId }
 import org.bigbluebutton.core2x.handlers.UnhandledReceivedJsonMessageHandler
 import org.bigbluebutton.messages.vo.AnnotationBody
 import org.bigbluebutton.messages.whiteboard.SendWhiteboardAnnotationRequestEventMessage
 
-trait SendWhiteboardAnnotationRequestEventMessageHandler extends
-  UnhandledReceivedJsonMessageHandler with
-  SendWhiteboardAnnotationRequestEventMessageHandlerHelper {
+trait SendWhiteboardAnnotationRequestEventMessageHandler extends UnhandledReceivedJsonMessageHandler with SendWhiteboardAnnotationRequestEventMessageHandlerHelper {
   this: RedisMessageHandlerActor =>
 
   val eventBus: IncomingEventBus2x
@@ -46,15 +44,12 @@ trait SendWhiteboardAnnotationRequestEventMessageHandlerHelper {
       status <- Option(body.status)
       shapeType <- Option(body.shapeType)
       wbId <- Option(body.wbId)
-      shape <- extractInnerShape(body.shape)
+      shape = extractInnerShape(body.shape)
     } yield new AnnotationVO(id, status, shapeType, shape, wbId)
   }
 
-  def extractInnerShape(obj: Map[String, Object]):scala.collection.immutable.Map[String, Object] = {
+  def extractInnerShape(obj: Map[String, Object]): scala.collection.immutable.Map[String, Object] = {
     //TODO
-
-
-
 
     obj
   }

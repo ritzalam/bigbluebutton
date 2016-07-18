@@ -2,8 +2,8 @@ package org.bigbluebutton.core2x.handlers
 
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
 import org.bigbluebutton.core2x.api.IncomingMsg.PubSubPingMessageInMsg
-import org.bigbluebutton.core2x.bus.{BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage}
-import org.bigbluebutton.core2x.domain.{IntMeetingId, IntUserId}
+import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
+import org.bigbluebutton.core2x.domain.{ IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.PubSubPingMessage
 
 trait PubSubPingMessageJsonHandler extends UnhandledReceivedJsonMessageHandler {

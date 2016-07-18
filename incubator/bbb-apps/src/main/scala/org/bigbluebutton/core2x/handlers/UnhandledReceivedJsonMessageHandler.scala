@@ -1,7 +1,7 @@
 package org.bigbluebutton.core2x.handlers
 
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
-import org.bigbluebutton.core2x.bus.{IncomingEventBus2x, ReceivedJsonMessage}
+import org.bigbluebutton.core2x.bus.{ IncomingEventBus2x, ReceivedJsonMessage }
 
 trait UnhandledReceivedJsonMessageHandler {
   this: RedisMessageHandlerActor =>

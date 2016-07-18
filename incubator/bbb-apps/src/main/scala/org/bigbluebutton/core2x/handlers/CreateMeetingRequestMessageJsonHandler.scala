@@ -3,10 +3,10 @@ package org.bigbluebutton.core2x.handlers
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
 import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMsg
-import org.bigbluebutton.core2x.bus.{BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage}
+import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.CreateMeetingRequestMessage
-import org.bigbluebutton.messages.vo.{ExtensionPropertiesBody, MeetingPropertiesBody, RecordingPropertiesBody}
+import org.bigbluebutton.messages.vo.{ ExtensionPropertiesBody, MeetingPropertiesBody, RecordingPropertiesBody }
 
 trait CreateMeetingRequestMessageJsonHandler extends UnhandledReceivedJsonMessageHandler with SystemConfiguration {
   this: RedisMessageHandlerActor =>

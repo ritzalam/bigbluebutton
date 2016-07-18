@@ -184,10 +184,10 @@ object IncomingMsg {
    * @param meetingId
    * @param senderId
    * @param presenceId
-    *                   @param replyTo
+   *                   @param replyTo
    */
   case class UserShareWebCamRequestInMsg(meetingId: IntMeetingId, senderId: IntUserId,
-                                         presenceId: PresenceId, replyTo: ReplyTo) extends InMsg
+    presenceId: PresenceId, replyTo: ReplyTo) extends InMsg
 
   /**
    * User request to view webcam stream.

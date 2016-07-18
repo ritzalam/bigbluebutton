@@ -3,7 +3,7 @@ import { clientConfig } from '/config';
 import { getVoiceBridge } from '/imports/api/phone';
 
 function createVertoUserName() {
-  const uid = Auth.getUser();
+  const uid = Auth.userID;
   const uName = Users.findOne({ userId: uid }).user.name;
   const conferenceUsername = 'FreeSWITCH User - ' + encodeURIComponent(uName);
   return conferenceUsername;
@@ -34,6 +34,7 @@ function joinVertoCall(options) {
     };
 
     let wasCallSuccessful = false;
+    let conferenceUsername = createVertoUserName();
     let debuggerCallback = function (message) {
       console.log('CALLBACK: ' + JSON.stringify(message));
 

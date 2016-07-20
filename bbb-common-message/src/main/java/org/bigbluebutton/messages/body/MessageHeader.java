@@ -1,17 +1,16 @@
 package org.bigbluebutton.messages.body;
 
-import org.boon.json.JsonFactory;
-import org.boon.json.ObjectMapper;
-
 public class MessageHeader {
     public final String name;
     public final String meetingId;
     public final String senderId;
+    public final String replyTo;
 
-    public MessageHeader(String name, String meetingId, String senderId) {
+    public MessageHeader(String name, String meetingId, String senderId, String replyTo) {
         this.name = name;
         this.meetingId = meetingId;
         this.senderId = senderId;
+        this.replyTo = replyTo;
     }
 
 }

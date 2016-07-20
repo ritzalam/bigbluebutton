@@ -1,7 +1,7 @@
 package org.bigbluebutton.core2x.api
 
-import org.bigbluebutton.core2x.apps.presentation.domain.{ PresentationId }
-import org.bigbluebutton.core2x.apps.presentation.{ Presentation }
+import org.bigbluebutton.core2x.apps.presentation.domain._
+import org.bigbluebutton.core2x.apps.presentation.{ Presentation, PreuploadedPresentation }
 import org.bigbluebutton.core2x.domain._
 
 object IncomingMsg {
@@ -56,6 +56,12 @@ object IncomingMsg {
    * @param meetingId
    */
   case class SendTimeRemainingUpdateInMsg(meetingId: IntMeetingId) extends InMsg
+  case class ExtendMeetingDuration(meetingId: IntMeetingId, userId: IntUserId) extends InMsg
+  case class InitializeMeeting(meetingId: IntMeetingId, recorded: Recorded) extends InMsg
+  case class DestroyMeeting(meetingId: IntMeetingId) extends InMsg
+  case class StartMeeting(meetingId: IntMeetingId) extends InMsg
+  case class GetAllMeetingsRequest(
+    meetingId: IntMeetingId /** Not used. Just to satisfy trait **/ ) extends InMsg
 
   /**
    * Extend the meeting for a certain period of time.
@@ -184,10 +190,10 @@ object IncomingMsg {
    * @param meetingId
    * @param senderId
    * @param presenceId
-    *                   @param replyTo
+   *                   @param replyTo
    */
   case class UserShareWebCamRequestInMsg(meetingId: IntMeetingId, senderId: IntUserId,
-                                         presenceId: PresenceId, replyTo: ReplyTo) extends InMsg
+    presenceId: PresenceId, replyTo: ReplyTo) extends InMsg
 
   /**
    * User request to view webcam stream.
@@ -297,45 +303,48 @@ object IncomingMsg {
   // Presentation
   /////////////////////////////////////////////////////////////////////////////////////
   case class PreuploadedPresentationsEventInMessage(meetingId: IntMeetingId,
-    presentations: Seq[PreuploadedPresentation]) extends InMsg
-
-  case class PreuploadedPresentation(id: PresentationId, name: String, default: Boolean)
+    presentations: Set[PreuploadedPresentation]) extends InMsg
 
   case class PresentationConversionUpdateEventInMessage(meetingId: IntMeetingId, messageKey: String,
     code: String, presentationId: PresentationId) extends InMsg
 
-  case class PresentationPageGeneratedEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String,
-    presentationId: PresentationId, numberOfPages: Int,
-    pagesCompleted: Int) extends InMsg
+  case class PresentationPageGeneratedEventInMessage(meetingId: IntMeetingId, messageKey: String,
+    code: String, presentationId: PresentationId, numberOfPages: Int, pagesCompleted: Int)
+      extends InMsg
 
-  case class PresentationPageCountErrorEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String,
-    presentationId: PresentationId, numberOfPages: Int,
-    maxNumberPages: Int) extends InMsg
+  case class PresentationPageCountErrorEventInMessage(meetingId: IntMeetingId, messageKey: String,
+    code: String, presentationId: PresentationId, numberOfPages: Int, maxNumberPages: Int)
+      extends InMsg
 
-  case class PresentationConversionCompletedEventInMessage(meetingId: IntMeetingId, messageKey: String, code: String,
-    presentation: Presentation) extends InMsg
+  case class PresentationConversionCompletedEventInMessage(meetingId: IntMeetingId,
+    messageKey: String, code: String, presentation: Presentation) extends InMsg
 
-  case class ClearPresentationInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+  case class ClearPresentationEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
     presentationId: PresentationId) extends InMsg
 
-  case class RemovePresentation(meetingId: IntMeetingId, senderId: IntUserId,
+  case class RemovePresentationEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
     presentationId: PresentationId) extends InMsg
 
-  case class GetPresentationInfoInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+  case class GetPresentationInfoEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
     presentationId: PresentationId) extends InMsg
 
-  case class SendCursorUpdateInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String,
-    xPercent: Double, yPercent: Double) extends InMsg
+  case class SendCursorUpdateEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+    pageId: String, xPercent: Double, yPercent: Double) extends InMsg
 
-  case class ResizeAndMovePageInMessage(meetingId: IntMeetingId, senderId: IntUserId,
-    xOffset: Double, yOffset: Double, pageId: String,
-    widthRatio: Double, heightRatio: Double) extends InMsg
+  case class ResizeAndMovePageEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+    xOffset: XOffset, yOffset: YOffset, pageId: String,
+    widthRatio: WidthRatio, heightRatio: HeightRatio)
+      extends InMsg
 
-  case class GoToPageInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String) extends InMsg
-  case class SharePresentationInMessage(meetingId: IntMeetingId, senderId: IntUserId, presentationId: PresentationId,
+  case class GoToPageInEventInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String)
+    extends InMsg
+
+  case class SharePresentationEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+    presentationId: PresentationId,
     share: Boolean) extends InMsg
 
-  case class GetPageInfoInMessage(meetingId: IntMeetingId, senderId: IntUserId, pageId: String) extends InMsg
+  case class GetPageInfoEventInMessage(meetingId: IntMeetingId, senderId: IntUserId,
+    pageId: String) extends InMsg
 
   /////////////////////////////////////////////////////////////////////////////////////
   // Polling
@@ -418,8 +427,6 @@ object IncomingMsg {
     meetingId: IntMeetingId, requesterId: IntUserId, enable: Boolean) extends InMsg
   case class IsWhiteboardEnabledRequest(
     meetingId: IntMeetingId, requesterId: IntUserId, replyTo: String) extends InMsg
-  case class GetAllMeetingsRequest(
-    meetingId: IntMeetingId /** Not used. Just to satisfy trait **/ ) extends InMsg
 
   // Caption
   case class SendCaptionHistoryRequest(

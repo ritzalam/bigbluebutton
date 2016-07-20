@@ -41,33 +41,32 @@ trait PresentationConversionCompletedEventMessageHandler extends UnhandledReceiv
 }
 
 trait PresentationConversionCompletedEventMessageHandlerHelper {
-  def convertPresentation(body: PresentationBody): Presentation = {
+  def convertPresentation(body: PresentationBody): Option[Presentation] = {
 
     for {
       current <- Option(body.current)
       defaultPres <- Option(body.defaultPres)
       id <- Option(body.id)
       name <- Option(body.name)
-      //      pages <- extractPages(body.pages)
-      pages: Set[Page] <- for (p <- body.pages) yield convertAPage(p)
+      pages = extractPages(body.pages)
     } yield new Presentation(PresentationId(id), name, current, pages, defaultPres)
   }
 
-  //  def extractPages(list: java.util.List[PageBody]): Set[Page] = {
-  //    var pages: Set[Page] = null
-  //
-  //    import scala.collection.convert.wrapAsScala._
-  //    // convert the list to a set
-  //    val r = asScalaBuffer(list).toSet
-  //
-  //    var res = Set[Option[Page]]()
-  //
-  //    r.map(b => {
-  //      res = res + convertAPage(b) //TODO rework
-  //    })
-  //
-  //    res.flatten
-  //  }
+  def extractPages(list: java.util.List[PageBody]): Set[Page] = {
+    var pages: Set[Page] = null
+
+    import scala.collection.convert.wrapAsScala._
+    // convert the list to a set
+    val r = asScalaBuffer(list).toSet
+
+    var res = Set[Option[Page]]()
+
+    r.map(b => {
+      res = res + convertAPage(b) //TODO rework
+    })
+
+    res.flatten
+  }
 
   def convertAPage(p: PageBody): Option[Page] = {
     for {

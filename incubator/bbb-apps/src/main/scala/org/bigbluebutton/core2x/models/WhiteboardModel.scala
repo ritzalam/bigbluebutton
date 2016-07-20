@@ -25,7 +25,7 @@ class WhiteboardModel {
     saveWhiteboard(wb)
   }
 
-  def addAnnotationToShape(wb: Whiteboard, shape: AnnotationVO) = {
+  def addAnnotationToWhiteboard(wb: Whiteboard, shape: AnnotationVO) = {
     //    println("Adding shape to wb [" + wb.id + "]. Before numShapes=[" + wb.shapes.length + "].")
     val newWb = wb.copy(shapes = (wb.shapes :+ shape))
     //    println("Adding shape to page [" + wb.id + "]. After numShapes=[" + newWb.shapes.length + "].")
@@ -34,7 +34,7 @@ class WhiteboardModel {
 
   def addAnnotation(wbId: String, shape: AnnotationVO) {
     getWhiteboard(wbId) foreach { wb =>
-      addAnnotationToShape(wb, shape)
+      addAnnotationToWhiteboard(wb, shape)
     }
   }
 

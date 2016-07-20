@@ -3,6 +3,8 @@ package org.bigbluebutton.core2x.handlers
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core2x.JsonConversionTestFixtures
 import org.bigbluebutton.core2x.domain.{ GuestRole, ModeratorRole }
+import org.bigbluebutton.messages.RegisterUserRequestMessage
+import org.bigbluebutton.messages.vo.UserInfoBody
 
 class RegisterUserRequestMessageJsonHandlerTest extends UnitSpec with JsonConversionTestFixtures {
   it should "extract roles" in {

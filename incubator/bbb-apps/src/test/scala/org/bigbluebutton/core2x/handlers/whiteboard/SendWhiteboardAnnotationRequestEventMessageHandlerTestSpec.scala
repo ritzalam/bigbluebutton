@@ -31,7 +31,7 @@ class SendWhiteboardAnnotationRequestEventMessageHandlerTestSpec extends TestKit
           whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
         val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
-        meetingActorRef ! du30SendWhiteboardAnnotationRequestCommand
+        //        meetingActorRef ! du30SendWhiteboardAnnotationRequestCommand
         // expectMsgClass(classOf[PubSubPong]) // TODO
       }
     }

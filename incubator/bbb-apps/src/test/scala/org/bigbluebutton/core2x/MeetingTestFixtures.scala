@@ -7,6 +7,7 @@ import org.bigbluebutton.core2x.domain.{ VoiceConf, Welcome, _ }
 import org.bigbluebutton.core2x.models.{ MeetingStatus => _, _ }
 import java.util.Date
 
+import org.bigbluebutton.common.messages2x.objects.AnnotationStatus
 import org.bigbluebutton.core2x.apps.presentation.domain._
 
 trait MeetingTestFixtures {
@@ -264,7 +265,7 @@ trait MeetingTestFixtures {
   val piliPresentationName = "Demo Presentation"
   val piliCurrentPresentation = true
   val piliDefault = false
-  var piliPages: Set[Page] = null
+  var piliPages: Set[Page] = Set.empty
   piliPages = piliPages + new Page("pageId001", 1, ThumbUrl("someThumbUrl1"), SwfUrl("someSwfUrl1"),
     TextUrl("SomeTextUrl1"), SvgUrl("SomeSvgUrl1"))
   piliPages = piliPages + new Page("pageId002", 2, ThumbUrl("someThumbUrl2"), SwfUrl("someSwfUrl2"),
@@ -274,4 +275,30 @@ trait MeetingTestFixtures {
     piliPresentationName, piliCurrentPresentation, piliPages, piliDefault)
   val du30PresentationConversionCompletedCommand = new PresentationConversionCompletedEventInMessage(piliIntMeetingId,
     piliMessageKeyCompleted, piliMessageCode, piliPresentation001)
+
+  val piliAnnotationId = "someAnnotId003"
+  val piliAnnotationStatus = "DRAW_END"
+  val piliShapeType = "TRIANGLE"
+  val piliWbId = "whitebdId1342"
+  val piliShapeStatus = AnnotationStatus.DRAW_END
+  //  val piliTransparency: Boolean = false
+  val piliThickness = new Integer(1)
+  val piliColor = new Integer(0)
+
+  //  var piliShape: scala.collection.immutable.Map[String, Object]
+  //  var piliShape001: Map[String, Object]
+  //  piliShape001 += "shapeType" -> piliShapeType
+  //  piliShape001 += "points" -> List(86.71893, 10.835914, 89.04181, 8.034056)
+  //  piliShape001 += "color" -> piliColor
+  //  piliShape001 += "transperency" -> Boolean.box(true)
+  //  piliShape001 += "status" -> piliShapeStatus
+  //  piliShape001 += "id" -> "someShapeId13245"
+  //  piliShape001 += "thickness" -> piliThickness
+  //  piliShape001 += "wbId" -> piliWbId
+
+  //  val piliAnnotation001 = new AnnotationVO(piliAnnotationId, piliAnnotationStatus, piliShapeType,
+  //    piliShape001, piliWbId)
+  //  val du30SendWhiteboardAnnotationRequestCommand = new SendWhiteboardAnnotationRequest(piliIntMeetingId,
+  //    mdsIntUserId, piliAnnotation001)
+
 }

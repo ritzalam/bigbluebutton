@@ -2,6 +2,7 @@ package org.bigbluebutton.core2x.handlers
 
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
 import org.bigbluebutton.core2x.api.IncomingMsg.UserJoinMeetingInMessage
+import org.bigbluebutton.core2x.api.SessionId
 import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.UserJoinMeetingMessage
@@ -32,7 +33,7 @@ trait UserJoinMeetingMessageJsonHandler extends UnhandledReceivedJsonMessageHand
         token <- Option(m.body.token)
         sessionID <- Option(m.body.sessionID)
         presenceID <- Option(m.body.presenceID)
-        userAgent <- convertPresenceUserAgent(m)
+        userAgent = convertPresenceUserAgent(m)
       } yield publish(IntMeetingId(meetingId), IntUserId(userID), AuthToken(token),
         SessionId(sessionID), PresenceId(presenceID), userAgent)
     } else {

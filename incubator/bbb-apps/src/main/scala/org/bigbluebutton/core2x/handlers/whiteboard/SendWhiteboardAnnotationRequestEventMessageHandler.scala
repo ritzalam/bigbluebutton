@@ -39,13 +39,15 @@ trait SendWhiteboardAnnotationRequestEventMessageHandler extends UnhandledReceiv
 
 trait SendWhiteboardAnnotationRequestEventMessageHandlerHelper {
   def convertAnnotationBody(body: AnnotationBody): Option[AnnotationVO] = {
-    for {
-      id <- Option(body.id)
-      status <- Option(body.status)
-      shapeType <- Option(body.shapeType)
-      wbId <- Option(body.wbId)
-      shape = extractInnerShape(body.shape)
-    } yield new AnnotationVO(id, status, shapeType, shape, wbId)
+    //TODO: fix me!
+    None
+    //    for {
+    //      id <- Option(body.id)
+    //      status <- Option(body.status)
+    //      shapeType <- Option(body.shapeType)
+    //      wbId <- Option(body.wbId)
+    //      shape = extractInnerShape(body.shape)
+    //    } yield new AnnotationVO(id, status, shapeType, shape, wbId)
   }
 
   def extractInnerShape(obj: Map[String, Object]): scala.collection.immutable.Map[String, Object] = {

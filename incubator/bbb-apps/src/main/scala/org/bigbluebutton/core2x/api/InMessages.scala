@@ -130,6 +130,9 @@ object IncomingMsg {
   // Users
   /////////////////////////////////////////////////////////////////////////////////
 
+  case class ValidateAuthTokenInMsg(header: MsgHeader, body: ValidateAuthTokenInMsgBody) extends InMsg
+  case class ValidateAuthTokenInMsgBody(token: AuthToken)
+
   /**
    * Request to validate a user's authorization token.
    * @param meetingId
@@ -158,11 +161,17 @@ object IncomingMsg {
     extUserId: ExtUserId, authToken: AuthToken, avatar: Avatar, logoutUrl: LogoutUrl, welcome: Welcome,
     dialNumbers: Set[DialNumber], config: String, extData: String) extends InMsg
 
+  case class RegisterUserInMsg(header: MsgHeader, body: RegisterUserInMsgBody) extends InMsg
+  case class RegisterUserInMsgBody(meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
+    extUserId: ExtUserId, authToken: AuthToken, avatar: Avatar, logoutUrl: LogoutUrl,
+    welcome: Welcome,
+    dialNumbers: Set[DialNumber], config: String, extData: String)
+
   /**
    * User joining the meeting from a specific client.
    */
   case class UserJoinMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, token: AuthToken,
-    sessionId: SessionId, presenceId: PresenceId, userAgent: PresenceUserAgent) extends InMsg
+    sessionId: SessionId, presenceId: ClientId, userAgent: ClientUserAgent) extends InMsg
 
   /**
    * User leaving the meeting from a specific client. Only this client will leave the meeting.
@@ -172,7 +181,7 @@ object IncomingMsg {
    * @param presenceId
    */
   case class UserLeaveMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, sessionId: SessionId,
-    presenceId: PresenceId) extends InMsg
+    presenceId: ClientId) extends InMsg
 
   /**
    * User leaving the meeting. Remove user from meeting by closing other clients if any.
@@ -183,7 +192,7 @@ object IncomingMsg {
    * @param presenceId
    */
   case class UserLogoutMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, sessionId: SessionId,
-    presenceId: PresenceId) extends InMsg
+    presenceId: ClientId) extends InMsg
 
   /**
    * User request to share webcam.
@@ -193,7 +202,7 @@ object IncomingMsg {
    *                   @param replyTo
    */
   case class UserShareWebCamRequestInMsg(meetingId: IntMeetingId, senderId: IntUserId,
-    presenceId: PresenceId, replyTo: ReplyTo) extends InMsg
+    presenceId: ClientId, replyTo: ReplyTo) extends InMsg
 
   /**
    * User request to view webcam stream.
@@ -204,7 +213,7 @@ object IncomingMsg {
    * @param token
    */
   case class UserViewWebCamRequestInMsg(meetingId: IntMeetingId, senderId: IntUserId,
-    presenceId: PresenceId, streamId: String, token: String) extends InMsg
+    presenceId: ClientId, streamId: String, token: String) extends InMsg
 
   /**
    * User started publishing webcam.
@@ -214,7 +223,7 @@ object IncomingMsg {
    * @param stream
    */
   case class UserStartedPublishWebCamInMsg(meetingId: IntMeetingId, senderId: IntUserId,
-    presenceId: PresenceId, stream: Stream) extends InMsg
+    presenceId: ClientId, stream: Stream) extends InMsg
 
   /**
    * User stopped publishing webcam.
@@ -224,7 +233,7 @@ object IncomingMsg {
    * @param streamId
    */
   case class UserStoppedPublishWebCamInMsg(meetingId: IntMeetingId, senderId: IntUserId,
-    presenceId: PresenceId, streamId: String) extends InMsg
+    presenceId: ClientId, streamId: String) extends InMsg
 
   /**
    * Get the users in the meeting.
@@ -407,9 +416,9 @@ object IncomingMsg {
     voiceConfId: VoiceConf, voiceUserId: VoiceUserId, talking: Boolean) extends InMsg
   case class VoiceConfRecordingStartedMessage(
     voiceConfId: VoiceConf, recordStream: String, recording: Boolean, timestamp: String) extends InMsg
-  case class UserJoinedVoiceConf(meetingId: IntMeetingId, userId: IntUserId, presenceId: PresenceId,
+  case class UserJoinedVoiceConf(meetingId: IntMeetingId, userId: IntUserId, presenceId: ClientId,
     voice: Voice4x) extends InMsg
-  case class UserLeftVoiceConf(meetingId: IntMeetingId, userId: IntUserId, presenceId: PresenceId) extends InMsg
+  case class UserLeftVoiceConf(meetingId: IntMeetingId, userId: IntUserId, presenceId: ClientId) extends InMsg
 
   /////////////////////////////////////////////////////////////////////////////////////
   // Whiteboard

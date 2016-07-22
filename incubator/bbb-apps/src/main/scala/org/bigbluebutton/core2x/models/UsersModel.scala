@@ -12,6 +12,7 @@ object UsersModel {
 }
 
 class UsersModel {
+  private var tokens: collection.immutable.HashMap[String, IntUserId] = new collection.immutable.HashMap[String, IntUserId]
   private var users: collection.immutable.HashMap[String, User3x] = new collection.immutable.HashMap[String, User3x]
 
   def save(user: User3x): Unit = {

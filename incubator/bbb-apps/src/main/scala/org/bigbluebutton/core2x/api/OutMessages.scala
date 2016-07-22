@@ -130,7 +130,7 @@ object OutGoingMsg {
     emojiStatus: EmojiStatus, userId: IntUserId) extends OutMsg
   case class UserListeningOnly2x(
     meetingId: IntMeetingId, recorded: Recorded,
-    userId: IntUserId, presenceId: PresenceId,
+    userId: IntUserId, presenceId: ClientId,
     voice: Voice4x) extends OutMsg
   case class UserListeningOnly(
     meetingId: IntMeetingId, recorded: Recorded,

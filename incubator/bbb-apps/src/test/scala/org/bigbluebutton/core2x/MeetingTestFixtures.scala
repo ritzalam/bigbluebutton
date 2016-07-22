@@ -204,7 +204,7 @@ trait MeetingTestFixtures {
     du30IntUserId,
     du30AuthToken,
     SessionId("session-1"),
-    PresenceId("presence-1"),
+    ClientId("presence-1"),
     FlashWebUserAgent)
 
   val du30PubSubPingCommand = new PubSubPingMessageInMsg(
@@ -281,7 +281,7 @@ trait MeetingTestFixtures {
   val piliShapeType = "TRIANGLE"
   val piliWbId = "whitebdId1342"
   val piliShapeStatus = AnnotationStatus.DRAW_END
-  //  val piliTransparency: Boolean = false
+  val piliTransparency: Boolean = false
   val piliThickness = new Integer(1)
   val piliColor = new Integer(0)
 

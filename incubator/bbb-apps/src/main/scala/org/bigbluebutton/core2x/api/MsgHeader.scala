@@ -14,3 +14,4 @@ case class ReplyTo(value: String) extends AnyVal
 case class SessionId(value: String) extends AnyVal
 case class SenderId(value: String) extends AnyVal
 case class ReceiverId(value: String) extends AnyVal
+case class MessageName(value: String) extends AnyVal

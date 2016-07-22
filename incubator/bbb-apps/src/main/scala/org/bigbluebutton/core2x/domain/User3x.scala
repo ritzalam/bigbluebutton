@@ -11,15 +11,15 @@ object User3x {
       Set.empty, Set.empty, Set.empty)
   }
 
-  def update(old: Presence2x, user: User3x, updated: Presence2x): User3x = {
+  def update(old: Client2x, user: User3x, updated: Client2x): User3x = {
     modify(user)(_.presence).setTo((user.presence - old) + updated)
   }
 
-  def findWithPresenceId(presence: Set[Presence2x], presenceId: PresenceId): Option[Presence2x] = {
+  def findWithPresenceId(presence: Set[Client2x], presenceId: ClientId): Option[Client2x] = {
     presence.find(p => p.id == presenceId)
   }
 
-  def add(user: User3x, presence: Presence2x): User3x = {
+  def add(user: User3x, presence: Client2x): User3x = {
     modify(user)(_.presence).setTo(user.presence + presence)
   }
 
@@ -35,19 +35,19 @@ object User3x {
     modify(user)(_.emojiStatus).setTo(emoji)
   }
 
-  def create(id: PresenceId, userAgent: PresenceUserAgent): Presence2x = {
+  def create(id: ClientId, userAgent: ClientUserAgent): Client2x = {
     userAgent match {
-      case FlashWebUserAgent => Presence2x(
+      case FlashWebUserAgent => Client2x(
         id, UserAgent("Flash"), Set.empty, DataApp2x(SessionId("none")), Voice4x(VoiceUserId("foo")),
         WebCamStreams(Set.empty), ScreenShareStreams(Set.empty))
-      case Html5WebUserAgent => Presence2x(id, UserAgent("Html5"), Set.empty, DataApp2x(SessionId("none")),
+      case Html5WebUserAgent => Client2x(id, UserAgent("Html5"), Set.empty, DataApp2x(SessionId("none")),
         Voice4x(VoiceUserId("foo")), WebCamStreams(Set.empty), ScreenShareStreams(Set.empty))
     }
   }
 }
 
 case class User3x(id: IntUserId, externalId: ExtUserId, name: Name, emojiStatus: EmojiStatus, roles: Set[Role2x],
-    presence: Set[Presence2x], permissions: UserAbilities, roleData: Set[RoleData],
+    presence: Set[Client2x], permissions: UserAbilities, roleData: Set[RoleData],
     config: Set[String], externalData: Set[String]) {
 
   def isModerator: Boolean = roles.contains(ModeratorRole)

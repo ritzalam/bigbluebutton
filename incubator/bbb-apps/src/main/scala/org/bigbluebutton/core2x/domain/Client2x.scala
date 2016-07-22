@@ -3,22 +3,22 @@ package org.bigbluebutton.core2x.domain
 import com.softwaremill.quicklens._
 import org.bigbluebutton.core2x.api.SessionId
 
-trait PresenceUserAgent
-case object FlashWebUserAgent extends PresenceUserAgent
-case object Html5WebUserAgent extends PresenceUserAgent
+trait ClientUserAgent
+case object FlashWebUserAgent extends ClientUserAgent
+case object Html5WebUserAgent extends ClientUserAgent
 
-object Presence2x {
-  def save(presence: Presence2x, data: DataApp2x): Presence2x = {
+object Client2x {
+  def save(presence: Client2x, data: DataApp2x): Client2x = {
     modify(presence)(_.data).setTo(data)
   }
 
-  def save(presence: Presence2x, app: Voice4x): Presence2x = {
+  def save(presence: Client2x, app: Voice4x): Client2x = {
     modify(presence)(_.voice).setTo(app)
   }
 }
 
-case class Presence2x(
-  id: PresenceId,
+case class Client2x(
+  id: ClientId,
   userAgent: UserAgent,
   sessions: Set[SessionId],
   data: DataApp2x,

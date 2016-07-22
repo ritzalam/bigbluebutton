@@ -15,7 +15,7 @@ trait UserJoinMeetingMessageJsonHandler extends UnhandledReceivedJsonMessageHand
 
   override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
     def publish(meetingId: IntMeetingId, userID: IntUserId, token: AuthToken, sessionID: SessionId,
-      presenceID: PresenceId, userAgent: PresenceUserAgent): Unit = {
+      presenceID: ClientId, userAgent: ClientUserAgent): Unit = {
       log.debug(s"Publishing ${msg.name} [ $userID ]")
       eventBus.publish(
         BigBlueButtonInMessage(meetingId.value,
@@ -35,7 +35,7 @@ trait UserJoinMeetingMessageJsonHandler extends UnhandledReceivedJsonMessageHand
         presenceID <- Option(m.body.presenceID)
         userAgent = convertPresenceUserAgent(m)
       } yield publish(IntMeetingId(meetingId), IntUserId(userID), AuthToken(token),
-        SessionId(sessionID), PresenceId(presenceID), userAgent)
+        SessionId(sessionID), ClientId(presenceID), userAgent)
     } else {
       super.handleReceivedJsonMessage(msg)
     }
@@ -44,9 +44,9 @@ trait UserJoinMeetingMessageJsonHandler extends UnhandledReceivedJsonMessageHand
 }
 
 trait UserJoinMeetingMessageJsonHandlerHelper {
-  def convertPresenceUserAgent(msg: UserJoinMeetingMessage): PresenceUserAgent = {
+  def convertPresenceUserAgent(msg: UserJoinMeetingMessage): ClientUserAgent = {
     // TODO
 
-    new PresenceUserAgent {}
+    new ClientUserAgent {}
   }
 }

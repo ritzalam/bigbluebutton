@@ -61,7 +61,7 @@ case class Recorded(value: Boolean) extends AnyVal
 case class VoiceConf(value: String) extends AnyVal
 case class AuthToken(value: String) extends AnyVal
 case class IntUserId(value: String) extends AnyVal
-case class PresenceId(value: String) extends AnyVal
+case class ClientId(value: String) extends AnyVal
 case class ExtUserId(value: String) extends AnyVal
 case class EmojiStatus(value: String) extends AnyVal
 case class IsPresenter(value: Boolean) extends AnyVal

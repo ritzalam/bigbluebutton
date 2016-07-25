@@ -2,9 +2,9 @@ package org.bigbluebutton.core2x.handlers.whiteboard
 
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
 import org.bigbluebutton.core2x.api.IncomingMsg.SendWhiteboardAnnotationRequest
+import org.bigbluebutton.core2x.bus.handlers.UnhandledReceivedJsonMessageHandler
 import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ AnnotationVO, IntMeetingId, IntUserId }
-import org.bigbluebutton.core2x.handlers.UnhandledReceivedJsonMessageHandler
 import org.bigbluebutton.messages.vo.AnnotationBody
 import org.bigbluebutton.messages.whiteboard.SendWhiteboardAnnotationRequestEventMessage
 

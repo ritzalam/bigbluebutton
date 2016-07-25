@@ -10,8 +10,8 @@ import org.bigbluebutton.core2x.domain.IntMeetingId
 import org.bigbluebutton.messages.presentation.PreuploadedPresentationsEventMessage
 import org.bigbluebutton.messages.vo.PreuploadedPresentationBody
 
-trait PreuploadedPresentationsEventMessageHandler extends UnhandledReceivedJsonMessageHandler
-    with PreuploadedPresentationsEventMessageHandlerHelper {
+trait PreuploadedPresentationsEventJsonMessageHandler extends UnhandledReceivedJsonMessageHandler
+    with PreuploadedPresentationsEventJsonMessageHandlerHelper {
   this: RedisMessageHandlerActor =>
 
   val eventBus: IncomingEventBus2x
@@ -37,7 +37,7 @@ trait PreuploadedPresentationsEventMessageHandler extends UnhandledReceivedJsonM
   }
 }
 
-trait PreuploadedPresentationsEventMessageHandlerHelper {
+trait PreuploadedPresentationsEventJsonMessageHandlerHelper {
 
   def convertMessage(msg: PreuploadedPresentationsEventMessage): Option[PreuploadedPresentationsEventInMessage] = {
     for {

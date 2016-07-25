@@ -10,7 +10,10 @@ import org.bigbluebutton.core2x.domain.IntMeetingId
 import org.bigbluebutton.messages.presentation.PresentationConversionCompletedEventMessage
 import org.bigbluebutton.messages.vo.{ PageBody, PresentationBody }
 
-trait PresentationConversionCompletedEventMessageHandler extends UnhandledReceivedJsonMessageHandler with PresentationConversionCompletedEventMessageHandlerHelper {
+trait PresentationConversionCompletedEventJsonMessageHandler
+    extends UnhandledReceivedJsonMessageHandler
+    with PresentationConversionCompletedEventJsonMessageHandlerHelper {
+
   this: RedisMessageHandlerActor =>
 
   val eventBus: IncomingEventBus2x
@@ -41,7 +44,7 @@ trait PresentationConversionCompletedEventMessageHandler extends UnhandledReceiv
   }
 }
 
-trait PresentationConversionCompletedEventMessageHandlerHelper {
+trait PresentationConversionCompletedEventJsonMessageHandlerHelper {
   def convertPresentation(body: PresentationBody): Option[Presentation] = {
     for {
       current <- Option(body.current)

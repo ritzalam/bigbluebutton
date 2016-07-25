@@ -7,7 +7,7 @@ import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x
 import org.bigbluebutton.core2x.domain.{ IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.presentation.SendCursorUpdateEventMessage
 
-trait SendCursorUpdateEventMessageHandler extends UnhandledReceivedJsonMessageHandler {
+trait SendCursorUpdateEventJsonMessageHandler extends UnhandledReceivedJsonMessageHandler {
   this: RedisMessageHandlerActor =>
 
   val eventBus: IncomingEventBus2x

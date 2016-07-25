@@ -1,14 +1,14 @@
-package org.bigbluebutton.core2x.bus.handlers.presentation
+package org.bigbluebutton.core2x.handlers.presentation
 
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
-import org.bigbluebutton.core2x.api.IncomingMsg.ClearPresentationEventInMessage
+import org.bigbluebutton.core2x.api.IncomingMsg.RemovePresentationEventInMessage
 import org.bigbluebutton.core2x.apps.presentation.domain.PresentationId
 import org.bigbluebutton.core2x.bus.handlers.UnhandledReceivedJsonMessageHandler
 import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ IntMeetingId, IntUserId }
-import org.bigbluebutton.messages.presentation.ClearPresentationEventMessage
+import org.bigbluebutton.messages.presentation.RemovePresentationEventMessage
 
-trait ClearPresentationEventMessageHandler extends UnhandledReceivedJsonMessageHandler {
+trait RemovePresentationEventJsonMessageHandler extends UnhandledReceivedJsonMessageHandler {
   this: RedisMessageHandlerActor =>
 
   val eventBus: IncomingEventBus2x
@@ -18,12 +18,12 @@ trait ClearPresentationEventMessageHandler extends UnhandledReceivedJsonMessageH
       log.debug(s"Publishing ${msg.name} [ $presentationId $senderId]")
       eventBus.publish(
         BigBlueButtonInMessage(meetingId.value,
-          new ClearPresentationEventInMessage(meetingId, senderId, presentationId)))
+          new RemovePresentationEventInMessage(meetingId, senderId, presentationId)))
     }
 
-    if (msg.name == ClearPresentationEventMessage.NAME) {
+    if (msg.name == RemovePresentationEventMessage.NAME) {
       log.debug("Received JSON message [" + msg.name + "]")
-      val m = ClearPresentationEventMessage.fromJson(msg.data)
+      val m = RemovePresentationEventMessage.fromJson(msg.data)
       for {
         meetingId <- Option(m.header.meetingId)
         senderId <- Option(m.header.senderId)

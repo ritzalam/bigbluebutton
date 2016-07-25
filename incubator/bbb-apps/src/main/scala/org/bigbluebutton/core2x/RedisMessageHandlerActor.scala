@@ -4,7 +4,7 @@ import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core2x.bus.handlers._
 import org.bigbluebutton.core2x.bus.handlers.presentation._
 import org.bigbluebutton.core2x.bus.{ IncomingEventBus2x, IncomingJsonMessageBus, ReceivedJsonMessage }
-import org.bigbluebutton.core2x.handlers.presentation.{ GetPresentationInfoEventMessageHandler, GoToPageEventMessageHandler, PreuploadedPresentationsEventMessageHandler, RemovePresentationEventMessageHandler }
+import org.bigbluebutton.core2x.handlers.presentation._
 import org.bigbluebutton.core2x.handlers.whiteboard.SendWhiteboardAnnotationRequestEventMessageHandler
 
 object RedisMessageHandlerActor {
@@ -19,16 +19,16 @@ class RedisMessageHandlerActor(
     with UnhandledReceivedJsonMessageHandler
 
     // presentation.*
-    with ClearPresentationEventMessageHandler
-    with GetPageInfoEventMessageHandler
-    with GetPresentationInfoEventMessageHandler
-    with GoToPageEventMessageHandler
-    with PresentationConversionCompletedEventMessageHandler
-    with PresentationConversionUpdateEventMessageHandler
-    with PresentationPageCountErrorEventMessageHandler
-    with PresentationPageGeneratedEventMessageHandler
-    with PreuploadedPresentationsEventMessageHandler
-    with RemovePresentationEventMessageHandler
+    with ClearPresentationEventJsonMessageHandler
+    with GetPageInfoEventJsonMessageHandler
+    with GetPresentationInfoEventJsonMessageHandler
+    with GoToPageEventJsonMessageHandler
+    with PresentationConversionCompletedEventJsonMessageHandler
+    with PresentationConversionUpdateEventJsonMessageHandler
+    with PresentationPageCountErrorEventJsonMessageHandler
+    with PresentationPageGeneratedEventJsonMessageHandler
+    with PreuploadedPresentationsEventJsonMessageHandler
+    with RemovePresentationEventJsonMessageHandler
 
     // whiteboard.*
     with SendWhiteboardAnnotationRequestEventMessageHandler

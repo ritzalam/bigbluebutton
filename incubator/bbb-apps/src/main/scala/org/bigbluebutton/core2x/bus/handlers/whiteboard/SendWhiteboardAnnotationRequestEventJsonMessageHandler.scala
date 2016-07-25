@@ -1,4 +1,4 @@
-package org.bigbluebutton.core2x.handlers.whiteboard
+package org.bigbluebutton.core2x.bus.handlers.whiteboard
 
 import org.bigbluebutton.core2x.RedisMessageHandlerActor
 import org.bigbluebutton.core2x.api.IncomingMsg.SendWhiteboardAnnotationRequest
@@ -8,7 +8,10 @@ import org.bigbluebutton.core2x.domain.{ AnnotationVO, IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.vo.AnnotationBody
 import org.bigbluebutton.messages.whiteboard.SendWhiteboardAnnotationRequestEventMessage
 
-trait SendWhiteboardAnnotationRequestEventMessageHandler extends UnhandledReceivedJsonMessageHandler with SendWhiteboardAnnotationRequestEventMessageHandlerHelper {
+trait SendWhiteboardAnnotationRequestEventJsonMessageHandler
+    extends UnhandledReceivedJsonMessageHandler
+    with SendWhiteboardAnnotationRequestEventJsonMessageHandlerHelper {
+
   this: RedisMessageHandlerActor =>
 
   val eventBus: IncomingEventBus2x
@@ -37,7 +40,7 @@ trait SendWhiteboardAnnotationRequestEventMessageHandler extends UnhandledReceiv
   }
 }
 
-trait SendWhiteboardAnnotationRequestEventMessageHandlerHelper {
+trait SendWhiteboardAnnotationRequestEventJsonMessageHandlerHelper {
   def convertAnnotationBody(body: AnnotationBody): Option[AnnotationVO] = {
     for {
       id <- Option(body.id)

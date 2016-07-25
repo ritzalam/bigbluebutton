@@ -164,8 +164,7 @@ object IncomingMsg {
   case class RegisterUserInMsg(header: MsgHeader, body: RegisterUserInMsgBody) extends InMsg
   case class RegisterUserInMsgBody(meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
     extUserId: ExtUserId, authToken: AuthToken, avatar: Avatar, logoutUrl: LogoutUrl,
-    welcome: Welcome,
-    dialNumbers: Set[DialNumber], config: String, extData: String)
+    welcome: Welcome, dialNumbers: Set[DialNumber], config: String, extData: String)
 
   /**
    * User joining the meeting from a specific client.

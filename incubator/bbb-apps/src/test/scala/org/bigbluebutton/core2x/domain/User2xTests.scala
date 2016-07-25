@@ -22,7 +22,7 @@ class User2xTests extends UnitSpec {
       UserAgent("Flash"), Set.empty, dataApp, Voice4x(VoiceUserId("foo")), webCamApp, screenShareApp)
 
     val perm: Set[Abilities2x] = Set(CanEjectUser, CanRaiseHand)
-    val user = new User3x(
+    val user = new User(
       IntUserId("userid-1"),
       ExtUserId("userid-1"),
       Name("Foo"),
@@ -34,8 +34,8 @@ class User2xTests extends UnitSpec {
 
     val newDataApp = DataApp2x(SessionId("updated-session"))
     val presence1a = Client2x.save(presence1, newDataApp)
-    val newUser = User3x.update(presence1, user, presence1a)
+    val newUser = User.update(presence1, user, presence1a)
 
-    assert(newUser.presence.size == 2)
+    assert(newUser.client.size == 2)
   }
 }

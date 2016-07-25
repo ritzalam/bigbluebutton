@@ -122,7 +122,7 @@ object OutGoingMsg {
     meetingId: IntMeetingId, requesterId: IntUserId,
     token: AuthToken, valid: Boolean, correlationId: String) extends OutMsg
   case class UserJoinedEvent2x(
-    meetingId: IntMeetingId, recorded: Recorded, user: User3x) extends OutMsg
+    meetingId: IntMeetingId, recorded: Recorded, user: User) extends OutMsg
   case class UserJoined(
     meetingId: IntMeetingId, recorded: Recorded, user: UserVO) extends OutMsg
   case class UserChangedEmojiStatus(

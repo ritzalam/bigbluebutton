@@ -8,12 +8,12 @@ case object FlashWebUserAgent extends ClientUserAgent
 case object Html5WebUserAgent extends ClientUserAgent
 
 object Client2x {
-  def save(presence: Client2x, data: DataApp2x): Client2x = {
-    modify(presence)(_.data).setTo(data)
+  def save(client: Client2x, data: DataApp2x): Client2x = {
+    modify(client)(_.data).setTo(data)
   }
 
-  def save(presence: Client2x, app: Voice4x): Client2x = {
-    modify(presence)(_.voice).setTo(app)
+  def save(client: Client2x, app: Voice4x): Client2x = {
+    modify(client)(_.voice).setTo(app)
   }
 }
 

@@ -47,7 +47,7 @@ trait MeetingTestFixtures {
     "config1",
     "data12")
 
-  val du30User = User3x.create(du30IntUserId, du30ExtUserId, du30UserName, du30Roles)
+  val du30User = User.create(du30IntUserId, du30ExtUserId, du30UserName, du30Roles)
 
   val mdsIntUserId = IntUserId("mds")
   val mdsExtUserId = ExtUserId("MDS")
@@ -73,7 +73,7 @@ trait MeetingTestFixtures {
     "config1",
     "data12")
 
-  val mdsUser = User3x.create(mdsIntUserId, mdsExtUserId, mdsUserName, mdsRoles)
+  val mdsUser = User.create(mdsIntUserId, mdsExtUserId, mdsUserName, mdsRoles)
 
   val graceIntUserId = IntUserId("grace")
   val graceExtUserId = ExtUserId("GRACE")
@@ -99,7 +99,7 @@ trait MeetingTestFixtures {
     "config1",
     "data12")
 
-  val graceUser = User3x.create(graceIntUserId, graceExtUserId, graceUserName, graceRoles)
+  val graceUser = User.create(graceIntUserId, graceExtUserId, graceUserName, graceRoles)
 
   val marIntUserId = IntUserId("mar")
   val marExtUserId = ExtUserId("MAR")
@@ -125,7 +125,7 @@ trait MeetingTestFixtures {
     "config1",
     "data12")
 
-  val marUser = User3x.create(marIntUserId, marExtUserId, marUserName, marRoles)
+  val marUser = User.create(marIntUserId, marExtUserId, marUserName, marRoles)
 
   val jbIntUserId = IntUserId("jb")
   val jbExtUserId = ExtUserId("jb")
@@ -151,7 +151,7 @@ trait MeetingTestFixtures {
     "config1",
     "data12")
 
-  val jbUser = User3x.create(marIntUserId, marExtUserId, marUserName, marRoles)
+  val jbUser = User.create(marIntUserId, marExtUserId, marUserName, marRoles)
 
   val extensionProp = new MeetingExtensionProp2x
   val recordingProp = new MeetingRecordingProp

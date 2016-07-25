@@ -3,7 +3,7 @@ package org.bigbluebutton.core2x.handlers.user
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.api.IncomingMsg._
-import org.bigbluebutton.core2x.domain.{ User3x, _ }
+import org.bigbluebutton.core2x.domain.{ User$, _ }
 import org.bigbluebutton.core2x.models._
 
 class UserActorMessageHandler(
@@ -23,7 +23,7 @@ class UserActorMessageHandler(
     UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
-        val presence = User3x.findWithPresenceId(user.presence, msg.presenceId)
+        val presence = User.findWithClientId(user.client, msg.presenceId)
 
       // TODO: Send reconnecting message
       case None =>
@@ -51,7 +51,7 @@ class UserActorMessageHandler(
 
     for {
       user <- UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector)
-      presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
+      presence <- User.findWithClientId(user.client, msg.presenceId)
     } yield send()
 
   }
@@ -63,7 +63,7 @@ class UserActorMessageHandler(
 
     for {
       user <- UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector)
-      presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
+      presence <- User.findWithClientId(user.client, msg.presenceId)
     } yield send()
 
   }
@@ -75,7 +75,7 @@ class UserActorMessageHandler(
 
     for {
       user <- UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector)
-      presence <- User3x.findWithPresenceId(user.presence, msg.presenceId)
+      presence <- User.findWithClientId(user.client, msg.presenceId)
     } yield send()
   }
 }

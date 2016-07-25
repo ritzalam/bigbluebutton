@@ -347,7 +347,7 @@ trait UsersHandler2x {
 */ }
 
   def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMsg) {
-    def removeAndEject(user: User3x): Unit = {
+    def removeAndEject(user: User): Unit = {
       // remove user from list of users
       state.usersModel.remove(user.id)
       // remove user from registered users to prevent re-joining

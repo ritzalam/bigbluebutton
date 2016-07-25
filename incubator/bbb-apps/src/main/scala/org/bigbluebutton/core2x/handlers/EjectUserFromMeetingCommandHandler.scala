@@ -3,7 +3,7 @@ package org.bigbluebutton.core2x.handlers
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.api.IncomingMsg.EjectUserFromMeetingInMsg
 import org.bigbluebutton.core2x.api.OutGoingMsg.{ DisconnectUser2x, UserEjectedFromMeetingEventOutMsg, UserLeftEventOutMsg }
-import org.bigbluebutton.core2x.domain.{ CanEjectUser, User3x }
+import org.bigbluebutton.core2x.domain.{ CanEjectUser, User }
 import org.bigbluebutton.core2x.filters.DefaultAbilitiesFilter
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, UsersModel }
 
@@ -12,7 +12,7 @@ trait EjectUserFromMeetingCommandHandler {
   val outGW: OutMessageGateway
 
   def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMsg) {
-    def removeAndEject(user: User3x): Unit = {
+    def removeAndEject(user: User): Unit = {
       // remove user from list of users
       state.usersModel.remove(user.id)
       // remove user from registered users to prevent re-joining

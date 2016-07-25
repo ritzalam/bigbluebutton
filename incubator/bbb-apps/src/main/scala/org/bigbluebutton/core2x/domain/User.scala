@@ -3,35 +3,35 @@ package org.bigbluebutton.core2x.domain
 import com.softwaremill.quicklens._
 import org.bigbluebutton.core2x.api.SessionId
 
-object User3x {
-  def create(id: IntUserId, externalId: ExtUserId, name: Name, roles: Set[Role2x]): User3x = {
+object User {
+  def create(id: IntUserId, externalId: ExtUserId, name: Name, roles: Set[Role2x]): User = {
 
-    new User3x(id, externalId, name, EmojiStatus("none"), roles,
+    new User(id, externalId, name, EmojiStatus("none"), roles,
       Set.empty, new UserAbilities(Set.empty, Set.empty, false),
       Set.empty, Set.empty, Set.empty)
   }
 
-  def update(old: Client2x, user: User3x, updated: Client2x): User3x = {
-    modify(user)(_.presence).setTo((user.presence - old) + updated)
+  def update(old: Client2x, user: User, updated: Client2x): User = {
+    modify(user)(_.client).setTo((user.client - old) + updated)
   }
 
-  def findWithPresenceId(presence: Set[Client2x], presenceId: ClientId): Option[Client2x] = {
-    presence.find(p => p.id == presenceId)
+  def findWithClientId(clients: Set[Client2x], clientId: ClientId): Option[Client2x] = {
+    clients.find(p => p.id == clientId)
   }
 
-  def add(user: User3x, presence: Client2x): User3x = {
-    modify(user)(_.presence).setTo(user.presence + presence)
+  def add(user: User, client: Client2x): User = {
+    modify(user)(_.client).setTo(user.client + client)
   }
 
-  def add(user: User3x, role: Role2x): User3x = {
+  def add(user: User, role: Role2x): User = {
     modify(user)(_.roles).setTo(user.roles + role)
   }
 
-  def remove(user: User3x, role: Role2x): User3x = {
+  def remove(user: User, role: Role2x): User = {
     modify(user)(_.roles).setTo(user.roles - role)
   }
 
-  def update(user: User3x, emoji: EmojiStatus): User3x = {
+  def update(user: User, emoji: EmojiStatus): User = {
     modify(user)(_.emojiStatus).setTo(emoji)
   }
 
@@ -46,8 +46,8 @@ object User3x {
   }
 }
 
-case class User3x(id: IntUserId, externalId: ExtUserId, name: Name, emojiStatus: EmojiStatus, roles: Set[Role2x],
-    presence: Set[Client2x], permissions: UserAbilities, roleData: Set[RoleData],
+case class User(id: IntUserId, externalId: ExtUserId, name: Name, emojiStatus: EmojiStatus, roles: Set[Role2x],
+    client: Set[Client2x], permissions: UserAbilities, roleData: Set[RoleData],
     config: Set[String], externalData: Set[String]) {
 
   def isModerator: Boolean = roles.contains(ModeratorRole)

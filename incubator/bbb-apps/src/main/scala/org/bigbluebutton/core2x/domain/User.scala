@@ -34,8 +34,8 @@ object User {
     modify(user)(_.emojiStatus).setTo(emoji)
   }
 
-  def create(id: ClientId, userId: IntUserId, userAgent: ClientUserAgent): Client2x = {
-    new Client2x(id, userId, UserAgent("Flash"), new AppsComponent(Set.empty), new VoiceComponent(Set.empty),
+  def create(id: ClientId, userId: IntUserId, sessionToken: SessionToken, userAgent: ClientUserAgent): Client2x = {
+    new Client2x(id, userId, sessionToken, UserAgent("Flash"), new AppsComponent(Set.empty), new VoiceComponent(Set.empty),
       new WebCamComponent(Set.empty), new ScreenShareComponent(Set.empty))
   }
 

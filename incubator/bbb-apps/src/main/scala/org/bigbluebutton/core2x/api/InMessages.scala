@@ -175,7 +175,7 @@ object IncomingMsg {
   /**
    * User joining the meeting from a specific client.
    */
-  case class UserJoinMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, token: SessionToken,
+  case class UserJoinMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, sessionToken: SessionToken,
     sessionId: SessionId, presenceId: ClientId, userAgent: ClientUserAgent) extends InMsg
 
   /**

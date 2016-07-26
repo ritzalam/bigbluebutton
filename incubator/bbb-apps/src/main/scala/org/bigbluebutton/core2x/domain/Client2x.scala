@@ -19,6 +19,7 @@ object Client2x {
 case class Client2x(
   id: ClientId,
   userId: IntUserId,
+  sessionToken: SessionToken,
   userAgent: UserAgent,
   appsComponent: AppsComponent,
   voiceComponent: VoiceComponent,

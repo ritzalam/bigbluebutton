@@ -39,7 +39,7 @@ trait UserJoinMeetingRequestHandlerFilter extends UserJoinMeetingRequestHandler 
   val outGW: OutMessageGateway
 
   abstract override def handleUserJoinMeetingRequestInMessage(msg: UserJoinMeetingInMessage): Unit = {
-    RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector) match {
+    RegisteredUsersModel.findWithToken(msg.sessionToken, state.registeredUsersModel.toVector) match {
       case Some(u) =>
         super.handleUserJoinMeetingRequestInMessage(msg)
       case None =>

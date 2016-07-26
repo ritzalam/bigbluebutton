@@ -40,7 +40,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
   }
 
   abstract override def handleUserJoinWeb2x(msg: UserJoinMeetingInMessage): Unit = {
-    RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector) match {
+    RegisteredUsersModel.findWithToken(msg.sessionToken, state.registeredUsersModel.toVector) match {
       case Some(u) =>
         super.handleUserJoinWeb2x(msg)
       case None =>

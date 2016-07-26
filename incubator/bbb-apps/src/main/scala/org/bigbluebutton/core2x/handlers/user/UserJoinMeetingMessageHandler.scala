@@ -35,9 +35,9 @@ trait UserJoinMeetingMessageHandler {
       // TODO: Send reconnecting message
       case None =>
         for {
-          ru <- RegisteredUsersModel.findWithToken(msg.token, meeting.registeredUsersModel.toVector)
+          ru <- RegisteredUsersModel.findWithToken(msg.sessionToken, meeting.registeredUsersModel.toVector)
           u = User.create(msg.senderId, ru.extId, ru.name, ru.roles)
-          presence = User.create(msg.presenceId, u.id, msg.userAgent)
+          presence = User.create(msg.presenceId, u.id, msg.sessionToken, msg.userAgent)
           user = User.add(u, presence)
         } yield process(user)
     }

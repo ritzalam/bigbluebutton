@@ -7,6 +7,7 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
+import org.bigbluebutton.core2x.domain.Clients
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus }
 import org.bigbluebutton.core2x.{ MeetingActor2x, MeetingTestFixtures }
 import org.scalatest.{ Matchers, WordSpecLike }
@@ -25,8 +26,9 @@ class PresentationPageCountErrorEventMessageHandlerTestSpec extends TestKit(Acto
   "A MeetingActor" should {
     "Send a ?? when receiving PresentationPageCountErrorEventMessage" in { // TODO
       within(500 millis) {
+        val clients = new Clients
         val state: MeetingStateModel = new MeetingStateModel(
-          bbbDevProps, abilities, registeredUsers, users, chats, layouts, polls,
+          bbbDevProps, abilities, clients, registeredUsers, users, chats, layouts, polls,
           whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
         val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))

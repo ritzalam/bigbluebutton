@@ -2,7 +2,7 @@ package org.bigbluebutton.core2x.filters
 
 import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core2x.api.OutGoingMsg._
-import org.bigbluebutton.core2x.domain.MeetingExtensionStatus
+import org.bigbluebutton.core2x.domain.{ Clients, MeetingExtensionStatus }
 import org.bigbluebutton.core.{ OutMessageGateway, UnitSpec }
 import org.bigbluebutton.core2x.MeetingTestFixtures
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
@@ -23,8 +23,9 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar with MeetingTestFi
     testUsers.save(fredUser)
     testUsers.save(antonUser)
 
+    val clients = new Clients
     val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
-      abilities, testRegUsers, testUsers, chats, layouts,
+      abilities, clients, testRegUsers, testUsers, chats, layouts,
       polls, whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
     val mockOutGW = mock[OutMessageGateway]
@@ -49,8 +50,9 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar with MeetingTestFi
     testUsers.save(fredUser)
     testUsers.save(antonUser)
 
+    val clients = new Clients
     val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
-      abilities,
+      abilities, clients,
       testRegUsers,
       testUsers,
       chats,

@@ -9,6 +9,7 @@ object UsersModel {
   def findPresenters(users: Vector[User]): Vector[User] = users.filter(u => u.roles.contains(PresenterRole))
   def hasModerator(users: Vector[User]): Boolean = users.filter(u => u.roles.contains(ModeratorRole)).length > 0
   def hasPresenter(users: Vector[User]): Boolean = users.filter(u => u.roles.contains(PresenterRole)).length > 0
+
 }
 
 class UsersModel {
@@ -26,5 +27,12 @@ class UsersModel {
   }
 
   def toVector: Vector[User] = users.values.toVector
+
+  def findUserWithToken(token: SessionToken): Option[User] = {
+    for {
+      userId <- tokens.get(token.value)
+      user <- UsersModel.findWithId(userId, toVector)
+    } yield user
+  }
 }
 

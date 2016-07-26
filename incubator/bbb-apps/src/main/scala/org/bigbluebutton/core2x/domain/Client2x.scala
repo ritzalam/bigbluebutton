@@ -1,39 +1,57 @@
 package org.bigbluebutton.core2x.domain
 
 import com.softwaremill.quicklens._
-import org.bigbluebutton.core2x.api.SessionId
 
 trait ClientUserAgent
 case object FlashWebUserAgent extends ClientUserAgent
 case object Html5WebUserAgent extends ClientUserAgent
 
 object Client2x {
-  def save(client: Client2x, data: DataApp2x): Client2x = {
-    modify(client)(_.data).setTo(data)
+  def save(client: Client2x, component: AppsComponent): Client2x = {
+    modify(client)(_.appsComponent).setTo(component)
   }
 
-  def save(client: Client2x, app: Voice4x): Client2x = {
-    modify(client)(_.voice).setTo(app)
+  def save(client: Client2x, component: VoiceComponent): Client2x = {
+    modify(client)(_.voiceComponent).setTo(component)
   }
 }
 
 case class Client2x(
   id: ClientId,
+  userId: IntUserId,
   userAgent: UserAgent,
-  sessions: Set[SessionId],
-  data: DataApp2x,
-  voice: Voice4x,
-  webCams: WebCamStreams,
-  screenShare: ScreenShareStreams)
+  appsComponent: AppsComponent,
+  voiceComponent: VoiceComponent,
+  webCamComponent: WebCamComponent,
+  screenShareComponent: ScreenShareComponent)
 
-object DataApp2x {
-  def update(data: DataApp2x, session: SessionId): DataApp2x = {
-    modify(data)(_.sessionId).setTo(session)
-  }
+object AppsComponent {
+  //  def update(data: AppsComponent, session: SessionId): AppsComponent = {
+  //    modify(data)(_.sessionId).setTo(session)
+  //  }
 }
 
-case class DataApp2x(sessionId: SessionId)
+case class AppsComponent(sessionIds: Set[SessionId])
+case class WebCamComponent(sessionIds: Set[SessionId])
+case class VoiceComponent(sessionIds: Set[SessionId])
+case class ScreenShareComponent(sessionIds: Set[SessionId])
+
 case class WebCamStreams(streams: Set[Stream])
 case class VoiceApp2x(sessionId: SessionId, voice: Voice4x)
 case class ScreenShareStreams(streams: Set[Stream])
 
+class Clients {
+  private var clients: collection.immutable.HashMap[String, Client2x] = new collection.immutable.HashMap[String, Client2x]
+
+  def toVector: Vector[Client2x] = clients.values.toVector
+
+  def save(client: Client2x): Unit = {
+    clients += client.id.value -> client
+  }
+
+  def remove(id: ClientId): Option[Client2x] = {
+    val client = clients.get(id.value)
+    client foreach (u => clients -= id.value)
+    client
+  }
+}

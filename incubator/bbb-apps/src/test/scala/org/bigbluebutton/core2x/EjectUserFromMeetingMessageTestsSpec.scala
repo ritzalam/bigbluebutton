@@ -9,6 +9,7 @@ import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core2x.api.OutGoingMsg._
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
+import org.bigbluebutton.core2x.domain.Clients
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
 import org.scalatest.{ Matchers, WordSpecLike }
 
@@ -37,8 +38,10 @@ class EjectUserFromMeetingMessageTestsSpec extends TestKit(ActorSystem("MeetingA
         testUsers.save(fredUser)
         testUsers.save(antonUser)
 
+        val clients = new Clients
+
         val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
-          abilities, testRegUsers, testUsers, chats, layouts,
+          abilities, clients, testRegUsers, testUsers, chats, layouts,
           polls, whiteboards, presentations, breakoutRooms, captions,
           new MeetingStatus)
 

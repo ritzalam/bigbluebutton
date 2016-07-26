@@ -4,7 +4,7 @@ import akka.actor.ActorContext
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.apps.presentation.PresentationModel
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
-import org.bigbluebutton.core2x.domain.{ MeetingExtensionStatus, MeetingProperties2x }
+import org.bigbluebutton.core2x.domain.{ Clients, MeetingExtensionStatus, MeetingProperties2x }
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, _ }
 
 object RunningMeeting2x {
@@ -17,6 +17,7 @@ class RunningMeeting2x(val mProps: MeetingProperties2x, val outGW: OutMessageGat
     val eventBus: IncomingEventBus2x)(implicit val context: ActorContext) {
 
   val abilities: MeetingPermissions = new MeetingPermissions
+  val clients: Clients = new Clients
   val registeredUsers = new RegisteredUsersModel
   val users = new UsersModel
   val chats = new ChatModel
@@ -30,6 +31,7 @@ class RunningMeeting2x(val mProps: MeetingProperties2x, val outGW: OutMessageGat
 
   val state: MeetingStateModel = new MeetingStateModel(mProps,
     abilities,
+    clients,
     registeredUsers,
     users,
     chats,

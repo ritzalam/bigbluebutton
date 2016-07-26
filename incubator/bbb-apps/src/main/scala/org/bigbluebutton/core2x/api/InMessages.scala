@@ -31,6 +31,12 @@ object IncomingMsg {
   // Meeting
   /////////////////////////////////////////////////////////////////////////////
 
+  case class SessionCreatedMessage(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
+    sessionToken: SessionToken) extends InMsg
+
+  case class SessionDestroyedMessage(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
+    sessionToken: SessionToken) extends InMsg
+
   /**
    * Request to create a new meeting.
    * @param meetingId

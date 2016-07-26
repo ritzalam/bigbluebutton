@@ -37,7 +37,7 @@ trait UserJoinMeetingMessageHandler {
         for {
           ru <- RegisteredUsersModel.findWithToken(msg.token, meeting.registeredUsersModel.toVector)
           u = User.create(msg.senderId, ru.extId, ru.name, ru.roles)
-          presence = User.create(msg.presenceId, msg.userAgent)
+          presence = User.create(msg.presenceId, u.id, msg.userAgent)
           user = User.add(u, presence)
         } yield process(user)
     }

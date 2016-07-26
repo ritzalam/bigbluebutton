@@ -8,6 +8,7 @@ import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
 import org.bigbluebutton.core2x.api.OutGoingMsg.{ PresenterAssignedEventOutMsg, UserJoinedEvent2x, UserRegisteredEvent2x, ValidateAuthTokenSuccessReplyOutMsg }
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
+import org.bigbluebutton.core2x.domain.Clients
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus }
 import org.bigbluebutton.core2x.{ MeetingActor2x, MeetingTestFixtures }
 import org.scalatest.{ Matchers, WordSpecLike }
@@ -27,8 +28,9 @@ class UserJoinMeetingRequestInMessageActorTestSpec extends TestKit(ActorSystem("
   "A MeetingActor" should {
     "Send a UserJoinedEvent when receiving UserJoinCommand and there is registered user" in {
       within(500 millis) {
+        val clients = new Clients
         val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
-          abilities, registeredUsers, users, chats, layouts, polls, whiteboards,
+          abilities, clients, registeredUsers, users, chats, layouts, polls, whiteboards,
           presentations, breakoutRooms, captions, new MeetingStatus)
 
         val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))

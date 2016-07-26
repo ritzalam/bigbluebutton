@@ -1,7 +1,6 @@
 package org.bigbluebutton.core2x.domain
 
 import com.softwaremill.quicklens._
-import org.bigbluebutton.core2x.api.SessionId
 
 object User {
   def create(id: IntUserId, externalId: ExtUserId, name: Name, roles: Set[Role2x]): User = {
@@ -35,15 +34,11 @@ object User {
     modify(user)(_.emojiStatus).setTo(emoji)
   }
 
-  def create(id: ClientId, userAgent: ClientUserAgent): Client2x = {
-    userAgent match {
-      case FlashWebUserAgent => Client2x(
-        id, UserAgent("Flash"), Set.empty, DataApp2x(SessionId("none")), Voice4x(VoiceUserId("foo")),
-        WebCamStreams(Set.empty), ScreenShareStreams(Set.empty))
-      case Html5WebUserAgent => Client2x(id, UserAgent("Html5"), Set.empty, DataApp2x(SessionId("none")),
-        Voice4x(VoiceUserId("foo")), WebCamStreams(Set.empty), ScreenShareStreams(Set.empty))
-    }
+  def create(id: ClientId, userId: IntUserId, userAgent: ClientUserAgent): Client2x = {
+    new Client2x(id, userId, UserAgent("Flash"), new AppsComponent(Set.empty), new VoiceComponent(Set.empty),
+      new WebCamComponent(Set.empty), new ScreenShareComponent(Set.empty))
   }
+
 }
 
 case class User(id: IntUserId, externalId: ExtUserId, name: Name, emojiStatus: EmojiStatus, roles: Set[Role2x],

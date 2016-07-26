@@ -8,6 +8,7 @@ import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
 import org.bigbluebutton.core2x.api.OutGoingMsg.UserRegisteredEvent2x
 import org.bigbluebutton.core2x.bus.IncomingEventBus2x
+import org.bigbluebutton.core2x.domain.Clients
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus }
 import org.scalatest.{ Matchers, WordSpecLike }
 
@@ -26,8 +27,9 @@ class RegisterUserRequestInMessageActorTestSpec extends TestKit(ActorSystem("Reg
   "A MeetingActor" should {
     "Send a UserRegisteredEvent when receiving UserRegisterCommand" in {
       within(500 millis) {
+        val clients = new Clients
         val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
-          abilities, registeredUsers, users, chats, layouts, polls, whiteboards,
+          abilities, clients, registeredUsers, users, chats, layouts, polls, whiteboards,
           presentations, breakoutRooms, captions, new MeetingStatus)
         val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
         meetingActorRef ! richardRegisterUserCommand

@@ -4,6 +4,7 @@ import org.bigbluebutton.core.{ OutMessageGateway, UnitSpec }
 import org.bigbluebutton.core2x.MeetingTestFixtures
 import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core2x.api.OutGoingMsg._
+import org.bigbluebutton.core2x.domain.Clients
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
@@ -21,7 +22,9 @@ class UserActorMessageHandlerTests extends UnitSpec with MockitoSugar with Meeti
     testUsers.save(fredUser)
     testUsers.save(antonUser)
 
-    val state: MeetingStateModel = new MeetingStateModel(bbbDevProps, abilities, testRegUsers,
+    val clients = new Clients
+
+    val state: MeetingStateModel = new MeetingStateModel(bbbDevProps, abilities, clients, testRegUsers,
       testUsers, chats, layouts, polls,
       whiteboards, presentations,
       breakoutRooms, captions,

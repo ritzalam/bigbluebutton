@@ -90,7 +90,12 @@ case class LeftOn(value: Long) extends AnyVal
 case class JoinedOn(value: Long) extends AnyVal
 case class LogoutUrl(value: String) extends AnyVal
 case class Avatar(value: String) extends AnyVal
-
+case class ReplyTo(value: String) extends AnyVal
+case class SessionId(value: String) extends AnyVal
+case class SenderId(value: String) extends AnyVal
+case class ReceiverId(value: String) extends AnyVal
+case class MessageName(value: String) extends AnyVal
+case class ComponentId(value: String) extends AnyVal
 case class MeetingActorRef(id: IntMeetingId, value: ActorRef)
 case class UserActorRef(id: IntUserId, actorRef: ActorRef)
 

@@ -12,16 +12,16 @@ class UserActorMessageHandlerTests extends UnitSpec with MockitoSugar with Meeti
   it should "eject user if user has ability" in {
 
     val testRegUsers = new RegisteredUsersModel
-    testRegUsers.add(du30RegisteredUser)
-    testRegUsers.add(mdsRegisteredUser)
-    testRegUsers.add(marRegisteredUser)
+    testRegUsers.add(richardRegisteredUser)
+    testRegUsers.add(fredRegisteredUser)
+    testRegUsers.add(antonRegisteredUser)
 
     val testUsers = new UsersModel
-    testUsers.save(du30User)
-    testUsers.save(mdsUser)
-    testUsers.save(marUser)
+    testUsers.save(richardUser)
+    testUsers.save(fredUser)
+    testUsers.save(antonUser)
 
-    val state: MeetingStateModel = new MeetingStateModel(piliProps, abilities, testRegUsers,
+    val state: MeetingStateModel = new MeetingStateModel(bbbDevProps, abilities, testRegUsers,
       testUsers, chats, layouts, polls,
       whiteboards, presentations,
       breakoutRooms, captions,
@@ -29,9 +29,9 @@ class UserActorMessageHandlerTests extends UnitSpec with MockitoSugar with Meeti
 
     val mockOutGW = mock[OutMessageGateway]
     // Create the class under test and pass the mock to it
-    val classUnderTest = new UserActorMessageHandler(du30RegisteredUser, mockOutGW)
+    val classUnderTest = new UserActorMessageHandler(richardRegisteredUser, mockOutGW)
 
-    val ejectUserMsg = new EjectUserFromMeetingInMsg(piliIntMeetingId, marIntUserId, du30IntUserId)
+    val ejectUserMsg = new EjectUserFromMeetingInMsg(bbbDevIntMeetingId, antonIntUserId, richardIntUserId)
 
     // Use the class under test
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg, state)

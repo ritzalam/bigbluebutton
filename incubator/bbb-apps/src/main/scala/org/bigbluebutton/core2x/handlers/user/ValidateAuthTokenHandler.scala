@@ -12,14 +12,12 @@ trait ValidateAuthTokenHandler {
   val outGW: OutMessageGateway
 
   def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage, meeting: MeetingStateModel): Unit = {
-
     def sendResponse(user: RegisteredUser2x): Unit = {
       val reply = new ValidateAuthTokenSuccessReplyOutMsg(
         msg.meetingId, msg.senderId, user.name, user.roles,
         user.extId, user.authToken, user.avatar,
         user.logoutUrl, user.welcome, user.dialNumbers,
         user.config, user.extData)
-      println("Sending ValidateAuthTokenSuccessReplyOutMessage")
       outGW.send(reply)
     }
 

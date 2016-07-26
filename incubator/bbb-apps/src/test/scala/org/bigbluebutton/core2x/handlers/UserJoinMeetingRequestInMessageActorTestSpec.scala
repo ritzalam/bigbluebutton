@@ -27,26 +27,26 @@ class UserJoinMeetingRequestInMessageActorTestSpec extends TestKit(ActorSystem("
   "A MeetingActor" should {
     "Send a UserJoinedEvent when receiving UserJoinCommand and there is registered user" in {
       within(500 millis) {
-        val state: MeetingStateModel = new MeetingStateModel(piliProps,
+        val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
           abilities, registeredUsers, users, chats, layouts, polls, whiteboards,
           presentations, breakoutRooms, captions, new MeetingStatus)
 
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
-        meetingActorRef ! du30RegisterUserCommand
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
+        meetingActorRef ! richardRegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
-        meetingActorRef ! du30ValidateAuthTokenCommand
+        meetingActorRef ! richardValidateAuthTokenCommand
         expectMsgClass(classOf[ValidateAuthTokenSuccessReplyOutMsg])
-        meetingActorRef ! du30UserJoinCommand
+        meetingActorRef ! richardUserJoinCommand
         //expectMsgAllClassOf(classOf[UserJoinedEvent2x], classOf[PresenterChangedEventOutMessage])
         expectMsgPF() {
           case event: UserJoinedEvent2x =>
-            assert(event.meetingId == piliIntMeetingId)
+            assert(event.meetingId == bbbDevIntMeetingId)
           case presEvent: PresenterAssignedEventOutMsg =>
-            assert(presEvent.presenter.id == du30UserJoinCommand.senderId)
+            assert(presEvent.presenter.id == richardUserJoinCommand.senderId)
         }
         expectMsgPF() {
           case presEvent: PresenterAssignedEventOutMsg =>
-            assert(presEvent.presenter.id == du30UserJoinCommand.senderId)
+            assert(presEvent.presenter.id == richardUserJoinCommand.senderId)
         }
         //expectMsgClass(classOf[PresenterChangedEventOutMessage])
       }

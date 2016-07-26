@@ -27,11 +27,11 @@ class ValidateAuthTokenRequestInMessageActorTestSpec extends TestKit(ActorSystem
     "Send a DisconnectUser when receiving ValitadateAuthTokenCommand and there is no registered user" in {
       within(500 millis) {
         val state: MeetingStateModel = new MeetingStateModel(
-          piliProps, abilities, registeredUsers, users, chats, layouts, polls,
+          bbbDevProps, abilities, registeredUsers, users, chats, layouts, polls,
           whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
-        meetingActorRef ! du30ValidateAuthTokenCommand
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
+        meetingActorRef ! richardValidateAuthTokenCommand
         expectMsgClass(classOf[DisconnectUser2x])
       }
     }
@@ -40,13 +40,13 @@ class ValidateAuthTokenRequestInMessageActorTestSpec extends TestKit(ActorSystem
   "A MeetingActor" should {
     "Send a ValidateAuthTokenReply when receiving ValitadateAuthTokenCommand and there is registered user" in {
       within(500 millis) {
-        val state: MeetingStateModel = new MeetingStateModel(piliProps,
+        val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
           abilities, registeredUsers, users, chats, layouts, polls, whiteboards,
           presentations, breakoutRooms, captions, new MeetingStatus)
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
-        meetingActorRef ! du30RegisterUserCommand
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
+        meetingActorRef ! richardRegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
-        meetingActorRef ! du30ValidateAuthTokenCommand
+        meetingActorRef ! richardValidateAuthTokenCommand
         expectMsgClass(classOf[ValidateAuthTokenSuccessReplyOutMsg])
       }
     }

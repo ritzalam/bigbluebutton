@@ -28,23 +28,23 @@ class EjectUserFromMeetingMessageTestsSpec extends TestKit(ActorSystem("MeetingA
     "Eject the user when receiving eject user command" in {
       within(500 millis) {
         val testRegUsers = new RegisteredUsersModel
-        testRegUsers.add(du30RegisteredUser)
-        testRegUsers.add(mdsRegisteredUser)
-        testRegUsers.add(marRegisteredUser)
+        testRegUsers.add(richardRegisteredUser)
+        testRegUsers.add(fredRegisteredUser)
+        testRegUsers.add(antonRegisteredUser)
 
         val testUsers = new UsersModel
-        testUsers.save(du30User)
-        testUsers.save(mdsUser)
-        testUsers.save(marUser)
+        testUsers.save(richardUser)
+        testUsers.save(fredUser)
+        testUsers.save(antonUser)
 
-        val state: MeetingStateModel = new MeetingStateModel(piliProps,
+        val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
           abilities, testRegUsers, testUsers, chats, layouts,
           polls, whiteboards, presentations, breakoutRooms, captions,
           new MeetingStatus)
 
-        val ejectUserMsg = new EjectUserFromMeetingInMsg(piliIntMeetingId, marIntUserId, du30IntUserId)
+        val ejectUserMsg = new EjectUserFromMeetingInMsg(bbbDevIntMeetingId, antonIntUserId, richardIntUserId)
 
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
         meetingActorRef ! ejectUserMsg
         //expectMsgAllClassOf(classOf[UserEjectedFromMeeting], classOf[DisconnectUser2x], classOf[UserLeft2x])
         expectMsgClass(classOf[UserEjectedFromMeetingEventOutMsg])

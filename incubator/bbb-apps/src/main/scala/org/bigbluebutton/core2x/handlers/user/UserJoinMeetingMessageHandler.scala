@@ -30,7 +30,7 @@ trait UserJoinMeetingMessageHandler {
     UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
-        val presence = User.findWithClientId(user.client, msg.presenceId)
+        val client = User.findWithClientId(user.client, msg.presenceId)
 
       // TODO: Send reconnecting message
       case None =>

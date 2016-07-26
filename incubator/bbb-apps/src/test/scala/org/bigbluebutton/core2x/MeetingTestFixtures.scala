@@ -11,10 +11,10 @@ import org.bigbluebutton.common.messages2x.objects.AnnotationStatus
 import org.bigbluebutton.core2x.apps.presentation.domain._
 
 trait MeetingTestFixtures {
-  val piliIntMeetingId = IntMeetingId("pili-pinas-2016")
-  val piliExtMeetingId = ExtMeetingId("Pili-Pinas-2016")
-  val piliMeetingName = Name("Pili Pinas 2016")
-  val piliRecorded = Recorded(true)
+  val bbbDevIntMeetingId = IntMeetingId("bbb-dev-weekly-meeting")
+  val bbbDevExtMeetingId = ExtMeetingId("Bbb-Dev-Weekly-Meeting")
+  val bbbDevMeetingName = Name("BBB Dev Weekly Meeting")
+  val bbbDevRecorded = Recorded(true)
   val voiceConf = VoiceConf("85115")
   val duration = 120
   val autoStartRecording = false
@@ -23,143 +23,143 @@ trait MeetingTestFixtures {
   val allowVoiceOnly = false
   val isBreakout = false
 
-  val du30IntUserId = IntUserId("du30")
-  val du30ExtUserId = ExtUserId("DU30")
-  val du30UserName = Name("Rody Duterte")
-  val du30Roles: Set[Role2x] = Set(ModeratorRole, PresenterRole)
-  val du30AuthToken = AuthToken("Du30LetMeWin!")
-  val du30Avatar = Avatar("http://www.gravatar.com/sdsdas")
-  val du30LogoutUrl = LogoutUrl("http://www.amoutofhere.com")
-  val du30Welcome = Welcome("Hello World!")
-  val du30DialNums: Set[DialNumber] = Set(DialNumber("6135551234"))
+  val richardIntUserId = IntUserId("richard")
+  val richardExtUserId = ExtUserId("Richard")
+  val richardUserName = Name("Richard Alam")
+  val richardRoles: Set[Role2x] = Set(ModeratorRole, PresenterRole)
+  val richardAuthToken = AuthToken("Du30LetMeWin!")
+  val richardAvatar = Avatar("http://www.gravatar.com/sdsdas")
+  val richardLogoutUrl = LogoutUrl("http://www.amoutofhere.com")
+  val richardWelcome = Welcome("Hello World!")
+  val richardDialNums: Set[DialNumber] = Set(DialNumber("6135551234"))
 
-  val du30RegisteredUser = RegisteredUsersModel.create(
-    du30IntUserId,
-    du30ExtUserId,
-    du30UserName,
-    du30Roles,
-    du30AuthToken,
-    du30Avatar,
-    du30LogoutUrl,
-    du30Welcome,
-    du30DialNums,
+  val richardRegisteredUser = RegisteredUsersModel.create(
+    richardIntUserId,
+    richardExtUserId,
+    richardUserName,
+    richardRoles,
+    richardAuthToken,
+    richardAvatar,
+    richardLogoutUrl,
+    richardWelcome,
+    richardDialNums,
     PinNumber(85115001),
     "config1",
     "data12")
 
-  val du30User = User.create(du30IntUserId, du30ExtUserId, du30UserName, du30Roles)
+  val richardUser = User.create(richardIntUserId, richardExtUserId, richardUserName, richardRoles)
 
-  val mdsIntUserId = IntUserId("mds")
-  val mdsExtUserId = ExtUserId("MDS")
-  val mdsUserName = Name("Miriam Santiago")
-  val mdsRoles: Set[Role2x] = Set(ViewerRole)
-  val mdsAuthToken = AuthToken("MdsLetMeWin!")
-  val mdsAvatar = Avatar("http://www.gravatar.com/sdsdas")
-  val mdsLogoutUrl = LogoutUrl("http://www.amoutofhere.com")
-  val mdsWelcome = Welcome("Hello World!")
-  val mdsDialNums = Set(DialNumber("6135551234"))
+  val fredIntUserId = IntUserId("fred")
+  val fredExtUserId = ExtUserId("Fred")
+  val fredUserName = Name("Fred Dixon")
+  val fredRoles: Set[Role2x] = Set(ViewerRole)
+  val fredAuthToken = AuthToken("MdsLetMeWin!")
+  val fredAvatar = Avatar("http://www.gravatar.com/sdsdas")
+  val fredLogoutUrl = LogoutUrl("http://www.amoutofhere.com")
+  val fredWelcome = Welcome("Hello World!")
+  val fredDialNums = Set(DialNumber("6135551234"))
 
-  val mdsRegisteredUser = RegisteredUsersModel.create(
-    mdsIntUserId,
-    mdsExtUserId,
-    mdsUserName,
-    mdsRoles,
-    mdsAuthToken,
-    mdsAvatar,
-    mdsLogoutUrl,
-    mdsWelcome,
-    mdsDialNums,
+  val fredRegisteredUser = RegisteredUsersModel.create(
+    fredIntUserId,
+    fredExtUserId,
+    fredUserName,
+    fredRoles,
+    fredAuthToken,
+    fredAvatar,
+    fredLogoutUrl,
+    fredWelcome,
+    fredDialNums,
     PinNumber(85115002),
     "config1",
     "data12")
 
-  val mdsUser = User.create(mdsIntUserId, mdsExtUserId, mdsUserName, mdsRoles)
+  val fredUser = User.create(fredIntUserId, fredExtUserId, fredUserName, fredRoles)
 
-  val graceIntUserId = IntUserId("grace")
-  val graceExtUserId = ExtUserId("GRACE")
-  val graceUserName = Name("Grace Poe")
-  val graceRoles: Set[Role2x] = Set(ViewerRole)
-  val graceAuthToken = AuthToken("GraceLetMeWin!")
-  val graceAvatar = Avatar("http://www.gravatar.com/sdsdas")
-  val graceLogoutUrl = LogoutUrl("http://www.amoutofhere.com")
-  val graceWelcome = Welcome("Hello World!")
-  val graceDialNums = Set(DialNumber("6135551234"))
+  val felipeIntUserId = IntUserId("felipe")
+  val felipeExtUserId = ExtUserId("Felipe")
+  val felipeUserName = Name("Felipe Cecagno")
+  val felipeRoles: Set[Role2x] = Set(ViewerRole)
+  val felipeAuthToken = AuthToken("GraceLetMeWin!")
+  val felipeAvatar = Avatar("http://www.gravatar.com/sdsdas")
+  val felipeLogoutUrl = LogoutUrl("http://www.amoutofhere.com")
+  val felipeWelcome = Welcome("Hello World!")
+  val felipeDialNums = Set(DialNumber("6135551234"))
 
-  val graceRegisteredUser = RegisteredUsersModel.create(
-    graceIntUserId,
-    graceExtUserId,
-    graceUserName,
-    graceRoles,
-    graceAuthToken,
-    graceAvatar,
-    graceLogoutUrl,
-    graceWelcome,
-    graceDialNums,
+  val felipeRegisteredUser = RegisteredUsersModel.create(
+    felipeIntUserId,
+    felipeExtUserId,
+    felipeUserName,
+    felipeRoles,
+    felipeAuthToken,
+    felipeAvatar,
+    felipeLogoutUrl,
+    felipeWelcome,
+    felipeDialNums,
     PinNumber(85115003),
     "config1",
     "data12")
 
-  val graceUser = User.create(graceIntUserId, graceExtUserId, graceUserName, graceRoles)
+  val felipeUser = User.create(felipeIntUserId, felipeExtUserId, felipeUserName, felipeRoles)
 
-  val marIntUserId = IntUserId("mar")
-  val marExtUserId = ExtUserId("MAR")
-  val marUserName = Name("Mar Roxas")
-  val marRoles: Set[Role2x] = Set(ViewerRole)
-  val marAuthToken = AuthToken("MarLetMeWin!")
-  val marAvatar = Avatar("http://www.gravatar.com/sdsdas")
-  val marLogoutUrl = LogoutUrl("http://www.amoutofhere.com")
-  val marWelcome = Welcome("Hello World!")
-  val marDialNums = Set(DialNumber("6135551234"))
+  val antonIntUserId = IntUserId("anton")
+  val antonExtUserId = ExtUserId("Anton")
+  val antonUserName = Name("Anton Georgiev")
+  val antonRoles: Set[Role2x] = Set(ViewerRole)
+  val antonAuthToken = AuthToken("MarLetMeWin!")
+  val antonAvatar = Avatar("http://www.gravatar.com/sdsdas")
+  val antonLogoutUrl = LogoutUrl("http://www.amoutofhere.com")
+  val antonWelcome = Welcome("Hello World!")
+  val antonDialNums = Set(DialNumber("6135551234"))
 
-  val marRegisteredUser = RegisteredUsersModel.create(
-    marIntUserId,
-    marExtUserId,
-    marUserName,
-    marRoles,
-    marAuthToken,
-    marAvatar,
-    marLogoutUrl,
-    marWelcome,
-    marDialNums,
+  val antonRegisteredUser = RegisteredUsersModel.create(
+    antonIntUserId,
+    antonExtUserId,
+    antonUserName,
+    antonRoles,
+    antonAuthToken,
+    antonAvatar,
+    antonLogoutUrl,
+    antonWelcome,
+    antonDialNums,
     PinNumber(85115004),
     "config1",
     "data12")
 
-  val marUser = User.create(marIntUserId, marExtUserId, marUserName, marRoles)
+  val antonUser = User.create(antonIntUserId, antonExtUserId, antonUserName, antonRoles)
 
-  val jbIntUserId = IntUserId("jb")
-  val jbExtUserId = ExtUserId("jb")
-  val jbUserName = Name("Jojemar Binay")
-  val jbRoles: Set[Role2x] = Set(ViewerRole)
-  val jbAuthToken = AuthToken("jbLetMeIn!")
-  val jbAvatar = Avatar("http://www.gravatar.com/sdsdas")
-  val jbLogoutUrl = LogoutUrl("http://www.amoutofhere.com")
-  val jbWelcome = Welcome("Hello World!")
-  val jbDialNums = Set(DialNumber("6135551234"))
+  val chadIntUserId = IntUserId("chad")
+  val chadExtUserId = ExtUserId("Chad")
+  val chadUserName = Name("Chad Pilkey")
+  val chadRoles: Set[Role2x] = Set(ViewerRole)
+  val chadAuthToken = AuthToken("jbLetMeIn!")
+  val chadAvatar = Avatar("http://www.gravatar.com/sdsdas")
+  val chadLogoutUrl = LogoutUrl("http://www.amoutofhere.com")
+  val chadWelcome = Welcome("Hello World!")
+  val chadDialNums = Set(DialNumber("6135551234"))
 
-  val jbRegisteredUser = RegisteredUsersModel.create(
-    jbIntUserId,
-    jbExtUserId,
-    jbUserName,
-    jbRoles,
-    jbAuthToken,
-    jbAvatar,
-    jbLogoutUrl,
-    jbWelcome,
-    jbDialNums,
+  val chadRegisteredUser = RegisteredUsersModel.create(
+    chadIntUserId,
+    chadExtUserId,
+    chadUserName,
+    chadRoles,
+    chadAuthToken,
+    chadAvatar,
+    chadLogoutUrl,
+    chadWelcome,
+    chadDialNums,
     PinNumber(85115005),
     "config1",
     "data12")
 
-  val jbUser = User.create(marIntUserId, marExtUserId, marUserName, marRoles)
+  val chadUser = User.create(chadIntUserId, chadExtUserId, chadUserName, chadRoles)
 
   val extensionProp = new MeetingExtensionProp2x
   val recordingProp = new MeetingRecordingProp
 
-  val piliProps: MeetingProperties2x = MeetingProperties2x(
-    piliIntMeetingId,
-    piliExtMeetingId,
-    piliMeetingName,
+  val bbbDevProps: MeetingProperties2x = MeetingProperties2x(
+    bbbDevIntMeetingId,
+    bbbDevExtMeetingId,
+    bbbDevMeetingName,
     voiceConf,
     duration,
     maxUsers,
@@ -180,87 +180,87 @@ trait MeetingTestFixtures {
   val captions = new CaptionModel
   val extension: MeetingExtensionStatus = new MeetingExtensionStatus
 
-  val du30RegisterUserCommand = RegisterUserInMessage(
-    piliIntMeetingId,
-    du30IntUserId,
-    du30UserName,
+  val richardRegisterUserCommand = RegisterUserInMessage(
+    bbbDevIntMeetingId,
+    richardIntUserId,
+    richardUserName,
     Set(ModeratorRole),
-    du30ExtUserId,
-    du30AuthToken,
-    du30Avatar,
-    du30LogoutUrl,
-    du30Welcome,
-    du30DialNums,
+    richardExtUserId,
+    richardAuthToken,
+    richardAvatar,
+    richardLogoutUrl,
+    richardWelcome,
+    richardDialNums,
     "config1",
     "data12")
 
-  val du30ValidateAuthTokenCommand = new ValidateAuthTokenInMessage(
-    piliIntMeetingId,
-    du30IntUserId,
-    du30AuthToken)
+  val richardValidateAuthTokenCommand = new ValidateAuthTokenInMessage(
+    bbbDevIntMeetingId,
+    richardIntUserId,
+    richardAuthToken)
 
-  val du30UserJoinCommand: UserJoinMeetingInMessage = new UserJoinMeetingInMessage(
-    piliIntMeetingId,
-    du30IntUserId,
-    du30AuthToken,
+  val richardUserJoinCommand: UserJoinMeetingInMessage = new UserJoinMeetingInMessage(
+    bbbDevIntMeetingId,
+    richardIntUserId,
+    richardAuthToken,
     SessionId("session-1"),
     ClientId("presence-1"),
     FlashWebUserAgent)
 
-  val du30PubSubPingCommand = new PubSubPingMessageInMsg(
+  val systemPubSubPingCommand = new PubSubPingMessageInMsg(
     "system1",
     new Date().getTime())
 
-  val du30KeepAliveCommand = new KeepAliveMessageInMsg(
+  val systemKeepAliveCommand = new KeepAliveMessageInMsg(
     "alive-id-002")
 
-  val piliMessageKeyCompleted = "CONVERSION_COMPLETED"
-  val piliMessageKeyError = "CONVERSION_ERROR" //todo recheck
-  val piliMessageCode = "CONVERT"
-  val piliPresentationId = PresentationId("presentationId001-123")
+  val presentationMessageKeyCompleted = "CONVERSION_COMPLETED"
+  val presentationMessageKeyError = "CONVERSION_ERROR" //todo recheck
+  val presentationMessageCode = "CONVERT"
+  val presentationPresentationId = PresentationId("presentationId001-123")
 
-  val du30PresentationConversionUpdateCommand = new PresentationConversionUpdateEventInMessage(
-    piliIntMeetingId, piliMessageKeyCompleted, piliMessageCode, piliPresentationId)
+  val presentationConversionUpdateCommand = new PresentationConversionUpdateEventInMessage(
+    bbbDevIntMeetingId, presentationMessageKeyCompleted, presentationMessageCode, presentationPresentationId)
 
-  val du30PresentationPageGeneratedCommand = new PresentationPageGeneratedEventInMessage(
-    piliIntMeetingId, piliMessageKeyCompleted, piliMessageCode, piliPresentationId, 55, 44)
+  val presentationPageGeneratedCommand = new PresentationPageGeneratedEventInMessage(
+    bbbDevIntMeetingId, presentationMessageKeyCompleted, presentationMessageCode, presentationPresentationId, 55, 44)
 
-  val du30PresentationPageCountErrorCommand = new PresentationPageCountErrorEventInMessage(
-    piliIntMeetingId, piliMessageKeyError, piliMessageCode, piliPresentationId, 55, 44)
+  val presentationPageCountErrorCommand = new PresentationPageCountErrorEventInMessage(
+    bbbDevIntMeetingId, presentationMessageKeyError, presentationMessageCode, presentationPresentationId, 55, 44)
 
-  val du30ClearPresentationCommand = new ClearPresentationEventInMessage(piliIntMeetingId, mdsIntUserId,
-    piliPresentationId)
+  val clearPresentationCommand = new ClearPresentationEventInMessage(bbbDevIntMeetingId, fredIntUserId,
+    presentationPresentationId)
 
-  val du30RemovePresentationCommand = new RemovePresentationEventInMessage(piliIntMeetingId,
-    mdsIntUserId, piliPresentationId)
+  val removePresentationCommand = new RemovePresentationEventInMessage(bbbDevIntMeetingId,
+    fredIntUserId, presentationPresentationId)
 
-  val du30GetPresentationInfoCommand = new GetPresentationInfoEventInMessage(piliIntMeetingId,
-    mdsIntUserId, piliPresentationId)
+  val getPresentationInfoCommand = new GetPresentationInfoEventInMessage(bbbDevIntMeetingId,
+    fredIntUserId, presentationPresentationId)
 
-  val piliPageId = "presentationId001/page3"
-  val piliXPercentage = 78.15715
-  val piliYPercentage = 42.424242
+  val presentationPageId = "presentationId001/page3"
+  val presentationXPercentage = 78.15715
+  val presentationYPercentage = 42.424242
 
-  val du30SendCursorUpdateCommand = new SendCursorUpdateEventInMessage(piliIntMeetingId,
-    mdsIntUserId, piliPageId, piliXPercentage, piliYPercentage)
+  val sendCursorUpdateCommand = new SendCursorUpdateEventInMessage(bbbDevIntMeetingId,
+    fredIntUserId, presentationPageId, presentationXPercentage, presentationYPercentage)
 
-  val du30GoToPageCommand = new GoToPageInEventInMessage(piliIntMeetingId, mdsIntUserId, piliPageId)
+  val goToPageCommand = new GoToPageInEventInMessage(bbbDevIntMeetingId, fredIntUserId, presentationPageId)
 
-  val du30GetPageInfoCommand = new GetPageInfoEventInMessage(piliIntMeetingId, mdsIntUserId,
-    piliPageId)
+  val getPageInfoCommand = new GetPageInfoEventInMessage(bbbDevIntMeetingId, fredIntUserId,
+    presentationPageId)
 
   val piliShare = true
 
-  val du30SharePresentationCommand = new SharePresentationEventInMessage(piliIntMeetingId,
-    mdsIntUserId, piliPresentationId, piliShare)
+  val du30SharePresentationCommand = new SharePresentationEventInMessage(bbbDevIntMeetingId,
+    fredIntUserId, presentationPresentationId, piliShare)
 
-  val piliXOffset = XOffset(45.1245)
-  val piliYOffset = YOffset(75.1245)
-  val piliWidthRatio = WidthRatio(42.1523)
-  val piliHeightRatio = HeightRatio(11.523)
+  val presentation2XOffset = XOffset(45.1245)
+  val presentation2YOffset = YOffset(75.1245)
+  val presentation2WidthRatio = WidthRatio(42.1523)
+  val presentation2HeightRatio = HeightRatio(11.523)
 
-  val du30ResizeAndMovePageCommand = new ResizeAndMovePageEventInMessage(piliIntMeetingId,
-    mdsIntUserId, piliXOffset, piliYOffset, piliPageId, piliWidthRatio, piliHeightRatio)
+  val resizeAndMovePageCommand = new ResizeAndMovePageEventInMessage(bbbDevIntMeetingId,
+    fredIntUserId, presentation2XOffset, presentation2YOffset, presentationPageId, presentation2WidthRatio, presentation2HeightRatio)
 
   val piliPresentationName = "Demo Presentation"
   val piliCurrentPresentation = true
@@ -271,10 +271,10 @@ trait MeetingTestFixtures {
   piliPages = piliPages + new Page("pageId002", 2, ThumbUrl("someThumbUrl2"), SwfUrl("someSwfUrl2"),
     TextUrl("SomeTextUrl2"), SvgUrl("SomeSvgUrl2"))
 
-  val piliPresentation001: Presentation = new Presentation(piliPresentationId,
+  val piliPresentation001: Presentation = new Presentation(presentationPresentationId,
     piliPresentationName, piliCurrentPresentation, piliPages, piliDefault)
-  val du30PresentationConversionCompletedCommand = new PresentationConversionCompletedEventInMessage(piliIntMeetingId,
-    piliMessageKeyCompleted, piliMessageCode, piliPresentation001)
+  val du30PresentationConversionCompletedCommand = new PresentationConversionCompletedEventInMessage(bbbDevIntMeetingId,
+    presentationMessageKeyCompleted, presentationMessageCode, piliPresentation001)
 
   val piliAnnotationId = "someAnnotId003"
   val piliAnnotationStatus = "DRAW_END"

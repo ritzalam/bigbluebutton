@@ -26,11 +26,11 @@ class PresentationPageCountErrorEventMessageHandlerTestSpec extends TestKit(Acto
     "Send a ?? when receiving PresentationPageCountErrorEventMessage" in { // TODO
       within(500 millis) {
         val state: MeetingStateModel = new MeetingStateModel(
-          piliProps, abilities, registeredUsers, users, chats, layouts, polls,
+          bbbDevProps, abilities, registeredUsers, users, chats, layouts, polls,
           whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
-        meetingActorRef ! du30PresentationPageCountErrorCommand
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
+        meetingActorRef ! presentationPageCountErrorCommand
         // expectMsgClass(classOf[PubSubPong]) // TODO
       }
     }

@@ -3,7 +3,7 @@ package org.bigbluebutton.core2x.handlers.user
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.api.IncomingMsg._
-import org.bigbluebutton.core2x.domain.{ User$, _ }
+import org.bigbluebutton.core2x.domain.{ User, _ }
 import org.bigbluebutton.core2x.models._
 
 class UserActorMessageHandler(

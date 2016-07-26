@@ -30,7 +30,7 @@ class CreateMeetingRequestInMessageActorTestSpec extends TestKit(ActorSystem("Bi
         val bbbActorRef = system.actorOf(BigBlueButtonActor2x.props(system, eventBus, outGW))
         eventBus.subscribe(bbbActorRef, meetingManagerChannel)
 
-        val msg = new CreateMeetingRequestInMsg(piliProps.id, piliProps)
+        val msg = new CreateMeetingRequestInMsg(bbbDevProps.id, bbbDevProps)
         eventBus.publish(BigBlueButtonInMessage(meetingManagerChannel, msg))
 
         expectMsgClass(classOf[MeetingCreatedEventOutMsg])

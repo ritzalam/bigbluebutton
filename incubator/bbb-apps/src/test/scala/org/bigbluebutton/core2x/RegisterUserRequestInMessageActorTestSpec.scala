@@ -26,11 +26,11 @@ class RegisterUserRequestInMessageActorTestSpec extends TestKit(ActorSystem("Reg
   "A MeetingActor" should {
     "Send a UserRegisteredEvent when receiving UserRegisterCommand" in {
       within(500 millis) {
-        val state: MeetingStateModel = new MeetingStateModel(piliProps,
+        val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
           abilities, registeredUsers, users, chats, layouts, polls, whiteboards,
           presentations, breakoutRooms, captions, new MeetingStatus)
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
-        meetingActorRef ! du30RegisterUserCommand
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
+        meetingActorRef ! richardRegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
       }
     }

@@ -27,10 +27,10 @@ class SharePresentationEventMessageHandlerTestSpec extends TestKit(ActorSystem("
     "Send a ?? when receiving SharePresentationEventMessage" in { // TODO
       within(500 millis) {
         val state: MeetingStateModel = new MeetingStateModel(
-          piliProps, abilities, registeredUsers, users, chats, layouts, polls,
+          bbbDevProps, abilities, registeredUsers, users, chats, layouts, polls,
           whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
         meetingActorRef ! du30SharePresentationCommand
         // expectMsgClass(classOf[PubSubPong]) // TODO
       }

@@ -26,11 +26,11 @@ class PubSubPingInMessageActorTestSpec extends TestKit(ActorSystem("PubSubPingIn
     "Send a PubSubPongOutMessage when receiving PubSubPingInMessage" in {
       within(500 millis) {
         val state: MeetingStateModel = new MeetingStateModel(
-          piliProps, abilities, registeredUsers, users, chats, layouts, polls,
+          bbbDevProps, abilities, registeredUsers, users, chats, layouts, polls,
           whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(piliProps, eventBus, outGW, state))
-        meetingActorRef ! du30PubSubPingCommand
+        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
+        meetingActorRef ! systemPubSubPingCommand
         // expectMsgClass(classOf[PubSubPong]) // TODO
       }
     }

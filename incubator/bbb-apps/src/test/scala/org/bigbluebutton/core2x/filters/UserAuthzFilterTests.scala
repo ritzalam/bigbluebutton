@@ -14,23 +14,23 @@ class UsersHandlerFilterDummy(val state: MeetingStateModel, val outGW: OutMessag
 class UserAuthzFilterTests extends UnitSpec with MockitoSugar with MeetingTestFixtures {
   it should "eject user if user has ability" in {
     val testRegUsers = new RegisteredUsersModel
-    testRegUsers.add(du30RegisteredUser)
-    testRegUsers.add(mdsRegisteredUser)
-    testRegUsers.add(marRegisteredUser)
+    testRegUsers.add(richardRegisteredUser)
+    testRegUsers.add(fredRegisteredUser)
+    testRegUsers.add(antonRegisteredUser)
 
     val testUsers = new UsersModel
-    testUsers.save(du30User)
-    testUsers.save(mdsUser)
-    testUsers.save(marUser)
+    testUsers.save(richardUser)
+    testUsers.save(fredUser)
+    testUsers.save(antonUser)
 
-    val state: MeetingStateModel = new MeetingStateModel(piliProps,
+    val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
       abilities, testRegUsers, testUsers, chats, layouts,
       polls, whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
     val mockOutGW = mock[OutMessageGateway]
     // Create the class under test and pass the mock to it
     val classUnderTest = new UsersHandlerFilterDummy(state, mockOutGW)
-    val ejectUserMsg = new EjectUserFromMeetingInMsg(piliIntMeetingId, marIntUserId, du30IntUserId)
+    val ejectUserMsg = new EjectUserFromMeetingInMsg(bbbDevIntMeetingId, antonIntUserId, richardIntUserId)
     // Use the class under test
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg)
     // Then verify the class under test used the mock object as expected
@@ -40,16 +40,16 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar with MeetingTestFi
 
   it should "not eject user if user has no ability" in {
     val testRegUsers = new RegisteredUsersModel
-    testRegUsers.add(du30RegisteredUser)
-    testRegUsers.add(mdsRegisteredUser)
-    testRegUsers.add(marRegisteredUser)
+    testRegUsers.add(richardRegisteredUser)
+    testRegUsers.add(fredRegisteredUser)
+    testRegUsers.add(antonRegisteredUser)
 
     val testUsers = new UsersModel
-    testUsers.save(du30User)
-    testUsers.save(mdsUser)
-    testUsers.save(marUser)
+    testUsers.save(richardUser)
+    testUsers.save(fredUser)
+    testUsers.save(antonUser)
 
-    val state: MeetingStateModel = new MeetingStateModel(piliProps,
+    val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
       abilities,
       testRegUsers,
       testUsers,
@@ -66,7 +66,7 @@ class UserAuthzFilterTests extends UnitSpec with MockitoSugar with MeetingTestFi
     // Create the class under test and pass the mock to it
     val classUnderTest = new UsersHandlerFilterDummy(state, mockOutGW)
 
-    val ejectUserMsg = new EjectUserFromMeetingInMsg(piliIntMeetingId, marIntUserId, mdsIntUserId)
+    val ejectUserMsg = new EjectUserFromMeetingInMsg(bbbDevIntMeetingId, antonIntUserId, fredIntUserId)
 
     // Use the class under test
     classUnderTest.handleEjectUserFromMeeting(ejectUserMsg)

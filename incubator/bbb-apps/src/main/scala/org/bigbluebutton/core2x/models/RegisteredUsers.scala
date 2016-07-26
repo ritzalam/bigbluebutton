@@ -6,18 +6,18 @@ import scala.collection.immutable.HashMap
 trait RegisteredUsers {
   private var regUsers = new collection.immutable.HashMap[String, RegisteredUser]
 
-  def createRegisteredUser(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[String], token: AuthToken): Option[RegisteredUser] = {
+  def createRegisteredUser(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[String], token: SessionToken): Option[RegisteredUser] = {
     Some(new RegisteredUser(userId, extId, name, roles, token))
   }
 
   def toArray: Array[RegisteredUser] = regUsers.values.toArray
 
-  def addRegisteredUser(token: AuthToken, regUser: RegisteredUser): Array[RegisteredUser] = {
+  def addRegisteredUser(token: SessionToken, regUser: RegisteredUser): Array[RegisteredUser] = {
     regUsers += token.value -> regUser
     regUsers.values.toArray
   }
 
-  def findWithToken(token: AuthToken): Option[RegisteredUser] = {
+  def findWithToken(token: SessionToken): Option[RegisteredUser] = {
     regUsers.get(token.value)
   }
 

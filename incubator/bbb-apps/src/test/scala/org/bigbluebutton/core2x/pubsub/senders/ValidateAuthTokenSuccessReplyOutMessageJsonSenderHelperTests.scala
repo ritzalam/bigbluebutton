@@ -37,7 +37,7 @@ class ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelperTests extends UnitS
 
     val outMsg = ValidateAuthTokenSuccessReplyOutMsg(
       IntMeetingId("demomeeting"), IntUserId("userid1"), Name("Juan Tamad"),
-      Set(ModeratorRole), ExtUserId("extuserid1"), AuthToken("LetMeIn!"),
+      Set(ModeratorRole), ExtUserId("extuserid1"), SessionToken("LetMeIn!"),
       Avatar("http://www.myavatar.com/12345"),
       LogoutUrl("http://www.amoutofhere.com"),
       Welcome("Welcome to my meeting!"),

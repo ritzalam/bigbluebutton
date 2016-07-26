@@ -13,7 +13,7 @@ trait UserJoinMeetingMessageJsonHandler extends UnhandledReceivedJsonMessageHand
   val eventBus: IncomingEventBus2x
 
   override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
-    def publish(meetingId: IntMeetingId, userID: IntUserId, token: AuthToken, sessionID: SessionId,
+    def publish(meetingId: IntMeetingId, userID: IntUserId, token: SessionToken, sessionID: SessionId,
       presenceID: ClientId, userAgent: ClientUserAgent): Unit = {
       log.debug(s"Publishing ${msg.name} [ $userID ]")
       eventBus.publish(
@@ -33,7 +33,7 @@ trait UserJoinMeetingMessageJsonHandler extends UnhandledReceivedJsonMessageHand
         sessionID <- Option(m.body.sessionID)
         presenceID <- Option(m.body.presenceID)
         userAgent = convertPresenceUserAgent(m)
-      } yield publish(IntMeetingId(meetingId), IntUserId(userID), AuthToken(token),
+      } yield publish(IntMeetingId(meetingId), IntUserId(userID), SessionToken(token),
         SessionId(sessionID), ClientId(presenceID), userAgent)
     } else {
       super.handleReceivedJsonMessage(msg)

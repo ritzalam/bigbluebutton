@@ -106,7 +106,7 @@ object OutGoingMsg {
     token: String, valid: Boolean, correlationId: String) extends OutMsg
   case class ValidateAuthTokenSuccessReplyOutMsg(
     meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
-    extUserId: ExtUserId, authToken: AuthToken, avatar: Avatar,
+    extUserId: ExtUserId, authToken: SessionToken, avatar: Avatar,
     logoutUrl: LogoutUrl,
     welcome: Welcome,
     dialNumbers: Set[DialNumber],
@@ -114,13 +114,13 @@ object OutGoingMsg {
     extData: String) extends OutMsg
   case class ValidateAuthTokenReply2x(
     meetingId: IntMeetingId, requesterId: IntUserId,
-    token: AuthToken, valid: Boolean) extends OutMsg
+    token: SessionToken, valid: Boolean) extends OutMsg
   case class ValidateAuthTokenFailedReply2x(
     meetingId: IntMeetingId, requesterId: IntUserId,
-    token: AuthToken, valid: Boolean, correlationId: String) extends OutMsg
+    token: SessionToken, valid: Boolean, correlationId: String) extends OutMsg
   case class ValidateAuthTokenReply(
     meetingId: IntMeetingId, requesterId: IntUserId,
-    token: AuthToken, valid: Boolean, correlationId: String) extends OutMsg
+    token: SessionToken, valid: Boolean, correlationId: String) extends OutMsg
   case class UserJoinedEvent2x(
     meetingId: IntMeetingId, recorded: Recorded, user: User) extends OutMsg
   case class UserJoined(

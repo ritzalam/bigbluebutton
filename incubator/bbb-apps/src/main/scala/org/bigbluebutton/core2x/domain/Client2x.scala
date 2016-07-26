@@ -41,17 +41,17 @@ case class VoiceApp2x(sessionId: SessionId, voice: Voice4x)
 case class ScreenShareStreams(streams: Set[Stream])
 
 class Clients {
-  private var clients: collection.immutable.HashMap[String, Client2x] = new collection.immutable.HashMap[String, Client2x]
+  private var clients: collection.immutable.HashMap[ClientId, Client2x] = new collection.immutable.HashMap[ClientId, Client2x]
 
   def toVector: Vector[Client2x] = clients.values.toVector
 
   def save(client: Client2x): Unit = {
-    clients += client.id.value -> client
+    clients += client.id -> client
   }
 
   def remove(id: ClientId): Option[Client2x] = {
-    val client = clients.get(id.value)
-    client foreach (u => clients -= id.value)
+    val client = clients.get(id)
+    client foreach (u => clients -= id)
     client
   }
 }

@@ -8,7 +8,7 @@ object Role {
   val PRESENTER = "Presenter"
 }
 
-case class RegisteredUser(id: IntUserId, extId: ExtUserId, name: Name, roles: Set[String], authToken: AuthToken)
+case class RegisteredUser(id: IntUserId, extId: ExtUserId, name: Name, roles: Set[String], authToken: SessionToken)
 
 case class UserVO(
   id: IntUserId,
@@ -59,7 +59,7 @@ case class ExtMeetingId(value: String) extends AnyVal
 case class Duration(value: Int) extends AnyVal
 case class Recorded(value: Boolean) extends AnyVal
 case class VoiceConf(value: String) extends AnyVal
-case class AuthToken(value: String) extends AnyVal
+case class SessionToken(value: String) extends AnyVal
 case class IntUserId(value: String) extends AnyVal
 case class ClientId(value: String) extends AnyVal
 case class ExtUserId(value: String) extends AnyVal
@@ -80,7 +80,6 @@ case class Muted(value: Boolean) extends AnyVal
 case class Talking(value: Boolean) extends AnyVal
 case class UserAgent(value: String) extends AnyVal
 case class Locale(value: String) extends AnyVal
-case class SessionToken(value: String) extends AnyVal
 case class PresenceActorRef(value: ActorRef) extends AnyVal
 case class Joined(value: Boolean) extends AnyVal
 case class Welcome(value: String) extends AnyVal

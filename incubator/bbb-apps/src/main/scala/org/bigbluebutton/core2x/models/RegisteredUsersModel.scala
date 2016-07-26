@@ -4,7 +4,7 @@ import org.bigbluebutton.core2x.domain.{ RegisteredUser2x, _ }
 
 object RegisteredUsersModel {
   def create(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[Role2x],
-    token: AuthToken, avatar: Avatar,
+    token: SessionToken, avatar: Avatar,
     logoutUrl: LogoutUrl,
     welcome: Welcome,
     dialNumbers: Set[DialNumber],
@@ -20,7 +20,7 @@ object RegisteredUsersModel {
       extData: String)
   }
 
-  def findWithToken(token: AuthToken, users: Vector[RegisteredUser2x]): Option[RegisteredUser2x] = {
+  def findWithToken(token: SessionToken, users: Vector[RegisteredUser2x]): Option[RegisteredUser2x] = {
     users.find(u => u.authToken.value == token.value)
   }
 

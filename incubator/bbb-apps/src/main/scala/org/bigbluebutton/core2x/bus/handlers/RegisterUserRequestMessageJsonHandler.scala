@@ -55,7 +55,7 @@ trait RegisterUserRequestMessageJsonHandlerHelper {
     } yield new RegisterUserInMessage(
       IntMeetingId(meetingId), IntUserId(userId),
       Name(name), roles, ExtUserId(extUserId),
-      AuthToken(authToken), Avatar(avatar),
+      SessionToken(authToken), Avatar(avatar),
       LogoutUrl(logoutUrl), Welcome(welcome),
       dialNumbers, config, extData)
   }

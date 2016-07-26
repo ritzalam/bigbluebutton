@@ -137,7 +137,7 @@ object IncomingMsg {
   /////////////////////////////////////////////////////////////////////////////////
 
   case class ValidateAuthTokenInMsg(header: MsgHeader, body: ValidateAuthTokenInMsgBody) extends InMsg
-  case class ValidateAuthTokenInMsgBody(token: AuthToken)
+  case class ValidateAuthTokenInMsgBody(token: SessionToken)
 
   /**
    * Request to validate a user's authorization token.
@@ -146,7 +146,7 @@ object IncomingMsg {
    * @param token
    */
   case class ValidateAuthTokenInMessage(meetingId: IntMeetingId, senderId: IntUserId,
-    token: AuthToken) extends InMsg
+    token: SessionToken) extends InMsg
 
   /**
    * Register a user into the meeting.
@@ -164,18 +164,18 @@ object IncomingMsg {
    * @param extData
    */
   case class RegisterUserInMessage(meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
-    extUserId: ExtUserId, authToken: AuthToken, avatar: Avatar, logoutUrl: LogoutUrl, welcome: Welcome,
+    extUserId: ExtUserId, authToken: SessionToken, avatar: Avatar, logoutUrl: LogoutUrl, welcome: Welcome,
     dialNumbers: Set[DialNumber], config: String, extData: String) extends InMsg
 
   case class RegisterUserInMsg(header: MsgHeader, body: RegisterUserInMsgBody) extends InMsg
   case class RegisterUserInMsgBody(meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
-    extUserId: ExtUserId, authToken: AuthToken, avatar: Avatar, logoutUrl: LogoutUrl,
+    extUserId: ExtUserId, authToken: SessionToken, avatar: Avatar, logoutUrl: LogoutUrl,
     welcome: Welcome, dialNumbers: Set[DialNumber], config: String, extData: String)
 
   /**
    * User joining the meeting from a specific client.
    */
-  case class UserJoinMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, token: AuthToken,
+  case class UserJoinMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, token: SessionToken,
     sessionId: SessionId, presenceId: ClientId, userAgent: ClientUserAgent) extends InMsg
 
   /**

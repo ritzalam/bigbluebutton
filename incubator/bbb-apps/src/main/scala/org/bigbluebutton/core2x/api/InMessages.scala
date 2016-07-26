@@ -31,11 +31,14 @@ object IncomingMsg {
   // Meeting
   /////////////////////////////////////////////////////////////////////////////
 
-  case class SessionCreatedMessage(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
+  case class SessionCreatedInMsg(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
     sessionToken: SessionToken) extends InMsg
 
-  case class SessionDestroyedMessage(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
+  case class SessionDestroyedInMsg(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
     sessionToken: SessionToken) extends InMsg
+
+  case class GetUserInfoFromMeetingInMsg(meetingId: IntMeetingId, sessionId: SessionId, sessionToken: SessionToken) extends InMsg
+  case class GetUserInfoInMsg(sessionId: SessionId, sessionToken: SessionToken) extends InMsg
 
   /**
    * Request to create a new meeting.

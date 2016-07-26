@@ -14,6 +14,10 @@ object User {
     modify(user)(_.client).setTo((user.client - old) + updated)
   }
 
+  def findClientWithSessionToken(clients: Set[Client2x], sessionToken: SessionToken): Option[Client2x] = {
+    clients.find(c => c.sessionToken == sessionToken)
+  }
+
   def findWithClientId(clients: Set[Client2x], clientId: ClientId): Option[Client2x] = {
     clients.find(p => p.id == clientId)
   }

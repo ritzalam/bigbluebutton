@@ -14,6 +14,14 @@ object Client2x {
   def save(client: Client2x, component: VoiceComponent): Client2x = {
     modify(client)(_.voiceComponent).setTo(component)
   }
+
+  def save(client: Client2x, component: WebCamComponent): Client2x = {
+    modify(client)(_.webCamComponent).setTo(component)
+  }
+
+  def save(client: Client2x, component: ScreenShareComponent): Client2x = {
+    modify(client)(_.screenShareComponent).setTo(component)
+  }
 }
 
 case class Client2x(

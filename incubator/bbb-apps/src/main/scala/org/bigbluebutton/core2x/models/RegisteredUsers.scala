@@ -4,21 +4,24 @@ import org.bigbluebutton.core2x.domain._
 import scala.collection.immutable.HashMap
 
 trait RegisteredUsers {
-  private var regUsers = new collection.immutable.HashMap[String, RegisteredUser]
+  private var regUsers = new collection.immutable.HashMap[IntUserId, RegisteredUser]
 
-  def createRegisteredUser(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[String], token: SessionToken): Option[RegisteredUser] = {
+  def createRegisteredUser(userId: IntUserId, extId: ExtUserId, name: Name, roles: Set[String],
+    token: Set[SessionToken]): Option[RegisteredUser] = {
     Some(new RegisteredUser(userId, extId, name, roles, token))
   }
 
   def toArray: Array[RegisteredUser] = regUsers.values.toArray
 
   def addRegisteredUser(token: SessionToken, regUser: RegisteredUser): Array[RegisteredUser] = {
-    regUsers += token.value -> regUser
+    regUsers += regUser.id -> regUser
     regUsers.values.toArray
   }
 
   def findWithToken(token: SessionToken): Option[RegisteredUser] = {
-    regUsers.get(token.value)
+    //regUsers.get(token.value)
+    // TODO: Fix me!
+    None
   }
 
   def findWithUserId(userId: IntUserId): Option[RegisteredUser] = {
@@ -27,7 +30,7 @@ trait RegisteredUsers {
 
   def removeRegisteredUser(userId: IntUserId): Option[RegisteredUser] = {
     val ru = findWithUserId(userId)
-    ru foreach { u => regUsers -= u.authToken.value }
+    ru foreach { u => regUsers -= u.id }
     ru
   }
 }

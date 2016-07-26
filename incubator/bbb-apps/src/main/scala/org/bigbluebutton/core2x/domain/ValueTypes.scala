@@ -8,7 +8,8 @@ object Role {
   val PRESENTER = "Presenter"
 }
 
-case class RegisteredUser(id: IntUserId, extId: ExtUserId, name: Name, roles: Set[String], authToken: SessionToken)
+case class RegisteredUser(id: IntUserId, extId: ExtUserId, name: Name, roles: Set[String],
+  sessionTokens: Set[SessionToken])
 
 case class UserVO(
   id: IntUserId,

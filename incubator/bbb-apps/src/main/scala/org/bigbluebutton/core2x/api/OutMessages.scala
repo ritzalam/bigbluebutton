@@ -8,6 +8,11 @@ object OutGoingMsg {
 
   trait OutMsg
 
+  case class SessionAddedOutMsg(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
+    sessionToken: SessionToken) extends OutMsg
+  case class SessionRemovedOutMsg(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
+    sessionToken: SessionToken) extends OutMsg
+
   case class VoiceRecordingStarted(
     meetingId: IntMeetingId, recorded: Recorded,
     recordingFile: String, timestamp: String, confNum: String) extends OutMsg

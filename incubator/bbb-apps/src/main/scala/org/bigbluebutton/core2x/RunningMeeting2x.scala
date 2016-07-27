@@ -3,7 +3,7 @@ package org.bigbluebutton.core2x
 import akka.actor.ActorContext
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.apps.presentation.PresentationModel
-import org.bigbluebutton.core2x.bus.IncomingEventBus2x
+import org.bigbluebutton.core2x.json.IncomingEventBus2x
 import org.bigbluebutton.core2x.domain.{ Clients, MeetingExtensionStatus, MeetingProperties2x }
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, _ }
 

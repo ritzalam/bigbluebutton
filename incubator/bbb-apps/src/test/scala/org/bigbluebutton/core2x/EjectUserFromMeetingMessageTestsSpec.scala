@@ -8,7 +8,7 @@ import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUs
 import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core2x.api.OutGoingMsg._
-import org.bigbluebutton.core2x.bus.IncomingEventBus2x
+import org.bigbluebutton.core2x.json.IncomingEventBus2x
 import org.bigbluebutton.core2x.domain.Clients
 import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
 import org.scalatest.{ Matchers, WordSpecLike }

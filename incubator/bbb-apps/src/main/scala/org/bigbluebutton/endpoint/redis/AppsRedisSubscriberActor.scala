@@ -7,7 +7,7 @@ import redis.actors.RedisSubscriberActor
 import redis.api.pubsub.{ Message, PMessage }
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.pubsub.receivers.RedisMessageReceiver
-import org.bigbluebutton.core2x.bus.{ IncomingJsonMessage, IncomingJsonMessageBus, ReceivedJsonMessage }
+import org.bigbluebutton.core2x.json.{ IncomingJsonMessage, IncomingJsonMessageBus, ReceivedJsonMessage }
 import redis.api.servers.ClientSetname
 
 object AppsRedisSubscriberActor extends SystemConfiguration {

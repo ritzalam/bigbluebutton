@@ -6,7 +6,7 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core2x.api.OutGoingMsg._
-import org.bigbluebutton.core2x.bus.IncomingEventBus2x
+import org.bigbluebutton.core2x.json.IncomingEventBus2x
 
 import scala.concurrent.duration._
 

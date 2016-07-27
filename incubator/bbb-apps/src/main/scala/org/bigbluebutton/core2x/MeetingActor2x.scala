@@ -5,7 +5,7 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.domain.MeetingProperties2x
 import org.bigbluebutton.core2x.models.MeetingStateModel
 import org.bigbluebutton.core2x.api.IncomingMsg._
-import org.bigbluebutton.core2x.bus.IncomingEventBus2x
+import org.bigbluebutton.core2x.json.IncomingEventBus2x
 import org.bigbluebutton.core2x.handlers._
 
 import scala.concurrent.duration._
@@ -68,6 +68,7 @@ class MeetingActor2x(
   val bus: IncomingEventBus2x,
   val outGW: OutMessageGateway,
   val state: MeetingStateModel) extends Actor with ActorLogging
+    with RegisterSessionIdInMsgHandler
     with ValidateAuthTokenCommandFilter
     with RegisterUserCommandHandler
     with UserJoinMeetingRequestHandlerFilter
@@ -92,6 +93,8 @@ class MeetingActor2x(
     case msg: EjectUserFromMeetingInMsg =>
       log.debug("Handling EjectUserFromMeeting")
       handleEjectUserFromMeeting(msg)
+    case msg: RegisterSessionIdInMsg =>
+      handleRegisterSessionIdInMsg(msg)
   }
 
 }

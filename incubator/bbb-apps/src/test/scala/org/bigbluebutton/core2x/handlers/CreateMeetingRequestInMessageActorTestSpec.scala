@@ -8,7 +8,7 @@ import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
 import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMsg
 import org.bigbluebutton.core2x.api.OutGoingMsg.MeetingCreatedEventOutMsg
-import org.bigbluebutton.core2x.bus.{ BigBlueButtonInMessage, IncomingEventBus2x }
+import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x }
 import org.bigbluebutton.core2x.{ BigBlueButtonActor2x, MeetingTestFixtures }
 import org.scalatest.{ Matchers, WordSpecLike }
 

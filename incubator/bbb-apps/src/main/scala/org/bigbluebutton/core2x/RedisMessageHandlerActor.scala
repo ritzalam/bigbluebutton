@@ -1,10 +1,10 @@
 package org.bigbluebutton.core2x
 
 import akka.actor.{ Actor, ActorLogging, Props }
-import org.bigbluebutton.core2x.bus.handlers._
-import org.bigbluebutton.core2x.bus.handlers.presentation._
-import org.bigbluebutton.core2x.bus.handlers.whiteboard.{ SendWhiteboardAnnotationRequestEventJsonMessageHandler }
-import org.bigbluebutton.core2x.bus.{ IncomingEventBus2x, IncomingJsonMessageBus, ReceivedJsonMessage }
+import org.bigbluebutton.core2x.json.handlers._
+import org.bigbluebutton.core2x.json.handlers.presentation._
+import org.bigbluebutton.core2x.json.handlers.whiteboard.{ SendWhiteboardAnnotationRequestEventJsonMessageHandler }
+import org.bigbluebutton.core2x.json.{ IncomingEventBus2x, IncomingJsonMessageBus, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.handlers.presentation._
 
 object RedisMessageHandlerActor {

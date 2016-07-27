@@ -11,7 +11,7 @@ import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.core.bus._
 import org.bigbluebutton.core2x.{ BigBlueButtonActor2x, MessageSenderActor2x, RedisMessageHandlerActor }
-import org.bigbluebutton.core2x.bus.{ IncomingEventBus2x, IncomingJsonMessageBus }
+import org.bigbluebutton.core2x.json.{ IncomingEventBus2x, IncomingJsonMessageBus }
 
 object Boot extends App with SystemConfiguration {
 

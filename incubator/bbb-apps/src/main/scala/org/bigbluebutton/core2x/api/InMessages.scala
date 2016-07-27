@@ -31,10 +31,17 @@ object IncomingMsg {
   // Meeting
   /////////////////////////////////////////////////////////////////////////////
 
-  case class SessionCreatedInMsg(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
+  case class RequestSessionTokenInMsg(meetingId: IntMeetingId, userId: IntUserId)
+
+  case class RevokeSessionTokenInMsg(sessionToken: SessionToken, meetingId: IntMeetingId,
+    userId: IntUserId) extends InMsg
+  case class AssignSessionTokenInMsg(sessionToken: SessionToken, meetingId: IntMeetingId,
+    userId: IntUserId) extends InMsg
+
+  case class RegisterSessionIdInMsg(component: ComponentId, sessionId: SessionId,
     sessionToken: SessionToken) extends InMsg
 
-  case class SessionDestroyedInMsg(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
+  case class UnregisterIdSessionInMsg(component: ComponentId, sessionId: SessionId,
     sessionToken: SessionToken) extends InMsg
 
   case class GetUserInfoFromMeetingInMsg(meetingId: IntMeetingId, sessionId: SessionId, sessionToken: SessionToken) extends InMsg

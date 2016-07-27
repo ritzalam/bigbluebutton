@@ -13,7 +13,7 @@ object UsersModel {
 }
 
 class UsersModel {
-  private var tokens: collection.immutable.HashMap[String, IntUserId] = new collection.immutable.HashMap[String, IntUserId]
+  private var tokens: collection.immutable.HashMap[SessionToken, IntUserId] = new collection.immutable.HashMap[SessionToken, IntUserId]
   private var users: collection.immutable.HashMap[String, User] = new collection.immutable.HashMap[String, User]
 
   def save(user: User): Unit = {
@@ -28,9 +28,22 @@ class UsersModel {
 
   def toVector: Vector[User] = users.values.toVector
 
+  def add(sessionToken: SessionToken, userId: IntUserId): Unit = {
+    tokens += sessionToken -> userId
+  }
+
+  def removeSessionToken(sessionToken: SessionToken): Option[IntUserId] = {
+    tokens.get(sessionToken) match {
+      case Some(userId) =>
+        tokens -= sessionToken
+        Some(userId)
+      case None => None
+    }
+  }
+
   def findUserWithToken(token: SessionToken): Option[User] = {
     for {
-      userId <- tokens.get(token.value)
+      userId <- tokens.get(token)
       user <- UsersModel.findWithId(userId, toVector)
     } yield user
   }

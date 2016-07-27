@@ -10,7 +10,7 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMsg
 import org.bigbluebutton.core2x.domain.{ Permissions => _, Role => _, _ }
 import org.bigbluebutton.core2x.BigBlueButtonActor2x
-import org.bigbluebutton.core2x.bus._
+import org.bigbluebutton.core2x.json._
 
 class BigBlueButtonInGW(
     val system: ActorSystem,

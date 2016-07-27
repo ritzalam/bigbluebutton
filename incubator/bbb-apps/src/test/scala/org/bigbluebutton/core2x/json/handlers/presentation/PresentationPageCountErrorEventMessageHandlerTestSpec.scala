@@ -1,4 +1,4 @@
-package org.bigbluebutton.core2x.handlers
+package org.bigbluebutton.core2x.json.handlers.presentation
 
 import akka.actor.ActorSystem
 import akka.testkit.{ DefaultTimeout, ImplicitSender, TestKit }
@@ -14,8 +14,7 @@ import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._
 
-class KeepAliveMessageActorTestSpec extends TestKit(ActorSystem("KeepAliveMessageActorTestSpec",
-  ConfigFactory.parseString(TestKitUsageSpec.config)))
+class PresentationPageCountErrorEventMessageHandlerTestSpec extends TestKit(ActorSystem("PresentationPageCountErrorEventMessage", ConfigFactory.parseString(TestKitUsageSpec.config)))
     with DefaultTimeout with ImplicitSender with WordSpecLike
     with Matchers with StopSystemAfterAll with MeetingTestFixtures with SystemConfiguration {
 
@@ -25,7 +24,7 @@ class KeepAliveMessageActorTestSpec extends TestKit(ActorSystem("KeepAliveMessag
   outgoingEventBus.subscribe(testActor, outgoingMessageChannel)
 
   "A MeetingActor" should {
-    "Send a ?? when receiving KeepAliveMessage" in { // TODO
+    "Send a ?? when receiving PresentationPageCountErrorEventMessage" in { // TODO
       within(500 millis) {
         val clients = new Clients
         val state: MeetingStateModel = new MeetingStateModel(
@@ -33,7 +32,7 @@ class KeepAliveMessageActorTestSpec extends TestKit(ActorSystem("KeepAliveMessag
           whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
         val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
-        meetingActorRef ! systemKeepAliveCommand
+        meetingActorRef ! presentationPageCountErrorCommand
         // expectMsgClass(classOf[PubSubPong]) // TODO
       }
     }

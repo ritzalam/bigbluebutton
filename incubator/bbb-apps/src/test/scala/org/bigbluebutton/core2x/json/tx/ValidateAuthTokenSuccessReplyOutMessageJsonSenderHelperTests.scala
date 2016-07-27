@@ -1,12 +1,10 @@
-package org.bigbluebutton.core2x.pubsub.senders
+package org.bigbluebutton.core2x.json.tx
 
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core2x.JsonConversionTestFixtures
 import org.bigbluebutton.core2x.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMsg
 import org.bigbluebutton.core2x.domain._
-import org.bigbluebutton.messages.{ MessageType, ValidateAuthTokenSuccessMessage }
-import org.bigbluebutton.messages.body.MessageHeaderToClient
-import org.bigbluebutton.messages.vo.UserInfoBody
+import org.bigbluebutton.messages.ValidateAuthTokenSuccessMessage
 
 class ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelperTests extends UnitSpec with JsonConversionTestFixtures {
   it should "convert roles to string" in {

@@ -3,7 +3,7 @@ package org.bigbluebutton.core2x
 import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core.MessageSender
 import org.bigbluebutton.core2x.api.OutGoingMsg._
-import org.bigbluebutton.core2x.pubsub.senders._
+import org.bigbluebutton.core2x.json.tx.ValidateAuthTokenSuccessReplyOutMessageJsonSender
 
 object MessageSenderActor2x {
   def props(msgSender: MessageSender): Props =

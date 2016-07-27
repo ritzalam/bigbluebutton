@@ -1,4 +1,4 @@
-package org.bigbluebutton.core2x.pubsub.senders
+package org.bigbluebutton.core2x.json.tx
 
 import java.util
 
@@ -7,9 +7,9 @@ import org.bigbluebutton.core.MessageSender
 import org.bigbluebutton.core2x.MessageSenderActor2x
 import org.bigbluebutton.core2x.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMsg
 import org.bigbluebutton.core2x.domain.{ ConvertRoleHelper, DialNumber, Role2x }
-import org.bigbluebutton.messages.{ MessageType, ValidateAuthTokenSuccessMessage }
 import org.bigbluebutton.messages.body.MessageHeaderToClient
 import org.bigbluebutton.messages.vo.UserInfoBody
+import org.bigbluebutton.messages.{ MessageType, ValidateAuthTokenSuccessMessage }
 
 trait ValidateAuthTokenSuccessReplyOutMessageJsonSender
     extends ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelper {

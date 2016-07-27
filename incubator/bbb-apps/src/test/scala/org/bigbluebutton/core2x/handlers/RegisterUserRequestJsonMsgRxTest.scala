@@ -2,7 +2,7 @@ package org.bigbluebutton.core2x.handlers
 
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core2x.JsonConversionTestFixtures
-import org.bigbluebutton.core2x.json.rx.RegisterUserRequestJsonMsgRxHelper
+import org.bigbluebutton.core2x.json.handlers.RegisterUserRequestJsonMsgRxHelper
 import org.bigbluebutton.core2x.domain.{ GuestRole, ModeratorRole }
 import org.bigbluebutton.messages.RegisterUserRequestMessage
 import org.bigbluebutton.messages.vo.UserInfoBody

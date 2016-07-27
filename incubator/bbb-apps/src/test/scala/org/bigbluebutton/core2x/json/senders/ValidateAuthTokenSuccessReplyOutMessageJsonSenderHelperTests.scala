@@ -8,7 +8,7 @@ import org.bigbluebutton.messages.ValidateAuthTokenSuccessMessage
 
 class ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelperTests extends UnitSpec with JsonConversionTestFixtures {
   it should "convert roles to string" in {
-    object Helper extends ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelper
+    object Helper extends ValidateAuthTokenSuccessReplyOutMsgJsonSenderHelper
 
     val roles: Set[Role2x] = Set(ModeratorRole, ViewerRole)
     val rolesList = Helper.convertRoles(roles)
@@ -18,7 +18,7 @@ class ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelperTests extends UnitS
   }
 
   it should "convert dialin numbers" in {
-    object Helper extends ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelper
+    object Helper extends ValidateAuthTokenSuccessReplyOutMsgJsonSenderHelper
 
     val num1 = "6135551234"
     val num2 = "18005551234"
@@ -31,7 +31,7 @@ class ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelperTests extends UnitS
   }
 
   it should "convert message" in {
-    object Helper extends ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelper
+    object Helper extends ValidateAuthTokenSuccessReplyOutMsgJsonSenderHelper
 
     val outMsg = ValidateAuthTokenSuccessReplyOutMsg(
       IntMeetingId("demomeeting"), IntUserId("userid1"), Name("Juan Tamad"),

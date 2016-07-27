@@ -6,8 +6,8 @@ import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.UserJoinMeetingMessage
 
-trait UserJoinMeetingMessageJsonHandler extends UnhandledJsonMsgHdlr
-    with UserJoinMeetingMessageJsonHandlerHelper {
+trait UserJoinMeetingJsonMsgHdlr extends UnhandledJsonMsgHdlr
+    with UserJoinMeetingJsonMsgHdlrHelper {
   this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x
@@ -42,7 +42,7 @@ trait UserJoinMeetingMessageJsonHandler extends UnhandledJsonMsgHdlr
   }
 }
 
-trait UserJoinMeetingMessageJsonHandlerHelper {
+trait UserJoinMeetingJsonMsgHdlrHelper {
   def convertPresenceUserAgent(msg: UserJoinMeetingMessage): ClientUserAgent = {
     // TODO
 

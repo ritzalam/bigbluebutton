@@ -8,7 +8,7 @@ import org.bigbluebutton.messages.RegisterUserRequestMessage
 import org.bigbluebutton.messages.vo.UserInfoBody
 
 trait RegisterUserRequestJsonMsgHdlr extends UnhandledJsonMsgHdlr
-    with RegisterUserRequestJsonMsgRxHelper {
+    with RegisterUserRequestJsonMsgHdlrHelper {
   this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x
@@ -34,7 +34,7 @@ trait RegisterUserRequestJsonMsgHdlr extends UnhandledJsonMsgHdlr
 
 }
 
-trait RegisterUserRequestJsonMsgRxHelper {
+trait RegisterUserRequestJsonMsgHdlrHelper {
 
   def convertMessage(msg: RegisterUserRequestMessage): Option[RegisterUserInMessage] = {
     for {

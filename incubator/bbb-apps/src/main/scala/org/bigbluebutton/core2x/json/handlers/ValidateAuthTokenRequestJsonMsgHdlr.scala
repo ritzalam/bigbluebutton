@@ -6,7 +6,7 @@ import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2
 import org.bigbluebutton.core2x.domain.{ SessionToken, IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.ValidateAuthTokenRequestMessage
 
-trait ValidateAuthTokenRequestMessageJsonHandler extends UnhandledJsonMsgHdlr {
+trait ValidateAuthTokenRequestJsonMsgHdlr extends UnhandledJsonMsgHdlr {
   this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x

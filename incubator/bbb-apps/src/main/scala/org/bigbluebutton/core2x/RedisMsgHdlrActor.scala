@@ -38,8 +38,8 @@ class RedisMsgHdlrActor(
     with PubSubPingJsonMsgHdlr
     with JsonMsgHdlr
     with RegisterUserRequestJsonMsgHdlr
-    with UserJoinMeetingMessageJsonHandler
-    with ValidateAuthTokenRequestMessageJsonHandler {
+    with UserJoinMeetingJsonMsgHdlr
+    with ValidateAuthTokenRequestJsonMsgHdlr {
 
   def receive = {
     case msg: ReceivedJsonMessage => handleReceivedJsonMsg(msg)

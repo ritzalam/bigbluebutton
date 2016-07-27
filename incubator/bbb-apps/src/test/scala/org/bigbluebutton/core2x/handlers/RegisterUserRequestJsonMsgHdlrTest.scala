@@ -2,14 +2,14 @@ package org.bigbluebutton.core2x.handlers
 
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core2x.JsonConversionTestFixtures
-import org.bigbluebutton.core2x.json.handlers.RegisterUserRequestJsonMsgRxHelper
+import org.bigbluebutton.core2x.json.handlers.RegisterUserRequestJsonMsgHdlrHelper
 import org.bigbluebutton.core2x.domain.{ GuestRole, ModeratorRole }
 import org.bigbluebutton.messages.RegisterUserRequestMessage
 import org.bigbluebutton.messages.vo.UserInfoBody
 
 class RegisterUserRequestJsonMsgHdlrTest extends UnitSpec with JsonConversionTestFixtures {
   it should "extract roles" in {
-    object Helper extends RegisterUserRequestJsonMsgRxHelper
+    object Helper extends RegisterUserRequestJsonMsgHdlrHelper
 
     val header: RegisterUserRequestMessage.RegisterUserRequestMessageHeader =
       new RegisterUserRequestMessage.RegisterUserRequestMessageHeader(piliIntMeetingId)
@@ -28,7 +28,7 @@ class RegisterUserRequestJsonMsgHdlrTest extends UnitSpec with JsonConversionTes
   }
 
   it should "extract roles with unknown role" in {
-    object Helper extends RegisterUserRequestJsonMsgRxHelper
+    object Helper extends RegisterUserRequestJsonMsgHdlrHelper
 
     val header: RegisterUserRequestMessage.RegisterUserRequestMessageHeader =
       new RegisterUserRequestMessage.RegisterUserRequestMessageHeader(piliIntMeetingId)
@@ -49,7 +49,7 @@ class RegisterUserRequestJsonMsgHdlrTest extends UnitSpec with JsonConversionTes
   }
 
   it should "extract empty dial in numbers" in {
-    object Helper extends RegisterUserRequestJsonMsgRxHelper
+    object Helper extends RegisterUserRequestJsonMsgHdlrHelper
 
     val header: RegisterUserRequestMessage.RegisterUserRequestMessageHeader =
       new RegisterUserRequestMessage.RegisterUserRequestMessageHeader(piliIntMeetingId)

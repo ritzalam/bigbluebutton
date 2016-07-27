@@ -4,16 +4,16 @@ import java.util
 
 import org.bigbluebutton.common.messages.MessagingConstants
 import org.bigbluebutton.core.MessageSender
-import org.bigbluebutton.core2x.MessageSenderActor2x
+import org.bigbluebutton.core2x.MsgSenderActor2X
 import org.bigbluebutton.core2x.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMsg
 import org.bigbluebutton.core2x.domain.{ ConvertRoleHelper, DialNumber, Role2x }
 import org.bigbluebutton.messages.body.MessageHeaderToClient
 import org.bigbluebutton.messages.vo.UserInfoBody
 import org.bigbluebutton.messages.{ MessageType, ValidateAuthTokenSuccessMessage }
 
-trait ValidateAuthTokenSuccessReplyOutMessageJsonSender
-    extends ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelper {
-  this: MessageSenderActor2x =>
+trait ValidateAuthTokenSuccessReplyOutMsgJsonSender
+    extends ValidateAuthTokenSuccessReplyOutMsgJsonSenderHelper {
+  this: MsgSenderActor2X =>
 
   val service: MessageSender
 
@@ -27,7 +27,7 @@ trait ValidateAuthTokenSuccessReplyOutMessageJsonSender
   }
 }
 
-trait ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelper {
+trait ValidateAuthTokenSuccessReplyOutMsgJsonSenderHelper {
 
   def convert(msg: ValidateAuthTokenSuccessReplyOutMsg): ValidateAuthTokenSuccessMessage = {
     val rolesList = convertRoles(msg.roles)

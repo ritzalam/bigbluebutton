@@ -10,7 +10,7 @@ import org.bigbluebutton.core.pubsub.receivers.RedisMessageReceiver
 import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.core.bus._
-import org.bigbluebutton.core2x.{ BigBlueButtonActor2x, MessageSenderActor2x, RedisMsgHdlrActor }
+import org.bigbluebutton.core2x.{ BigBlueButtonActor2x, MsgSenderActor2X, RedisMsgHdlrActor }
 import org.bigbluebutton.core2x.json.{ IncomingEventBus2x, IncomingJsonMessageBus }
 
 object Boot extends App with SystemConfiguration {
@@ -33,7 +33,7 @@ object Boot extends App with SystemConfiguration {
   recorderApp.start()
 
   //val recorderActor = system.actorOf(RecorderActor.props(recorderApp), "recorderActor")
-  val newMessageSenderActor = system.actorOf(MessageSenderActor2x.props(msgSender), "newMessageSenderActor")
+  val newMessageSenderActor = system.actorOf(MsgSenderActor2X.props(msgSender), "newMessageSenderActor")
 
   //outgoingEventBus.subscribe(recorderActor, outgoingMessageChannel)
   outgoingEventBus.subscribe(newMessageSenderActor, outgoingMessageChannel)

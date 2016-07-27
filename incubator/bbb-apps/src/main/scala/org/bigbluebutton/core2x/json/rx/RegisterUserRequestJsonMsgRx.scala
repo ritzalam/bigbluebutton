@@ -1,19 +1,19 @@
 package org.bigbluebutton.core2x.json.rx
 
-import org.bigbluebutton.core2x.RedisMessageHandlerActor
+import org.bigbluebutton.core2x.RedisMsgRxActor
 import org.bigbluebutton.core2x.api.IncomingMsg.RegisterUserInMessage
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.RegisterUserRequestMessage
 import org.bigbluebutton.messages.vo.UserInfoBody
 
-trait RegisterUserRequestMessageJsonHandler extends UnhandledReceivedJsonMessageHandler
-    with RegisterUserRequestMessageJsonHandlerHelper {
-  this: RedisMessageHandlerActor =>
+trait RegisterUserRequestJsonMsgRx extends UnhandledJsonMsgRx
+    with RegisterUserRequestJsonMsgRxHelper {
+  this: RedisMsgRxActor =>
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
 
     def publish(meetingId: IntMeetingId, msg: RegisterUserInMessage): Unit = {
       log.debug("publishing message [RegisterUserRequestInMessage]")
@@ -28,13 +28,13 @@ trait RegisterUserRequestMessageJsonHandler extends UnhandledReceivedJsonMessage
         m2 <- convertMessage(m)
       } yield publish(m2.meetingId, m2)
     } else {
-      super.handleReceivedJsonMessage(msg)
+      super.handleReceivedJsonMsg(msg)
     }
   }
 
 }
 
-trait RegisterUserRequestMessageJsonHandlerHelper {
+trait RegisterUserRequestJsonMsgRxHelper {
 
   def convertMessage(msg: RegisterUserRequestMessage): Option[RegisterUserInMessage] = {
     for {

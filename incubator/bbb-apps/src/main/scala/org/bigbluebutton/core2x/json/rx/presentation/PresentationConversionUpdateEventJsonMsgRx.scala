@@ -1,19 +1,19 @@
 package org.bigbluebutton.core2x.json.rx.presentation
 
-import org.bigbluebutton.core2x.RedisMessageHandlerActor
+import org.bigbluebutton.core2x.RedisMsgRxActor
 import org.bigbluebutton.core2x.api.IncomingMsg.PresentationConversionUpdateEventInMessage
 import org.bigbluebutton.core2x.apps.presentation.domain.PresentationId
-import org.bigbluebutton.core2x.json.rx.UnhandledReceivedJsonMessageHandler
+import org.bigbluebutton.core2x.json.rx.UnhandledJsonMsgRx
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.IntMeetingId
 import org.bigbluebutton.messages.presentation.PresentationConversionUpdateEventMessage
 
-trait PresentationConversionUpdateEventJsonMessageHandler extends UnhandledReceivedJsonMessageHandler {
-  this: RedisMessageHandlerActor =>
+trait PresentationConversionUpdateEventJsonMsgRx extends UnhandledJsonMsgRx {
+  this: RedisMsgRxActor =>
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
     def publish(meetingId: IntMeetingId, messageKey: String, code: String, presentationId: PresentationId): Unit = {
       log.debug(s"Publishing ${msg.name} [ $presentationId $code]")
       eventBus.publish(
@@ -32,7 +32,7 @@ trait PresentationConversionUpdateEventJsonMessageHandler extends UnhandledRecei
         presentationId <- Option(m.body.presentationId)
       } yield publish(IntMeetingId(meetingId), messageKey, code, PresentationId(presentationId))
     } else {
-      super.handleReceivedJsonMessage(msg)
+      super.handleReceivedJsonMsg(msg)
     }
 
   }

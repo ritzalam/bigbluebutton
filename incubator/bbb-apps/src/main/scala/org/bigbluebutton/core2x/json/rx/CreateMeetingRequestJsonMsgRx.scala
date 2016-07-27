@@ -1,19 +1,19 @@
 package org.bigbluebutton.core2x.json.rx
 
 import org.bigbluebutton.SystemConfiguration
-import org.bigbluebutton.core2x.RedisMessageHandlerActor
+import org.bigbluebutton.core2x.RedisMsgRxActor
 import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMsg
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.CreateMeetingRequestMessage
 import org.bigbluebutton.messages.vo.{ ExtensionPropertiesBody, MeetingPropertiesBody, RecordingPropertiesBody }
 
-trait CreateMeetingRequestMessageJsonHandler extends UnhandledReceivedJsonMessageHandler with SystemConfiguration {
-  this: RedisMessageHandlerActor =>
+trait CreateMeetingRequestJsonMsgRx extends UnhandledJsonMsgRx with SystemConfiguration {
+  this: RedisMsgRxActor =>
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
 
     def extractRecordingProperties(recProps: RecordingPropertiesBody): Option[MeetingRecordingProp] = {
       for {
@@ -73,7 +73,7 @@ trait CreateMeetingRequestMessageJsonHandler extends UnhandledReceivedJsonMessag
         mProps <- extractMeetingProperties(props, extProps, recProps)
       } yield publish(mProps)
     } else {
-      super.handleReceivedJsonMessage(msg)
+      super.handleReceivedJsonMsg(msg)
     }
   }
 }

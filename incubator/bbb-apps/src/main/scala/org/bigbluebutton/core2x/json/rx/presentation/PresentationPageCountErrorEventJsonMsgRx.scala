@@ -1,30 +1,30 @@
 package org.bigbluebutton.core2x.json.rx.presentation
 
-import org.bigbluebutton.core2x.RedisMessageHandlerActor
-import org.bigbluebutton.core2x.api.IncomingMsg.PresentationPageGeneratedEventInMessage
+import org.bigbluebutton.core2x.RedisMsgRxActor
+import org.bigbluebutton.core2x.api.IncomingMsg.PresentationPageCountErrorEventInMessage
 import org.bigbluebutton.core2x.apps.presentation.domain.PresentationId
-import org.bigbluebutton.core2x.json.rx.UnhandledReceivedJsonMessageHandler
+import org.bigbluebutton.core2x.json.rx.UnhandledJsonMsgRx
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.IntMeetingId
-import org.bigbluebutton.messages.presentation.PresentationPageGeneratedEventMessage
+import org.bigbluebutton.messages.presentation.PresentationPageCountErrorEventMessage
 
-trait PresentationPageGeneratedEventJsonMessageHandler extends UnhandledReceivedJsonMessageHandler {
-  this: RedisMessageHandlerActor =>
+trait PresentationPageCountErrorEventJsonMsgRx extends UnhandledJsonMsgRx {
+  this: RedisMsgRxActor =>
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
     def publish(meetingId: IntMeetingId, messageKey: String, code: String, presentationId: PresentationId, numberOfPages: Int, pagesCompleted: Int): Unit = {
       log.debug(s"Publishing ${msg.name} [ $presentationId $code]")
       eventBus.publish(
         BigBlueButtonInMessage(meetingId.value,
-          new PresentationPageGeneratedEventInMessage(meetingId, messageKey, code,
+          new PresentationPageCountErrorEventInMessage(meetingId, messageKey, code,
             presentationId, numberOfPages, pagesCompleted)))
     }
 
-    if (msg.name == PresentationPageGeneratedEventMessage.NAME) {
+    if (msg.name == PresentationPageCountErrorEventMessage.NAME) {
       log.debug("Received JSON message [" + msg.name + "]")
-      val m = PresentationPageGeneratedEventMessage.fromJson(msg.data)
+      val m = PresentationPageCountErrorEventMessage.fromJson(msg.data)
       for {
         meetingId <- Option(m.header.meetingId)
         messageKey <- Option(m.body.messageKey)
@@ -35,7 +35,7 @@ trait PresentationPageGeneratedEventJsonMessageHandler extends UnhandledReceived
       } yield publish(IntMeetingId(meetingId), messageKey, code, PresentationId(presentationId),
         numberOfPages, pagesCompleted)
     } else {
-      super.handleReceivedJsonMessage(msg)
+      super.handleReceivedJsonMsg(msg)
     }
 
   }

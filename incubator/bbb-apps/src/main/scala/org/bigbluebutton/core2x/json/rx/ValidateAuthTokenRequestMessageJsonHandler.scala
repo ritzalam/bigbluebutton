@@ -1,17 +1,17 @@
 package org.bigbluebutton.core2x.json.rx
 
-import org.bigbluebutton.core2x.RedisMessageHandlerActor
+import org.bigbluebutton.core2x.RedisMsgRxActor
 import org.bigbluebutton.core2x.api.IncomingMsg.ValidateAuthTokenInMessage
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ SessionToken, IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.ValidateAuthTokenRequestMessage
 
-trait ValidateAuthTokenRequestMessageJsonHandler extends UnhandledReceivedJsonMessageHandler {
-  this: RedisMessageHandlerActor =>
+trait ValidateAuthTokenRequestMessageJsonHandler extends UnhandledJsonMsgRx {
+  this: RedisMsgRxActor =>
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
     def publish(meetingId: IntMeetingId, senderId: IntUserId, authToken: SessionToken): Unit = {
       log.debug("Publishing ValidateAuthTokenRequestInMessage [ " + meetingId.value)
       eventBus.publish(
@@ -31,7 +31,7 @@ trait ValidateAuthTokenRequestMessageJsonHandler extends UnhandledReceivedJsonMe
         authToken <- Option(m.body.authToken)
       } yield publish(IntMeetingId(meetingId), IntUserId(senderId), SessionToken(authToken))
     } else {
-      super.handleReceivedJsonMessage(msg)
+      super.handleReceivedJsonMsg(msg)
     }
 
   }

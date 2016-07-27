@@ -1,17 +1,17 @@
 package org.bigbluebutton.core2x.json.rx
 
-import org.bigbluebutton.core2x.RedisMessageHandlerActor
+import org.bigbluebutton.core2x.RedisMsgRxActor
 import org.bigbluebutton.core2x.api.IncomingMsg.KeepAliveMessageInMsg
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.KeepAliveMessage
 
-trait KeepAliveMessageJsonHandler extends UnhandledReceivedJsonMessageHandler {
-  this: RedisMessageHandlerActor =>
+trait KeepAliveJsonMsgRx extends UnhandledJsonMsgRx {
+  this: RedisMsgRxActor =>
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
     def publish(meetingId: IntMeetingId, senderId: IntUserId, aliveID: String): Unit = {
       log.debug("Publishing KeepAliveMessage [ " + aliveID + "]")
       eventBus.publish(
@@ -28,7 +28,7 @@ trait KeepAliveMessageJsonHandler extends UnhandledReceivedJsonMessageHandler {
         aliveID <- Option(m.body.aliveID)
       } yield publish(IntMeetingId(meetingId), IntUserId(senderId), aliveID)
     } else {
-      super.handleReceivedJsonMessage(msg)
+      super.handleReceivedJsonMsg(msg)
     }
 
   }

@@ -1,22 +1,22 @@
 package org.bigbluebutton.core2x.json.rx.whiteboard
 
-import org.bigbluebutton.core2x.RedisMessageHandlerActor
+import org.bigbluebutton.core2x.RedisMsgRxActor
 import org.bigbluebutton.core2x.api.IncomingMsg.SendWhiteboardAnnotationRequest
-import org.bigbluebutton.core2x.json.rx.UnhandledReceivedJsonMessageHandler
+import org.bigbluebutton.core2x.json.rx.UnhandledJsonMsgRx
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ AnnotationVO, IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.vo.AnnotationBody
 import org.bigbluebutton.messages.whiteboard.SendWhiteboardAnnotationRequestEventMessage
 
-trait SendWhiteboardAnnotationRequestEventJsonMessageHandler
-    extends UnhandledReceivedJsonMessageHandler
+trait SendWhiteboardAnnotationRequestEventJsonMsgRx
+    extends UnhandledJsonMsgRx
     with SendWhiteboardAnnotationRequestEventJsonMessageHandlerHelper {
 
-  this: RedisMessageHandlerActor =>
+  this: RedisMsgRxActor =>
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
     def publish(meetingId: IntMeetingId, senderId: IntUserId, annotation: AnnotationVO): Unit = {
       log.debug(s"Publishing ${msg.name} [$senderId]")
       eventBus.publish(
@@ -34,7 +34,7 @@ trait SendWhiteboardAnnotationRequestEventJsonMessageHandler
         requesterId <- Option(m.body.requesterId)
       } yield publish(IntMeetingId(meetingId), IntUserId(senderId), annotation)
     } else {
-      super.handleReceivedJsonMessage(msg)
+      super.handleReceivedJsonMsg(msg)
     }
 
   }

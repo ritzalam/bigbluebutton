@@ -1,24 +1,24 @@
 package org.bigbluebutton.core2x.json.rx.presentation
 
-import org.bigbluebutton.core2x.RedisMessageHandlerActor
+import org.bigbluebutton.core2x.RedisMsgRxActor
 import org.bigbluebutton.core2x.api.IncomingMsg.PresentationConversionCompletedEventInMessage
 import org.bigbluebutton.core2x.apps.presentation.domain._
 import org.bigbluebutton.core2x.apps.presentation.{ Page, Presentation }
-import org.bigbluebutton.core2x.json.rx.UnhandledReceivedJsonMessageHandler
+import org.bigbluebutton.core2x.json.rx.UnhandledJsonMsgRx
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.IntMeetingId
 import org.bigbluebutton.messages.presentation.PresentationConversionCompletedEventMessage
 import org.bigbluebutton.messages.vo.{ PageBody, PresentationBody }
 
-trait PresentationConversionCompletedEventJsonMessageHandler
-    extends UnhandledReceivedJsonMessageHandler
+trait PresentationConversionCompletedEventJsonMsgRx
+    extends UnhandledJsonMsgRx
     with PresentationConversionCompletedEventJsonMessageHandlerHelper {
 
-  this: RedisMessageHandlerActor =>
+  this: RedisMsgRxActor =>
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
     def publish(meetingId: IntMeetingId, messageKey: String, code: String, presentation: Presentation): Unit = {
       log.debug(s"Publishing ${msg.name} [ ${presentation.id} $code]")
       eventBus.publish(
@@ -38,7 +38,7 @@ trait PresentationConversionCompletedEventJsonMessageHandler
         presentation <- convertPresentation(m.body.presentation)
       } yield publish(IntMeetingId(meetingId), messageKey, code, presentation)
     } else {
-      super.handleReceivedJsonMessage(msg)
+      super.handleReceivedJsonMsg(msg)
     }
 
   }

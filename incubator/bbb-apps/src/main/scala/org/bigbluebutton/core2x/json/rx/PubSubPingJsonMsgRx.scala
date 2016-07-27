@@ -1,17 +1,17 @@
 package org.bigbluebutton.core2x.json.rx
 
-import org.bigbluebutton.core2x.RedisMessageHandlerActor
+import org.bigbluebutton.core2x.RedisMsgRxActor
 import org.bigbluebutton.core2x.api.IncomingMsg.PubSubPingMessageInMsg
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.PubSubPingMessage
 
-trait PubSubPingMessageJsonHandler extends UnhandledReceivedJsonMessageHandler {
-  this: RedisMessageHandlerActor =>
+trait PubSubPingJsonMsgRx extends UnhandledJsonMsgRx {
+  this: RedisMsgRxActor =>
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
     def publish(meetingId: IntMeetingId, senderId: IntUserId, system: String,
       timestamp: Long): Unit = {
       log.debug("Publishing PubSubPingMessage [ " + system + "]")
@@ -30,7 +30,7 @@ trait PubSubPingMessageJsonHandler extends UnhandledReceivedJsonMessageHandler {
         timestamp <- Option(m.body.timestamp)
       } yield publish(IntMeetingId(meetingId), IntUserId(senderId), system, timestamp)
     } else {
-      super.handleReceivedJsonMessage(msg)
+      super.handleReceivedJsonMsg(msg)
     }
 
   }

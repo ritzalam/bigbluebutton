@@ -1,19 +1,19 @@
 package org.bigbluebutton.core2x.json.rx.presentation
 
-import org.bigbluebutton.core2x.RedisMessageHandlerActor
+import org.bigbluebutton.core2x.RedisMsgRxActor
 import org.bigbluebutton.core2x.api.IncomingMsg.ResizeAndMovePageEventInMessage
 import org.bigbluebutton.core2x.apps.presentation.domain.{ HeightRatio, WidthRatio, XOffset, YOffset }
-import org.bigbluebutton.core2x.json.rx.UnhandledReceivedJsonMessageHandler
+import org.bigbluebutton.core2x.json.rx.UnhandledJsonMsgRx
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.presentation.ResizeAndMovePageEventMessage
 
-trait ResizeAndMovePageEventJsonMessageHandler extends UnhandledReceivedJsonMessageHandler {
-  this: RedisMessageHandlerActor =>
+trait ResizeAndMovePageEventJsonMsgRx extends UnhandledJsonMsgRx {
+  this: RedisMsgRxActor =>
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMessage(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
     def publish(meetingId: IntMeetingId, senderId: IntUserId, xOffset: XOffset, yOffset: YOffset,
       pageId: String, widthRatio: WidthRatio, heightRatio: HeightRatio): Unit = {
       log.debug(s"Publishing ${msg.name} [ $pageId $senderId]")
@@ -36,7 +36,7 @@ trait ResizeAndMovePageEventJsonMessageHandler extends UnhandledReceivedJsonMess
         heightRatio <- Option(m.body.heightRatio)
       } yield publish(IntMeetingId(meetingId), IntUserId(senderId), XOffset(xOffset), YOffset(yOffset), pageId, WidthRatio(widthRatio), HeightRatio(heightRatio))
     } else {
-      super.handleReceivedJsonMessage(msg)
+      super.handleReceivedJsonMsg(msg)
     }
 
   }

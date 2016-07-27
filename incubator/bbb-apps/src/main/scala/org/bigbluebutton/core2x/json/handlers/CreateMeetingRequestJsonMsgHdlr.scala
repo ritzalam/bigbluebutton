@@ -1,15 +1,15 @@
 package org.bigbluebutton.core2x.json.handlers
 
 import org.bigbluebutton.SystemConfiguration
-import org.bigbluebutton.core2x.RedisMsgRxActor
+import org.bigbluebutton.core2x.RedisMsgHdlrActor
 import org.bigbluebutton.core2x.api.IncomingMsg.CreateMeetingRequestInMsg
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.CreateMeetingRequestMessage
 import org.bigbluebutton.messages.vo.{ ExtensionPropertiesBody, MeetingPropertiesBody, RecordingPropertiesBody }
 
-trait CreateMeetingRequestJsonMsgRx extends UnhandledJsonMsgRx with SystemConfiguration {
-  this: RedisMsgRxActor =>
+trait CreateMeetingRequestJsonMsgHdlr extends UnhandledJsonMsgHdlr with SystemConfiguration {
+  this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x
 

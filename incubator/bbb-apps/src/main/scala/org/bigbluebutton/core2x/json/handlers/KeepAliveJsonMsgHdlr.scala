@@ -1,13 +1,13 @@
 package org.bigbluebutton.core2x.json.handlers
 
-import org.bigbluebutton.core2x.RedisMsgRxActor
+import org.bigbluebutton.core2x.RedisMsgHdlrActor
 import org.bigbluebutton.core2x.api.IncomingMsg.KeepAliveMessageInMsg
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.KeepAliveMessage
 
-trait KeepAliveJsonMsgRx extends UnhandledJsonMsgRx {
-  this: RedisMsgRxActor =>
+trait KeepAliveJsonMsgHdlr extends UnhandledJsonMsgHdlr {
+  this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x
 

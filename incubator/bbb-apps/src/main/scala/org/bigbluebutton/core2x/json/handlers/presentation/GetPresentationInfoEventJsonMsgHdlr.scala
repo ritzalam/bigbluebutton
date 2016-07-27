@@ -1,15 +1,15 @@
 package org.bigbluebutton.core2x.handlers.presentation
 
-import org.bigbluebutton.core2x.RedisMsgRxActor
+import org.bigbluebutton.core2x.RedisMsgHdlrActor
 import org.bigbluebutton.core2x.api.IncomingMsg.GetPresentationInfoEventInMessage
 import org.bigbluebutton.core2x.apps.presentation.domain.PresentationId
-import org.bigbluebutton.core2x.json.handlers.UnhandledJsonMsgRx
+import org.bigbluebutton.core2x.json.handlers.UnhandledJsonMsgHdlr
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.presentation.GetPresentationInfoEventMessage
 
-trait GetPresentationInfoEventJsonMsgRx extends UnhandledJsonMsgRx {
-  this: RedisMsgRxActor =>
+trait GetPresentationInfoEventJsonMsgHdlr extends UnhandledJsonMsgHdlr {
+  this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x
 

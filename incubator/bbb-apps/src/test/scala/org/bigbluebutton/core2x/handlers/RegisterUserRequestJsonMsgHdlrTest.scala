@@ -7,7 +7,7 @@ import org.bigbluebutton.core2x.domain.{ GuestRole, ModeratorRole }
 import org.bigbluebutton.messages.RegisterUserRequestMessage
 import org.bigbluebutton.messages.vo.UserInfoBody
 
-class RegisterUserRequestJsonMsgRxTest extends UnitSpec with JsonConversionTestFixtures {
+class RegisterUserRequestJsonMsgHdlrTest extends UnitSpec with JsonConversionTestFixtures {
   it should "extract roles" in {
     object Helper extends RegisterUserRequestJsonMsgRxHelper
 

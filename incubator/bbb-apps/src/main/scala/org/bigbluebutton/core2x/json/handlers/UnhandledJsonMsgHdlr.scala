@@ -1,10 +1,10 @@
 package org.bigbluebutton.core2x.json.handlers
 
-import org.bigbluebutton.core2x.RedisMsgRxActor
+import org.bigbluebutton.core2x.RedisMsgHdlrActor
 import org.bigbluebutton.core2x.json.{ IncomingEventBus2x, ReceivedJsonMessage }
 
-trait UnhandledJsonMsgRx {
-  this: RedisMsgRxActor =>
+trait UnhandledJsonMsgHdlr {
+  this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x
 

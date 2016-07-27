@@ -1,15 +1,15 @@
 package org.bigbluebutton.core2x.json.handlers.presentation
 
-import org.bigbluebutton.core2x.RedisMsgRxActor
-import org.bigbluebutton.core2x.api.IncomingMsg.PresentationPageGeneratedEventInMessage
+import org.bigbluebutton.core2x.RedisMsgHdlrActor
+import org.bigbluebutton.core2x.api.IncomingMsg.PresentationPageCountErrorEventInMessage
 import org.bigbluebutton.core2x.apps.presentation.domain.PresentationId
-import org.bigbluebutton.core2x.json.handlers.UnhandledJsonMsgRx
+import org.bigbluebutton.core2x.json.handlers.UnhandledJsonMsgHdlr
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.IntMeetingId
-import org.bigbluebutton.messages.presentation.PresentationPageGeneratedEventMessage
+import org.bigbluebutton.messages.presentation.PresentationPageCountErrorEventMessage
 
-trait PresentationPageGeneratedEventJsonMsgRx extends UnhandledJsonMsgRx {
-  this: RedisMsgRxActor =>
+trait PresentationPageCountErrorEventJsonMsgHdlr extends UnhandledJsonMsgHdlr {
+  this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x
 
@@ -18,13 +18,13 @@ trait PresentationPageGeneratedEventJsonMsgRx extends UnhandledJsonMsgRx {
       log.debug(s"Publishing ${msg.name} [ $presentationId $code]")
       eventBus.publish(
         BigBlueButtonInMessage(meetingId.value,
-          new PresentationPageGeneratedEventInMessage(meetingId, messageKey, code,
+          new PresentationPageCountErrorEventInMessage(meetingId, messageKey, code,
             presentationId, numberOfPages, pagesCompleted)))
     }
 
-    if (msg.name == PresentationPageGeneratedEventMessage.NAME) {
+    if (msg.name == PresentationPageCountErrorEventMessage.NAME) {
       log.debug("Received JSON message [" + msg.name + "]")
-      val m = PresentationPageGeneratedEventMessage.fromJson(msg.data)
+      val m = PresentationPageCountErrorEventMessage.fromJson(msg.data)
       for {
         meetingId <- Option(m.header.meetingId)
         messageKey <- Option(m.body.messageKey)

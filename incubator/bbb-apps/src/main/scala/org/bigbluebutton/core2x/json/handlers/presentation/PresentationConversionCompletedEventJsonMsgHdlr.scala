@@ -1,20 +1,20 @@
 package org.bigbluebutton.core2x.json.handlers.presentation
 
-import org.bigbluebutton.core2x.RedisMsgRxActor
+import org.bigbluebutton.core2x.RedisMsgHdlrActor
 import org.bigbluebutton.core2x.api.IncomingMsg.PresentationConversionCompletedEventInMessage
 import org.bigbluebutton.core2x.apps.presentation.domain._
 import org.bigbluebutton.core2x.apps.presentation.{ Page, Presentation }
-import org.bigbluebutton.core2x.json.handlers.UnhandledJsonMsgRx
+import org.bigbluebutton.core2x.json.handlers.UnhandledJsonMsgHdlr
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.IntMeetingId
 import org.bigbluebutton.messages.presentation.PresentationConversionCompletedEventMessage
 import org.bigbluebutton.messages.vo.{ PageBody, PresentationBody }
 
-trait PresentationConversionCompletedEventJsonMsgRx
-    extends UnhandledJsonMsgRx
+trait PresentationConversionCompletedEventJsonMsgHdlr
+    extends UnhandledJsonMsgHdlr
     with PresentationConversionCompletedEventJsonMessageHandlerHelper {
 
-  this: RedisMsgRxActor =>
+  this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x
 

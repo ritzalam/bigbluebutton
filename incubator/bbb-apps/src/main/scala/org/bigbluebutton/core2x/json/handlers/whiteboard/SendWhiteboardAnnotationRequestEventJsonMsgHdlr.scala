@@ -1,18 +1,18 @@
 package org.bigbluebutton.core2x.json.handlers.whiteboard
 
-import org.bigbluebutton.core2x.RedisMsgRxActor
+import org.bigbluebutton.core2x.RedisMsgHdlrActor
 import org.bigbluebutton.core2x.api.IncomingMsg.SendWhiteboardAnnotationRequest
-import org.bigbluebutton.core2x.json.handlers.UnhandledJsonMsgRx
+import org.bigbluebutton.core2x.json.handlers.UnhandledJsonMsgHdlr
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain.{ AnnotationVO, IntMeetingId, IntUserId }
 import org.bigbluebutton.messages.vo.AnnotationBody
 import org.bigbluebutton.messages.whiteboard.SendWhiteboardAnnotationRequestEventMessage
 
-trait SendWhiteboardAnnotationRequestEventJsonMsgRx
-    extends UnhandledJsonMsgRx
+trait SendWhiteboardAnnotationRequestEventJsonMsgHdlr
+    extends UnhandledJsonMsgHdlr
     with SendWhiteboardAnnotationRequestEventJsonMessageHandlerHelper {
 
-  this: RedisMsgRxActor =>
+  this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x
 

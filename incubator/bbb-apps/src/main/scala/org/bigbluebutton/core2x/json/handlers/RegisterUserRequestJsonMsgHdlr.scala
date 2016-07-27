@@ -1,15 +1,15 @@
 package org.bigbluebutton.core2x.json.handlers
 
-import org.bigbluebutton.core2x.RedisMsgRxActor
+import org.bigbluebutton.core2x.RedisMsgHdlrActor
 import org.bigbluebutton.core2x.api.IncomingMsg.RegisterUserInMessage
 import org.bigbluebutton.core2x.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.RegisterUserRequestMessage
 import org.bigbluebutton.messages.vo.UserInfoBody
 
-trait RegisterUserRequestJsonMsgRx extends UnhandledJsonMsgRx
+trait RegisterUserRequestJsonMsgHdlr extends UnhandledJsonMsgHdlr
     with RegisterUserRequestJsonMsgRxHelper {
-  this: RedisMsgRxActor =>
+  this: RedisMsgHdlrActor =>
 
   val eventBus: IncomingEventBus2x
 

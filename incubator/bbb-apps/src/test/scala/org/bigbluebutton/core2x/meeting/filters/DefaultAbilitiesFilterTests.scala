@@ -1,7 +1,7 @@
 package org.bigbluebutton.core2x.meeting.filters
 
-import org.bigbluebutton.core.UnitSpec
-import org.bigbluebutton.core2x.domain.{ PresenterRole, _ }
+import org.bigbluebutton.core2x.UnitSpec
+import org.bigbluebutton.core2x.domain.{PresenterRole, _}
 
 class DefaultAbilitiesFilterTests extends UnitSpec {
   it should "eject user" in {

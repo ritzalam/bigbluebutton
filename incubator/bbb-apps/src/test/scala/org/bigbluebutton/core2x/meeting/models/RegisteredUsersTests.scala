@@ -1,7 +1,6 @@
 package org.bigbluebutton.core2x.meeting.models
 
-import org.bigbluebutton.core2x.MeetingTestFixtures
-import org.bigbluebutton.core.UnitSpec
+import org.bigbluebutton.core2x.{MeetingTestFixtures, UnitSpec}
 
 class RegisteredUsersTests extends UnitSpec with MeetingTestFixtures {
 

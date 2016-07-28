@@ -1,7 +1,6 @@
 package org.bigbluebutton.core2x.json.senders
 
-import org.bigbluebutton.core.UnitSpec
-import org.bigbluebutton.core2x.JsonConversionTestFixtures
+import org.bigbluebutton.core2x.{JsonConversionTestFixtures, UnitSpec}
 import org.bigbluebutton.core2x.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMsg
 import org.bigbluebutton.core2x.domain._
 import org.bigbluebutton.messages.ValidateAuthTokenSuccessMessage

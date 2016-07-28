@@ -1,16 +1,15 @@
 package org.bigbluebutton.core2x
 
 import akka.actor.ActorSystem
-import akka.testkit.{ DefaultTimeout, ImplicitSender, TestKit }
+import akka.testkit.{DefaultTimeout, ImplicitSender, TestKit}
 import com.typesafe.config.ConfigFactory
 import org.bigbluebutton.SystemConfiguration
-import org.bigbluebutton.core.{ StopSystemAfterAll, TestKitUsageSpec }
-import org.bigbluebutton.core2x.api.OutGoingMsg.{ DisconnectUser2x, UserRegisteredEvent2x, ValidateAuthTokenSuccessReplyOutMsg }
-import org.bigbluebutton.core2x.json.{ IncomingEventBus2x, OutgoingEventBus }
+import org.bigbluebutton.core2x.api.OutGoingMsg.{DisconnectUser2x, UserRegisteredEvent2x, ValidateAuthTokenSuccessReplyOutMsg}
+import org.bigbluebutton.core2x.json.{IncomingEventBus2x, OutgoingEventBus}
 import org.bigbluebutton.core2x.domain.Clients
 import org.bigbluebutton.core2x.meeting.MeetingActor2x
-import org.bigbluebutton.core2x.meeting.models.{ MeetingStateModel, MeetingStatus }
-import org.scalatest.{ Matchers, WordSpecLike }
+import org.bigbluebutton.core2x.meeting.models.{MeetingStateModel, MeetingStatus}
+import org.scalatest.{Matchers, WordSpecLike}
 
 import scala.concurrent.duration._
 

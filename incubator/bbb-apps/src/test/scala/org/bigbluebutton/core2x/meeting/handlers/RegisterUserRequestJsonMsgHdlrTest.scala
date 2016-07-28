@@ -1,9 +1,8 @@
 package org.bigbluebutton.core2x.meeting.handlers
 
-import org.bigbluebutton.core.UnitSpec
-import org.bigbluebutton.core2x.JsonConversionTestFixtures
+import org.bigbluebutton.core2x.{JsonConversionTestFixtures, UnitSpec}
 import org.bigbluebutton.core2x.json.handlers.RegisterUserRequestJsonMsgHdlrHelper
-import org.bigbluebutton.core2x.domain.{ GuestRole, ModeratorRole }
+import org.bigbluebutton.core2x.domain.{GuestRole, ModeratorRole}
 import org.bigbluebutton.messages.RegisterUserRequestMessage
 import org.bigbluebutton.messages.vo.UserInfoBody
 

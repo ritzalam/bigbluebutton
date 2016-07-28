@@ -1,6 +1,6 @@
 package org.bigbluebutton.core2x.meeting.handlers
 
-import org.bigbluebutton.core.UnitSpec
+import org.bigbluebutton.core2x.UnitSpec
 
 class ValidateAuthTokenRequestJsonMsgHdlrTest extends UnitSpec {
   it should "parse msg" in {

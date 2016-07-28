@@ -1,7 +1,7 @@
 package org.bigbluebutton.core2x.meeting.handlers
 
-import org.bigbluebutton.core.UnitSpec
-import org.bigbluebutton.core2x.domain.{ CanEjectUser, CanRaiseHand, Abilities2x }
+import org.bigbluebutton.core2x.UnitSpec
+import org.bigbluebutton.core2x.domain.{Abilities2x, CanEjectUser, CanRaiseHand}
 import org.bigbluebutton.core2x.meeting.filters.DefaultAbilitiesFilter
 
 class UsersHandler2xTests extends UnitSpec {

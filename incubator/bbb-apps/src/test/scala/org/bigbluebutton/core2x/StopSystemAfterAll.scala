@@ -1,7 +1,7 @@
-package org.bigbluebutton.core
+package org.bigbluebutton.core2x
 
 import akka.testkit.TestKit
-import org.scalatest.{ BeforeAndAfterAll, Suite }
+import org.scalatest.{BeforeAndAfterAll, Suite}
 
 trait StopSystemAfterAll extends BeforeAndAfterAll {
   this: TestKit with Suite =>

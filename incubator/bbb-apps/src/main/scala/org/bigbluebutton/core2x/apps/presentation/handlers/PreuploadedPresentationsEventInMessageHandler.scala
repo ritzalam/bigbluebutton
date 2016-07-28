@@ -1,8 +1,8 @@
 package org.bigbluebutton.core2x.apps.presentation.handlers
 
-import org.bigbluebutton.core.OutMessageGateway
+import org.bigbluebutton.core2x.OutMessageGateway
 import org.bigbluebutton.core2x.api.IncomingMsg.PreuploadedPresentationsEventInMessage
-import org.bigbluebutton.core2x.models.MeetingStateModel
+import org.bigbluebutton.core2x.meeting.models.MeetingStateModel
 
 trait PreuploadedPresentationsEventInMessageHandler {
   val state: MeetingStateModel

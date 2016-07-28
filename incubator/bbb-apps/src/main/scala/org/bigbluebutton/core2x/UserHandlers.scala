@@ -1,9 +1,7 @@
 package org.bigbluebutton.core2x
 
-import akka.actor.ActorContext
-import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.domain.{ IntUserId, RegisteredUser2x }
-import org.bigbluebutton.core2x.handlers.user.UserActorMessageHandler
+import org.bigbluebutton.core2x.meeting.handlers.user.UserActorMessageHandler
 
 class UserHandlers {
   private var userHandlers = new collection.immutable.HashMap[String, UserActorMessageHandler]

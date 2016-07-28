@@ -4,7 +4,7 @@ import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core2x.domain.SessionId
 import org.bigbluebutton.core2x.apps.presentation.{ Page, Presentation, PresentationModel }
 import org.bigbluebutton.core2x.domain.{ VoiceConf, Welcome, _ }
-import org.bigbluebutton.core2x.models.{ MeetingStatus => _, _ }
+import org.bigbluebutton.core2x.meeting.models.{ MeetingStatus => _, _ }
 import java.util.Date
 
 import org.bigbluebutton.common.messages2x.objects.AnnotationStatus

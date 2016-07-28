@@ -4,13 +4,13 @@ import akka.actor.ActorSystem
 import akka.testkit.{ DefaultTimeout, ImplicitSender, TestKit }
 import com.typesafe.config.ConfigFactory
 import org.bigbluebutton.SystemConfiguration
-import org.bigbluebutton.core.{ OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
+import org.bigbluebutton.core.{ StopSystemAfterAll, TestKitUsageSpec }
 import org.bigbluebutton.core2x.api.IncomingMsg._
-import org.bigbluebutton.core.bus.OutgoingEventBus
 import org.bigbluebutton.core2x.api.OutGoingMsg._
-import org.bigbluebutton.core2x.json.IncomingEventBus2x
+import org.bigbluebutton.core2x.json.{ IncomingEventBus2x, OutgoingEventBus }
 import org.bigbluebutton.core2x.domain.Clients
-import org.bigbluebutton.core2x.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
+import org.bigbluebutton.core2x.meeting.MeetingActor2x
+import org.bigbluebutton.core2x.meeting.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
 import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._

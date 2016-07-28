@@ -1,4 +1,4 @@
-package org.bigbluebutton.core2x.handlers.presentation
+package org.bigbluebutton.core2x.meeting.handlers.presentation
 
 import org.bigbluebutton.core2x.RedisMsgHdlrActor
 import org.bigbluebutton.core2x.api.IncomingMsg.RemovePresentationEventInMessage

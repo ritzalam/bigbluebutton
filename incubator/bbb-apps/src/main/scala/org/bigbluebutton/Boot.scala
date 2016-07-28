@@ -5,13 +5,11 @@ import akka.actor.ActorSystem
 import org.bigbluebutton.endpoint.redis.RedisPublisher
 import org.bigbluebutton.endpoint.redis.KeepAliveRedisPublisher
 import org.bigbluebutton.endpoint.redis.AppsRedisSubscriberActor
-import org.bigbluebutton.core.{ BigBlueButtonInGW, MessageSender, OutMessageGateway }
 import org.bigbluebutton.core.pubsub.receivers.RedisMessageReceiver
 import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
-import org.bigbluebutton.core.bus._
-import org.bigbluebutton.core2x.{ BigBlueButtonActor2x, MsgSenderActor2X, RedisMsgHdlrActor }
-import org.bigbluebutton.core2x.json.{ IncomingEventBus2x, IncomingJsonMessageBus }
+import org.bigbluebutton.core2x.{ OutMessageGateway, _ }
+import org.bigbluebutton.core2x.json.{ IncomingEventBus2x, IncomingJsonMessageBus, OutgoingEventBus }
 
 object Boot extends App with SystemConfiguration {
 

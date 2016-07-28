@@ -2,7 +2,7 @@ package org.bigbluebutton.core2x
 
 import org.bigbluebutton.SystemConfiguration
 import org.apache.commons.codec.digest.DigestUtils
-import org.bigbluebutton.core.api.TimestampGenerator
+import org.bigbluebutton.core2x.api.TimestampGenerator
 import org.bigbluebutton.core2x.domain.{ ExtUserId, IntMeetingId, IntUserId, SessionToken }
 
 object TokenIdFactory extends SystemConfiguration {

@@ -3,8 +3,7 @@ package org.bigbluebutton.core2x.json.senders
 import java.util
 
 import org.bigbluebutton.common.messages.MessagingConstants
-import org.bigbluebutton.core.MessageSender
-import org.bigbluebutton.core2x.MsgSenderActor2X
+import org.bigbluebutton.core2x.{ MessageSender, MsgSenderActor2X }
 import org.bigbluebutton.core2x.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMsg
 import org.bigbluebutton.core2x.domain.{ ConvertRoleHelper, DialNumber, Role2x }
 import org.bigbluebutton.messages.body.MessageHeaderToClient

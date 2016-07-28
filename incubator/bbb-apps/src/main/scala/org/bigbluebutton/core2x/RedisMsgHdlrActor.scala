@@ -5,7 +5,7 @@ import org.bigbluebutton.core2x.json.handlers._
 import org.bigbluebutton.core2x.json.handlers.presentation._
 import org.bigbluebutton.core2x.json.handlers.whiteboard.{ SendWhiteboardAnnotationRequestEventJsonMsgHdlr }
 import org.bigbluebutton.core2x.json.{ IncomingEventBus2x, IncomingJsonMessageBus, ReceivedJsonMessage }
-import org.bigbluebutton.core2x.handlers.presentation._
+import org.bigbluebutton.core2x.meeting.handlers.presentation._
 
 object RedisMsgHdlrActor {
   def props(eventBus: IncomingEventBus2x, incomingJsonMessageBus: IncomingJsonMessageBus): Props =

@@ -3,10 +3,10 @@ package org.bigbluebutton.core2x
 import akka.actor.{ Actor, ActorLogging, ActorSystem, Props }
 import akka.util.Timeout
 import org.bigbluebutton.SystemConfiguration
-import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core2x.api.IncomingMsg._
 import org.bigbluebutton.core2x.api.OutGoingMsg._
 import org.bigbluebutton.core2x.json.IncomingEventBus2x
+import org.bigbluebutton.core2x.meeting.RunningMeeting2x
 
 import scala.concurrent.duration._
 

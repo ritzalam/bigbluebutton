@@ -8,7 +8,7 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.OutGoingMsg.{ PresenterAssignedEventOutMsg, UserJoinedEvent2x, UserRegisteredEvent2x, ValidateAuthTokenSuccessReplyOutMsg }
 import org.bigbluebutton.core.domain.Clients
 import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, OutgoingEventBus }
-import org.bigbluebutton.core.meeting.MeetingActor2x
+import org.bigbluebutton.core.meeting.MeetingActor
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }
 import org.bigbluebutton.core.{ MeetingTestFixtures, StopSystemAfterAll, TestKitUsageSpec }
 import org.scalatest.{ Matchers, WordSpecLike }
@@ -33,7 +33,7 @@ class UserJoinMeetingRequestInMessageActorTestSpec extends TestKit(ActorSystem("
           abilities, clients, registeredUsers, users, chats, layouts, polls, whiteboards,
           presentations, breakoutRooms, captions, new MeetingStatus)
 
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
+        val meetingActorRef = system.actorOf(MeetingActor.props(bbbDevProps, eventBus, outGW, state))
         meetingActorRef ! richardRegisterUserCommand
         expectMsgClass(classOf[UserRegisteredEvent2x])
         meetingActorRef ! richardValidateAuthTokenCommand

@@ -10,17 +10,17 @@ import org.bigbluebutton.core.meeting.models.MeetingStateModel
 
 import scala.concurrent.duration._
 
-object MeetingActorInternal2x {
+object MeetingActorInternal {
   def props(mProps: MeetingProperties2x,
     eventBus: IncomingEventBus2x,
     outGW: OutMessageGateway): Props =
-    Props(classOf[MeetingActorInternal2x], mProps, eventBus, outGW)
+    Props(classOf[MeetingActorInternal], mProps, eventBus, outGW)
 }
 
 // This actor is an internal audit actor for each meeting actor that
 // periodically sends messages to the meeting actor
-class MeetingActorInternal2x(val mProps: MeetingProperties2x,
-  val eventBus: IncomingEventBus2x, val outGW: OutMessageGateway)
+class MeetingActorInternal(val mProps: MeetingProperties2x,
+                           val eventBus: IncomingEventBus2x, val outGW: OutMessageGateway)
     extends Actor with ActorLogging {
 
   import context.dispatcher
@@ -54,16 +54,16 @@ class MeetingActorInternal2x(val mProps: MeetingProperties2x,
   }
 }
 
-object MeetingActor2x {
+object MeetingActor {
   def props(
     props: MeetingProperties2x,
     bus: IncomingEventBus2x,
     outGW: OutMessageGateway,
     state: MeetingStateModel): Props =
-    Props(classOf[MeetingActor2x], props, bus, outGW, state)
+    Props(classOf[MeetingActor], props, bus, outGW, state)
 }
 
-class MeetingActor2x(
+class MeetingActor(
   val props: MeetingProperties2x,
   val bus: IncomingEventBus2x,
   val outGW: OutMessageGateway,

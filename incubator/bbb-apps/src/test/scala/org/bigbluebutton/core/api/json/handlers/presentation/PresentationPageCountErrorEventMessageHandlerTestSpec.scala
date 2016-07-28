@@ -7,7 +7,7 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.{ MeetingTestFixtures, OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
 import org.bigbluebutton.core.domain.Clients
 import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, OutgoingEventBus }
-import org.bigbluebutton.core.meeting.MeetingActor2x
+import org.bigbluebutton.core.meeting.MeetingActor
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }
 import org.scalatest.{ Matchers, WordSpecLike }
 
@@ -30,7 +30,7 @@ class PresentationPageCountErrorEventMessageHandlerTestSpec extends TestKit(Acto
           bbbDevProps, abilities, clients, registeredUsers, users, chats, layouts, polls,
           whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
+        val meetingActorRef = system.actorOf(MeetingActor.props(bbbDevProps, eventBus, outGW, state))
         meetingActorRef ! presentationPageCountErrorCommand
         // expectMsgClass(classOf[PubSubPong]) // TODO
       }

@@ -9,7 +9,7 @@ import org.bigbluebutton.core.api.IncomingMsg.RegisterSessionIdInMsg
 import org.bigbluebutton.core.api.OutGoingMsg.UserRegisteredEvent2x
 import org.bigbluebutton.core.domain.{ Clients, ComponentId, SessionId, SessionToken }
 import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, OutgoingEventBus }
-import org.bigbluebutton.core.meeting.MeetingActor2x
+import org.bigbluebutton.core.meeting.MeetingActor
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }
 import org.scalatest.{ Matchers, WordSpecLike }
 
@@ -32,7 +32,7 @@ class RegisterSessionIdInMsgActorTestSpec extends TestKit(ActorSystem("RegisterS
         val state: MeetingStateModel = new MeetingStateModel(bbbDevProps,
           abilities, clients, registeredUsers, users, chats, layouts, polls, whiteboards,
           presentations, breakoutRooms, captions, new MeetingStatus)
-        val meetingActorRef = system.actorOf(MeetingActor2x.props(bbbDevProps, eventBus, outGW, state))
+        val meetingActorRef = system.actorOf(MeetingActor.props(bbbDevProps, eventBus, outGW, state))
         val componentId = new ComponentId("apps")
         val sessionId = new SessionId("testSessionId")
         val sessionToken = new SessionToken("testSessionToken")

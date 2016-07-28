@@ -41,7 +41,7 @@ object Boot extends App with SystemConfiguration {
   val redisMessageHandlerActor = system.actorOf(RedisMsgHdlrActor.props(eventBus2x, incomingJsonMessageBus))
   incomingJsonMessageBus.subscribe(redisMessageHandlerActor, "incoming-json-message")
 
-  val bbbActor2x = system.actorOf(BigBlueButtonActor2x.props(system, eventBus2x, outGW), "bigbluebutton-actor2x")
+  val bbbActor2x = system.actorOf(BigBlueButtonActor.props(system, eventBus2x, outGW), "bigbluebutton-actor2x")
   eventBus2x.subscribe(bbbActor2x, meetingManagerChannel)
 
   val bbbInGW = new BigBlueButtonInGW(system, outGW, eventBus2x, incomingJsonMessageBus)

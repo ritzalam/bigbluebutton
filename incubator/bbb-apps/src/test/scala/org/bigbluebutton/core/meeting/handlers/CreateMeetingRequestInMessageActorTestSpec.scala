@@ -25,7 +25,7 @@ class CreateMeetingRequestInMessageActorTestSpec extends TestKit(ActorSystem("Bi
   "A BigBlueButtonActor" should {
     "Send meeting created event when receiving create meeting message" in {
       within(500 millis) {
-        val bbbActorRef = system.actorOf(BigBlueButtonActor2x.props(system, eventBus, outGW))
+        val bbbActorRef = system.actorOf(BigBlueButtonActor.props(system, eventBus, outGW))
         eventBus.subscribe(bbbActorRef, meetingManagerChannel)
 
         val msg = new CreateMeetingRequestInMsg(bbbDevProps.id, bbbDevProps)

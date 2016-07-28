@@ -4,11 +4,11 @@ import org.bigbluebutton.core.{ OutMessageGateway, UserHandlers }
 import org.bigbluebutton.core.api.IncomingMsg.ValidateAuthTokenInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.DisconnectUser2x
 import org.bigbluebutton.core.domain.RegisteredUser2x
-import org.bigbluebutton.core.meeting.MeetingActor2x
+import org.bigbluebutton.core.meeting.MeetingActor
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, RegisteredUsersModel }
 
 trait ValidateAuthTokenCommandHandler {
-  this: MeetingActor2x =>
+  this: MeetingActor =>
 
   val state: MeetingStateModel
   val outGW: OutMessageGateway
@@ -30,7 +30,7 @@ trait ValidateAuthTokenCommandHandler {
 }
 
 trait ValidateAuthTokenCommandFilter extends ValidateAuthTokenCommandHandler {
-  this: MeetingActor2x =>
+  this: MeetingActor =>
 
   abstract override def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage): Unit = {
     RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector) match {

@@ -7,14 +7,14 @@ import org.bigbluebutton.core.domain.{ Clients, MeetingExtensionStatus, MeetingP
 import org.bigbluebutton.core.api.json.IncomingEventBus2x
 import org.bigbluebutton.core.meeting.models._
 
-object RunningMeeting2x {
+object RunningMeeting {
   def apply(mProps: MeetingProperties2x, outGW: OutMessageGateway,
     eventBus: IncomingEventBus2x)(implicit context: ActorContext) =
-    new RunningMeeting2x(mProps, outGW, eventBus)(context)
+    new RunningMeeting(mProps, outGW, eventBus)(context)
 }
 
-class RunningMeeting2x(val mProps: MeetingProperties2x, val outGW: OutMessageGateway,
-    val eventBus: IncomingEventBus2x)(implicit val context: ActorContext) {
+class RunningMeeting(val mProps: MeetingProperties2x, val outGW: OutMessageGateway,
+                     val eventBus: IncomingEventBus2x)(implicit val context: ActorContext) {
 
   val abilities: MeetingPermissions = new MeetingPermissions
   val clients: Clients = new Clients
@@ -43,6 +43,6 @@ class RunningMeeting2x(val mProps: MeetingProperties2x, val outGW: OutMessageGat
     captions,
     new MeetingStatus)
 
-  val actorRef = context.actorOf(MeetingActor2x.props(mProps, eventBus, outGW, state), mProps.id.value)
+  val actorRef = context.actorOf(MeetingActor.props(mProps, eventBus, outGW, state), mProps.id.value)
 
 }

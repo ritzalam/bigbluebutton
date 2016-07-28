@@ -7,7 +7,7 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
 import org.bigbluebutton.core.domain.Clients
-import org.bigbluebutton.core.json.{ IncomingEventBus2x, OutgoingEventBus }
+import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, OutgoingEventBus }
 import org.bigbluebutton.core.meeting.MeetingActor2x
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
 import org.scalatest.{ Matchers, WordSpecLike }

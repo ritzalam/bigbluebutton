@@ -2,7 +2,7 @@ package org.bigbluebutton.core.meeting.handlers
 
 import org.bigbluebutton.core.{ JsonConversionTestFixtures, UnitSpec }
 import org.bigbluebutton.core.domain.{ GuestRole, ModeratorRole }
-import org.bigbluebutton.core.json.handlers.RegisterUserRequestJsonMsgHdlrHelper
+import org.bigbluebutton.core.api.json.handlers.RegisterUserRequestJsonMsgHdlrHelper
 import org.bigbluebutton.messages.RegisterUserRequestMessage
 import org.bigbluebutton.messages.vo.UserInfoBody
 

@@ -7,7 +7,7 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.OutGoingMsg.{ PresenterAssignedEventOutMsg, UserJoinedEvent2x, UserRegisteredEvent2x, ValidateAuthTokenSuccessReplyOutMsg }
 import org.bigbluebutton.core.domain.Clients
-import org.bigbluebutton.core.json.{ IncomingEventBus2x, OutgoingEventBus }
+import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, OutgoingEventBus }
 import org.bigbluebutton.core.meeting.MeetingActor2x
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }
 import org.bigbluebutton.core.{ MeetingTestFixtures, StopSystemAfterAll, TestKitUsageSpec }

@@ -6,7 +6,7 @@ import com.typesafe.config.ConfigFactory
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.api.OutGoingMsg.{ DisconnectUser2x, UserRegisteredEvent2x, ValidateAuthTokenSuccessReplyOutMsg }
 import org.bigbluebutton.core.domain.Clients
-import org.bigbluebutton.core.json.{ IncomingEventBus2x, OutgoingEventBus }
+import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, OutgoingEventBus }
 import org.bigbluebutton.core.meeting.MeetingActor2x
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }
 import org.scalatest.{ Matchers, WordSpecLike }

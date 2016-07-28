@@ -5,7 +5,7 @@ import akka.util.Timeout
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
-import org.bigbluebutton.core.json.IncomingEventBus2x
+import org.bigbluebutton.core.api.json.IncomingEventBus2x
 import org.bigbluebutton.core.meeting.RunningMeeting2x
 
 import scala.concurrent.duration._

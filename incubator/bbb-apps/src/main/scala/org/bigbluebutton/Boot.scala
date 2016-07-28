@@ -3,14 +3,14 @@ package org.bigbluebutton
 import akka.event.Logging
 import akka.actor.ActorSystem
 import org.bigbluebutton.core._
-import org.bigbluebutton.core.json.{ IncomingEventBus2x, IncomingJsonMessageBus, OutgoingEventBus }
+import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, IncomingJsonMessageBus, OutgoingEventBus }
 import org.bigbluebutton.endpoint.redis.RedisPublisher
 import org.bigbluebutton.endpoint.redis.KeepAliveRedisPublisher
 import org.bigbluebutton.endpoint.redis.AppsRedisSubscriberActor
 import org.bigbluebutton.core.pubsub.receivers.RedisMessageReceiver
 import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
-import org.bigbluebutton.core.json.{ IncomingJsonMessageBus, OutgoingEventBus }
+import org.bigbluebutton.core.api.json.{ IncomingJsonMessageBus, OutgoingEventBus }
 
 object Boot extends App with SystemConfiguration {
 

@@ -7,7 +7,7 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core._
 import org.bigbluebutton.core.api.IncomingMsg.CreateMeetingRequestInMsg
 import org.bigbluebutton.core.api.OutGoingMsg.MeetingCreatedEventOutMsg
-import org.bigbluebutton.core.json.{ BigBlueButtonInMessage, IncomingEventBus2x, OutgoingEventBus }
+import org.bigbluebutton.core.api.json.{ BigBlueButtonInMessage, IncomingEventBus2x, OutgoingEventBus }
 import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._

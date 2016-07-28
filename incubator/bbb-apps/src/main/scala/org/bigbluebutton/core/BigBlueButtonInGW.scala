@@ -4,7 +4,7 @@ import akka.actor.ActorSystem
 import akka.event.Logging
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.api._
-import org.bigbluebutton.core.json.{ IncomingEventBus2x, IncomingJsonMessage, IncomingJsonMessageBus, ReceivedJsonMessage }
+import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, IncomingJsonMessage, IncomingJsonMessageBus, ReceivedJsonMessage }
 
 class BigBlueButtonInGW(
     val system: ActorSystem,

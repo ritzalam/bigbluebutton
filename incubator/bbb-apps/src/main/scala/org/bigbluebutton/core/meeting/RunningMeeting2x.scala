@@ -4,7 +4,7 @@ import akka.actor.ActorContext
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.apps.presentation.PresentationModel
 import org.bigbluebutton.core.domain.{ Clients, MeetingExtensionStatus, MeetingProperties2x }
-import org.bigbluebutton.core.json.IncomingEventBus2x
+import org.bigbluebutton.core.api.json.IncomingEventBus2x
 import org.bigbluebutton.core.meeting.models._
 
 object RunningMeeting2x {

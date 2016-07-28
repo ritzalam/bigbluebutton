@@ -5,7 +5,7 @@ import org.bigbluebutton.core.api.IncomingMsg.UserJoinMeetingInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.DisconnectUser2x
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, RegisteredUsersModel }
 
-trait UserJoinMeetingRequestHandler {
+trait UserJoinMeetingRequestMsgHdlr {
   val state: MeetingStateModel
   val outGW: OutMessageGateway
   val userHandlers: UserHandlers
@@ -33,7 +33,7 @@ trait UserJoinMeetingRequestHandler {
   }
 }
 
-trait UserJoinMeetingRequestHandlerFilter extends UserJoinMeetingRequestHandler {
+trait UserJoinMeetingRequestMsgHdlrFilter extends UserJoinMeetingRequestMsgHdlr {
   val state: MeetingStateModel
   val outGW: OutMessageGateway
 

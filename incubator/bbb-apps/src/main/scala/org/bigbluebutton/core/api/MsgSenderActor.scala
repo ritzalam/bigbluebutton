@@ -1,15 +1,16 @@
-package org.bigbluebutton.core
+package org.bigbluebutton.core.api
 
 import akka.actor.{ Actor, ActorLogging, Props }
+import org.bigbluebutton.core.MessageSender
 import org.bigbluebutton.core.api.OutGoingMsg._
 import org.bigbluebutton.core.api.json.senders.ValidateAuthTokenSuccessReplyOutMsgJsonSender
 
-object MsgSenderActor2X {
+object MsgSenderActor {
   def props(msgSender: MessageSender): Props =
-    Props(classOf[MsgSenderActor2X], msgSender)
+    Props(classOf[MsgSenderActor], msgSender)
 }
 
-class MsgSenderActor2X(val service: MessageSender)
+class MsgSenderActor(val service: MessageSender)
     extends Actor with ActorLogging
     with ValidateAuthTokenSuccessReplyOutMsgJsonSender {
 

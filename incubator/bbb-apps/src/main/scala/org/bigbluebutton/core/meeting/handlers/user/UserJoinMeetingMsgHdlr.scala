@@ -6,7 +6,7 @@ import org.bigbluebutton.core.api.OutGoingMsg.{ PresenterAssignedEventOutMsg, Us
 import org.bigbluebutton.core.domain.{ Presenter, PresenterRole, User }
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, RegisteredUsersModel, UsersModel }
 
-trait UserJoinMeetingMessageHandler {
+trait UserJoinMeetingMsgHdlr {
   val outGW: OutMessageGateway
 
   def handleUserJoinMeetingMessage(msg: UserJoinMeetingInMessage, meeting: MeetingStateModel): Unit = {

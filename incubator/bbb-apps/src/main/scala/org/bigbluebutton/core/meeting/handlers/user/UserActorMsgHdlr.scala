@@ -6,12 +6,12 @@ import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.domain.{ RegisteredUser, User, UserState }
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, UsersModel }
 
-class UserActorMessageHandler(
+class UserActorMsgHdlr(
   val user: RegisteredUser,
   val outGW: OutMessageGateway)
     extends SystemConfiguration
-    with ValidateAuthTokenHandler
-    with UserJoinMeetingMessageHandler {
+    with ValidateAuthTokenMsgHdlr
+    with UserJoinMeetingMsgHdlr {
 
   val userState: UserState = new UserState(user)
 

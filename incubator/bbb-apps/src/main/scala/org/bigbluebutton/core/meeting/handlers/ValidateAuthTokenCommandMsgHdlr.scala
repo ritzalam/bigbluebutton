@@ -4,17 +4,17 @@ import org.bigbluebutton.core.{ OutMessageGateway, UserHandlers }
 import org.bigbluebutton.core.api.IncomingMsg.ValidateAuthTokenInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.DisconnectUser2x
 import org.bigbluebutton.core.domain.RegisteredUser
-import org.bigbluebutton.core.meeting.MeetingActor
+import org.bigbluebutton.core.meeting.MeetingActorMsg
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, RegisteredUsersModel }
 
-trait ValidateAuthTokenCommandHandler {
-  this: MeetingActor =>
+trait ValidateAuthTokenCommandMsgHdlr {
+  this: MeetingActorMsg =>
 
   val state: MeetingStateModel
   val outGW: OutMessageGateway
   val userHandlers: UserHandlers
 
-  def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage): Unit = {
+  def handleValidateAuthToken(msg: ValidateAuthTokenInMessage): Unit = {
     log.debug("Received ValidateAuthTokenRequestInMessage")
     def handle(regUser: RegisteredUser): Unit = {
       val userHandler = userHandlers.createHandler(regUser, outGW)
@@ -29,14 +29,14 @@ trait ValidateAuthTokenCommandHandler {
   }
 }
 
-trait ValidateAuthTokenCommandFilter extends ValidateAuthTokenCommandHandler {
-  this: MeetingActor =>
+trait ValidateAuthTokenCommandMsgFilter extends ValidateAuthTokenCommandMsgHdlr {
+  this: MeetingActorMsg =>
 
-  abstract override def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage): Unit = {
+  abstract override def handleValidateAuthToken(msg: ValidateAuthTokenInMessage): Unit = {
     RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector) match {
       case Some(u) =>
         log.debug("Received ValidateAuthTokenRequestInMessage. Filter passed. Forwarding.")
-        super.handleValidateAuthToken2x(msg)
+        super.handleValidateAuthToken(msg)
       case None =>
         log.debug("Received ValidateAuthTokenRequestInMessage. Filter failed. Disconnecting.")
         outGW.send(new DisconnectUser2x(msg.meetingId, msg.senderId))

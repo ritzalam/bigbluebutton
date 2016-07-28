@@ -3,17 +3,18 @@ package org.bigbluebutton.core.api.json.senders
 import java.util
 
 import org.bigbluebutton.common.messages.MessagingConstants
-import org.bigbluebutton.core.{ MessageSender, MsgSenderActor2X }
+import org.bigbluebutton.core.MessageSender
 import org.bigbluebutton.core.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMsg
 import org.bigbluebutton.core.domain.{ ConvertRoleHelper, DialNumber, Role }
 import org.bigbluebutton.core.MessageSender
+import org.bigbluebutton.core.api.MsgSenderActor
 import org.bigbluebutton.messages.body.MessageHeaderToClient
 import org.bigbluebutton.messages.vo.UserInfoBody
 import org.bigbluebutton.messages.{ MessageType, ValidateAuthTokenSuccessMessage }
 
 trait ValidateAuthTokenSuccessReplyOutMsgJsonSender
     extends ValidateAuthTokenSuccessReplyOutMsgJsonSenderHelper {
-  this: MsgSenderActor2X =>
+  this: MsgSenderActor =>
 
   val service: MessageSender
 

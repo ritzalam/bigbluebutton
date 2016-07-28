@@ -7,7 +7,7 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.{ MeetingTestFixtures, OutMessageGateway, StopSystemAfterAll, TestKitUsageSpec }
 import org.bigbluebutton.core.domain.Clients
 import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, OutgoingEventBus }
-import org.bigbluebutton.core.meeting.MeetingActor
+import org.bigbluebutton.core.meeting.MeetingActorMsg
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }
 import org.scalatest.{ Matchers, WordSpecLike }
 
@@ -31,7 +31,7 @@ class KeepAliveMessageActorTestSpec extends TestKit(ActorSystem("KeepAliveMessag
           bbbDevProps, abilities, clients, registeredUsers, users, chats, layouts, polls,
           whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
-        val meetingActorRef = system.actorOf(MeetingActor.props(bbbDevProps, eventBus, outGW, state))
+        val meetingActorRef = system.actorOf(MeetingActorMsg.props(bbbDevProps, eventBus, outGW, state))
         meetingActorRef ! systemKeepAliveCommand
         // expectMsgClass(classOf[PubSubPong]) // TODO
       }

@@ -1,6 +1,6 @@
 package org.bigbluebutton.core.api.json.handlers
 
-import org.bigbluebutton.core.RedisMsgHdlrActor
+import org.bigbluebutton.core.api.RedisMsgHdlrActor
 import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, ReceivedJsonMessage }
 
 trait UnhandledJsonMsgHdlr {

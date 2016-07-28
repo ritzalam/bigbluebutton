@@ -1,4 +1,4 @@
-package org.bigbluebutton.core
+package org.bigbluebutton.core.api
 
 import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core.api.json.handlers._

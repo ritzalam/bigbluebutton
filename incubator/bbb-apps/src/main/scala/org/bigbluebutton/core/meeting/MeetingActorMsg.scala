@@ -54,39 +54,48 @@ class MeetingActorInternal(val mProps: MeetingProperties2x,
   }
 }
 
-object MeetingActor {
+object MeetingActorMsg {
   def props(
     props: MeetingProperties2x,
     bus: IncomingEventBus2x,
     outGW: OutMessageGateway,
     state: MeetingStateModel): Props =
-    Props(classOf[MeetingActor], props, bus, outGW, state)
+    Props(classOf[MeetingActorMsg], props, bus, outGW, state)
 }
 
-class MeetingActor(
+class MeetingActorMsg(
   val props: MeetingProperties2x,
   val bus: IncomingEventBus2x,
   val outGW: OutMessageGateway,
   val state: MeetingStateModel) extends Actor with ActorLogging
-    with RegisterSessionIdInMsgHandler
-    with ValidateAuthTokenCommandFilter
-    with RegisterUserCommandHandler
-    with UserJoinMeetingRequestHandlerFilter
-    with EjectUserFromMeetingCommandFilter {
+    with RegisterSessionIdInMsgHdlr
+    with ValidateAuthTokenCommandMsgFilter
+    with RegisterUserCommandMsgHdlr
+    with UserJoinMeetingRequestMsgHdlrFilter
+    with EjectUserFromMeetingCommandMsgFilter {
 
   val userHandlers = new UserHandlers
 
-  /** Subscribe to meeting and voice events. **/
-  bus.subscribe(self, props.id.value)
-  bus.subscribe(self, props.voiceConf.value)
+  override def preStart(): Unit = {
+    /** Subscribe to meeting and voice events. **/
+    bus.subscribe(self, props.id.value)
+    bus.subscribe(self, props.voiceConf.value)
+    super.preStart()
+  }
+
+  override def postStop(): Unit = {
+    bus.unsubscribe(self, props.id.value)
+    bus.unsubscribe(self, props.voiceConf.value)
+    super.postStop()
+  }
 
   def receive = {
     case msg: RegisterUserInMessage =>
       log.debug("Handling RegisterUserRequestInMessage")
-      handleRegisterUser2x(msg)
+      handleRegisterUser(msg)
     case msg: ValidateAuthTokenInMessage =>
       log.debug("Handling ValidateAuthTokenRequestInMessage")
-      handleValidateAuthToken2x(msg)
+      handleValidateAuthToken(msg)
     case msg: UserJoinMeetingInMessage =>
       log.debug("Handling NewUserPresence2x")
       handleUserJoinMeetingRequestInMessage(msg)

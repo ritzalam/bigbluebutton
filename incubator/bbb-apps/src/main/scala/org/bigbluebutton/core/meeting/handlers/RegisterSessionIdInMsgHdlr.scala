@@ -5,7 +5,7 @@ import org.bigbluebutton.core.api.IncomingMsg.RegisterSessionIdInMsg
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
 
-trait RegisterSessionIdInMsgHandler {
+trait RegisterSessionIdInMsgHdlr {
   val state: MeetingStateModel
   val outGW: OutMessageGateway
 

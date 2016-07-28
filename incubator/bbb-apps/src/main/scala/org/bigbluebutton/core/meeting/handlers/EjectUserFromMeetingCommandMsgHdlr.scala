@@ -7,7 +7,7 @@ import org.bigbluebutton.core.domain.{ CanEjectUser, User }
 import org.bigbluebutton.core.meeting.filters.DefaultAbilitiesFilter
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, UsersModel }
 
-trait EjectUserFromMeetingCommandHandler {
+trait EjectUserFromMeetingCommandMsgHdlr {
   val state: MeetingStateModel
   val outGW: OutMessageGateway
 
@@ -36,7 +36,7 @@ trait EjectUserFromMeetingCommandHandler {
   }
 }
 
-trait EjectUserFromMeetingCommandFilter extends EjectUserFromMeetingCommandHandler {
+trait EjectUserFromMeetingCommandMsgFilter extends EjectUserFromMeetingCommandMsgHdlr {
   val state: MeetingStateModel
   val outGW: OutMessageGateway
 
@@ -60,7 +60,7 @@ trait EjectUserFromMeetingCommandFilter extends EjectUserFromMeetingCommandHandl
   }
 }
 
-trait EjectUserFromMeetingCommandLogFilter extends EjectUserFromMeetingCommandHandler {
+trait EjectUserFromMeetingCommandLogFilter extends EjectUserFromMeetingCommandMsgHdlr {
   abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMsg): Unit = {
     println("**** handleEjectUserFromMeeting ****")
   }

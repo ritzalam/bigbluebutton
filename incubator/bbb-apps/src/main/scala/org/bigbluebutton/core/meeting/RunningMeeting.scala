@@ -43,6 +43,6 @@ class RunningMeeting(val mProps: MeetingProperties2x, val outGW: OutMessageGatew
     captions,
     new MeetingStatus)
 
-  val actorRef = context.actorOf(MeetingActor.props(mProps, eventBus, outGW, state), mProps.id.value)
+  val actorRef = context.actorOf(MeetingActorMsg.props(mProps, eventBus, outGW, state), mProps.id.value)
 
 }

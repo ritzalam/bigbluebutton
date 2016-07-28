@@ -3,6 +3,7 @@ package org.bigbluebutton
 import akka.event.Logging
 import akka.actor.ActorSystem
 import org.bigbluebutton.core._
+import org.bigbluebutton.core.api.{ MsgSenderActor, RedisMsgHdlrActor }
 import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, IncomingJsonMessageBus, OutgoingEventBus }
 import org.bigbluebutton.endpoint.redis.RedisPublisher
 import org.bigbluebutton.endpoint.redis.KeepAliveRedisPublisher
@@ -32,7 +33,7 @@ object Boot extends App with SystemConfiguration {
   recorderApp.start()
 
   //val recorderActor = system.actorOf(RecorderActor.props(recorderApp), "recorderActor")
-  val newMessageSenderActor = system.actorOf(MsgSenderActor2X.props(msgSender), "newMessageSenderActor")
+  val newMessageSenderActor = system.actorOf(MsgSenderActor.props(msgSender), "newMessageSenderActor")
 
   //outgoingEventBus.subscribe(recorderActor, outgoingMessageChannel)
   outgoingEventBus.subscribe(newMessageSenderActor, outgoingMessageChannel)

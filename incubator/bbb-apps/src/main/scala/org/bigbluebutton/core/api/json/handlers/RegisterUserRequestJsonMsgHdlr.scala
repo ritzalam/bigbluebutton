@@ -1,7 +1,7 @@
 package org.bigbluebutton.core.api.json.handlers
 
-import org.bigbluebutton.core.RedisMsgHdlrActor
 import org.bigbluebutton.core.api.IncomingMsg.RegisterUserInMessage
+import org.bigbluebutton.core.api.RedisMsgHdlrActor
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.api.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.messages.RegisterUserRequestMessage

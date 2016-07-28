@@ -5,11 +5,11 @@ import org.bigbluebutton.core.api.IncomingMsg.RegisterUserInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.UserRegisteredEvent2x
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, PinNumberGenerator, RegisteredUsersModel }
 
-trait RegisterUserCommandHandler {
+trait RegisterUserCommandMsgHdlr {
   val state: MeetingStateModel
   val outGW: OutMessageGateway
 
-  def handleRegisterUser2x(msg: RegisterUserInMessage): Unit = {
+  def handleRegisterUser(msg: RegisterUserInMessage): Unit = {
     val pinNumber = PinNumberGenerator.generatePin(state.props.voiceConf, state.status.get)
     val regUser = RegisteredUsersModel.create(
       msg.userId,

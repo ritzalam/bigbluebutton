@@ -31,7 +31,7 @@ class UserActorMessageHandlerTests extends UnitSpec with MockitoSugar with Meeti
 
     val mockOutGW = mock[OutMessageGateway]
     // Create the class under test and pass the mock to it
-    val classUnderTest = new UserActorMessageHandler(richardRegisteredUser, mockOutGW)
+    val classUnderTest = new UserActorMsgHdlr(richardRegisteredUser, mockOutGW)
 
     val ejectUserMsg = new EjectUserFromMeetingInMsg(bbbDevIntMeetingId, antonIntUserId, richardIntUserId)
 

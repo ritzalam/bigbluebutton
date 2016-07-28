@@ -6,8 +6,8 @@ import org.bigbluebutton.core.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMs
 import org.bigbluebutton.core.domain.RegisteredUser
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, RegisteredUsersModel }
 
-trait ValidateAuthTokenHandler {
-  this: UserActorMessageHandler =>
+trait ValidateAuthTokenMsgHdlr {
+  this: UserActorMsgHdlr =>
 
   val outGW: OutMessageGateway
 

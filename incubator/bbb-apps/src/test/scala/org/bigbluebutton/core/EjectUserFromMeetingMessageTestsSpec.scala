@@ -8,7 +8,7 @@ import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
 import org.bigbluebutton.core.domain.Clients
 import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, OutgoingEventBus }
-import org.bigbluebutton.core.meeting.MeetingActor
+import org.bigbluebutton.core.meeting.MeetingActorMsg
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus, RegisteredUsersModel, UsersModel }
 import org.scalatest.{ Matchers, WordSpecLike }
 
@@ -46,7 +46,7 @@ class EjectUserFromMeetingMessageTestsSpec extends TestKit(ActorSystem("MeetingA
 
         val ejectUserMsg = new EjectUserFromMeetingInMsg(bbbDevIntMeetingId, antonIntUserId, richardIntUserId)
 
-        val meetingActorRef = system.actorOf(MeetingActor.props(bbbDevProps, eventBus, outGW, state))
+        val meetingActorRef = system.actorOf(MeetingActorMsg.props(bbbDevProps, eventBus, outGW, state))
         meetingActorRef ! ejectUserMsg
         //expectMsgAllClassOf(classOf[UserEjectedFromMeeting], classOf[DisconnectUser2x], classOf[UserLeft2x])
         expectMsgClass(classOf[UserEjectedFromMeetingEventOutMsg])

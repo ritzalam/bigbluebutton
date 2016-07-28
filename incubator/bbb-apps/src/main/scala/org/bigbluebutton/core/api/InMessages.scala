@@ -189,7 +189,7 @@ object IncomingMsg {
    * User joining the meeting from a specific client.
    */
   case class UserJoinMeetingInMessage(meetingId: IntMeetingId, senderId: IntUserId, sessionToken: SessionToken,
-    sessionId: SessionId, presenceId: ClientId, userAgent: ClientUserAgent) extends InMsg
+    sessionId: SessionId, clientId: ClientId, userAgent: ClientUserAgent) extends InMsg
 
   /**
    * User leaving the meeting from a specific client. Only this client will leave the meeting.

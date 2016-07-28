@@ -30,14 +30,14 @@ trait UserJoinMeetingMsgHdlr {
     UsersModel.findWithId(msg.senderId, meeting.usersModel.toVector) match {
       case Some(user) =>
         // Find presence associated with this session
-        val client = User.findWithClientId(user.client, msg.presenceId)
+        val client = User.findWithClientId(user.client, msg.clientId)
 
       // TODO: Send reconnecting message
       case None =>
         for {
           ru <- RegisteredUsersModel.findWithToken(msg.sessionToken, meeting.registeredUsersModel.toVector)
           u = User.create(msg.senderId, ru.extId, ru.name, ru.roles)
-          presence = User.create(msg.presenceId, u.id, msg.sessionToken, msg.userAgent)
+          presence = User.create(msg.clientId, u.id, msg.sessionToken, msg.userAgent)
           user = User.add(u, presence)
         } yield process(user)
     }

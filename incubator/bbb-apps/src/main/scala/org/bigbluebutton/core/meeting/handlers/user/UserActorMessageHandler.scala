@@ -3,11 +3,11 @@ package org.bigbluebutton.core.meeting.handlers.user
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg._
-import org.bigbluebutton.core.domain.{ RegisteredUser2x, User, UserState }
+import org.bigbluebutton.core.domain.{ RegisteredUser, User, UserState }
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, UsersModel }
 
 class UserActorMessageHandler(
-  val user: RegisteredUser2x,
+  val user: RegisteredUser,
   val outGW: OutMessageGateway)
     extends SystemConfiguration
     with ValidateAuthTokenHandler

@@ -26,12 +26,12 @@ object ClientTypeAbilities {
 }
 
 trait DefaultAbilitiesFilter {
-  def can(action: Abilities2x, abilities: Set[Abilities2x]): Boolean = {
+  def can(action: Abilities, abilities: Set[Abilities]): Boolean = {
     abilities contains action
   }
 
-  def calcRolesAbilities(roles: Set[Role2x]): Set[Abilities2x] = {
-    var abilities: Set[Abilities2x] = Set.empty
+  def calcRolesAbilities(roles: Set[Role]): Set[Abilities] = {
+    var abilities: Set[Abilities] = Set.empty
 
     roles.foreach { r =>
       r match {
@@ -45,19 +45,19 @@ trait DefaultAbilitiesFilter {
     abilities
   }
 
-  def add(abilities: Set[Abilities2x], to: Set[Abilities2x]): Set[Abilities2x] = {
+  def add(abilities: Set[Abilities], to: Set[Abilities]): Set[Abilities] = {
     to ++ abilities
   }
 
-  def subtract(abilities: Set[Abilities2x], from: Set[Abilities2x]): Set[Abilities2x] = {
+  def subtract(abilities: Set[Abilities], from: Set[Abilities]): Set[Abilities] = {
     from -- abilities
   }
 
   def calcEffectiveAbilities(
-    roles: Set[Role2x],
+    roles: Set[Role],
     userAbilities: UserAbilities,
-    meetingAbilities: Set[Abilities2x]): Set[Abilities2x] = {
-    var effectiveAbilities: Set[Abilities2x] = Set.empty
+    meetingAbilities: Set[Abilities]): Set[Abilities] = {
+    var effectiveAbilities: Set[Abilities] = Set.empty
     effectiveAbilities = subtract(userAbilities.removed, calcRolesAbilities(roles))
     if (userAbilities.applyMeetingAbilities) {
       effectiveAbilities = subtract(meetingAbilities, effectiveAbilities)
@@ -67,12 +67,12 @@ trait DefaultAbilitiesFilter {
   }
 
   def calcEffectiveAbilities(
-    roles: Set[Role2x],
-    clientAbilities: Set[Abilities2x],
+    roles: Set[Role],
+    clientAbilities: Set[Abilities],
     userAbilities: UserAbilities,
-    meetingAbilities: Set[Abilities2x]): Set[Abilities2x] = {
+    meetingAbilities: Set[Abilities]): Set[Abilities] = {
 
-    var effectiveAbilities: Set[Abilities2x] = Set.empty
+    var effectiveAbilities: Set[Abilities] = Set.empty
     effectiveAbilities = subtract(userAbilities.removed, add(calcRolesAbilities(roles), clientAbilities))
     if (userAbilities.applyMeetingAbilities) {
       effectiveAbilities = add(effectiveAbilities, meetingAbilities)

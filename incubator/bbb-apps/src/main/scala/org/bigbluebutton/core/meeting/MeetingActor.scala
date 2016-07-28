@@ -20,7 +20,7 @@ object MeetingActorInternal {
 // This actor is an internal audit actor for each meeting actor that
 // periodically sends messages to the meeting actor
 class MeetingActorInternal(val mProps: MeetingProperties2x,
-                           val eventBus: IncomingEventBus2x, val outGW: OutMessageGateway)
+  val eventBus: IncomingEventBus2x, val outGW: OutMessageGateway)
     extends Actor with ActorLogging {
 
   import context.dispatcher

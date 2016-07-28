@@ -1,6 +1,6 @@
 package org.bigbluebutton.core.domain
 
-class UserState(user: RegisteredUser2x) {
+class UserState(user: RegisteredUser) {
 
   private var status: UserStatus = UserState.create(user.pinNumber, SessionId("none"))
 

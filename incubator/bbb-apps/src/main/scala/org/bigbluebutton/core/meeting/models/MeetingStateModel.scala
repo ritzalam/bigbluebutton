@@ -1,9 +1,9 @@
 package org.bigbluebutton.core.meeting.models
 
 import org.bigbluebutton.core.apps.presentation.PresentationModel
-import org.bigbluebutton.core.domain.{ Abilities2x, Clients, MeetingProperties2x }
+import org.bigbluebutton.core.domain.{ Abilities, Clients, MeetingProperties2x }
 
-case class MeetingAbilities(removed: Set[Abilities2x], added: Set[Abilities2x])
+case class MeetingAbilities(removed: Set[Abilities], added: Set[Abilities])
 
 class MeetingPermissions {
   private var permissions: MeetingAbilities = new MeetingAbilities(Set.empty, Set.empty)

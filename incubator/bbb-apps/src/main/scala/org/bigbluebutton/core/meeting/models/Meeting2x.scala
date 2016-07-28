@@ -4,7 +4,7 @@ import com.softwaremill.quicklens._
 import org.bigbluebutton.core.domain._
 
 case class Meeting3x(
-  abilities: Set[Abilities2x] = Set.empty,
+  abilities: Set[Abilities] = Set.empty,
   isRecording: Boolean = false,
   muted: Boolean = false,
   ended: Boolean = false,

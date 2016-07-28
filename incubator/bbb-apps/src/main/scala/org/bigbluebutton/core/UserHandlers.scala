@@ -1,12 +1,12 @@
 package org.bigbluebutton.core
 
-import org.bigbluebutton.core.domain.{ IntUserId, RegisteredUser2x }
+import org.bigbluebutton.core.domain.{ IntUserId, RegisteredUser }
 import org.bigbluebutton.core.meeting.handlers.user.UserActorMessageHandler
 
 class UserHandlers {
   private var userHandlers = new collection.immutable.HashMap[String, UserActorMessageHandler]
 
-  def createHandler(regUser: RegisteredUser2x, outGW: OutMessageGateway): UserActorMessageHandler = {
+  def createHandler(regUser: RegisteredUser, outGW: OutMessageGateway): UserActorMessageHandler = {
     val userHandler = new UserActorMessageHandler(regUser, outGW)
     userHandlers += regUser.id.value -> userHandler
     userHandler

@@ -87,7 +87,7 @@ object OutGoingMsg {
 
   // Users
   case class UserRegisteredEvent2x(
-    meetingId: IntMeetingId, recorded: Recorded, user: RegisteredUser2x) extends OutMsg
+    meetingId: IntMeetingId, recorded: Recorded, user: RegisteredUser) extends OutMsg
   case class UserRegistered(
     meetingId: IntMeetingId, recorded: Recorded, user: RegisteredUser) extends OutMsg
   case class UserLeftEventOutMsg(
@@ -110,7 +110,7 @@ object OutGoingMsg {
     meetingId: IntMeetingId, requesterId: IntUserId,
     token: String, valid: Boolean, correlationId: String) extends OutMsg
   case class ValidateAuthTokenSuccessReplyOutMsg(
-    meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
+    meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role],
     extUserId: ExtUserId, authToken: SessionToken, avatar: Avatar,
     logoutUrl: LogoutUrl,
     welcome: Welcome,

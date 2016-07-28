@@ -1,9 +1,9 @@
 package org.bigbluebutton.core.domain
 
-case class RegisteredUser2x(id: IntUserId,
+case class RegisteredUser(id: IntUserId,
   extId: ExtUserId,
   name: Name,
-  roles: Set[Role2x],
+  roles: Set[Role],
   authToken: SessionToken,
   avatar: Avatar,
   logoutUrl: LogoutUrl,

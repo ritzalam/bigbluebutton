@@ -6,25 +6,25 @@ trait ClientUserAgent
 case object FlashWebUserAgent extends ClientUserAgent
 case object Html5WebUserAgent extends ClientUserAgent
 
-object Client2x {
-  def save(client: Client2x, component: AppsComponent): Client2x = {
+object Client {
+  def save(client: Client, component: AppsComponent): Client = {
     modify(client)(_.appsComponent).setTo(component)
   }
 
-  def save(client: Client2x, component: VoiceComponent): Client2x = {
+  def save(client: Client, component: VoiceComponent): Client = {
     modify(client)(_.voiceComponent).setTo(component)
   }
 
-  def save(client: Client2x, component: WebCamComponent): Client2x = {
+  def save(client: Client, component: WebCamComponent): Client = {
     modify(client)(_.webCamComponent).setTo(component)
   }
 
-  def save(client: Client2x, component: ScreenShareComponent): Client2x = {
+  def save(client: Client, component: ScreenShareComponent): Client = {
     modify(client)(_.screenShareComponent).setTo(component)
   }
 }
 
-case class Client2x(
+case class Client(
   id: ClientId,
   userId: IntUserId,
   sessionToken: SessionToken,
@@ -46,19 +46,19 @@ case class VoiceComponent(sessionIds: Set[SessionId])
 case class ScreenShareComponent(sessionIds: Set[SessionId])
 
 case class WebCamStreams(streams: Set[Stream])
-case class VoiceApp2x(sessionId: SessionId, voice: Voice4x)
+case class VoiceApp(sessionId: SessionId, voice: Voice4x)
 case class ScreenShareStreams(streams: Set[Stream])
 
 class Clients {
-  private var clients: collection.immutable.HashMap[ClientId, Client2x] = new collection.immutable.HashMap[ClientId, Client2x]
+  private var clients: collection.immutable.HashMap[ClientId, Client] = new collection.immutable.HashMap[ClientId, Client]
 
-  def toVector: Vector[Client2x] = clients.values.toVector
+  def toVector: Vector[Client] = clients.values.toVector
 
-  def save(client: Client2x): Unit = {
+  def save(client: Client): Unit = {
     clients += client.id -> client
   }
 
-  def remove(id: ClientId): Option[Client2x] = {
+  def remove(id: ClientId): Option[Client] = {
     val client = clients.get(id)
     client foreach (u => clients -= id)
     client

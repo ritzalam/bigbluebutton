@@ -2,7 +2,7 @@ package org.bigbluebutton.core.api
 
 import org.bigbluebutton.core.apps.presentation.{ Presentation, PreuploadedPresentation }
 import org.bigbluebutton.core.apps.presentation.domain._
-import org.bigbluebutton.core.domain.{ AnnotationVO, BreakoutUser, ClientUserAgent, MeetingProperties2x, Role2x, Stream, Voice4x }
+import org.bigbluebutton.core.domain.{ AnnotationVO, BreakoutUser, ClientUserAgent, MeetingProperties2x, Role, Stream, Voice4x }
 import org.bigbluebutton.core.apps.presentation.domain._
 import org.bigbluebutton.core.apps.presentation.PreuploadedPresentation
 import org.bigbluebutton.core.domain._
@@ -176,12 +176,12 @@ object IncomingMsg {
    * @param config
    * @param extData
    */
-  case class RegisterUserInMessage(meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
+  case class RegisterUserInMessage(meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role],
     extUserId: ExtUserId, authToken: SessionToken, avatar: Avatar, logoutUrl: LogoutUrl, welcome: Welcome,
     dialNumbers: Set[DialNumber], config: String, extData: String) extends InMsg
 
   case class RegisterUserInMsg(header: MsgHeader, body: RegisterUserInMsgBody) extends InMsg
-  case class RegisterUserInMsgBody(meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role2x],
+  case class RegisterUserInMsgBody(meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role],
     extUserId: ExtUserId, authToken: SessionToken, avatar: Avatar, logoutUrl: LogoutUrl,
     welcome: Welcome, dialNumbers: Set[DialNumber], config: String, extData: String)
 

@@ -5,7 +5,7 @@ import java.util
 import org.bigbluebutton.common.messages.MessagingConstants
 import org.bigbluebutton.core.{ MessageSender, MsgSenderActor2X }
 import org.bigbluebutton.core.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMsg
-import org.bigbluebutton.core.domain.{ ConvertRoleHelper, DialNumber, Role2x }
+import org.bigbluebutton.core.domain.{ ConvertRoleHelper, DialNumber, Role }
 import org.bigbluebutton.core.MessageSender
 import org.bigbluebutton.messages.body.MessageHeaderToClient
 import org.bigbluebutton.messages.vo.UserInfoBody
@@ -46,7 +46,7 @@ trait ValidateAuthTokenSuccessReplyOutMsgJsonSenderHelper {
     message
   }
 
-  def convertRoles(roles: Set[Role2x]): util.List[String] = {
+  def convertRoles(roles: Set[Role]): util.List[String] = {
     import scala.collection.convert.wrapAsJava._
 
     // Convert roles to strings

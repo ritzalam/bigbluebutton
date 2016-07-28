@@ -10,7 +10,7 @@ trait RegisterSessionIdInMsgHandler {
   val outGW: OutMessageGateway
 
   def handleRegisterSessionIdInMsg(message: RegisterSessionIdInMsg): Unit = {
-    def getClientWithSessionToken(user: User, sessionToken: SessionToken): Client2x = {
+    def getClientWithSessionToken(user: User, sessionToken: SessionToken): Client = {
       User.findClientWithSessionToken(user.client, sessionToken) match {
         case Some(client) => client
 
@@ -23,24 +23,24 @@ trait RegisterSessionIdInMsgHandler {
       }
     }
 
-    def addNewSessionForComponent(client2x: Client2x, componentId: ComponentId, sessionId: SessionId): Client2x = {
+    def addNewSessionForComponent(client2x: Client, componentId: ComponentId, sessionId: SessionId): Client = {
       componentId.value match {
         case "apps" =>
           val sessionIds = client2x.appsComponent.sessionIds + sessionId
           val component = new AppsComponent(sessionIds)
-          Client2x.save(client2x, component)
+          Client.save(client2x, component)
         case "voice" =>
           val sessionIds = client2x.voiceComponent.sessionIds + sessionId
           val component = new VoiceComponent(sessionIds)
-          Client2x.save(client2x, component)
+          Client.save(client2x, component)
         case "video" =>
           val sessionIds = client2x.webCamComponent.sessionIds + sessionId
           val component = new WebCamComponent(sessionIds)
-          Client2x.save(client2x, component)
+          Client.save(client2x, component)
         case "screenshare" =>
           val sessionIds = client2x.screenShareComponent.sessionIds + sessionId
           val component = new ScreenShareComponent(sessionIds)
-          Client2x.save(client2x, component)
+          Client.save(client2x, component)
       }
     }
 

@@ -2,15 +2,6 @@ package org.bigbluebutton.core.domain
 
 import akka.actor.ActorRef
 
-object Role {
-  val MODERATOR = "Moderator"
-  val VIEWER = "Viewer"
-  val PRESENTER = "Presenter"
-}
-
-case class RegisteredUser(id: IntUserId, extId: ExtUserId, name: Name, roles: Set[String],
-  sessionTokens: Set[SessionToken])
-
 case class UserVO(
   id: IntUserId,
   extId: ExtUserId,

@@ -9,7 +9,7 @@ class ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelperTests extends UnitS
   it should "convert roles to string" in {
     object Helper extends ValidateAuthTokenSuccessReplyOutMsgJsonSenderHelper
 
-    val roles: Set[Role2x] = Set(ModeratorRole, ViewerRole)
+    val roles: Set[Role] = Set(ModeratorRole, ViewerRole)
     val rolesList = Helper.convertRoles(roles)
     assert(rolesList.size() == 2)
     assert(rolesList.contains("moderator"))

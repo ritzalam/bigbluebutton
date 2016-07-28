@@ -18,7 +18,7 @@ object BigBlueButtonActor extends SystemConfiguration {
 }
 
 class BigBlueButtonActor(val system: ActorSystem,
-                         eventBus: IncomingEventBus2x, outGW: OutMessageGateway) extends Actor with ActorLogging {
+    eventBus: IncomingEventBus2x, outGW: OutMessageGateway) extends Actor with ActorLogging {
 
   implicit def executionContext = system.dispatcher
   implicit val timeout = Timeout(5 seconds)

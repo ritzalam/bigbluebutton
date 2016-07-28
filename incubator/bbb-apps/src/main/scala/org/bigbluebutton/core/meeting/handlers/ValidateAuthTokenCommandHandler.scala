@@ -3,7 +3,7 @@ package org.bigbluebutton.core.meeting.handlers
 import org.bigbluebutton.core.{ OutMessageGateway, UserHandlers }
 import org.bigbluebutton.core.api.IncomingMsg.ValidateAuthTokenInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.DisconnectUser2x
-import org.bigbluebutton.core.domain.RegisteredUser2x
+import org.bigbluebutton.core.domain.RegisteredUser
 import org.bigbluebutton.core.meeting.MeetingActor
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, RegisteredUsersModel }
 
@@ -16,7 +16,7 @@ trait ValidateAuthTokenCommandHandler {
 
   def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage): Unit = {
     log.debug("Received ValidateAuthTokenRequestInMessage")
-    def handle(regUser: RegisteredUser2x): Unit = {
+    def handle(regUser: RegisteredUser): Unit = {
       val userHandler = userHandlers.createHandler(regUser, outGW)
       log.debug("Handing off to user handler.")
       userHandler.handleValidateAuthToken2x(msg, state)

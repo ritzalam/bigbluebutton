@@ -60,7 +60,7 @@ trait RegisterUserRequestJsonMsgHdlrHelper {
       dialNumbers, config, extData)
   }
 
-  def extractRoles(body: UserInfoBody): Set[Role2x] = {
+  def extractRoles(body: UserInfoBody): Set[Role] = {
     import scala.collection.convert.wrapAsScala._
     // convert the list to a set
     val r = asScalaBuffer(body.roles).toSet

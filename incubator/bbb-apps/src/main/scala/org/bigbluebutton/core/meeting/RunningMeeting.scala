@@ -14,7 +14,7 @@ object RunningMeeting {
 }
 
 class RunningMeeting(val mProps: MeetingProperties2x, val outGW: OutMessageGateway,
-                     val eventBus: IncomingEventBus2x)(implicit val context: ActorContext) {
+    val eventBus: IncomingEventBus2x)(implicit val context: ActorContext) {
 
   val abilities: MeetingPermissions = new MeetingPermissions
   val clients: Clients = new Clients

@@ -6,7 +6,7 @@ object ConvertRoleHelper {
   val PRESENTER = "presenter"
   val GUEST = "guest"
 
-  def convert(role: String): Option[Role2x] = {
+  def convert(role: String): Option[Role] = {
     val res = role.toLowerCase match {
       case MODERATOR => Some(ModeratorRole)
       case VIEWER => Some(ViewerRole)
@@ -18,7 +18,7 @@ object ConvertRoleHelper {
     res
   }
 
-  def convert(role: Role2x): Option[String] = {
+  def convert(role: Role): Option[String] = {
     val res = role match {
       case ModeratorRole => Some(MODERATOR)
       case ViewerRole => Some(VIEWER)
@@ -30,22 +30,22 @@ object ConvertRoleHelper {
   }
 }
 
-trait Role2x
-case object ModeratorRole extends Role2x
-case object ViewerRole extends Role2x
-case object PresenterRole extends Role2x
-case object GuestRole extends Role2x
-case object AuthenticatedGuestRole extends Role2x
-case object StenographerRole extends Role2x
-case object SignLanguageInterpreterRole extends Role2x
-case object UnknownRole extends Role2x
+trait Role
+case object ModeratorRole extends Role
+case object ViewerRole extends Role
+case object PresenterRole extends Role
+case object GuestRole extends Role
+case object AuthenticatedGuestRole extends Role
+case object StenographerRole extends Role
+case object SignLanguageInterpreterRole extends Role
+case object UnknownRole extends Role
 
 trait RoleData
 case class SignLanguageInterpreterRoleData(locale: Locale, stream: Stream) extends RoleData {
-  val role: Role2x = SignLanguageInterpreterRole
+  val role: Role = SignLanguageInterpreterRole
 }
 case class StenographerRoleData(locale: Locale, captionStream: CaptionStream) extends RoleData {
-  val role: Role2x = StenographerRole
+  val role: Role = StenographerRole
 }
 
 case class CaptionStream(url: String)

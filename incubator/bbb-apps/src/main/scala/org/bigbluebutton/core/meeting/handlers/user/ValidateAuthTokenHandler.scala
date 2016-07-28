@@ -3,7 +3,7 @@ package org.bigbluebutton.core.meeting.handlers.user
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.ValidateAuthTokenInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMsg
-import org.bigbluebutton.core.domain.RegisteredUser2x
+import org.bigbluebutton.core.domain.RegisteredUser
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, RegisteredUsersModel }
 
 trait ValidateAuthTokenHandler {
@@ -12,7 +12,7 @@ trait ValidateAuthTokenHandler {
   val outGW: OutMessageGateway
 
   def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage, meeting: MeetingStateModel): Unit = {
-    def sendResponse(user: RegisteredUser2x): Unit = {
+    def sendResponse(user: RegisteredUser): Unit = {
       val reply = new ValidateAuthTokenSuccessReplyOutMsg(
         msg.meetingId, msg.senderId, user.name, user.roles,
         user.extId, user.authToken, user.avatar,

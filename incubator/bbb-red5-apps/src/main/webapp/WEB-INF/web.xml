@@ -28,7 +28,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
     <context-param>
         <param-name>webAppRootKey</param-name>
-        <param-value>/bbb-red5-apps</param-value>
+        <param-value>/bigbluebutton</param-value>
     </context-param>
 
 

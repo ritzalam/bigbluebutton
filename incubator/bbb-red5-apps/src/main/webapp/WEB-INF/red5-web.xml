@@ -46,7 +46,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         <property name="virtualHosts" value="${webapp.virtualHosts}"/>
     </bean>
 
-    <bean id="web.handler" class="org.bigbluebutton.red5.BigBlueButtonApplication">
+    <bean id="web.handler" class="org.bigbluebutton.red5.Red5AppAdapter">
         <property name="applicationListeners">
             <set> <ref bean="whiteboardApplication" /> </set>
         </property>

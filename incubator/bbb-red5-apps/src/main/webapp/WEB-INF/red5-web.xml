@@ -50,10 +50,16 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         <property name="applicationListeners">
             <set> <ref bean="whiteboardApplication" /> </set>
         </property>
+        <property name="mainApplication"><ref bean="mainApplication"/></property>
         <property name="connInvokerService"><ref bean="connInvokerService"/></property>
-        <property name="red5Publisher"> <ref bean="red5Publisher"/> </property>
     </bean>
 
+    <bean id="mainApplication" class="org.bigbluebutton.bbbred5apps.BigBlueButtonRed5App">
+        <constructor-arg index="0" ref="red5Publisher"/>
+        <!--<constructor-arg index="0" ref="redisPubSubMessageHandler"/>-->
+        <!--<constructor-arg index="1" value="${jnlpFile}"/>-->
+        <!--<constructor-arg index="2" value="${streamBaseUrl}"/>-->
+    </bean>
 
     <bean id="connInvokerService" class="org.bigbluebutton.red5.client.messaging.ConnectionInvokerService"
                 init-method="start" destroy-method="stop"/>

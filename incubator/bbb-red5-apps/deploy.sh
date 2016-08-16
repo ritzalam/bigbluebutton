@@ -13,6 +13,7 @@ JARS_DEST_LOCATION=/usr/share/red5/webapps/$APPLICATION_NAME/WEB-INF/lib
 echo "deploying $APPLICATION_NAME to $WEBAPPS_LOCATION"
 
 sudo chmod -R 777 $WEBAPPS_LOCATION
+sudo service red5 stop
 
 if [[ -d $WEBAPPS_LOCATION/$APPLICATION_NAME ]]; then
     sudo rm -r $WEBAPPS_LOCATION/$APPLICATION_NAME
@@ -24,12 +25,15 @@ sudo cp -r target/webapp/ $WEBAPPS_LOCATION/$APPLICATION_NAME
 sudo rm -rf $JARS_DEST_LOCATION/*
 sudo cp $JARS_ORIG_LOCATION/$APP_JAR_NAME \
     $JARS_ORIG_LOCATION/aopalliance-1.0.jar \
+    $JARS_ORIG_LOCATION/akka-* \
     $JARS_ORIG_LOCATION/bbb-common-message-0.0.19-SNAPSHOT.jar \
     $JARS_ORIG_LOCATION/boon-0.33.jar \
     $JARS_ORIG_LOCATION/commons-pool2-2.3.jar \
+    $JARS_ORIG_LOCATION/config-1.3.0.jar \
     $JARS_ORIG_LOCATION/easymock-2.4.jar \
     $JARS_ORIG_LOCATION/gson-2.5.jar \
     $JARS_ORIG_LOCATION/jedis-2.7.2.jar \
+    $JARS_ORIG_LOCATION/scala-library-* \
     $JARS_DEST_LOCATION
 
 # extract web application
@@ -43,5 +47,5 @@ sudo chmod -R 777 $WEBAPPS_LOCATION/$APPLICATION_NAME
 sudo chown -R red5:red5 $WEBAPPS_LOCATION/$APPLICATION_NAME
 
 # Dev only
-#sudo service red5 restart
-#sudo service tomcat7 restart
+sudo service red5 start
+sudo service tomcat7 restart

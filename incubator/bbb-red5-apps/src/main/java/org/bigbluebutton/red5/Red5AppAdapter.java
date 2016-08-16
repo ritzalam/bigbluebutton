@@ -1,7 +1,8 @@
 package org.bigbluebutton.red5;
 
 import com.google.gson.Gson;
-import org.bigbluebutton.IBigBlueButtonRed5App;
+import org.bigbluebutton.bbbred5apps.IBigBlueButtonRed5App;
+import org.bigbluebutton.bbbred5apps.messages.LockSettingsVO;
 import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
 import org.bigbluebutton.red5.pubsub.MessagePublisher;
 import org.red5.logging.Red5LoggerFactory;
@@ -24,11 +25,9 @@ public class Red5AppAdapter extends MultiThreadedApplicationAdapter {
 
     private IBigBlueButtonRed5App app;
     private ConnectionInvokerService connInvokerService;
-    private MessagePublisher red5InGW;
 
     private final UserConnectionMapper userConnections = new UserConnectionMapper();
 
-    private final String APP = "BBB";
     private final String CONN = "RED5-";
 
     @Override
@@ -65,7 +64,6 @@ public class Red5AppAdapter extends MultiThreadedApplicationAdapter {
     public boolean appStart(IScope app) {
         super.appStart(app);
         connInvokerService.setAppScope(app);
-        System.out.println("\n\n\nappStart bbb-red5-apps Red5AppAdaper \n\n\n");
         log.warn("\n\n\nappStart bbb-red5-apps Red5AppAdaper log\n\n\n"); //TODO change to info
         return true;
     }
@@ -121,9 +119,6 @@ public class Red5AppAdapter extends MultiThreadedApplicationAdapter {
         connection.setAttribute("USER_SESSION_ID", sessionId);
         connection.setAttribute("TIMESTAMP", System.currentTimeMillis());
 
-        red5InGW.initLockSettings(room, lsMap);
-
-        red5InGW.initAudioSettings(room, internalUserID, muted);
 
         String meetingId = bbbSession.getRoom();
 
@@ -131,9 +126,10 @@ public class Red5AppAdapter extends MultiThreadedApplicationAdapter {
         String userFullname = bbbSession.getUsername();
         String connId = Red5.getConnectionLocal().getSessionId();
 
+        app.userConnected(room, internalUserID, muted, lsMap, connId);
+
         String remoteHost = Red5.getConnectionLocal().getRemoteAddress();
         int remotePort = Red5.getConnectionLocal().getRemotePort();
-
 
         Map<String, Object> logData = new HashMap<String, Object>();
         logData.put("meetingId", meetingId);
@@ -173,7 +169,6 @@ public class Red5AppAdapter extends MultiThreadedApplicationAdapter {
 
         String remoteHost = Red5.getConnectionLocal().getRemoteAddress();
         int remotePort = Red5.getConnectionLocal().getRemotePort();
-        String clientId = Red5.getConnectionLocal().getClient().getId();
 
         BigBlueButtonSession bbbSession = (BigBlueButtonSession) Red5.getConnectionLocal().getAttribute(Constants.SESSION);
 
@@ -203,7 +198,7 @@ public class Red5AppAdapter extends MultiThreadedApplicationAdapter {
 
         if (removeUser) {
             log.info("User leaving bbb-apps: data={}", logStr);
-            red5InGW.userLeft(bbbSession.getRoom(), getBbbSession().getInternalUserID(), sessionId);
+            app.userDisconnected(bbbSession.getRoom(), getBbbSession().getInternalUserID(), sessionId);
         } else {
             log.info("User not leaving bbb-apps but just disconnected: data={}", logStr);
         }
@@ -213,7 +208,7 @@ public class Red5AppAdapter extends MultiThreadedApplicationAdapter {
 
     public void messageFromClientRemoteCall(String json) {
         log.debug("messageFromClientRemoteCall: \n" + json + "\n");
-        red5InGW.handleJsonMessage(json);
+        app.handleJsonMessage(json);
     }
 
     public void validateToken(Map<String, String> msg) {
@@ -239,7 +234,7 @@ public class Red5AppAdapter extends MultiThreadedApplicationAdapter {
         String logStr = gson.toJson(logData);
 
         log.info("User validate token bbb-apps: data={}", logStr);
-        red5InGW.validateAuthToken(meetingId, userId, token, meetingId + "/" + userId, sessionId);
+        app.validateAuthToken(meetingId, userId, token, meetingId + "/" + userId, sessionId);
     }
 
 
@@ -258,8 +253,9 @@ public class Red5AppAdapter extends MultiThreadedApplicationAdapter {
         this.connInvokerService = connInvokerService;
     }
 
-    public void setRed5Publisher(MessagePublisher red5InGW) {
-        this.red5InGW = red5InGW;
+    public void setMainApplication(IBigBlueButtonRed5App app) {
+        this.app = app;
+        log.warn("\n\nYAYAYYAYAYAYA\n\n");
     }
 
 }

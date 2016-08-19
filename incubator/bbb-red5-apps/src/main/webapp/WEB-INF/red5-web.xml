@@ -56,9 +56,6 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
     <bean id="mainApplication" class="org.bigbluebutton.bbbred5apps.BigBlueButtonRed5App">
         <constructor-arg index="0" ref="red5Publisher"/>
-        <!--<constructor-arg index="0" ref="redisPubSubMessageHandler"/>-->
-        <!--<constructor-arg index="1" value="${jnlpFile}"/>-->
-        <!--<constructor-arg index="2" value="${streamBaseUrl}"/>-->
     </bean>
 
     <bean id="connInvokerService" class="org.bigbluebutton.red5.client.messaging.ConnectionInvokerService"

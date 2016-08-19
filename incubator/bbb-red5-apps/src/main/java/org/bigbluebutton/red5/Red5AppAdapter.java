@@ -2,7 +2,6 @@ package org.bigbluebutton.red5;
 
 import com.google.gson.Gson;
 import org.bigbluebutton.bbbred5apps.IBigBlueButtonRed5App;
-import org.bigbluebutton.bbbred5apps.messages.LockSettingsVO;
 import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
 import org.bigbluebutton.red5.pubsub.MessagePublisher;
 import org.red5.logging.Red5LoggerFactory;

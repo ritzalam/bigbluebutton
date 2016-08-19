@@ -31,15 +31,13 @@ import scala.collection.mutable.HashMap
 import scala.concurrent.Await
 
 object ConnectionManager {
-  def props(system: ActorSystem, red5Publish: MessagePublisher): Props =
-    Props(classOf[ConnectionManager], system, red5Publish)
+  def props(system: ActorSystem, red5Publisher: MessagePublisher): Props =
+    Props(classOf[ConnectionManager], system, red5Publisher) // TODO should I include
+  // RedisSubscribeActor + dispatcher?
 
-  case class HasScreenShareSession(meetingId: String)
-  case class HasScreenShareSessionReply(meetingId: String, sharing: Boolean, streamId:Option[String])
-  case class MeetingHasEnded(meetingId: String)
 }
 
-class ConnectionManager(val aSystem: ActorSystem, val red5Publish: MessagePublisher)
+class ConnectionManager(val aSystem: ActorSystem, val red5Publisher: MessagePublisher)
   extends Actor with ActorLogging {
   log.info("Creating a new ConnectionManager")
 
@@ -53,18 +51,23 @@ class ConnectionManager(val aSystem: ActorSystem, val red5Publish: MessagePublis
   }
 
   def handleUserConnected(msg: UserConnected): Unit = {
-    log.info("\n\nhandleUserConnected\n\n")
+    log.info(s"\n\nhandleUserConnected $msg\n\n")
+
+    // TODO add logic for connection vs reconnection
+    red5Publisher.initLockSettings(msg.meetingId, msg.lockSettings)
+
+    red5Publisher.initAudioSettings(msg.meetingId, msg.userId, msg.muted)
   }
 
 
 
   private def handleUserDisconnected(msg: UserDisconnected) {
-    red5Publish.userLeft(msg.meetingId, msg.userId, msg.sessionId)
+    log.info(s"\n\nhandleUserDisconnected $msg\n\n")
+
+    // TODO add logic for disconnection vs reconnection?
+    red5Publisher.userLeft(msg.meetingId, msg.userId, msg.sessionId)
 //    if (log.isDebugEnabled) {
 //      log.debug("Received UserDisconnected message for meeting=[" + msg.meetingId + "]")
-//    }
-//    screenshares.get(msg.meetingId) foreach { screenshare =>
-//      screenshare.actorRef ! msg
 //    }
   }
 }

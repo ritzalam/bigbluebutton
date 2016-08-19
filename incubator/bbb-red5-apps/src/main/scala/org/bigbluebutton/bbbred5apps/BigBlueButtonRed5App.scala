@@ -33,24 +33,18 @@ class BigBlueButtonRed5App(red5Publisher: MessagePublisher) extends IBigBlueButt
       connectionManager ! UserDisconnected(meetingId, userId, sessionId)
   }
 
-  def userConnected(meetingId: String, userId: String, muted: java.lang.Boolean, lockSettings: java
-  .util
-  .Map[java.lang.String, java.lang.Boolean], sessionId: String): Unit = {
-    logger.warn("333333333" + meetingId)
-    connectionManager ! UserConnected(meetingId, userId, sessionId)
-    red5Publisher.initLockSettings(meetingId, lockSettings)
+  def userConnected(meetingId: String, userId: String, muted: java.lang.Boolean, lockSettings:
+  java.util.Map[java.lang.String, java.lang.Boolean], sessionId: String): Unit = {
+    connectionManager ! UserConnected(meetingId, userId, muted, lockSettings, sessionId)
 
-    red5Publisher.initAudioSettings(meetingId, userId, muted)
   }
 
   def validateAuthToken(meetingId: String, userId: String, token:String, correlationId:String,
                         sessionId:String): Unit = {
-    logger.warn("222222222222" + token)
     red5Publisher.validateAuthToken(meetingId, userId, token, correlationId, sessionId)
   }
 
   def handleJsonMessage(json: String): Unit = {
-    logger.warn("11111111111" + json)
     red5Publisher.handleJsonMessage(json)
   }
 

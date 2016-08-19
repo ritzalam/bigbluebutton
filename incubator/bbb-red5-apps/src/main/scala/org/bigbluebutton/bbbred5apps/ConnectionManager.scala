@@ -27,6 +27,7 @@ import akka.util.Timeout
 import org.bigbluebutton.bbbred5apps.messages.{UserConnected, UserDisconnected}
 import org.bigbluebutton.red5.pubsub.MessagePublisher
 
+import scala.collection.mutable
 import scala.collection.mutable.HashMap
 import scala.concurrent.Await
 
@@ -39,9 +40,9 @@ object ConnectionManager {
 
 class ConnectionManager(val aSystem: ActorSystem, val red5Publisher: MessagePublisher)
   extends Actor with ActorLogging {
-  log.info("Creating a new ConnectionManager")
+  log.warning("Creating a new ConnectionManager warn")
 
-//  private val screenshares = new HashMap[String, ActiveScreenshare]
+//  private val connections = new mutable.HashMap[String, ClientActor]
 
   def receive = {
     case msg: UserDisconnected            => handleUserDisconnected(msg)
@@ -51,7 +52,7 @@ class ConnectionManager(val aSystem: ActorSystem, val red5Publisher: MessagePubl
   }
 
   def handleUserConnected(msg: UserConnected): Unit = {
-    log.info(s"\n\nhandleUserConnected $msg\n\n")
+    log.warning(s"\n\nhandleUserConnected $msg\n\n")
 
     // TODO add logic for connection vs reconnection
     red5Publisher.initLockSettings(msg.meetingId, msg.lockSettings)
@@ -62,7 +63,7 @@ class ConnectionManager(val aSystem: ActorSystem, val red5Publisher: MessagePubl
 
 
   private def handleUserDisconnected(msg: UserDisconnected) {
-    log.info(s"\n\nhandleUserDisconnected $msg\n\n")
+    log.warning(s"\n\nhandleUserDisconnected $msg\n\n")
 
     // TODO add logic for disconnection vs reconnection?
     red5Publisher.userLeft(msg.meetingId, msg.userId, msg.sessionId)

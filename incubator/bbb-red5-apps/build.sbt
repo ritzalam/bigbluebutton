@@ -35,6 +35,9 @@ retrieveManaged := true
 libraryDependencies ++= {
   val akkaVersion  = "2.4.2"
   val springVersion = "4.2.5.RELEASE"
+  val minaVersion = "2.0.13"
+  val slf4jVersion = "1.7.21"
+  val red5Version = "1.0.7-M10"
   Seq(
     "com.typesafe.akka"        %%  "akka-actor"            % akkaVersion,
     "com.typesafe.akka"        %%  "akka-testkit"          % akkaVersion    % "test",
@@ -45,9 +48,9 @@ libraryDependencies ++= {
     "javax.servlet"             %  "servlet-api"           % "2.5",
 
     // Mina
-    "org.apache.mina"           % "mina-core"              % "2.0.13",
-    "org.apache.mina"           % "mina-integration-jmx"   % "2.0.13",
-    "org.apache.mina"           % "mina-integration-beans" % "2.0.13",
+    "org.apache.mina"           % "mina-core"              % minaVersion,
+    "org.apache.mina"           % "mina-integration-jmx"   % minaVersion,
+    "org.apache.mina"           % "mina-integration-beans" % minaVersion,
 
     // Spring
     "org.springframework"       %  "spring-web"            % springVersion,
@@ -58,16 +61,16 @@ libraryDependencies ++= {
     "org.springframework"       %  "spring-aop"            % springVersion,
 
     // Red5
-    "org.red5"                  %  "red5-server"           % "1.0.7-M10",
-    "org.red5"                  %  "red5-server-common"    % "1.0.7-M10",
+    "org.red5"                  %  "red5-server"           % red5Version,
+    "org.red5"                  %  "red5-server-common"    % red5Version,
 
     // Logging
     "ch.qos.logback"            %  "logback-classic"       % "1.1.6"        % "runtime",
     "ch.qos.logback"            %  "logback-core"          % "1.1.6"        % "runtime",
-    "org.slf4j"                 %  "log4j-over-slf4j"      % "1.7.21",
-    "org.slf4j"                 %  "jcl-over-slf4j"        % "1.7.21",
-    "org.slf4j"                 %  "jul-to-slf4j"          % "1.7.21",
-    "org.slf4j"                 %  "slf4j-api"             % "1.7.21",
+    "org.slf4j"                 %  "log4j-over-slf4j"      % slf4jVersion,
+    "org.slf4j"                 %  "jcl-over-slf4j"        % slf4jVersion,
+    "org.slf4j"                 %  "jul-to-slf4j"          % slf4jVersion,
+    "org.slf4j"                 %  "slf4j-api"             % slf4jVersion,
 
     // Testing
     "org.easymock"              %  "easymock"              % "2.4",

@@ -254,7 +254,6 @@ public class Red5AppAdapter extends MultiThreadedApplicationAdapter {
 
     public void setMainApplication(IBigBlueButtonRed5App app) {
         this.app = app;
-        log.warn("\n\nYAYAYYAYAYAYA\n\n");
     }
 
 }

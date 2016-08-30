@@ -1,7 +1,7 @@
 /**
 * BigBlueButton open source conferencing system - http://www.bigbluebutton.org/
 *
-* Copyright (c) 2012 BigBlueButton Inc. and by respective authors (see below).
+* Copyright (c) 2016 BigBlueButton Inc. and by respective authors (see below).
 *
 * This program is free software; you can redistribute it and/or modify it under the
 * terms of the GNU Lesser General Public License as published by the Free Software
@@ -20,9 +20,9 @@ package org.bigbluebutton.web.controllers
 
 import grails.converters.*
 import org.bigbluebutton.web.services.PresentationService
-import org.bigbluebutton.presentation.UploadedPresentation
 import org.bigbluebutton.api.MeetingService;
 import org.bigbluebutton.api.Util;
+import org.bigbluebutton.common.messages.MessagingConstants;
 
 class PresentationController {
   MeetingService meetingService
@@ -51,17 +51,23 @@ class PresentationController {
       def filenameExt = Util.getFilenameExt(presFilename);
       String presentationDir = presentationService.getPresentationDir()
       def presId = Util.generatePresentationId(presFilename)
-      File uploadDir = Util.createPresentationDirectory(meetingId, presentationDir, presId) 
-      
+
+      File uploadDir = Util.createPresentationDirectory(meetingId, presentationDir, presId)
+      uploadDir.setWritable(true)
       if (uploadDir != null) {
-         def newFilename = Util.createNewFilename(presId, filenameExt)
-         def pres = new File(uploadDir.absolutePath + File.separatorChar + newFilename )
-         file.transferTo(pres)
-         
-         def presentationBaseUrl = presentationService.presentationBaseUrl
-         UploadedPresentation uploadedPres = new UploadedPresentation(meetingId, presId, presFilename, presentationBaseUrl);
-         uploadedPres.setUploadedFile(pres);
-         presentationService.processUploadedPresentation(uploadedPres)
+        def newFilename = Util.createNewFilename(presId, filenameExt)
+        def fileCompletePath = uploadDir.absolutePath + File.separatorChar + newFilename;
+        def pres = new File(fileCompletePath)
+        def presentationBaseUrl = presentationService.presentationBaseUrl
+        //save it to the shared dir then send a message to the standalone app with dir
+
+        meetingService.sendUploadPresentation(meetingId, presId, presFilename,
+             presentationBaseUrl, fileCompletePath)
+        file.transferTo(pres)
+
+        response.addHeader("Cache-Control", "no-cache")
+        response.contentType = 'plain/text'
+        response.outputStream << 'upload-success';
       }
     } else {
       flash.message = 'file cannot be empty'
@@ -73,7 +79,8 @@ class PresentationController {
     }
 
   def testConversion = {
-    presentationService.testConversionProcess();
+//    presentationService.testConversionProcess();
+
   }
 
   //handle external presentation server 

@@ -398,7 +398,7 @@ package org.bigbluebutton.main.model.users
 		}
 			
 		protected function netASyncError(event: AsyncErrorEvent):void  {
-	  		LOGGER.debug("Asynchronous code error - {0}", [event.toString()]);
+  		LOGGER.debug("Asynchronous code error - {0}", [event.toString()]);
 			sendConnectionFailedEvent(ConnectionFailedEvent.UNKNOWN_REASON);
 		}	
 			

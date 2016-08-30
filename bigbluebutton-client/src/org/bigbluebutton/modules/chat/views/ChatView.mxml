@@ -41,15 +41,12 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			import flash.events.Event;
 			import flash.events.FocusEvent;
 			import flash.media.Sound;
-			
 			import mx.controls.Button;
-			
 			import flexlib.controls.tabBarClasses.SuperTab;
 			import flexlib.events.SuperTabEvent;
-			
+			import mx.core.INavigatorContent;
 			import mx.controls.Button;
 			import mx.core.INavigatorContent;
-			
 			import org.bigbluebutton.core.EventConstants;
 			import org.bigbluebutton.core.UsersUtil;
 			import org.bigbluebutton.core.events.CoreEvent;

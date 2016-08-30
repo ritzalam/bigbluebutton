@@ -52,7 +52,8 @@ public class MessagingConstants {
 	public static final String USER_LISTEN_ONLY_EVENT        = "user_listening_only";
 	public static final String USER_SHARE_WEBCAM_EVENT       = "user_shared_webcam_message";
 	public static final String USER_UNSHARE_WEBCAM_EVENT     = "user_unshared_webcam_message";
-			
+	public static final String UPLOAD_PRESENTATION_EVENT     = "upload_presentation_message";
+
 	public static final String SEND_POLLS_EVENT = "SendPollsEvent";
 	public static final String KEEP_ALIVE_REPLY = "keep_alive_reply";
 	

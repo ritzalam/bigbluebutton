@@ -5,7 +5,11 @@ set -x
 RED5_DIR=/usr/share/red5
 BBB_DIR=$(pwd)
 
+sudo chmod -R 777 $RED5_DIR/webapps/
+
 cd $BBB_DIR
+
+sudo chmod -R 777 $RED5_DIR/webapps/
 
 DESKSHARE=$BBB_DIR/deskshare
 VOICE=$BBB_DIR/bbb-voice

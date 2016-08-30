@@ -113,9 +113,12 @@ public class MeetingService implements MessageListener {
     }
 
     public void registerUser(String meetingID, String internalUserId,
-            String fullname, String role, String externUserID, String authToken, String avatarURL) {
-        handle(new RegisterUser(meetingID, internalUserId, fullname, role,
-                externUserID, authToken, avatarURL));
+            String fullname, List<String> roles, String externUserID, String authToken,
+                             String avatarURL, String logoutUrl, String welcomeMessage,
+                             List<String> dialInNumbers, String configXml, String externalData) {
+        handle(new RegisterUser(meetingID, internalUserId, fullname, roles,
+                externUserID, authToken, avatarURL, logoutUrl, welcomeMessage, dialInNumbers,
+                configXml, externalData));
     }
 
     public UserSession getUserSession(String token) {
@@ -319,7 +322,8 @@ public class MeetingService implements MessageListener {
                 m.getName(), m.isRecord(), m.getTelVoice(), m.getDuration(),
                 m.getAutoStartRecording(), m.getAllowStartStopRecording(),
                 m.getModeratorPassword(), m.getViewerPassword(),
-                m.getCreateTime(), formatPrettyDate(m.getCreateTime()), m.isBreakout());
+                m.getCreateTime(), formatPrettyDate(m.getCreateTime()), m.isBreakout(),
+                m.getMaxUsers(), m.getAllowVoiceOnly());
     }
 
     private String formatPrettyDate(Long timestamp) {
@@ -332,8 +336,9 @@ public class MeetingService implements MessageListener {
 
     private void processRegisterUser(RegisterUser message) {
         messagingService.registerUser(message.meetingID,
-                message.internalUserId, message.fullname, message.role,
-                message.externUserID, message.authToken, message.avatarURL);
+                message.internalUserId, message.fullname, message.roles,
+                message.externUserID, message.authToken, message.avatarURL, message.logoutUrl,
+                message.welcomeMessage, message.dialInNumbers, message.configXml, message.externalData);
     }
 
     public String addSubscription(String meetingId, String event,

@@ -2,7 +2,7 @@ name := "bbb-common-message"
 
 organization := "org.bigbluebutton"
 
-version := "0.0.18-SNAPSHOT"
+version := "0.0.19-SNAPSHOT"
 
 // We want to have our jar files in lib_managed dir.
 // This way we'll have the right path when we import
@@ -15,8 +15,9 @@ testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/sc
 
 libraryDependencies ++= {
   Seq(
-	  "com.google.code.gson"      %  "gson"              % "2.5"
-	)}
+    "com.google.code.gson"      %  "gson"              % "2.5",
+    "io.fastjson"               %  "boon"              % "0.33"
+  )}
 
 libraryDependencies += "junit" % "junit" % "4.12" % "test"
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"

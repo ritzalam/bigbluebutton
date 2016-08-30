@@ -48,6 +48,7 @@ class RecorderActor(val recorder: RecorderApplication)
 
   def receive = {
     case msg: SendPublicMessageEvent => handleSendPublicMessageEvent(msg)
+    case msg: SendPublicMessageEvent2x => handleSendPublicMessageEvent2x(msg)
     case msg: ClearPresentationOutMsg => handleClearPresentationOutMsg(msg)
     case msg: RemovePresentationOutMsg => handleRemovePresentationOutMsg(msg)
     case msg: SendCursorUpdateOutMsg => handleSendCursorUpdateOutMsg(msg)
@@ -89,6 +90,19 @@ class RecorderActor(val recorder: RecorderApplication)
       ev.setMessage(message.get("message"));
       ev.setColor(message.get("fromColor"));
       recorder.record(msg.meetingID, ev);
+    }
+  }
+
+  private def handleSendPublicMessageEvent2x(msg: SendPublicMessageEvent2x) {
+    if (msg.recorded) {
+      val message = msg.message
+      val ev = new PublicChatRecordEvent()
+      ev.setTimestamp(TimestampGenerator.generateTimestamp)
+      ev.setMeetingId(msg.meetingID)
+      ev.setSender(message.fromUsername)
+      ev.setMessage(message.message)
+      ev.setColor(message.fromColor)
+      recorder.record(msg.meetingID, ev)
     }
   }
 

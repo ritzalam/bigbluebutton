@@ -1,5 +1,6 @@
 package org.bigbluebutton.core.api
 
+import org.bigbluebutton.common.messages2x.objects.ChatMessage
 import org.bigbluebutton.core.apps.AnnotationVO
 import org.bigbluebutton.core.apps.CurrentPresentationInfo
 import org.bigbluebutton.core.apps.Presentation
@@ -87,6 +88,8 @@ case class GetChatHistoryReply(meetingID: String, recorded: Boolean, requesterID
   replyTo: String, history: Array[Map[String, String]]) extends IOutMessage
 case class SendPublicMessageEvent(meetingID: String, recorded: Boolean, requesterID: String,
   message: Map[String, String]) extends IOutMessage
+case class SendPublicMessageEvent2x(meetingID: String, recorded: Boolean, requesterID: String,
+  message: ChatMessage) extends IOutMessage
 case class SendPrivateMessageEvent(meetingID: String, recorded: Boolean, requesterID: String,
   message: Map[String, String]) extends IOutMessage
 

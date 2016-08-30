@@ -1,0 +1,23 @@
+package org.bigbluebutton.core.domain
+
+import com.softwaremill.quicklens._
+
+object Stream {
+
+  def add(stream: Stream, user: IntUserId): Stream = {
+    val newViewers = stream.viewers + user
+    modify(stream)(_.viewers).setTo(newViewers)
+  }
+
+  def remove(stream: Stream, user: IntUserId): Stream = {
+    val newViewers = stream.viewers - user
+    modify(stream)(_.viewers).setTo(newViewers)
+  }
+}
+
+/**
+ * Borrow some ideas from SDP.
+ * https://en.wikipedia.org/wiki/Session_Description_Protocol
+ */
+case class MediaAttribute(key: String, value: String)
+case class Stream(id: String, sessionId: SessionId, attributes: Set[MediaAttribute], viewers: Set[IntUserId])

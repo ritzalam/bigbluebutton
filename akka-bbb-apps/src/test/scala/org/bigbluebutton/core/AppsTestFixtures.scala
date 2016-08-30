@@ -15,6 +15,8 @@ trait AppsTestFixtures {
   val viewerPassword = "viewpass"
   val createTime = System.currentTimeMillis
   val createDate = "Oct 26, 2015"
+  val red5DeskShareIP = "192.168.0.109"
+  val red5DeskShareApp = "video-broadcast"
   val isBreakout = false
 
   val mProps = new MeetingProperties(meetingId, externalMeetingId,
@@ -23,6 +25,8 @@ trait AppsTestFixtures {
     durationInMinutes,
     autoStartRecording, allowStartStopRecording,
     moderatorPassword, viewerPassword,
-    createTime, createDate, isBreakout)
+    createTime, createDate, red5DeskShareIP,
+    red5DeskShareApp, isBreakout)
 
 }
+

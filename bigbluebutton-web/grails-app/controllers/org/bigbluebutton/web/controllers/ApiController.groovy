@@ -42,7 +42,6 @@ import org.bigbluebutton.api.MeetingService;
 import org.bigbluebutton.api.ParamsProcessorUtil;
 import org.bigbluebutton.api.Util;
 import org.bigbluebutton.presentation.PresentationUrlDownloadService;
-import org.bigbluebutton.presentation.UploadedPresentation
 import org.bigbluebutton.web.services.PresentationService
 import org.bigbluebutton.web.services.turn.StunTurnService;
 import org.bigbluebutton.web.services.turn.TurnEntry;
@@ -1501,14 +1500,17 @@ class ApiController {
     Meeting meeting = null;
 
     if (!session[sessionToken]) {
+      log.info("No session found for token [" + sessionToken + "].")
       reject = true;
     } else {
-      if (meetingService.getUserSession(sessionToken) == null)
+      if (meetingService.getUserSession(sessionToken) == null) {
+        log.info("Cannot get user session for token [" + sessionToken + "].")
         reject = true;
-      else {
+      } else {
         us = meetingService.getUserSession(sessionToken);
         meeting = meetingService.getMeeting(us.meetingID);
         if (meeting == null || meeting.isForciblyEnded()) {
+          log.info("Cannot get meeting for token [" + sessionToken + "].")
           reject = true
         }
       }
@@ -2101,10 +2103,10 @@ class ApiController {
 
   def processUploadedFile(meetingId, presId, filename, presFile) {
     def presentationBaseUrl = presentationService.presentationBaseUrl
-    UploadedPresentation uploadedPres = new UploadedPresentation(meetingId, presId, filename, presentationBaseUrl);
-    uploadedPres.setUploadedFile(presFile);
-    presentationService.processUploadedPresentation(uploadedPres);
-  }
+    log.info("ApiController::processUploadedFile " + presFile.getAbsolutePath())
+    meetingService.sendUploadPresentation(meetingId, presId, filename, presentationBaseUrl,
+                presFile.getAbsolutePath())
+    }
 
   def beforeInterceptor = {
     if (paramsProcessorUtil.isServiceEnabled() == false) {

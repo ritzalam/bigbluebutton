@@ -41,5 +41,7 @@ public interface MessagingService {
 	List<Map<String,String>> listSubscriptions(String meetingId);
 	void registerUser(String meetingID, String internalUserId, String fullname, String role, String externUserID, String authToken, String avatarURL);
 	void sendKeepAlive(String system, Long timestamp);
+    void sendUploadPresentation(String meetingId, String presId, String presFilename,
+                                              String presentationBaseUrl, String fileCompletePath);
 	void sendStunTurnInfo(String meetingId, String internalUserId, Set<StunServer> stuns, Set<TurnEntry> turns);
 }

@@ -1,5 +1,6 @@
 package org.bigbluebutton.core.api
 
+import org.bigbluebutton.common.messages2x.objects.ChatMessage
 import org.bigbluebutton.core.api.Role._
 import org.bigbluebutton.core.apps.AnnotationVO
 import org.bigbluebutton.core.apps.Presentation
@@ -98,6 +99,7 @@ case class AllowUserToShareDesktop(meetingID: String, userID: String) extends In
 
 case class GetChatHistoryRequest(meetingID: String, requesterID: String, replyTo: String) extends InMessage
 case class SendPublicMessageRequest(meetingID: String, requesterID: String, message: Map[String, String]) extends InMessage
+case class SendPublicMessageRequest2x(meetingID: String, requesterID: String, message: ChatMessage) extends InMessage
 case class SendPrivateMessageRequest(meetingID: String, requesterID: String, message: Map[String, String]) extends InMessage
 case class UserConnectedToGlobalAudio(meetingID: String, /** Not used. Just to satisfy trait **/ voiceConf: String,
   userid: String, name: String) extends InMessage

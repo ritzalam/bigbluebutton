@@ -75,7 +75,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
     </bean>
 
     <bean id="chat.service" class="org.bigbluebutton.red5.service.ChatService">
-        <property name="red5Publisher"> <ref bean="red5Publisher"/></property>
+        <property name="mainApplication"><ref bean="mainApplication"/></property>
         <property name="maxMessageLength" value="1024"/>
     </bean>
 
@@ -121,6 +121,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
     </bean>
 
     <bean id="redisPubSubMessageHandler" class="org.bigbluebutton.red5.pubsub.redis.RedisPubSubMessageHandler">
+        <property name="mainApplication"><ref bean="mainApplication"/></property>
         <property name="connectionInvokerService"> <ref bean="connInvokerService"/></property>
         <property name="bbbAppsIsKeepAliveHandler"> <ref bean="bbbAppsIsKeepAliveHandler"/></property>
     </bean>

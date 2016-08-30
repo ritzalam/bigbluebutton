@@ -31,16 +31,16 @@ import scala.collection.mutable
 import scala.collection.mutable.HashMap
 import scala.concurrent.Await
 
-object ConnectionManager {
+object MeetingManager {
   def props(system: ActorSystem, red5Publisher: MessagePublisher): Props =
-    Props(classOf[ConnectionManager], system, red5Publisher) // TODO should I include
+    Props(classOf[MeetingManager], system, red5Publisher) // TODO should I include
   // RedisSubscribeActor + dispatcher?
 
 }
 
-class ConnectionManager(val aSystem: ActorSystem, val red5Publisher: MessagePublisher)
+class MeetingManager(val aSystem: ActorSystem, val red5Publisher: MessagePublisher)
   extends Actor with ActorLogging {
-  log.warning("Creating a new ConnectionManager warn")
+  log.warning("Creating a new MeetingManager warn")
 
 //  private val connections = new mutable.HashMap[String, ClientActor]
 

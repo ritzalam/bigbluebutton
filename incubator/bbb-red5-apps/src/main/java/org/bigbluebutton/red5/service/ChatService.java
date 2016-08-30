@@ -21,6 +21,7 @@ package org.bigbluebutton.red5.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bigbluebutton.bbbred5apps.IBigBlueButtonRed5App;
 import org.bigbluebutton.red5.BigBlueButtonSession;
 import org.bigbluebutton.red5.Constants;
 import org.bigbluebutton.red5.pubsub.MessagePublisher;
@@ -34,8 +35,8 @@ import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x;
 public class ChatService {	
 	private static Logger log = Red5LoggerFactory.getLogger( ChatService.class, "bigbluebutton" );
 	
-	private MessagePublisher red5BBBInGw;
 	private int maxMessageLength;
+    private IBigBlueButtonRed5App app;
 
 	public void sendPublicChatHistory() {
 		String meetingID = Red5.getConnectionLocal().getScope().getName();
@@ -43,30 +44,30 @@ public class ChatService {
 		// Just hardcode as we don't really need it for flash client. (ralam may 7, 2014)
 		String replyTo = meetingID + "/" + requesterID; 
 		
-		red5BBBInGw.getChatHistory(meetingID, requesterID, replyTo);
+		app.getChatHistory(meetingID, requesterID, replyTo);
 	}
 	
 	private BigBlueButtonSession getBbbSession() {
 		return (BigBlueButtonSession) Red5.getConnectionLocal().getAttribute(Constants.SESSION);
 	}
 
-    public void sendPublicMessage2x(String json) {
-        String meetingID = Red5.getConnectionLocal().getScope().getName();
-        String requesterID = getBbbSession().getInternalUserID();
-
-        ChatMessage chatObj = ChatMessage.fromJson(json);
-
-        SendPublicChatMessage2x msg = new SendPublicChatMessage2x(meetingID, requesterID, chatObj);
-
-        // The message is being ignored in the red5 application to avoid copying it to any
-        // another application which that may cause a memory issue
-        if (chatObj.message.length() <= maxMessageLength) {
-            red5BBBInGw.sendPublicMessage2x(msg);
-        } else {
-            log.warn("sendPublicMessage maximum allowed message length exceeded (length: [" +
-                    chatObj.message.length() + "], message: [" + chatObj.message + "])");
-        }
-    }
+//    public void sendPublicMessage2x(String json) {
+//        String meetingID = Red5.getConnectionLocal().getScope().getName();
+//        String requesterID = getBbbSession().getInternalUserID();
+//
+//        ChatMessage chatObj = ChatMessage.fromJson(json);
+//
+//        SendPublicChatMessage2x msg = new SendPublicChatMessage2x(meetingID, requesterID, chatObj);
+//
+//        // The message is being ignored in the red5 application to avoid copying it to any
+//        // another application which that may cause a memory issue
+//        if (chatObj.message.length() <= maxMessageLength) {
+//            red5BBBInGw.sendPublicMessage2x(msg);
+//        } else {
+//            log.warn("sendPublicMessage maximum allowed message length exceeded (length: [" +
+//                    chatObj.message.length() + "], message: [" + chatObj.message + "])");
+//        }
+//    }
 
 	public void sendPublicMessage(Map<String, Object> msg) {
 		
@@ -96,17 +97,13 @@ public class ChatService {
 
 		// The message is being ignored in the red5 application to avoid copying it to any another application which that may cause a memory issue
 		if (chatText.length() <= maxMessageLength) {
-			red5BBBInGw.sendPublicMessage(meetingID, requesterID, message);
+			app.sendPublicMessage(meetingID, requesterID, message);
 		}
 		else {
 			log.warn("sendPublicMessage maximum allowed message length exceeded (length: [" + chatText.length() + "], message: [" + chatText + "])");
 		}
 	}
-	
-	public void setRed5Publisher(MessagePublisher inGW) {
-		red5BBBInGw = inGW;
-	}
-	
+
 	public void setMaxMessageLength(int maxLength) {
 		maxMessageLength = maxLength;
 }
@@ -139,10 +136,14 @@ public class ChatService {
 
 		// The message is being ignored in the red5 application to avoid copying it to any another application which that may cause a memory issue
 		if (chatText.length() <= maxMessageLength) {
-			red5BBBInGw.sendPrivateMessage(meetingID, requesterID, message);
+			app.sendPrivateMessage(meetingID, requesterID, message);
 		}
 		else {
 			log.warn("sendPrivateMessage maximum allowed message length exceeded (length: [" + chatText.length() + "], message: [" + chatText + "])");
 		}
 	}
+
+    public void setMainApplication(IBigBlueButtonRed5App app) {
+        this.app = app;
+    }
 }

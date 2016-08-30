@@ -1,5 +1,6 @@
 package org.bigbluebutton.red5.pubsub.redis;
 
+import org.bigbluebutton.bbbred5apps.IBigBlueButtonRed5App;
 import org.bigbluebutton.common.messages.MessagingConstants;
 import org.bigbluebutton.red5.client.*;
 import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
@@ -10,10 +11,11 @@ import org.slf4j.Logger;
 public class RedisPubSubMessageHandler implements MessageHandler {
   private static Logger log = Red5LoggerFactory.getLogger(RedisPubSubMessageHandler.class, "bigbluebutton");
 
+    private IBigBlueButtonRed5App app;
 	private ConnectionInvokerService service;
 	private UserClientMessageSender userMessageSender;
 	private MeetingClientMessageSender meetingMessageSender;
-	private ChatClientMessageSender chatMessageSender;
+	// private ChatClientMessageSender chatMessageSender;
 	private PresentationClientMessageSender presentationMessageSender;
 	private WhiteboardClientMessageSender whiteboardMessageSender;
 	private DeskShareMessageSender deskShareMessageSender;
@@ -30,7 +32,7 @@ public class RedisPubSubMessageHandler implements MessageHandler {
 
 		userMessageSender = new UserClientMessageSender(service);
 		meetingMessageSender = new MeetingClientMessageSender(service);
-		chatMessageSender = new ChatClientMessageSender(service);
+		// chatMessageSender = new ChatClientMessageSender(service);
 		presentationMessageSender = new PresentationClientMessageSender(service);
 		whiteboardMessageSender = new WhiteboardClientMessageSender(service);
 		deskShareMessageSender = new DeskShareMessageSender(service);
@@ -49,7 +51,8 @@ public class RedisPubSubMessageHandler implements MessageHandler {
 
 //		System.out.println("in red5 getting message: " + channel + " " + message);
 		if (channel.equalsIgnoreCase(MessagingConstants.FROM_CHAT_CHANNEL)) {
-			chatMessageSender.handleChatMessage(message);
+			//chatMessageSender.handleChatMessage(message);
+            app.handleChatMessageFromServer(message);
 		} else if (channel.equalsIgnoreCase(MessagingConstants.FROM_PRESENTATION_CHANNEL)) {
 			presentationMessageSender.handlePresentationMessage(message);
 		} else if (channel.equalsIgnoreCase(MessagingConstants.FROM_MEETING_CHANNEL)) {
@@ -68,5 +71,9 @@ public class RedisPubSubMessageHandler implements MessageHandler {
 			captionMessageSender.handleCaptionMessage(message);
 		}
 	}
+
+    public void setMainApplication(IBigBlueButtonRed5App app) {
+        this.app = app;
+    }
 
 }

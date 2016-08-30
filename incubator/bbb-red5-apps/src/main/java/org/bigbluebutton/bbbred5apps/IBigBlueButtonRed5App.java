@@ -11,4 +11,15 @@ public interface IBigBlueButtonRed5App {
                            String sessionId);
 
     void handleJsonMessage(String json);
+
+
+
+    // Chat
+    void getChatHistory(String meetingID, String requesterID, String replyTo);
+    void sendPublicMessage(String meetingID, String requesterID, Map<String, String> message);
+    void sendPrivateMessage(String meetingID, String requesterID, Map<String, String> message);
+
+
+
+    void handleChatMessageFromServer(String message);
 }

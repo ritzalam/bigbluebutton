@@ -44,6 +44,7 @@ public class MeetingClientMessageSender {
 					  DisconnectUserMessage m = DisconnectUserMessage.fromJson(message);
 					  if (m != null) {
 						  processDisconnectUserMessage(m);
+
 					  }
 					  break;
 				  case DisconnectAllUsersMessage.DISCONNECT_All_USERS:

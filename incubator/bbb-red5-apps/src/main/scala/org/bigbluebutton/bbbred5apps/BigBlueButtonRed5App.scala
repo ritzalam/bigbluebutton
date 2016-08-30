@@ -19,6 +19,7 @@
 package org.bigbluebutton.bbbred5apps
 
 import akka.actor.ActorSystem
+import com.google.gson.{JsonElement, JsonObject, JsonParser}
 import org.bigbluebutton.bbbred5apps.messages.{UserConnected, UserDisconnected}
 import org.bigbluebutton.bbbred5apps.util.LogHelper
 import org.bigbluebutton.red5.pubsub.MessagePublisher
@@ -26,16 +27,17 @@ import org.bigbluebutton.red5.pubsub.MessagePublisher
 class BigBlueButtonRed5App(red5Publisher: MessagePublisher) extends IBigBlueButtonRed5App with LogHelper {
 
   implicit val system = ActorSystem("bigbluebutton-red5-apps-system")
-  val connectionManager = system.actorOf(ConnectionManager.props(system, red5Publisher), "connection-manager")
+  val meetingManager = system.actorOf(MeetingManager.props(system, red5Publisher),
+    "meeting-manager")
 
 
   def userDisconnected(meetingId: String, userId: String, sessionId: String): Unit = {
-      connectionManager ! UserDisconnected(meetingId, userId, sessionId)
+    meetingManager ! UserDisconnected(meetingId, userId, sessionId)
   }
 
   def userConnected(meetingId: String, userId: String, muted: java.lang.Boolean, lockSettings:
   java.util.Map[java.lang.String, java.lang.Boolean], sessionId: String): Unit = {
-    connectionManager ! UserConnected(meetingId, userId, muted, lockSettings, sessionId)
+    meetingManager ! UserConnected(meetingId, userId, muted, lockSettings, sessionId)
 
   }
 
@@ -48,4 +50,48 @@ class BigBlueButtonRed5App(red5Publisher: MessagePublisher) extends IBigBlueButt
     red5Publisher.handleJsonMessage(json)
   }
 
+
+
+  // Chat
+  def getChatHistory(meetingID: String, requesterID: String, replyTo: String): Unit = {
+    red5Publisher.getChatHistory(meetingID, requesterID, replyTo)
+  }
+
+  def sendPublicMessage(meetingID: String, requesterID: String, message: java.util.Map[java
+  .lang.String, String]): Unit = {
+    red5Publisher.sendPublicMessage(meetingID, requesterID, message)
+  }
+
+  def sendPrivateMessage(meetingID: String, requesterID: String, message: java.util.Map[java
+  .lang.String, String]): Unit = {
+    red5Publisher.sendPrivateMessage(meetingID, requesterID, message)
+  }
+
+
+  def handleChatMessageFromServer(json: String): Unit = {
+    logger.warn("________" + messageNameExtractor(json))
+
+
+  }
+
+
+
+  def messageNameExtractor(json: String) : String = {
+    val parser: JsonParser = new JsonParser
+    val obj: JsonObject = parser.parse(json).asInstanceOf[JsonObject]
+    var answer = ""
+
+    if (obj.has("header") && obj.has("payload")) {
+      val header = obj.get("header")
+
+      val headerObj = header.getAsJsonObject
+      if (headerObj.has("name")) {
+        val messageNameElement: JsonElement = headerObj.get("name")
+        answer = messageNameElement.getAsString
+      }
+    }
+
+    answer
+
+  }
 }

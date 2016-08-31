@@ -51,6 +51,10 @@ class BigBlueButtonRed5App(red5Publisher: MessagePublisher) extends IBigBlueButt
   }
 
 
+  def sendJsonMessage (channel: String, jsonMessage: String): Unit = {
+    logger.warn("________App::sendJsonMessage" + jsonMessage)
+    red5Publisher.publishToChannel(channel, jsonMessage)
+  }
 
   // Chat
   def getChatHistory(meetingID: String, requesterID: String, replyTo: String): Unit = {
@@ -70,6 +74,7 @@ class BigBlueButtonRed5App(red5Publisher: MessagePublisher) extends IBigBlueButt
 
   def handleChatMessageFromServer(json: String): Unit = {
     logger.warn("________" + messageNameExtractor(json))
+//    handleChatMessage
 
 
   }

@@ -44,6 +44,11 @@ public class MessagePublisher {
         }
     }
 
+    public void publishToChannel(String channel, String jsonMessage) {
+        System.out.println("\n\n publishToChannel " + channel + " message:" + jsonMessage);
+        sender.send(channel, jsonMessage);
+    }
+
     // Polling
     public void votePoll(String meetingId, String userId, String pollId, Integer questionId, Integer answerId) {
         VotePollUserRequestMessage msg = new VotePollUserRequestMessage(meetingId, userId, pollId, questionId, answerId);

@@ -13,7 +13,7 @@ public interface IBigBlueButtonRed5App {
     void handleJsonMessage(String json);
 
 
-    void sendJsonMessage(String channel, String jsonMessage);
+    void sendJsonMessageToPubSub(String channel, String jsonMessage);
 
     // Chat
     void getChatHistory(String meetingID, String requesterID, String replyTo);
@@ -22,5 +22,5 @@ public interface IBigBlueButtonRed5App {
 
 
 
-    void handleChatMessageFromServer(String message);
+    void handleChatMessageFromPubSub(String message);
 }

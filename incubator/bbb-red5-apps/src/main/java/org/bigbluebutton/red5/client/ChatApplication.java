@@ -1,4 +1,4 @@
-package org.bigbluebutton.red5.client;
+/*package org.bigbluebutton.red5.client;
 
 import org.bigbluebutton.red5.client.messaging.*;
 
@@ -62,4 +62,4 @@ public class ChatApplication {
         }
     }
 
-}
+} */

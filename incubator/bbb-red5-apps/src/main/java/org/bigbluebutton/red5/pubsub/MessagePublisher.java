@@ -3,7 +3,6 @@ package org.bigbluebutton.red5.pubsub;
 import java.util.Map;
 
 import org.bigbluebutton.common.messages.*;
-import org.bigbluebutton.common.messages2x.chat.SendPublicChatMessage2x;
 import org.bigbluebutton.messages.ValidateAuthTokenRequestMessage;
 import org.bigbluebutton.red5.*;
 import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
@@ -261,11 +260,6 @@ public class MessagePublisher {
 
     public void sendPublicMessage(String meetingID, String requesterID, Map<String, String> message) {
         SendPublicChatMessage msg = new SendPublicChatMessage(meetingID, requesterID, message);
-        sender.send(MessagingConstants.TO_CHAT_CHANNEL, msg.toJson());
-    }
-
-    public void sendPublicMessage2x(SendPublicChatMessage2x msg) {
-        // System.out.println("___MessagePublisher::sendPublicMessage msg=" + msg.toJson());
         sender.send(MessagingConstants.TO_CHAT_CHANNEL, msg.toJson());
     }
 

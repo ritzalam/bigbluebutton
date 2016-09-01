@@ -22,13 +22,19 @@ import akka.actor.ActorSystem
 import com.google.gson.{JsonElement, JsonObject, JsonParser}
 import org.bigbluebutton.bbbred5apps.messages.{UserConnected, UserDisconnected}
 import org.bigbluebutton.bbbred5apps.util.LogHelper
+import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService
 import org.bigbluebutton.red5.pubsub.MessagePublisher
 
-class BigBlueButtonRed5App(red5Publisher: MessagePublisher) extends IBigBlueButtonRed5App with LogHelper {
+case class JsonMessageWithName(name:String, json: String)
+class BigBlueButtonRed5App(red5Publisher: MessagePublisher, connectionService:
+ConnectionInvokerService) extends IBigBlueButtonRed5App with LogHelper {
 
   implicit val system = ActorSystem("bigbluebutton-red5-apps-system")
   val meetingManager = system.actorOf(MeetingManager.props(system, red5Publisher),
     "meeting-manager")
+
+  val sendToClientActor = system.actorOf(SendToClientActor.props(system, connectionService),
+    "send-to-client-actor")
 
 
   def userDisconnected(meetingId: String, userId: String, sessionId: String): Unit = {
@@ -51,8 +57,8 @@ class BigBlueButtonRed5App(red5Publisher: MessagePublisher) extends IBigBlueButt
   }
 
 
-  def sendJsonMessage (channel: String, jsonMessage: String): Unit = {
-    logger.warn("________App::sendJsonMessage" + jsonMessage)
+  def sendJsonMessageToPubSub (channel: String, jsonMessage: String): Unit = {
+    logger.warn("________App::sendJsonMessageToPubSub" + jsonMessage)
     red5Publisher.publishToChannel(channel, jsonMessage)
   }
 
@@ -72,10 +78,12 @@ class BigBlueButtonRed5App(red5Publisher: MessagePublisher) extends IBigBlueButt
   }
 
 
-  def handleChatMessageFromServer(json: String): Unit = {
-    logger.warn("________" + messageNameExtractor(json))
-//    handleChatMessage
+  def handleChatMessageFromPubSub(json: String): Unit = {
+    val messageName = messageNameExtractor(json)
+    logger.warn("________sendToClientActor ! " + messageName)
 
+
+    sendToClientActor ! JsonMessageWithName(messageName, json)
 
   }
 

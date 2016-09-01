@@ -52,7 +52,7 @@ public class RedisPubSubMessageHandler implements MessageHandler {
 //		System.out.println("in red5 getting message: " + channel + " " + message);
 		if (channel.equalsIgnoreCase(MessagingConstants.FROM_CHAT_CHANNEL)) {
 			//chatMessageSender.handleChatMessage(message);
-            app.handleChatMessageFromServer(message);
+            app.handleChatMessageFromPubSub(message);
 		} else if (channel.equalsIgnoreCase(MessagingConstants.FROM_PRESENTATION_CHANNEL)) {
 			presentationMessageSender.handlePresentationMessage(message);
 		} else if (channel.equalsIgnoreCase(MessagingConstants.FROM_MEETING_CHANNEL)) {

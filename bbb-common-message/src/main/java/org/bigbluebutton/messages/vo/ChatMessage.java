@@ -1,6 +1,5 @@
 package org.bigbluebutton.messages.vo;
 
-import org.bigbluebutton.common.messages2x.objects.ChatType;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 

@@ -1,8 +1,6 @@
 package org.bigbluebutton.messages2x.chat;
 
 import org.bigbluebutton.common.messages2x.chat.SendPrivateChatMessage2x;
-import org.bigbluebutton.common.messages2x.objects.ChatMessage;
-import org.bigbluebutton.common.messages2x.objects.ChatType;
 import org.junit.Assert;
 import org.junit.Test;
 

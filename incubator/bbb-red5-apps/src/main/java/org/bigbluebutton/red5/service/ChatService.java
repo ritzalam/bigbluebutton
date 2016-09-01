@@ -49,7 +49,7 @@ public class ChatService {
         GetChatHistoryRequestMessage fullMessage = new GetChatHistoryRequestMessage(new MessageHeader
                     (GetChatHistoryRequestMessage.NAME, meetingID, requesterID, replyTo), new
                 GetChatHistoryRequestMessage.Body(replyTo, requesterID));
-            app.sendJsonMessage(MessagingConstants.TO_CHAT_CHANNEL, fullMessage.toJson());
+            app.sendJsonMessageToPubSub(MessagingConstants.TO_CHAT_CHANNEL, fullMessage.toJson());
     }
 
     private BigBlueButtonSession getBbbSession() {
@@ -71,7 +71,7 @@ public class ChatService {
             SendPublicChatMessage fullMessage = new SendPublicChatMessage(new MessageHeader
                     (SendPublicChatMessage.NAME, meetingID, requesterID, replyTo), new
                     SendPublicChatMessage.Body(requesterID, publicChatObject));
-            app.sendJsonMessage(MessagingConstants.TO_CHAT_CHANNEL, fullMessage.toJson());
+            app.sendJsonMessageToPubSub(MessagingConstants.TO_CHAT_CHANNEL, fullMessage.toJson());
         }
         else {
             log.warn("sendPublicMessage maximum allowed message length exceeded (length: [" +
@@ -99,7 +99,7 @@ public class ChatService {
             SendPrivateChatMessage fullMessage = new SendPrivateChatMessage(new MessageHeader
                     (SendPrivateChatMessage.NAME, meetingID, requesterID, replyTo), new
                     SendPrivateChatMessage.Body(requesterID, privateChatObject));
-            app.sendJsonMessage(MessagingConstants.TO_CHAT_CHANNEL, fullMessage.toJson());
+            app.sendJsonMessageToPubSub(MessagingConstants.TO_CHAT_CHANNEL, fullMessage.toJson());
         }
         else {
             log.warn("sendPrivateMessage maximum allowed message length exceeded (length: [" +

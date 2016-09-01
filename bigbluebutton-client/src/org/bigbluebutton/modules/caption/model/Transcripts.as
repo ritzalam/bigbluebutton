@@ -1,3 +1,22 @@
+/**
+ * BigBlueButton open source conferencing system - http://www.bigbluebutton.org/
+ * 
+ * Copyright (c) 2012 BigBlueButton Inc. and by respective authors (see below).
+ *
+ * This program is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU Lesser General Public License as published by the Free Software
+ * Foundation; either version 3.0 of the License, or (at your option) any later
+ * version.
+ * 
+ * BigBlueButton is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along
+ * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.bigbluebutton.modules.caption.model {
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
@@ -25,34 +44,34 @@ package org.bigbluebutton.modules.caption.model {
 		
 		public function receiveCaptionHistory(history:Object):void {
 			for (var locale:Object in history) {
-				trace("The class name of variable: " + locale + ", is: " + flash.utils.getQualifiedClassName(locale));
-				
 				// This convoluted conversion from Object to the actual class is required to get the accurate 
 				// String value. See, http://stackoverflow.com/a/204003, for more information
 				var localeClassName:String = flash.utils.getQualifiedClassName(locale);
 				var localeClass:Class = flash.utils.getDefinitionByName(localeClassName) as Class;
 				
-				var t:Transcript = findLocale((locale as localeClass).toString());
+				var t:Transcript = findLocale((locale as localeClass).toString(), history[locale][2]);
 				t.ownerID = history[locale][0];
 				t.editHistory(0,0,history[locale][1]);
 			}
 			_historyInited = true;
 		}
 		
-		public function updateCaptionOwner(locale:String, ownerID:String):void {
-			findLocale(locale).ownerID = ownerID;
+		public function updateCaptionOwner(locale:String, code:String, ownerID:String):void {
+			findLocale(locale, code).ownerID = ownerID;
 		}
 		
-		public function editCaptionHistory(locale:String, startIndex:int, endIndex:int, text:String):void {
-			findLocale(locale).editHistory(startIndex, endIndex, text);
+		public function editCaptionHistory(locale:String, code:String, startIndex:int, endIndex:int, text:String):void {
+			if (_historyInited) { // ignore updates until after history has been loaded
+				findLocale(locale, code).editHistory(startIndex, endIndex, text);
+			}
 		}
 		
-		public function findLocale(locale:String):Transcript {
+		public function findLocale(locale:String, code:String):Transcript {
 			for each (var t:Transcript in transcriptCollection) {
 				if (t.locale == locale) return t;
 			}
 			
-			var newTranscript:Transcript = new Transcript(locale);
+			var newTranscript:Transcript = new Transcript(locale, code);
 			transcriptCollection.addItem(newTranscript);
 			return newTranscript;
 		}

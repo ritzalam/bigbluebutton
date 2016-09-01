@@ -79,6 +79,7 @@
 			import org.bigbluebutton.modules.users.events.MeetingMutedEvent;
 			import org.bigbluebutton.modules.users.events.UsersRollEvent;
 			import org.bigbluebutton.modules.users.model.UsersOptions;
+			import org.bigbluebutton.modules.videoconf.events.StopBroadcastEvent;
 			import org.bigbluebutton.util.i18n.ResourceUtil;
 			
 			private static const LOGGER:ILogger = getClassLogger(UsersWindow);
@@ -114,6 +115,8 @@
 			
 			[Bindable]
 			private var amIPresenter:Boolean = false;
+			
+			private var joinAlert : Alert;
 			
 			private const FOCUS_USERS_LIST:String = "Focus Users List";
 			private const MAKE_PRESENTER:String = "Make Presenter";
@@ -316,14 +319,18 @@
 			}
 
 			private function breakoutRoomsListChangeListener(event:CollectionEvent):void {
-				if(breakoutRoomsList.length == 0) {
-					breakoutTimeLabel.text = ResourceUtil.getInstance().getString('bbb.users.breakout.breakoutRooms');
+				if (breakoutRoomsList.length == 0) {
+					breakoutTimeLabel.text = "...";
 					TimerUtil.stopTimer(breakoutTimeLabel.id);
+					// All breakout rooms were close we don't need to display the join URL alert anymore
+					removeJoinAlert();
 				}
 			}
 
 			private function handleBreakoutJoinUrl(event:BreakoutRoomEvent):void {
-				var alert:Alert = Alert.show(
+				// We display only one alert
+				removeJoinAlert();
+				joinAlert = Alert.show(
 					ResourceUtil.getInstance().getString('bbb.users.breakout.openJoinURL', [StringUtils.substringAfterLast(event.breakoutId, "-")]),
 					ResourceUtil.getInstance().getString('bbb.users.breakout.confirm'),
 					Alert.YES | Alert.NO,
@@ -331,10 +338,17 @@
 					function(e:CloseEvent):void {
 						if (e.detail == Alert.YES) {
 							dispatcher.dispatchEvent(new LeaveVoiceConferenceCommand());
-							navigateToURL(new URLRequest(event.joinURL));
+							dispatcher.dispatchEvent(new StopBroadcastEvent());
+							navigateToURL(new URLRequest(event.joinURL), "_blank");
 						}
 					},
 					null, Alert.YES);
+			}
+
+			private function removeJoinAlert():void {
+				if (joinAlert != null) {
+					PopUpManager.removePopUp(joinAlert);
+				}
 			}
 
 			/*private function unlockAll():void {
@@ -585,10 +599,11 @@
 	<mx:VBox id="roomsBox" styleName="breakoutRoomsBox"
 			 visible="{breakoutRoomsList.length > 0 &amp;&amp; amIModerator}"
 			 includeInLayout="{breakoutRoomsList.length > 0 &amp;&amp; amIModerator}"
+			 horizontalScrollPolicy="off"
 			 width="100%" height="180">
 		<mx:HBox width="100%">
 			<mx:Label text="{ResourceUtil.getInstance().getString('bbb.users.breakout.breakoutRooms')}"/>
-			<mx:Label width="100%" textAlign="right" id="breakoutTimeLabel"/>
+			<mx:Label width="100%" textAlign="right" id="breakoutTimeLabel" text="..."/>
 		</mx:HBox>
 
 		<mx:DataGrid id="roomsGrid" editable="false" sortableColumns="false" dataProvider="{breakoutRoomsList}"

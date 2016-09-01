@@ -1,5 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import Loader from '../loader/component';
+import { FormattedMessage } from 'react-intl';
+import LoadingScreen from '../loading-screen/component';
+import KickedScreen from '../kicked-screen/component';
+
+import NotificationsBarContainer from '../notifications-bar/container';
+
+import Button from '../button/component';
 import styles from './styles';
 
 const propTypes = {
@@ -9,6 +15,7 @@ const propTypes = {
   media: PropTypes.element,
   actionsbar: PropTypes.element,
   settings: PropTypes.element,
+  captions: PropTypes.element,
 };
 
 export default class App extends Component {
@@ -82,6 +89,18 @@ export default class App extends Component {
     return false;
   }
 
+  renderClosedCaptions() {
+    const { captions } = this.props;
+
+    if (captions) {
+      return (
+        <section className={styles.closedCaptions}>
+          {captions}
+        </section>
+      );
+    }
+  }
+
   renderActionsBar() {
     const { actionsbar } = this.props;
 
@@ -117,18 +136,36 @@ export default class App extends Component {
   }
 
   render() {
+    if (this.props.wasKicked) {
+      return (
+        <KickedScreen>
+          <FormattedMessage
+            id="app.kickMessage"
+            description="Message when the user is kicked out of the meeting"
+            defaultMessage="You have been kicked out of the meeting"
+          />
+          <br/><br/>
+          <Button
+            label={'OK'}
+            onClick={this.props.redirectToLogoutUrl}/>
+        </KickedScreen>
+      );
+    }
+
     if (this.props.isLoading) {
-      return <Loader/>;
+      return <LoadingScreen/>;
     }
 
     return (
       <main className={styles.main}>
+        <NotificationsBarContainer />
         <section className={styles.wrapper}>
           {this.renderUserList()}
           {this.renderChat()}
           <div className={styles.content}>
             {this.renderNavBar()}
             {this.renderMedia()}
+            {this.renderClosedCaptions()}
             {this.renderActionsBar()}
           </div>
           {this.renderSidebar()}

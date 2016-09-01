@@ -107,7 +107,6 @@ eventEmitter.on('user_joined_message', function (arg) {
 
 eventEmitter.on('get_users_reply', function (arg) {
   if (inReplyToHTML5Client(arg)) {
-    console.log('get_users_reply handling');
     let users = arg.payload.users;
     const meetingId = arg.payload.meeting_id;
 
@@ -201,15 +200,15 @@ eventEmitter.on('presenter_assigned_message', function (arg) {
 });
 
 const handleRemoveUserEvent = function (arg) {
-  if (arg.payload.user != null &&
-    arg.payload.user.userid != null &&
-    arg.payload.meeting_id != null) {
-    const meetingId = arg.payload.meeting_id;
-    const userId = arg.payload.user.userid;
-    return markUserOffline(meetingId, userId, arg.callback);
+  const { payload, callback } = arg;
+  if ((payload.userid || payload.user.userid) &&
+    payload.meeting_id) {
+    const meetingId = payload.meeting_id;
+    const userId = payload.userid || payload.user.userid;
+    return markUserOffline(meetingId, userId, callback);
   } else {
     logger.info('could not perform handleRemoveUserEvent');
-    return arg.callback();
+    return callback();
   }
 };
 

@@ -19,24 +19,18 @@
 package org.bigbluebutton.modules.screenshare.model
 {
 	import org.bigbluebutton.core.BBB;
-	
+
 	public class ScreenshareOptions
 	{
 		[Bindable] public var showButton:Boolean = true;
-		[Bindable] public var autoStart:Boolean = false;
-		[Bindable] public var autoFullScreen:Boolean = false;
 		[Bindable] public var baseTabIndex:int;
+		[Bindable] public var useWebRTCIfAvailable:Boolean = false;
+		[Bindable] public var chromeExtensionKey:String = null;
     [Bindable] public var helpUrl:String;
-		
+
 		public function parseOptions():void {
 			var vxml:XML = BBB.getConfigForModule("ScreenshareModule");
 			if (vxml != null) {
-				if (vxml.@autoStart != undefined) {
-					autoStart = (vxml.@autoStart.toString().toUpperCase() == "TRUE") ? true : false;
-				}
-				if (vxml.@autoFullScreen != undefined){
-					autoFullScreen = (vxml.@autoFullScreen.toString().toUpperCase() == "TRUE") ? true : false;
-				}
 				if (vxml.@baseTabIndex != undefined) {
 					baseTabIndex = vxml.@baseTabIndex;
 				}
@@ -44,7 +38,13 @@ package org.bigbluebutton.modules.screenshare.model
 					baseTabIndex = 201;
 				}
 				if (vxml.@showButton != undefined){
-					showButton = (vxml.@showButton.toString().toUpperCase() == "TRUE") ? true : false; 
+					showButton = (vxml.@showButton.toString().toUpperCase() == "TRUE") ? true : false;
+				}
+				if (vxml.@useWebRTCIfAvailable != undefined) {
+					useWebRTCIfAvailable = (vxml.@useWebRTCIfAvailable.toString().toUpperCase() == "TRUE") ? true : false;
+				}
+				if (vxml.@chromeExtensionKey != undefined) {
+					chromeExtensionKey = vxml.@chromeExtensionKey.toString();
 				}
         if (vxml.@help != undefined){
           helpUrl = vxml.@help; 

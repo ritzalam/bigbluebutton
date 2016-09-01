@@ -43,7 +43,7 @@ case class LockSetting(meetingID: String, locked: Boolean, settings: Map[String,
 // Sent by user to request the breakout rooms list of a room
 case class BreakoutRoomsListMessage(meetingId: String) extends InMessage
 // Sent by user to request creation of breakout rooms
-case class CreateBreakoutRooms(meetingId: String, durationInMinutes: Int,
+case class CreateBreakoutRooms(meetingId: String, durationInMinutes: Int, record: Boolean,
   rooms: Vector[BreakoutRoomInPayload]) extends InMessage
 case class BreakoutRoomInPayload(name: String, users: Vector[String])
 // Sent by user to request for a join URL in order to be able to join a breakout room
@@ -91,6 +91,7 @@ case class ChangeUserStatus(meetingID: String, userID: String, status: String, v
 case class AssignPresenter(meetingID: String, newPresenterID: String, newPresenterName: String, assignedBy: String) extends InMessage
 case class SetRecordingStatus(meetingID: String, userId: String, recording: Boolean) extends InMessage
 case class GetRecordingStatus(meetingID: String, userId: String) extends InMessage
+case class AllowUserToShareDesktop(meetingID: String, userID: String) extends InMessage
 
 //////////////////////////////////////////////////////////////////////////////////
 // Chat
@@ -188,8 +189,8 @@ case class GetAllMeetingsRequest(meetingID: String /** Not used. Just to satisfy
 
 // Caption
 case class SendCaptionHistoryRequest(meetingID: String, requesterID: String) extends InMessage
-case class UpdateCaptionOwnerRequest(meetingID: String, locale: String, ownerID: String) extends InMessage
-case class EditCaptionHistoryRequest(meetingID: String, userID: String, startIndex: Integer, endIndex: Integer, locale: String, text: String) extends InMessage
+case class UpdateCaptionOwnerRequest(meetingID: String, locale: String, localeCode: String, ownerID: String) extends InMessage
+case class EditCaptionHistoryRequest(meetingID: String, userID: String, startIndex: Integer, endIndex: Integer, locale: String, localeCode: String, text: String) extends InMessage
 // DeskShare
 case class DeskShareStartedRequest(conferenceName: String, callerId: String, callerIdName: String) extends InMessage
 case class DeskShareStoppedRequest(conferenceName: String, callerId: String, callerIdName: String) extends InMessage

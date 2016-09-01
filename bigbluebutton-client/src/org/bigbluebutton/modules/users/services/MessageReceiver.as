@@ -53,8 +53,8 @@ package org.bigbluebutton.modules.users.services
   import org.bigbluebutton.modules.present.events.RemovePresentationEvent;
   import org.bigbluebutton.modules.present.events.UploadEvent;
   import org.bigbluebutton.modules.users.events.MeetingMutedEvent;
-  import org.bigbluebutton.modules.deskshare.events.ViewStreamEvent;
-  import org.bigbluebutton.modules.deskshare.events.WebRTCViewStreamEvent;
+  import org.bigbluebutton.modules.screenshare.events.ViewStreamEvent;
+  import org.bigbluebutton.modules.screenshare.events.WebRTCViewStreamEvent;
   import org.bigbluebutton.main.api.JSLog;
   import org.bigbluebutton.modules.users.events.MeetingMutedEvent;
 
@@ -175,6 +175,8 @@ package org.bigbluebutton.modules.users.services
 
     private function handleDeskShareRTMPBroadcastNotification(msg:Object):void {
       LOGGER.debug("*** handleDeskShareRTMPBroadcastNotification **** \n", [msg]);
+      LOGGER.debug("*** handleDeskShareRTMPBroadcastNotification **** url=", msg.rtmpUrl);
+      LOGGER.debug("*** handleDeskShareRTMPBroadcastNotification **** broadcasting=", msg.broadcasting);
 
       var event:WebRTCViewStreamEvent;
       if (msg.broadcasting) {
@@ -595,7 +597,10 @@ package org.bigbluebutton.modules.users.services
       user.userLocked = joinedUser.locked;
       user.avatarURL = joinedUser.avatarURL;
 	  
-	  LOGGER.info("User joined = " + JSON.stringify(user));
+      var logData:Object = new Object();
+	  logData.user = user;
+      logData.message = "User joined.";
+	  LOGGER.info(JSON.stringify(logData));
 	  
       UserManager.getInstance().getConference().addUser(user);
       
@@ -642,6 +647,7 @@ package org.bigbluebutton.modules.users.services
 			breakoutRoom.name = room.name;
 			UserManager.getInstance().getConference().addBreakoutRoom(breakoutRoom);
 		}
+		UserManager.getInstance().getConference().breakoutRoomsReady = map.roomsReady;
 	}
 	
 	private function handleBreakoutRoomJoinURL(msg:Object):void{

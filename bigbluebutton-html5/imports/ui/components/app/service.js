@@ -4,6 +4,7 @@ import Users from '/imports/api/users';
 import Chat from '/imports/api/chat';
 import Meetings from '/imports/api/meetings';
 import Cursor from '/imports/api/cursor';
+import Captions from '/imports/api/captions';
 import Polls from '/imports/api/polls';
 
 function setCredentials(nextState, replace) {
@@ -24,7 +25,7 @@ function subscribeForData() {
 
   const subNames = [
     'users', 'chat', 'cursor', 'deskshare', 'meetings',
-    'polls', 'presentations', 'shapes', 'slides',
+    'polls', 'presentations', 'shapes', 'slides', 'captions',
   ];
 
   let subs = [];
@@ -45,26 +46,51 @@ function subscribeFor(collectionName) {
 };
 
 function subscribeToCollections(cb) {
-  subscribeFor('users').then(() => {
-    Promise.all(subscribeForData()).then(() => {
-      if (cb) {
-        cb();
+  subscribeFor('users')
+    .then(() => {
+      observeUserKick();
+      return Promise.all(subscribeForData())
+        .then(() => {
+          if (cb) {
+            return cb();
+          }
+        });
+    })
+    .catch(redirectToLogoutUrl);
+};
+
+function redirectToLogoutUrl(reason) {
+  console.error(reason);
+  console.log('Redirecting user to the logoutURL...');
+  document.location.href = Auth.logoutURL;
+}
+
+let wasKicked = false;
+const wasKickedDep = new Tracker.Dependency;
+
+function observeUserKick() {
+  Users.find().observe({
+    removed(old) {
+      if (old.userId === Auth.userID) {
+        Auth.clearCredentials(() => {
+          wasKicked = true;
+          wasKickedDep.changed();
+        });
       }
-    });
+    },
   });
-};
+}
 
-function onStop(error, result) {
-  console.log('OnError', error, result);
-};
-
-function onReady() {
-  console.log('OnReady');
-};
+function wasUserKicked() {
+  wasKickedDep.depend();
+  return wasKicked;
+}
 
 export {
   subscribeForData,
   setCredentials,
   subscribeFor,
   subscribeToCollections,
+  wasUserKicked,
+  redirectToLogoutUrl
 };

@@ -29,8 +29,8 @@ case class PubSubPong(system: String, timestamp: Long) extends IOutMessage
 case object IsAliveMessage extends IOutMessage
 
 // Breakout Rooms
-case class BreakoutRoomsListOutMessage(meetingId: String, rooms: Vector[BreakoutRoomBody]) extends IOutMessage
-case class CreateBreakoutRoom(meetingId: String, recorded: Boolean, room: BreakoutRoomOutPayload) extends IOutMessage
+case class BreakoutRoomsListOutMessage(meetingId: String, rooms: Vector[BreakoutRoomBody], roomsReady: Boolean) extends IOutMessage
+case class CreateBreakoutRoom(meetingId: String, room: BreakoutRoomOutPayload) extends IOutMessage
 case class EndBreakoutRoom(breakoutId: String) extends IOutMessage
 case class BreakoutRoomOutPayload(breakoutId: String, name: String, parentId: String,
   voiceConfId: String, durationInMinutes: Int, moderatorPassword: String, viewerPassword: String,
@@ -74,6 +74,7 @@ case class EjectVoiceUser(meetingID: String, recorded: Boolean, requesterID: Str
 case class TransferUserToMeeting(voiceConfId: String, targetVoiceConfId: String, userId: String) extends IOutMessage
 case class UserJoinedVoice(meetingID: String, recorded: Boolean, confNum: String, user: UserVO) extends IOutMessage
 case class UserLeftVoice(meetingID: String, recorded: Boolean, confNum: String, user: UserVO) extends IOutMessage
+case class AllowUserToShareDesktopOut(meetingID: String, userID: String, allowed: Boolean) extends IOutMessage
 
 // Voice
 case class IsMeetingMutedReply(meetingID: String, recorded: Boolean, requesterID: String, meetingMuted: Boolean) extends IOutMessage
@@ -148,10 +149,10 @@ case class WhiteboardEnabledEvent(meetingID: String, recorded: Boolean, requeste
 case class IsWhiteboardEnabledReply(meetingID: String, recorded: Boolean, requesterID: String, enabled: Boolean, replyTo: String) extends IOutMessage
 case class GetAllMeetingsReply(meetings: Array[MeetingInfo]) extends IOutMessage
 
-// Chat
+// Caption
 case class SendCaptionHistoryReply(meetingID: String, recorded: Boolean, requesterID: String, history: Map[String, Array[String]]) extends IOutMessage
-case class UpdateCaptionOwnerReply(meetingID: String, recorded: Boolean, locale: String, ownerID: String) extends IOutMessage
-case class EditCaptionHistoryReply(meetingID: String, recorded: Boolean, userID: String, startIndex: Integer, endIndex: Integer, locale: String, text: String) extends IOutMessage
+case class UpdateCaptionOwnerReply(meetingID: String, recorded: Boolean, locale: String, localeCode: String, ownerID: String) extends IOutMessage
+case class EditCaptionHistoryReply(meetingID: String, recorded: Boolean, userID: String, startIndex: Integer, endIndex: Integer, locale: String, localeCode: String, text: String) extends IOutMessage
 // DeskShare
 case class DeskShareStartRTMPBroadcast(conferenceName: String, streamPath: String) extends IOutMessage
 case class DeskShareStopRTMPBroadcast(conferenceName: String, streamPath: String) extends IOutMessage

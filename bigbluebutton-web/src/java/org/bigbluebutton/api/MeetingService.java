@@ -352,16 +352,15 @@ public class MeetingService implements MessageListener {
     }
 
     public Meeting getMeeting(String meetingId) {
-        return getMeeting(meetingId, false);
-    }
-
-    public Meeting getMeeting(String meetingId, Boolean exactMatch) {
         if (meetingId == null)
             return null;
+        int dashes = meetingId.split("-", -1).length - 1;
         for (String key : meetings.keySet()) {
-            if ((!exactMatch && key.startsWith(meetingId))
-                    || (exactMatch && key.equals(meetingId)))
+            int keyDashes = key.split("-", -1).length - 1;
+            if (dashes == 2 && key.equals(meetingId)
+                    || (dashes < 2 && keyDashes < 2 && key.startsWith(meetingId))) {
                 return (Meeting) meetings.get(key);
+            }
         }
 
         return null;
@@ -485,8 +484,8 @@ public class MeetingService implements MessageListener {
         }
     }
 
-    public void updateRecordings(List<String> idList, Map<String, String> metaParams, boolean force) {
-        recordingService.updateMetaParams(idList, metaParams, force);
+    public void updateRecordings(List<String> idList, Map<String, String> metaParams) {
+        recordingService.updateMetaParams(idList, metaParams);
     }
 
     public void processRecording(String meetingId) {
@@ -515,23 +514,39 @@ public class MeetingService implements MessageListener {
     }
 
     private void processCreateBreakoutRoom(CreateBreakoutRoom message) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("name", message.name);
-        params.put("breakoutId", message.breakoutId);
-        params.put("meetingID", message.parentId);
-        params.put("isBreakout", "true");
-        params.put("attendeePW", message.viewerPassword);
-        params.put("moderatorPW", message.moderatorPassword);
-        params.put("voiceBridge", message.voiceConfId);
-        params.put("duration", message.durationInMinutes.toString());
-        params.put("record", message.record.toString());
+        Meeting parentMeeting = getMeeting(message.parentId);
+        if (parentMeeting != null) {
 
-        Meeting breakout = paramsProcessorUtil.processCreateParams(params);
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("name", message.name);
+            params.put("breakoutId", message.breakoutId);
+            params.put("meetingID", message.parentId);
+            params.put("isBreakout", "true");
+            params.put("attendeePW", message.viewerPassword);
+            params.put("moderatorPW", message.moderatorPassword);
+            params.put("voiceBridge", message.voiceConfId);
+            params.put("duration", message.durationInMinutes.toString());
+            params.put("record", message.record.toString());
+            params.put("welcome", getMeeting(message.parentId).getWelcomeMessageTemplate());
 
-        handleCreateMeeting(breakout);
+            Map<String, String> parentMeetingMetadata = parentMeeting.getMetadata();
 
-        presDownloadService.downloadAndProcessDocument(
-                message.defaultPresentationURL, breakout.getInternalId());
+            String metaPrefix = "meta_";
+            for (String key: parentMeetingMetadata.keySet()) {
+                String metaName = metaPrefix + key;
+                // Inject metadata from parent meeting into the breakout room.
+                params.put(metaName, parentMeetingMetadata.get(key));
+            }
+
+            Meeting breakout = paramsProcessorUtil.processCreateParams(params);
+
+            handleCreateMeeting(breakout);
+
+            presDownloadService.downloadAndProcessDocument(
+                        message.defaultPresentationURL, breakout.getInternalId());
+        } else {
+            log.error("Failed to create breakout room " + message.breakoutId + ". Parent meeting not found.");
+        }
     }
 
     private void processEndBreakoutRoom(EndBreakoutRoom message) {
@@ -858,10 +873,6 @@ public class MeetingService implements MessageListener {
                     processEndMeeting((EndMeeting) message);
                 } else if (message instanceof RegisterUser) {
                     processRegisterUser((RegisterUser) message);
-                }   else if (message instanceof CreateBreakoutRoom) {
-                    processCreateBreakoutRoom((CreateBreakoutRoom) message);
-                } else if (message instanceof EndBreakoutRoom) {
-                    processEndBreakoutRoom((EndBreakoutRoom) message);
                 } else if (message instanceof StunTurnInfoRequested) {
                     processStunTurnInfoRequested((StunTurnInfoRequested) message);
                 } else if (message instanceof CreateBreakoutRoom) {

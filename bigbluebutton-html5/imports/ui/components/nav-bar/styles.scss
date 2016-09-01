@@ -1,4 +1,4 @@
-@import "imports/ui/stylesheets/variables/_all";
+@import "../../stylesheets/variables/_all";
 
 .navbar {
   padding: $line-height-computed / 2;
@@ -52,6 +52,11 @@
   margin-left: -5px;
 }
 
-.btn {
-  border: 10px solid red;
+.hidden {
+  position:absolute;
+  left:-10000px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
 }

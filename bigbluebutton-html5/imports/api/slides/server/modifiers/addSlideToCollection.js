@@ -2,15 +2,17 @@ import sizeOf from 'image-size';
 import Slides from '/imports/api/slides';
 
 export function addSlideToCollection(meetingId, presentationId, slideObject) {
+  const APP_CONFIG = Meteor.settings.public.app;
   const url = Npm.require('url');
-  const http = Npm.require('http');
+
   const imageUri = slideObject.svg_uri != null ? slideObject.svg_uri : slideObject.png_uri;
   if (Slides.findOne({
     meetingId: meetingId,
     'slide.id': slideObject.id,
   }) == null) {
     const options = url.parse(imageUri);
-    http.get(options, Meteor.bindEnvironment(function (response) {
+
+    let addSlideHelper = function (response) {
       let contentType = response.headers['content-type'];
 
       if (contentType.match(/svg/gi) || contentType.match(/png/gi)) {
@@ -45,7 +47,23 @@ export function addSlideToCollection(meetingId, presentationId, slideObject) {
         console.log(`Slide file is not accessible or not ready yet`);
         console.log(`response content-type`, response.headers['content-type']);
       }
-    }));
+    };
+
+    // HTTPS connection
+    if (APP_CONFIG.httpsConnection) {
+      const https = Npm.require('https');
+
+      https.get(options, Meteor.bindEnvironment(function (response) {
+        addSlideHelper(response);
+      }));
+    } else {
+      // HTTP connection
+      const http = Npm.require('http');
+
+      http.get(options, Meteor.bindEnvironment(function (response) {
+        addSlideHelper(response);
+      }));
+    }
 
     //logger.info "added slide id =[#{id}]:#{slideObject.id} in #{meetingId}. Now there
     // are #{Slides.find({meetingId: meetingId}).count()} slides in the meeting"

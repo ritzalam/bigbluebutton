@@ -40,7 +40,7 @@ class BigBlueButtonInGW(
       case msg: StartCustomPollRequestMessage => {
         eventBus.publish(
           BigBlueButtonEvent(
-            "meeting-manager",
+            msg.payload.meetingId,
             new StartCustomPollRequest(
               msg.payload.meetingId,
               msg.payload.requesterId,
@@ -61,6 +61,7 @@ class BigBlueButtonInGW(
           msg.payload.name,
           msg.payload.record,
           msg.payload.voiceConfId,
+          msg.payload.voiceConfId + "-DESKSHARE", // WebRTC Desktop conference id
           msg.payload.durationInMinutes,
           msg.payload.autoStartRecording,
           msg.payload.allowStartStopRecording,
@@ -241,6 +242,11 @@ class BigBlueButtonInGW(
 
   def userJoin(meetingID: String, userID: String, authToken: String): Unit = {
     eventBus.publish(BigBlueButtonEvent(meetingID, new UserJoining(meetingID, userID, authToken)))
+  }
+
+  def checkIfAllowedToShareDesktop(meetingID: String, userID: String): Unit = {
+    eventBus.publish(BigBlueButtonEvent(meetingID, AllowUserToShareDesktop(meetingID: String,
+      userID: String)))
   }
 
   def assignPresenter(meetingID: String, newPresenterID: String, newPresenterName: String, assignedBy: String): Unit = {
@@ -503,8 +509,11 @@ class BigBlueButtonInGW(
    * Message Interface for DeskShare
    * *****************************************************************
    */
-  def deskShareStarted(meetingId: String, callerId: String, callerIdName: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingId, new DeskShareStartedRequest(meetingId, callerId, callerIdName)))
+  def deskShareStarted(confId: String, callerId: String, callerIdName: String) {
+    println("____BigBlueButtonInGW::deskShareStarted " + confId + callerId + "    " +
+      callerIdName)
+    eventBus.publish(BigBlueButtonEvent(confId, new DeskShareStartedRequest(confId, callerId,
+      callerIdName)))
   }
 
   def deskShareStopped(meetingId: String, callerId: String, callerIdName: String) {
@@ -554,11 +563,11 @@ class BigBlueButtonInGW(
     eventBus.publish(BigBlueButtonEvent(meetingID, new SendCaptionHistoryRequest(meetingID, requesterID)))
   }
 
-  def updateCaptionOwner(meetingID: String, locale: String, ownerID: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new UpdateCaptionOwnerRequest(meetingID, locale, ownerID)))
+  def updateCaptionOwner(meetingID: String, locale: String, localeCode: String, ownerID: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingID, new UpdateCaptionOwnerRequest(meetingID, locale, localeCode, ownerID)))
   }
 
-  def editCaptionHistory(meetingID: String, userID: String, startIndex: Integer, endIndex: Integer, locale: String, text: String) {
-    eventBus.publish(BigBlueButtonEvent(meetingID, new EditCaptionHistoryRequest(meetingID, userID, startIndex, endIndex, locale, text)))
+  def editCaptionHistory(meetingID: String, userID: String, startIndex: Integer, endIndex: Integer, locale: String, localeCode: String, text: String) {
+    eventBus.publish(BigBlueButtonEvent(meetingID, new EditCaptionHistoryRequest(meetingID, userID, startIndex, endIndex, locale, localeCode, text)))
   }
 }

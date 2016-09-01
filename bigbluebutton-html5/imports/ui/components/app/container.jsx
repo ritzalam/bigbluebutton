@@ -1,17 +1,20 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes, cloneElement } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import App from './component';
-import { subscribeForData, pollExists } from './service';
+import { subscribeForData, wasUserKicked, redirectToLogoutUrl } from './service';
 import NavBarContainer from '../nav-bar/container';
 import ActionsBarContainer from '../actions-bar/container';
 import MediaContainer from '../media/container';
-import SettingsModal from '../modals/settings/SettingsModal';
+import SettingsModal from '../modals/settings/component';
+import ClosedCaptionsContainer from '../closed-captions/container';
 
 const defaultProps = {
-  navbar: <NavBarContainer/>,
-  actionsbar: <ActionsBarContainer/>,
-  media: <MediaContainer/>,
-  settings: <SettingsModal />,
+  navbar: <NavBarContainer />,
+  actionsbar: <ActionsBarContainer />,
+  media: <MediaContainer />,
+
+  //CCs UI is commented till the next pull request
+  //captions: <ClosedCaptionsContainer />,
 };
 
 class AppContainer extends Component {
@@ -20,21 +23,16 @@ class AppContainer extends Component {
   }
 
   render() {
+    // inject location on the navbar container
+    let navbarWithLocation = cloneElement(this.props.navbar, { location: this.props.location });
+
     return (
-      <App {...this.props}>
+      <App {...this.props} navbar={navbarWithLocation}>
         {this.props.children}
       </App>
     );
   }
 }
-
-const actionControlsToShow = () => {
-  if (pollExists()) {
-    return <PollingContainer />;
-  } else {
-    return <ActionsBarContainer />;
-  }
-};
 
 let loading = true;
 const loadingDep = new Tracker.Dependency;
@@ -55,12 +53,12 @@ export default createContainer(() => {
   Promise.all(subscribeForData())
   .then(() => {
     setLoading(false);
-  })
-  .catch(reason => console.error(reason));
+  });
 
   return {
+    wasKicked: wasUserKicked(),
     isLoading: getLoading(),
-    actionsbar: <ActionsBarContainer />,
+    redirectToLogoutUrl,
   };
 }, AppContainer);
 

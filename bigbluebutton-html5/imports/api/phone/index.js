@@ -2,8 +2,10 @@ import Users from '/imports/api/users';
 import Meetings from '/imports/api/meetings';
 import Auth from '/imports/ui/services/auth';
 import {callServer} from '/imports/ui/services/api';
-import {clientConfig} from '/config';
-import {createVertoUserName, joinVertoAudio} from '/imports/api/verto';
+import {vertoExitAudio, vertoJoinListenOnly, vertoJoinMicrophone} from '/imports/api/verto';
+
+const APP_CONFIG = Meteor.settings.public.app;
+const MEDIA_CONFIG = Meteor.settings.public.media;
 
 let triedHangup = false;
 
@@ -18,10 +20,10 @@ function amIListenOnly() {
 
 // Periodically check the status of the WebRTC call, when a call has been established attempt to
 // hangup, retry if a call is in progress, send the leave voice conference message to BBB
-function exitVoiceCall(afterExitCall) {
-  if (!clientConfig.media.useSIPAudio) {
-    window.leaveWebRTCVoiceConference_verto();
-    window.cur_call = null;
+
+function exitAudio(afterExitCall) {
+  if (!MEDIA_CONFIG.useSIPAudio) {
+    vertoExitAudio();
     return;
   } else {
     // To be called when the hangup is initiated
@@ -53,14 +55,14 @@ function exitVoiceCall(afterExitCall) {
         triedHangup = true;
 
         if (afterExitCall) {
-          afterExitCall(this, clientConfig.app.listenOnly);
+          afterExitCall(this, APP_CONFIG.listenOnly);
         }
       } else {
         console.log('RETRYING hangup on WebRTC call in ' +
-          `${clientConfig.media.WebRTCHangupRetryInterval} ms`);
+          `${MEDIA_CONFIG.WebRTCHangupRetryInterval} ms`);
 
         // try again periodically
-        setTimeout(checkToHangupCall, clientConfig.media.WebRTCHangupRetryInterval);
+        setTimeout(checkToHangupCall, MEDIA_CONFIG.WebRTCHangupRetryInterval);
       }
     })
 
@@ -72,19 +74,15 @@ function exitVoiceCall(afterExitCall) {
 }
 
 // join the conference. If listen only send the request to the server
-function joinVoiceCall(options) {
+function joinVoiceCallSIP(options) {
   const extension = getVoiceBridge();
   console.log(options);
-  if (clientConfig.media.useSIPAudio) {
+  if (MEDIA_CONFIG.useSIPAudio) {
 
     // create voice call params
     const joinCallback = function (message) {
       console.log('Beginning WebRTC Conference Call');
     };
-
-    if (options.isListenOnly) {
-      callServer('listenOnlyRequestToggle', true);
-    }
 
     window.BBB = {};
     window.BBB.getMyUserInfo = function (callback) {
@@ -104,12 +102,24 @@ function joinVoiceCall(options) {
 
     callIntoConference(extension, function () {}, options.isListenOnly);
     return;
-  } else {
-    const conferenceUsername = createVertoUserName();
-    conferenceIdNumber = '1009';
-    joinVertoAudio({ extension, conferenceUsername, conferenceIdNumber,
-      listenOnly: options.isListenOnly, });
   }
 }
 
-export { joinVoiceCall, exitVoiceCall, getVoiceBridge, };
+function joinListenOnly() {
+  callServer('listenOnlyRequestToggle', true);
+  if (MEDIA_CONFIG.useSIPAudio) {
+    joinVoiceCallSIP({ isListenOnly: true });
+  } else {
+    vertoJoinListenOnly();
+  }
+}
+
+function joinMicrophone() {
+  if (MEDIA_CONFIG.useSIPAudio) {
+    joinVoiceCallSIP({ isListenOnly: false });
+  } else {
+    vertoJoinMicrophone();
+  }
+}
+
+export { joinListenOnly, joinMicrophone, exitAudio, getVoiceBridge, };

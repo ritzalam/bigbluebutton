@@ -19,6 +19,8 @@
 package org.bigbluebutton.modules.caption.services {
 	import com.asfusion.mate.events.Dispatcher;
 	
+	import org.as3commons.logging.api.ILogger;
+	import org.as3commons.logging.api.getClassLogger;
 	import org.bigbluebutton.core.BBB;
 	import org.bigbluebutton.main.model.users.IMessageListener;
 	import org.bigbluebutton.modules.caption.events.ReceiveCaptionHistoryEvent;
@@ -26,7 +28,7 @@ package org.bigbluebutton.modules.caption.services {
 	import org.bigbluebutton.modules.caption.events.ReceiveUpdateCaptionOwnerEvent;
 	
 	public class MessageReceiver implements IMessageListener {
-		private static const LOG:String = "Caption::MessageReceiver - ";
+		private static const LOGGER:ILogger = getClassLogger(MessageReceiver);
 		
 		public function MessageReceiver() {
 			BBB.initConnectionManager().addMessageListener(this);
@@ -48,7 +50,7 @@ package org.bigbluebutton.modules.caption.services {
 		}
 		
 		private function sendCaptionHistoryReply(message:Object):void {
-			trace(LOG + "*** sendCaptionHistoryReply " + message.msg + " ****");
+			//LOGGER.debug("sendCaptionHistoryReply " + message.msg);
 			var map:Object = JSON.parse(message.msg);
 			
 			var event:ReceiveCaptionHistoryEvent = new ReceiveCaptionHistoryEvent(ReceiveCaptionHistoryEvent.RECEIVE_CAPTION_HISTORY_EVENT);
@@ -58,24 +60,26 @@ package org.bigbluebutton.modules.caption.services {
 		}
 		
 		private function updateCaptionOwner(message:Object):void {
-			trace(LOG + "*** updateCaptionOwner " + message + " ****");
+			//LOGGER.debug("updateCaptionOwner " + message);
 			//var map:Object = JSON.parse(message);
 			
 			var event:ReceiveUpdateCaptionOwnerEvent = new ReceiveUpdateCaptionOwnerEvent(ReceiveUpdateCaptionOwnerEvent.RECEIVE_UPDATE_CAPTION_OWNER_EVENT);
 			event.locale = message.locale;
+			event.localeCode = message.localeCode;
 			event.ownerID = message.owner_id;
 			var dispatcher:Dispatcher = new Dispatcher();
 			dispatcher.dispatchEvent(event);
 		}
 		
 		private function editCaptionHistory(message:Object):void {
-			trace(LOG + "*** editCaptionHistory " + message + " ****");
+			//LOGGER.debug("editCaptionHistory {start_index:" + message.start_index+",end_index:"+message.end_index+",locale:"+message.locale+",locale_code"+message.locale_code+",text:'"+message.text+"'}");
 			//var map:Object = JSON.parse(message);
 			
 			var event:ReceiveEditCaptionHistoryEvent = new ReceiveEditCaptionHistoryEvent(ReceiveEditCaptionHistoryEvent.RECEIVE_EDIT_CAPTION_HISTORY);
 			event.startIndex = int(message.start_index);
 			event.endIndex = int(message.end_index);
 			event.locale = message.locale;
+			event.localeCode = message.locale_code;
 			event.text = message.text;
 			var dispatcher:Dispatcher = new Dispatcher();
 			dispatcher.dispatchEvent(event);

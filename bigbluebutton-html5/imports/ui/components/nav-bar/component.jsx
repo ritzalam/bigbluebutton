@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import styles from './styles.scss';
-import { withRouter } from 'react-router';
 import Button from '../button/component';
 import RecordButton from './recordbutton/component';
+import SettingsDropdown from '../dropdown/component';
 
 const propTypes = {
   presentationTitle: PropTypes.string.isRequired,
@@ -24,11 +24,7 @@ class NavBar extends Component {
   }
 
   handleToggleUserList() {
-    /*
-      TODO: Find out how to get the current route here
-      so we can change the click behavior
-    */
-    this.props.router.push('/users');
+    this.props.toggleUserList();
   }
 
   render() {
@@ -56,7 +52,7 @@ class NavBar extends Component {
           </div>
         </div>
         <div className={styles.right}>
-          <span id="settingsButtonPlaceHolder"></span>
+          <SettingsDropdown />
         </div>
       </div>
     );
@@ -66,4 +62,4 @@ class NavBar extends Component {
 NavBar.propTypes = propTypes;
 NavBar.defaultProps = defaultProps;
 
-export default withRouter(NavBar);
+export default NavBar;

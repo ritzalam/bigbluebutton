@@ -21,7 +21,6 @@ package org.bigbluebutton.common.receivers
      */
     private function dependencies():void {
       injector.map(UsersMessageHandler).asSingleton();
-      
     }
   }
 }

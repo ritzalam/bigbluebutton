@@ -17,8 +17,7 @@ trait RegisterUserRequestJsonMsgHdlr extends UnhandledJsonMsgHdlr
 
     def publish(meetingId: IntMeetingId, msg: RegisterUserInMessage): Unit = {
       log.debug("publishing message [RegisterUserRequestInMessage]")
-      eventBus.publish(
-        BigBlueButtonInMessage(meetingId.value, msg))
+      eventBus.publish(BigBlueButtonInMessage(meetingId.value, msg))
     }
 
     if (msg.name == RegisterUserRequestMessage.NAME) {

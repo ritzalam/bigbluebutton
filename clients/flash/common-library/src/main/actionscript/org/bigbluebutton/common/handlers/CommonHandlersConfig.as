@@ -21,6 +21,7 @@ package org.bigbluebutton.common.handlers
     private function dependencies():void {
       injector.map(ValidateAuthTokenReplyHandler).asSingleton();
       injector.map(ValidateAuthTokenTimedOutHandler).asSingleton();
+      injector.map(ValidateAuthTokenSuccessMessageHandler).asSingleton();
     }
   }
 }

@@ -366,16 +366,19 @@ class ApiController {
 
     boolean redirectImm = parseBoolean(params.redirectImmediately)
 
-    String internalUserID = RandomStringUtils.randomAlphanumeric(12).toLowerCase()
+    String externUserID = params.userID
+    if (StringUtils.isEmpty(externUserID)) {
+      externUserID = RandomStringUtils.randomAlphanumeric(12).toLowerCase()
+    }
+
+    String internalUserID = paramsProcessorUtil.generateInternalUserId(meeting.getInternalId(), externUserID)
 
     String authToken = RandomStringUtils.randomAlphanumeric(12).toLowerCase()
 
-    String sessionToken = RandomStringUtils.randomAlphanumeric(16).toLowerCase()
+    String sessionToken = paramsProcessorUtil.generateUserSessionToken(internalUserID)
 
-    String externUserID = params.userID
-    if (StringUtils.isEmpty(externUserID)) {
-      externUserID = internalUserID
-    }
+    System.out.println("**** intUserId=" + internalUserID + ";sessionToken=" + sessionToken + " *****")
+
 
     //Return a Map with the user custom data
     Map<String,String> userCustomData = paramsProcessorUtil.getUserCustomData(params);

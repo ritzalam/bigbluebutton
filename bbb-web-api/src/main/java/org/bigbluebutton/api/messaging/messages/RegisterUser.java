@@ -16,11 +16,12 @@ public class RegisterUser implements IMessage {
 	public final List<String> dialInNumbers;
 	public final String configXml;
 	public final String externalData;
+	public final String sessionToken;
 	
 	public RegisterUser(String meetingID, String internalUserId, String fullname, List<String> roles,
 						String externUserID, String authToken, String avatarURL,
 						String logourUrl, String welcomeMessage, List<String> dialInNumbers,
-						String configXml, String externalData) {
+						String configXml, String externalData, String sessionToken) {
 		this.meetingID = meetingID;
 		this.internalUserId = internalUserId;
 		this.fullname = fullname;
@@ -33,6 +34,7 @@ public class RegisterUser implements IMessage {
 		this.dialInNumbers = dialInNumbers;
 		this.configXml = configXml;
 		this.externalData = externalData;
+		this.sessionToken = sessionToken;
 
 	}
 }

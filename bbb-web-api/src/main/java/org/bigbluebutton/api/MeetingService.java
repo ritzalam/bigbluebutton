@@ -115,10 +115,10 @@ public class MeetingService implements MessageListener {
     public void registerUser(String meetingID, String internalUserId,
             String fullname, List<String> roles, String externUserID, String authToken,
                              String avatarURL, String logoutUrl, String welcomeMessage,
-                             List<String> dialInNumbers, String configXml, String externalData) {
+                             List<String> dialInNumbers, String configXml, String externalData, String sessionToken) {
         handle(new RegisterUser(meetingID, internalUserId, fullname, roles,
                 externUserID, authToken, avatarURL, logoutUrl, welcomeMessage, dialInNumbers,
-                configXml, externalData));
+                configXml, externalData, sessionToken));
     }
 
     public UserSession getUserSession(String token) {
@@ -338,7 +338,7 @@ public class MeetingService implements MessageListener {
         messagingService.registerUser(message.meetingID,
                 message.internalUserId, message.fullname, message.roles,
                 message.externUserID, message.authToken, message.avatarURL, message.logoutUrl,
-                message.welcomeMessage, message.dialInNumbers, message.configXml, message.externalData);
+                message.welcomeMessage, message.dialInNumbers, message.configXml, message.externalData, message.sessionToken);
     }
 
     public String addSubscription(String meetingId, String event,

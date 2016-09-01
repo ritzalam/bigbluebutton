@@ -71,6 +71,17 @@ public class ParamsProcessorUtil {
 
     private String defaultConfigXML = null;
 
+    public String generateInternalUserId(String intMeetingId, String extUserId) {
+        return DigestUtils.shaHex(intMeetingId + extUserId + securitySalt);
+    }
+
+    public String generateUserSessionToken(String intUserId) {
+        return DigestUtils.shaHex(intUserId + System.nanoTime() + securitySalt);
+    }
+
+
+
+
     private String substituteKeywords(String message, String dialNumber, String telVoice, String meetingName) {
         String welcomeMessage = message;
 

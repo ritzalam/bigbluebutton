@@ -29,8 +29,11 @@ import org.bigbluebutton.common.converters.ToJsonEncoder;
 import org.bigbluebutton.common.messages.Constants;
 import org.bigbluebutton.common.messages.MessagingConstants;
 import org.bigbluebutton.common.messages.SendStunTurnInfoReplyMessage;
+import org.bigbluebutton.messages.AssignUserSessionTokenMessage;
 import org.bigbluebutton.messages.CreateMeetingRequestMessage;
+import org.bigbluebutton.messages.Message;
 import org.bigbluebutton.messages.RegisterUserRequestMessage;
+import org.bigbluebutton.messages.body.MessageHeader;
 import org.bigbluebutton.messages.vo.ExtensionPropertiesBody;
 import org.bigbluebutton.messages.vo.MeetingPropertiesBody;
 import org.bigbluebutton.messages.vo.RecordingPropertiesBody;
@@ -62,7 +65,7 @@ public class RedisMessagingService implements MessagingService {
     public void registerUser(String meetingID, String internalUserId, String fullname, List<String> roles,
                              String externUserID, String authToken, String avatarURL,
                              String logoutUrl, String welcomeMessage,
-                             List<String> dialInNumbers, String configXml, String externalData) {
+                             List<String> dialInNumbers, String configXml, String externalData, String sessionToken) {
 
         RegisterUserRequestMessage.RegisterUserRequestMessageHeader header =
                 new RegisterUserRequestMessage.RegisterUserRequestMessageHeader(meetingID);
@@ -74,6 +77,15 @@ public class RedisMessagingService implements MessagingService {
         String json = message.toJson();
         log.info("Sending register user message to bbb-apps:[{}]", json);
         sender.send(MessagingConstants.TO_MEETING_CHANNEL, json);
+
+        MessageHeader sHeader = new MessageHeader(AssignUserSessionTokenMessage.NAME, meetingID, null, null);
+        AssignUserSessionTokenMessage.AssignUserSessionTokenMessageBody sBody =
+                new AssignUserSessionTokenMessage.AssignUserSessionTokenMessageBody(meetingID, internalUserId, sessionToken);
+        AssignUserSessionTokenMessage assignUserSessionTokenMessage = new AssignUserSessionTokenMessage(sHeader, sBody);
+
+         json = assignUserSessionTokenMessage.toJson();
+        log.info("Sending assignUserSessionTokenMessage user message to bbb-apps:[{}]", json);
+        sender.send(MessagingConstants.TO_MEETING_CHANNEL, json);
     }
 
     public void createMeeting(String meetingID, String externalMeetingID, String meetingName, Boolean recorded,
@@ -81,13 +93,13 @@ public class RedisMessagingService implements MessagingService {
                               Boolean autoStartRecording, Boolean allowStartStopRecording,
                               String moderatorPass, String viewerPass, Long createTime,
                               String createDate, Boolean isBreakout, Integer maxUsers, Boolean allowVoiceOnly) {
+
         RecordingPropertiesBody recProps = new RecordingPropertiesBody(recorded, autoStartRecording, allowStartStopRecording);
         ExtensionPropertiesBody extProps = new ExtensionPropertiesBody(3, 20, true);
         MeetingPropertiesBody meetingProperties = new MeetingPropertiesBody(meetingID, externalMeetingID,
                 meetingName, voiceBridge, duration, maxUsers, allowVoiceOnly, isBreakout, extProps, recProps);
 
-        CreateMeetingRequestMessage.CreateMeetingRequestMessageHeader header =
-                new CreateMeetingRequestMessage.CreateMeetingRequestMessageHeader(CreateMeetingRequestMessage.NAME);
+        MessageHeader header = new MessageHeader(CreateMeetingRequestMessage.NAME, meetingID, null, null);
 
         CreateMeetingRequestMessage.CreateMeetingRequestMessageBody body =
                 new CreateMeetingRequestMessage.CreateMeetingRequestMessageBody(meetingProperties);

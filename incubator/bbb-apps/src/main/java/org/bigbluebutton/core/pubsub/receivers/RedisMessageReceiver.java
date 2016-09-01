@@ -6,7 +6,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import org.bigbluebutton.core.api.IBigBlueButtonInGW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

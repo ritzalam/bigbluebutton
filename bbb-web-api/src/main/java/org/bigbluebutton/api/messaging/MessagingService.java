@@ -42,7 +42,7 @@ public interface MessagingService {
 	void registerUser(String meetingID, String internalUserId, String fullname, List<String> roles,
 					  String externUserID, String authToken, String avatarURL,
 					  String logoutUrl, String welcomeMessage,
-					  List<String> dialInNumbers, String configXml, String externalData);
+					  List<String> dialInNumbers, String configXml, String externalData, String sessionToken);
 	void sendKeepAlive(String system, Long timestamp);
 	void sendStunTurnInfo(String meetingId, String internalUserId, Set<StunServer> stuns, Set<TurnEntry> turns);
 }

@@ -1,12 +1,12 @@
-package org.bigbluebutton.common.messages2x.objects;
+package org.bigbluebutton.messages.vo;
 
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
 public class ChatMessage {
-    public String fromColor; //TODO these should not all be String
+    public String fromColor;
     public String fromTime;
-    public ChatType chatType;
+    public String chatType;
     public String toUserID;
     public String message;
     public String fromUsername;
@@ -14,9 +14,9 @@ public class ChatMessage {
     public String toUsername;
     public String fromTimezoneOffset;
 
-    public ChatMessage (String fromColor, String fromTime, ChatType chatType, String toUserID,
-                        String message, String fromUsername, String fromUserID, String
-                                toUsername, String fromTimezoneOffset) {
+    public ChatMessage(String fromColor, String fromTime, String chatType, String toUserID,
+                       String message, String fromUsername, String fromUserID, String toUsername,
+                       String fromTimezoneOffset) {
         this.fromColor = fromColor;
         this.fromTime = fromTime;
         this.chatType = chatType;

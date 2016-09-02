@@ -443,7 +443,7 @@ class ApiController {
     // Register user into the meeting.
     meetingService.registerUser(us.meetingID, us.internalUserId, us.fullname, roles, us.externUserID,
             us.authToken, us.avatarURL, us.logoutUrl, us.welcome, dialInNumbers,
-            "CONFIG_XML_PLACEHOLDER", "USER_DATA_PLACEHOLDER", sessionToken)
+            configxml, "USER_DATA_PLACEHOLDER", sessionToken)
 
     log.info("Session user token for " + us.fullname + " [" + session[sessionToken]+ "]")
     session.setMaxInactiveInterval(SESSION_TIMEOUT);

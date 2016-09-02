@@ -15,7 +15,6 @@ class BigBlueButtonInGW(
   val log = Logging(system, getClass)
 
   def handleReceivedJsonMessage(name: String, json: String): Unit = {
-    println("INGW: \n" + json)
     val receivedJsonMessage = new ReceivedJsonMessage(name, json)
     incomingJsonMessageBus.publish(IncomingJsonMessage("incoming-json-message", receivedJsonMessage))
   }

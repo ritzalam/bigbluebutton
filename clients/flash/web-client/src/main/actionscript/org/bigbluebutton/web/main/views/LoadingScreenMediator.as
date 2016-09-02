@@ -56,6 +56,8 @@ package org.bigbluebutton.web.main.views {
       
       uiSession.loadingChangeSignal.add(onLoadingChange);
       onLoadingChange(uiSession.loading, uiSession.loadingMessage);
+      
+      
       var pageHost:String = FlexGlobals.topLevelApplication.url.split("/")[0];
       var pageURL:String = FlexGlobals.topLevelApplication.url.split("/")[2];
       

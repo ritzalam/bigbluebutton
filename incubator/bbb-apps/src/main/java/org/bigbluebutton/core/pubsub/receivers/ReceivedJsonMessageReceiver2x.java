@@ -15,7 +15,6 @@ public class ReceivedJsonMessageReceiver2x implements MessageHandler {
 
     @Override
     public void handleMessage(String pattern, String channel, String json) {
-        System.out.println("RECEIVED: \n" + json + "\n");
         ObjectMapper mapper = JsonFactory.create();
         Map msg = mapper.readValue(json, Map.class);
         Map header = (Map) msg.get("header");

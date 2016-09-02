@@ -406,9 +406,9 @@ public class ParamsProcessorUtil {
 	}
 	
 	public String getDefaultConfigXML() {
-		if (defaultConfigXML == null) {
+		//if (defaultConfigXML == null) {
 			defaultConfigXML = getConfig(defaultConfigURL);
-		}
+		//}
 		
 		return defaultConfigXML;
 	}

@@ -46,7 +46,7 @@ import org.slf4j.Logger;
 import com.google.gson.Gson;
 
 public class ConnectionInvokerService {
-  private static Logger log = Red5LoggerFactory.getLogger(ConnectionInvokerService.class, "bigbluebutton");
+  private static Logger log = Red5LoggerFactory.getLogger(ConnectionInvokerService.class, "bbbapps");
 
   private final String CONN = "RED5-";
   private static final int NTHREADS = 1;

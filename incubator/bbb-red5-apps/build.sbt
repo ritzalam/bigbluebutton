@@ -1,7 +1,7 @@
 // enablePlugins(JavaServerAppPackaging)
 enablePlugins(JettyPlugin)
 
-name := "bbb-red5-apps"
+name := "bbbapps"
 
 organization := "org.bigbluebutton"
 

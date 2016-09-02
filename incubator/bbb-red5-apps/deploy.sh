@@ -4,16 +4,15 @@ sbt clean
 sbt compile
 sbt package
 
-APPLICATION_NAME=bbb-red5-apps
+APPLICATION_NAME=bbbapps
 APP_JAR_NAME=${APPLICATION_NAME}_2.11-0.0.1.jar
 WEBAPPS_LOCATION=/usr/share/red5/webapps
-JARS_ORIG_LOCATION=~/dev/bigbluebutton/incubator/$APPLICATION_NAME/target/webapp/WEB-INF/lib
+JARS_ORIG_LOCATION=~/dev/bigbluebutton/incubator/bbb-red5-apps/target/webapp/WEB-INF/lib
 JARS_DEST_LOCATION=/usr/share/red5/webapps/$APPLICATION_NAME/WEB-INF/lib
 
 echo "deploying $APPLICATION_NAME to $WEBAPPS_LOCATION"
 
 sudo chmod -R 777 $WEBAPPS_LOCATION
-sudo service red5 stop
 
 if [[ -d $WEBAPPS_LOCATION/$APPLICATION_NAME ]]; then
     sudo rm -r $WEBAPPS_LOCATION/$APPLICATION_NAME
@@ -47,5 +46,3 @@ sudo chmod -R 777 $WEBAPPS_LOCATION/$APPLICATION_NAME
 sudo chown -R red5:red5 $WEBAPPS_LOCATION/$APPLICATION_NAME
 
 # Dev only
-sudo service red5 start
-sudo service tomcat7 restart

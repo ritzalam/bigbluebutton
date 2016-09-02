@@ -81,7 +81,7 @@ class SendToClientActor(val aSystem: ActorSystem, val connectionService: Connect
       val header: JsonObject = obj.get("header").getAsJsonObject
 
       if (header.has("name")) {
-        val meetingId: String = header.get("meeting_id").getAsString
+        val meetingId: String = extractMeetingId(msg.json)
 
         if (SendPublicChatMessage.NAME.equals(messageName)) {
           val m = new BroadcastClientJsonMessage(meetingId, "ChatReceivePublicMessageCommand",

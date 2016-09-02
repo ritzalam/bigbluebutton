@@ -18,25 +18,40 @@
   */
 
 package org.bigbluebutton.bbbred5apps
+import akka.pattern.ask
 
-import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
+import scala.concurrent.duration._
+import akka.actor.{Actor, ActorContext, ActorLogging, ActorSystem, Props}
+import akka.util.Timeout
+import org.bigbluebutton.bbbred5apps.messages.{UserConnected, UserDisconnected}
 import org.bigbluebutton.red5.pubsub.MessagePublisher
 
-object ClientActor {
-  def props(system: ActorSystem, red5Publisher: MessagePublisher): Props =
-    Props(classOf[ClientActor], system, red5Publisher)
+import scala.collection.mutable
+import scala.collection.mutable.HashMap
+import scala.concurrent.Await
 
+object ConnectionActor {
+  def props(): Props = Props(classOf[ConnectionActor])
 }
 
-class ClientActor(val aSystem: ActorSystem, val red5Publisher: MessagePublisher)
-  extends Actor with ActorLogging {
-  log.warning(s"Creating a new ClientActor warn")
+class ConnectionActor() extends Actor with ActorLogging {
 
+  log.warning("Creating a new ConnectionActor warn")
 
   def receive = {
 
-    case msg: Any => log.warning("Unknown message on ClientActor " + msg)
+    case msg: Any => log.warning("Unknown message " + msg)
   }
+
 
 }
 
+
+object ActiveConnectionActor {
+  def apply()(implicit context: ActorContext) =
+    new ActiveConnectionActor()(context)
+}
+
+class ActiveConnectionActor()(implicit val context: ActorContext) {
+  val actorRef = context.actorOf(ConnectionActor.props())
+}

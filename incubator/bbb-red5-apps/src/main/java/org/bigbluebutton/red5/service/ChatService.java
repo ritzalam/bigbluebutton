@@ -71,7 +71,10 @@ public class ChatService {
             SendPublicChatMessage fullMessage = new SendPublicChatMessage(new MessageHeader
                     (SendPublicChatMessage.NAME, meetingID, requesterID, replyTo), new
                     SendPublicChatMessage.Body(requesterID, publicChatObject));
-            app.sendJsonMessageToPubSub(MessagingConstants.TO_CHAT_CHANNEL, fullMessage.toJson());
+            String connId = Red5.getConnectionLocal().getSessionId();
+            // app.sendJsonMessageToPubSub(MessagingConstants.TO_CHAT_CHANNEL, fullMessage.toJson
+            // ());
+            app.sendPublicMessage(meetingID, requesterID, connId, jsonBody);
         }
         else {
             log.warn("sendPublicMessage maximum allowed message length exceeded (length: [" +

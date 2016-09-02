@@ -26,6 +26,10 @@ import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService
 import org.bigbluebutton.red5.pubsub.MessagePublisher
 
 case class JsonMessageWithName(name:String, json: String)
+case class AuthorizedJsonMessage(name:String, json: String)
+case class PendingAuthJsonMessage(meetingID: String, requesterID: String, connId: String,
+                                  jsonMessage:String)
+
 class BigBlueButtonRed5App(red5Publisher: MessagePublisher, connectionService:
 ConnectionInvokerService) extends IBigBlueButtonRed5App with LogHelper {
 
@@ -67,9 +71,11 @@ ConnectionInvokerService) extends IBigBlueButtonRed5App with LogHelper {
     red5Publisher.getChatHistory(meetingID, requesterID, replyTo)
   }
 
-  def sendPublicMessage(meetingID: String, requesterID: String, message: java.util.Map[java
-  .lang.String, String]): Unit = {
-    red5Publisher.sendPublicMessage(meetingID, requesterID, message)
+  def sendPublicMessage(meetingID: String, requesterID: String, connId: String,
+                        jsonMessage: String): Unit = {
+
+    meetingManager ! PendingAuthJsonMessage(meetingID, requesterID, connId, jsonMessage)
+    // red5Publisher.sendPublicMessage(meetingID, requesterID, message)
   }
 
   def sendPrivateMessage(meetingID: String, requesterID: String, message: java.util.Map[java

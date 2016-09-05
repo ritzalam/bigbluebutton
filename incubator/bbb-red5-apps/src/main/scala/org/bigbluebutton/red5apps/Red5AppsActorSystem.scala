@@ -6,6 +6,8 @@ import akka.actor.ActorSystem
 
 class Red5AppsActorSystem(val red5OutGW: Red5OutGateway) extends IRed5InGW with SystemConfiguration {
 
+  println(" ****************** Hello!!!!!!!!!!!!!!!!!")
+
   def handle(msg: IRed5InMsg): Unit = {
 
   }

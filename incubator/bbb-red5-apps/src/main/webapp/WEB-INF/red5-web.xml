@@ -46,8 +46,8 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         <property name="virtualHosts" value="${webapp.virtualHosts}"/>
     </bean>
 
-    <bean id="web.handler" class="org.bigbluebutton.red5.Red5AppAdapter">
-        <property name="bbbAppsActorSystem"><ref bean="red5BbbAppsActorSystem"/></property>
+    <bean id="web.handler" class="org.bigbluebutton.Red5AppsAdapter">
+        <property name="iRed5InGW"><ref bean="red5BbbAppsActorSystem"/></property>
     </bean>
 
 
@@ -56,7 +56,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
     </bean>
 
     <bean id="red5OutGateway" class="org.bigbluebutton.Red5OutGateway">
-        <constructor-arg index="1" ref="connInvokerService"/>
+        <constructor-arg index="0" ref="connInvokerService"/>
     </bean>
 
     <bean id="connInvokerService" class="org.bigbluebutton.red5.client.messaging.ConnectionInvokerService"

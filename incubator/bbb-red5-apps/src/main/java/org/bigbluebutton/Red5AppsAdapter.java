@@ -14,6 +14,7 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
 
     private static Logger log = Red5LoggerFactory.getLogger(Red5AppsAdapter.class, "bbbapps");
 
+    private IRed5InGW red5InGW;
 
     @Override
     public boolean appConnect(IConnection conn, Object[] params) {
@@ -47,6 +48,8 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
 
     @Override
     public boolean appStart(IScope app) {
+        System.out.println("***** Red5 Apps START!!!!!!");
+
         super.appStart(app);
         return true;
     }
@@ -98,5 +101,7 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
         //app.handleJsonMessage(json);
     }
 
-
+    public void setIRed5InGW(IRed5InGW red5InGW) {
+        this.red5InGW = red5InGW;
+    }
 }

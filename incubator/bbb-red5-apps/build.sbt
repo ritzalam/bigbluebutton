@@ -78,6 +78,7 @@ libraryDependencies ++= {
     //redis
     "redis.clients"             %  "jedis"                 % "2.7.2",
     "org.apache.commons"        %  "commons-pool2"         % "2.3",
+    "com.etaty.rediscala"      %%  "rediscala"             % "1.4.0",
 
     "com.google.code.gson"      %  "gson"                  % "2.5",
     // "org.apache.commons"        %  "commons-lang3"     % "3.2", // might not be needed

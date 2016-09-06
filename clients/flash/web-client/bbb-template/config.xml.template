@@ -6,7 +6,7 @@
     <javaTest url="http://HOST/testjava.html"/>
     <porttest host="HOST" application="video/portTest" timeout="10000"/>    
     <bwMon server="HOST" application="video/bwTest"/>
-    <application uri="rtmp://HOST/bigbluebutton" host="http://HOST/bigbluebutton/api/enter"/>
+    <application uri="rtmp://HOST/bbbapps" host="http://HOST/bigbluebutton/api/enter"/>
     <language userSelectionEnabled="true" />
     <skinning enabled="true" url="http://HOST/client/branding/css/BBBDefault.css.swf?v=VERSION" />
     <shortcutKeys showButton="true" />
@@ -124,7 +124,7 @@
 
 		<module name="LayoutModule" url="http://HOST/client/LayoutModule.swf?v=VERSION"
 			uri="rtmp://HOST/bigbluebutton"
-			layoutConfig="http://HOST/client/conf/layout.xml"
+			layoutConfig="http://HOST/client/layout.xml"
 			enableEdit="false"
 		/>
 

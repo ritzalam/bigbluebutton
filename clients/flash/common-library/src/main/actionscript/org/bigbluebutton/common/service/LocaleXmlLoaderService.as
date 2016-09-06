@@ -13,7 +13,7 @@ package org.bigbluebutton.common.service
 
   public class LocaleXmlLoaderService implements ILocaleXmlLoaderService
   {
-    public static const LOCALES_FILE:String = "client/conf/locales.xml";
+    public static const LOCALES_FILE:String = "client/locales.xml";
     public static const VERSION:String = "0.9.0";
     
     [Inject]

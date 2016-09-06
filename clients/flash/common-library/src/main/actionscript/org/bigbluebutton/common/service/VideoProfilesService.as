@@ -24,7 +24,7 @@ package org.bigbluebutton.common.service
     public function getProfiles(serverUrl:String):void {
       urlLoader = new URLLoader();
       
-      var profileUrl:String = serverUrl + "/client/conf/profiles.xml?a=" + new Date().time;
+      var profileUrl:String = serverUrl + "/client/profiles.xml?a=" + new Date().time;
       var request:URLRequest = new URLRequest(profileUrl);
       request.method = URLRequestMethod.GET;
       

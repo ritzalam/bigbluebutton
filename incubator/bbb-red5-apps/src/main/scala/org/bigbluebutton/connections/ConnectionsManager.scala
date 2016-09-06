@@ -1,16 +1,17 @@
 package org.bigbluebutton.connections
 
 import akka.actor.{Actor, ActorLogging, Props}
+import org.bigbluebutton.bus.Red5AppsMsgBus
 
 import scala.collection.mutable
 
 object ConnectionsManager {
-  def props(): Props =
-    Props(classOf[ConnectionsManager])
+  def props(bus: Red5AppsMsgBus): Props =
+    Props(classOf[ConnectionsManager], bus)
 }
 
 
-class ConnectionsManager() extends Actor with ActorLogging {
+class ConnectionsManager(bus: Red5AppsMsgBus) extends Actor with ActorLogging {
   log.warning("Creating a new MeetingManager warn")
 
   private val connections = new mutable.HashMap[String, Connection]

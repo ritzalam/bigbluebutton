@@ -2,16 +2,17 @@ package org.bigbluebutton.bus
 
 import akka.actor.ActorRef
 import akka.event.{EventBus, LookupClassification}
-import org.bigbluebutton.red5apps.messages.Red5InJsonMsg
 
 trait Red5AppsMsgTrait
 
 case class Red5AppsMsg(val topic: String, val payload: Red5AppsMsgTrait)
+
+case class FromClientMsg(val name: String, val json: String, val connectionId: String) extends Red5AppsMsgTrait
 case class ToClientMsg(val payload: String) extends Red5AppsMsgTrait
 case class FromPubSubJsonMsg(val payload: String) extends Red5AppsMsgTrait
 case class ToPubSubJsonMsg(val payload: String) extends Red5AppsMsgTrait
 
-class ClientInMsgBus extends EventBus with LookupClassification {
+class Red5AppsMsgBus extends EventBus with LookupClassification {
   type Event = Red5AppsMsg
   type Classifier = String
   type Subscriber = ActorRef

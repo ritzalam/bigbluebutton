@@ -1,21 +1,20 @@
 package org.bigbluebutton.endpoint.redis
 
 import akka.actor.{Actor, ActorLogging, Props}
-import org.bigbluebutton.endpoint.redis.json.{IncomingEventBus2x, IncomingJsonMessageBus, ReceivedJsonMessage, UnhandledJsonMsgHdlr}
+import org.bigbluebutton.endpoint.redis.json.{ PubSubJsonMsgBus, UnhandledJsonMsgHdlr}
+import org.bigbluebutton.red5apps.messages.Red5InJsonMsg
 
 object RedisMsgHdlrActor {
-  def props(eventBus: IncomingEventBus2x, incomingJsonMessageBus: IncomingJsonMessageBus): Props =
-    Props(classOf[RedisMsgHdlrActor], eventBus, incomingJsonMessageBus)
+  def props(pubSubJsonMsgBus: PubSubJsonMsgBus): Props =
+    Props(classOf[RedisMsgHdlrActor], pubSubJsonMsgBus)
 }
 
-class RedisMsgHdlrActor(
-  val eventBus: IncomingEventBus2x,
-  val incomingJsonMessageBus: IncomingJsonMessageBus)
+class RedisMsgHdlrActor(val pubSubJsonMsgBus: PubSubJsonMsgBus)
     extends Actor with ActorLogging
     with UnhandledJsonMsgHdlr {
 
   def receive = {
-    case msg: ReceivedJsonMessage => handleReceivedJsonMsg(msg)
+    case msg: Red5InJsonMsg => handleReceivedJsonMsg(msg)
     case _ => // do nothing
   }
 

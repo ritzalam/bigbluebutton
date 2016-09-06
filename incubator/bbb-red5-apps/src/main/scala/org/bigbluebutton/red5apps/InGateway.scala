@@ -18,7 +18,7 @@ class InGateway(val red5OutGW: Red5OutGateway) extends IRed5InGW with SystemConf
   println("*************** meetingManagerChannel " + meetingManagerChannel + " *******************")
 
   def handle(msg: Red5InJsonMsg): Unit = {
-    println("\n\n "  + msg.json + " \n\n")
+    println("\n\n InGW:"  + msg.name + " \n\n")
   }
 
 

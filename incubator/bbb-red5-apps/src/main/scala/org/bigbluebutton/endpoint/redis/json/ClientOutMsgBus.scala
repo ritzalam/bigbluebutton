@@ -3,15 +3,14 @@ package org.bigbluebutton.endpoint.redis.json
 import akka.actor.ActorRef
 import akka.event.{ EventBus, LookupClassification }
 
-case class ReceivedJsonMessage(name: String, data: String);
-case class IncomingJsonMessage(val topic: String, val payload: ReceivedJsonMessage)
+case class ClientOutMsg(val topic: String, val payload: String)
 
-class IncomingJsonMessageBus extends EventBus with LookupClassification {
-  type Event = IncomingJsonMessage
+class ClientOutMsgBus extends EventBus with LookupClassification {
+  type Event = ClientOutMsg
   type Classifier = String
   type Subscriber = ActorRef
 
-  // is used for extracting the classifier from the incoming events
+  // is used for extracting the classifier from the incoming events  
   override protected def classify(event: Event): Classifier = event.topic
 
   // will be invoked for each event for all subscribers which registered themselves
@@ -29,3 +28,4 @@ class IncomingJsonMessageBus extends EventBus with LookupClassification {
   // used internally (i.e. the expected number of different classifiers)
   override protected def mapSize: Int = 128
 }
+

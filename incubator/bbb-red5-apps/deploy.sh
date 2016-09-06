@@ -33,6 +33,7 @@ sudo cp $JARS_ORIG_LOCATION/$APP_JAR_NAME \
     $JARS_ORIG_LOCATION/gson-2.5.jar \
     $JARS_ORIG_LOCATION/jedis-2.7.2.jar \
     $JARS_ORIG_LOCATION/scala-library-* \
+    $JARS_ORIG_LOCATION/rediscala_2.11-* \
     $JARS_DEST_LOCATION
 
 # extract web application

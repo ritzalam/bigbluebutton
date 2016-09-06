@@ -30,7 +30,6 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         <property name="locations">
             <list>
                 <value>/WEB-INF/red5-web.properties</value>
-                <value>/WEB-INF/bbb-red5-apps.properties</value>
             </list>
         </property>
     </bean>

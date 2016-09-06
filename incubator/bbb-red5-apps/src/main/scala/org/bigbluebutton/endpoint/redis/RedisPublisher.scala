@@ -8,7 +8,7 @@ import akka.actor.ActorSystem
 
 import scala.concurrent.Await
 import akka.actor.Actor
-import org.bigbluebutton.bbbred5apps.SystemConfiguration
+import org.bigbluebutton.red5apps.SystemConfiguration
 import redis.RedisClient
 
 class RedisPublisher(val system: ActorSystem) extends SystemConfiguration {

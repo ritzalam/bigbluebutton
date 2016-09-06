@@ -9,7 +9,7 @@ import redis.api.pubsub.{Message, PMessage}
 import scala.concurrent.duration._
 import akka.actor.ActorRef
 import akka.actor.actorRef2Scala
-import org.bigbluebutton.bbbred5apps.SystemConfiguration
+import org.bigbluebutton.red5apps.SystemConfiguration
 import redis.api.servers.ClientSetname
 
 object AppsRedisSubscriberActor extends SystemConfiguration {

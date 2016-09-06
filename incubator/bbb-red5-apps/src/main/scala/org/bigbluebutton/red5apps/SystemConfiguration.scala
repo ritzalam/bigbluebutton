@@ -1,4 +1,4 @@
-package org.bigbluebutton.bbbred5apps
+package org.bigbluebutton.red5apps
 
 import com.typesafe.config.ConfigFactory
 

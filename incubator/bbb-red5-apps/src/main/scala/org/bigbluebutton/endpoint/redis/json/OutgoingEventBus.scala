@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.api.json
+package org.bigbluebutton.endpoint.redis.json
 
 import akka.actor.ActorRef
 import akka.event.{ EventBus, LookupClassification }

@@ -1,6 +1,5 @@
 package org.bigbluebutton.red5apps
 
-import org.bigbluebutton.bbbred5apps.SystemConfiguration
 import org.bigbluebutton.{IRed5InGW, IRed5InMsg, Red5OutGateway}
 import akka.actor.ActorSystem
 import org.bigbluebutton.endpoint.redis.{AppsRedisSubscriberActor, RedisMessageReceiver, RedisPublisher}

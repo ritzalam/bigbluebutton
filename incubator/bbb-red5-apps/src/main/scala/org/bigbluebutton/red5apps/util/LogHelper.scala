@@ -1,4 +1,4 @@
-package org.bigbluebutton.bbbred5apps.util
+package org.bigbluebutton.red5apps.util
 
 import org.red5.logging.Red5LoggerFactory
 

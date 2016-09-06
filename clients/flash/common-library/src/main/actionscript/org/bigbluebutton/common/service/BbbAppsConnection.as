@@ -69,6 +69,9 @@ package org.bigbluebutton.common.service
         bbbAppUrl = bbbAppUrl.replace(rtmpPattern, bbbAppUrl);
       }
       var uri:String = bbbAppUrl + "/" + myUserModel.internalMeetingId;
+      
+      logger.debug(" Connecting to " + uri);
+      
       var lockSettings:Object = {disableCam: false, disableMic: false, disablePrivateChat: false, 
         disablePublicChat: false, lockedLayout: false, lockOnJoin: false, lockOnJoinConfigurable: false};
       netConnection.connect(uri, myUserModel.username, myUserModel.role,

@@ -49,6 +49,7 @@ package org.bigbluebutton.common.service
     }
     
     private function handleComplete(e:Event):void {
+      trace(new XML(e.target.data).toXMLString());
       configModel.setConfig(new Config(new XML(e.target.data)));
     }
   }

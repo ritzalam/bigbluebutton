@@ -47,11 +47,11 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
     </bean>
 
     <bean id="web.handler" class="org.bigbluebutton.Red5AppsAdapter">
-        <property name="iRed5InGW"><ref bean="red5BbbAppsActorSystem"/></property>
+        <property name="iRed5InGW"><ref bean="inGateway"/></property>
     </bean>
 
 
-    <bean id="red5BbbAppsActorSystem" class="org.bigbluebutton.red5apps.Red5AppsActorSystem">
+    <bean id="inGateway" class="org.bigbluebutton.red5apps.InGateway">
         <constructor-arg index="0" ref="red5OutGateway"/>
     </bean>
 

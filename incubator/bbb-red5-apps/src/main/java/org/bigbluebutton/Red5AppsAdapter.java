@@ -1,6 +1,9 @@
 package org.bigbluebutton;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.bigbluebutton.red5apps.messages.Red5InJsonMsg;
 import org.red5.logging.Red5LoggerFactory;
 import org.red5.server.adapter.IApplication;
 import org.red5.server.adapter.MultiThreadedApplicationAdapter;
@@ -96,9 +99,28 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
         super.roomDisconnect(conn);
     }
 
+    private String extractName(String json) {
+        JsonParser parser = new JsonParser();
+        JsonObject obj = (JsonObject) parser.parse(json);
+        String answer = "";
+
+        if (obj.has("header")) {
+            JsonObject header = (JsonObject) obj.get("header");
+
+            if (header.has("name")) {
+                String messageName = header.get("name").getAsString();
+                answer = messageName;
+            }
+        }
+        return answer;
+    }
+
     public void messageFromClientRemoteCall(String json) {
-        log.debug("messageFromClientRemoteCall: \n" + json + "\n");
-        //app.handleJsonMessage(json);
+        log.warn("messageFromClientRemoteCall: \n" + json + "\n");
+
+        String connectionId = Red5.getConnectionLocal().getSessionId();
+        Red5InJsonMsg inMsg = new Red5InJsonMsg(extractName(json), json, connectionId);
+        red5InGW.handle(inMsg);
     }
 
     public void setIRed5InGW(IRed5InGW red5InGW) {

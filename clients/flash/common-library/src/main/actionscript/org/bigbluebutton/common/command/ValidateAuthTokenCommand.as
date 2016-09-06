@@ -3,6 +3,7 @@ package org.bigbluebutton.common.command
   import org.bigbluebutton.common.model.MyUserModel;
   import org.bigbluebutton.common.service.BbbAppsConnection;
   import org.bigbluebutton.common.service.network.messages.ValidateAuthTokenRequestMessage;
+  import org.bigbluebutton.common.util.ISessionUtil;
   
   import robotlegs.bender.bundles.mvcs.Command;
   
@@ -12,7 +13,7 @@ package org.bigbluebutton.common.command
     public var connection:BbbAppsConnection;
     
     [Inject]
-    public var myUserModel:MyUserModel;
+    public var sessionUtil:ISessionUtil;
     
     public function ValidateAuthTokenCommand()
     {
@@ -21,8 +22,7 @@ package org.bigbluebutton.common.command
     
     override public function execute():void {
       var message:ValidateAuthTokenRequestMessage = 
-        new ValidateAuthTokenRequestMessage(myUserModel.internalMeetingId, 
-          myUserModel.internalUserId, myUserModel.authToken);
+        new ValidateAuthTokenRequestMessage(sessionUtil.getSessionToken());
  
       connection.sendJsonMessage(message);
     }

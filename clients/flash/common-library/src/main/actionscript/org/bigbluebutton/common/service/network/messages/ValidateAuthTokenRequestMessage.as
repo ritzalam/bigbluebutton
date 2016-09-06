@@ -7,12 +7,10 @@ package org.bigbluebutton.common.service.network.messages
     private var header:Object;
     private var body:Object;
     
-    public function ValidateAuthTokenRequestMessage(meetingId: String, senderId: String, authToken: String)
+    public function ValidateAuthTokenRequestMessage(authToken: String)
     {
       header = new Object;
       header.name = NAME;
-      header.meetingId = meetingId;
-      header.senderId = senderId;
       
       var message:Object = new Object();
       message["authToken"] = authToken;

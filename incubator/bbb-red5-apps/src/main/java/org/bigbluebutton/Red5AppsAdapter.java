@@ -13,6 +13,9 @@ import org.red5.server.api.Red5;
 import org.red5.server.api.scope.IScope;
 import org.slf4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
 
     private static Logger log = Red5LoggerFactory.getLogger(Red5AppsAdapter.class, "bbbapps");
@@ -74,6 +77,23 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
 
     @Override
     public boolean roomConnect(IConnection connection, Object[] params) {
+        String sessionToken = ((String) params[0]).toString();
+        System.out.println("******* SESSION TOKEN=" + sessionToken);
+
+        connection.setAttribute("SESSION_TOKEN", sessionToken);
+
+        String connectionId = Red5.getConnectionLocal().getSessionId();
+
+        Map<String, Object> message = new HashMap<String, Object>();
+        message.put("sessionToken", sessionToken);
+        message.put("connectionId", connectionId);
+        message.put("name", "ClientConnected");
+
+        Gson gson = new Gson();
+        String json = gson.toJson(message);
+
+        Red5InJsonMsg inMsg = new Red5InJsonMsg("ClientConnected", json, connectionId);
+        red5InGW.handle(inMsg);
 
         return super.roomConnect(connection, params);
 
@@ -95,6 +115,19 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
         String remoteHost = Red5.getConnectionLocal().getRemoteAddress();
         int remotePort = Red5.getConnectionLocal().getRemotePort();
 
+        String sessionToken = (String) Red5.getConnectionLocal().getAttribute("SESSION_TOKEN");
+
+        String connectionId = Red5.getConnectionLocal().getSessionId();
+        Map<String, Object> message = new HashMap<String, Object>();
+        message.put("sessionToken", sessionToken);
+        message.put("connectionId", connectionId);
+        message.put("name", "ClientDisconnected");
+
+        Gson gson = new Gson();
+        String json = gson.toJson(message);
+
+        Red5InJsonMsg inMsg = new Red5InJsonMsg("ClientDisconnected", json, connectionId);
+        red5InGW.handle(inMsg);
 
         super.roomDisconnect(conn);
     }

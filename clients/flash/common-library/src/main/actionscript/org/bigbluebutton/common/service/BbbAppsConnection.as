@@ -15,6 +15,7 @@ package org.bigbluebutton.common.service
   import org.bigbluebutton.common.service.network.messages.IJsonMessage;
   import org.bigbluebutton.common.signal.ConnectFailedSignal;
   import org.bigbluebutton.common.signal.ConnectSuccessSignal;
+  import org.bigbluebutton.common.util.ISessionUtil;
   import org.bigbluebutton.lib.main.models.ConnectionFailedEvent;
   
   import robotlegs.bender.framework.api.ILogger;
@@ -25,6 +26,9 @@ package org.bigbluebutton.common.service
 
     [Inject]
     public var serverCallbackHandler:ServerCallbackHandler;
+    
+    [Inject]
+    public var sessionUtil:ISessionUtil;
     
     [Inject]
     public var configModel:ConfigModel;
@@ -68,16 +72,11 @@ package org.bigbluebutton.common.service
       if (tunnel) {
         bbbAppUrl = bbbAppUrl.replace(rtmpPattern, bbbAppUrl);
       }
-      var uri:String = bbbAppUrl + "/" + myUserModel.internalMeetingId;
+      var uri:String = bbbAppUrl + "/meetings";
       
       logger.debug(" Connecting to " + uri);
-      
-      var lockSettings:Object = {disableCam: false, disableMic: false, disablePrivateChat: false, 
-        disablePublicChat: false, lockedLayout: false, lockOnJoin: false, lockOnJoinConfigurable: false};
-      netConnection.connect(uri, myUserModel.username, myUserModel.role,
-        myUserModel.internalMeetingId, myUserModel.voicebridge, 
-        myUserModel.record, myUserModel.externalUserId,
-        myUserModel.internalUserId, myUserModel.muteOnStart, lockSettings);
+            
+      netConnection.connect(uri, sessionUtil.getSessionToken());
       
       connectAttemptTimer = new Timer(connectionTimeout, 1);
       connectAttemptTimer.addEventListener(TimerEvent.TIMER_COMPLETE, connectAttemptTimeoutHandler);

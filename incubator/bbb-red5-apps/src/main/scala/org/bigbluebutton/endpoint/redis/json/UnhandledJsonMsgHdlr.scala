@@ -1,6 +1,7 @@
 package org.bigbluebutton.endpoint.redis.json
 
 import org.bigbluebutton.endpoint.redis.RedisMsgHdlrActor
+import org.bigbluebutton.red5apps.messages.Red5InJsonMsg
 
 
 trait UnhandledJsonMsgHdlr {
@@ -8,7 +9,7 @@ trait UnhandledJsonMsgHdlr {
 
   val eventBus: IncomingEventBus2x
 
-  def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
-    log.warning("Unhandled json message: " + msg.data)
+  def handleReceivedJsonMsg(msg: Red5InJsonMsg): Unit = {
+    log.warning("Unhandled json message: " + msg.json)
   }
 }

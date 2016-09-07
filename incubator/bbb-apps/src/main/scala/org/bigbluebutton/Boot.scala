@@ -8,7 +8,6 @@ import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, IncomingJsonMessage
 import org.bigbluebutton.endpoint.redis.RedisPublisher
 import org.bigbluebutton.endpoint.redis.KeepAliveRedisPublisher
 import org.bigbluebutton.endpoint.redis.AppsRedisSubscriberActor
-import org.bigbluebutton.core.pubsub.receivers.RedisMessageReceiver
 import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.core.api.json.{ IncomingJsonMessageBus, OutgoingEventBus }
@@ -46,9 +45,8 @@ object Boot extends App with SystemConfiguration {
   eventBus2x.subscribe(bbbActor2x, meetingManagerChannel)
 
   val bbbInGW = new BigBlueButtonInGW(system, outGW, eventBus2x, incomingJsonMessageBus)
-  val redisMsgReceiver = new RedisMessageReceiver(bbbInGW)
 
-  val redisSubscriberActor = system.actorOf(AppsRedisSubscriberActor.props(redisMsgReceiver), "redis-subscriber")
+  val redisSubscriberActor = system.actorOf(AppsRedisSubscriberActor.props(incomingJsonMessageBus), "redis-subscriber")
 
   val keepAliveRedisPublisher = new KeepAliveRedisPublisher(system, redisPublisher)
 }

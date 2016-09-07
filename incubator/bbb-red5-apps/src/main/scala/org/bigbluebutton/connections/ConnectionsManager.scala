@@ -1,58 +1,73 @@
 package org.bigbluebutton.connections
 
-import akka.actor.{Actor, ActorLogging, Props}
-import org.bigbluebutton.bus.Red5AppsMsgBus
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
+import org.bigbluebutton.bus.{FromClientMsg, Red5AppsMsgBus}
 
 import scala.collection.mutable
 
 object ConnectionsManager {
-  def props(bus: Red5AppsMsgBus): Props =
-    Props(classOf[ConnectionsManager], bus)
+  def props(system: ActorSystem, bus: Red5AppsMsgBus): Props =
+    Props(classOf[ConnectionsManager], system, bus)
 }
 
+class ConnectionsManager(system: ActorSystem, bus: Red5AppsMsgBus) extends Actor with ActorLogging {
+  log.warning("Creating a new ConnectionsManager warn")
 
-class ConnectionsManager(bus: Red5AppsMsgBus) extends Actor with ActorLogging {
-  log.warning("Creating a new MeetingManager warn")
+  val actorName = "connection-manager-actor"
 
-  private val connections = new mutable.HashMap[String, Connection]
+  override def preStart(): Unit = {
+    bus.subscribe(self, actorName)
+    super.preStart()
+  }
+
+  override def postStop(): Unit = {
+    bus.unsubscribe(self, actorName)
+    super.postStop()
+  }
+
+  private val connections = new mutable.HashMap[String, ActorRef]
 
   def receive = {
-//    case msg: MeetingEnded             => handleMeetingHasEnded(msg)
-//    case msg: MeetingCreated => handleMeetingCreated(msg)
+    case msg:FromClientMsg => {
+      msg.name match {
 
+        case "ClientConnected" => handleClientConnected(msg)
+        case "ClientDisconnected" => handleClientDisconnected(msg)
+      }
+    }
     case msg: Any => log.warning("Unknown message " + msg)
   }
 
 
-/*
-  private def handleDisconnect(msg: MeetingEnded) {
-    log.info("Removing connection [" + msg.meetingId + "]")
+  private def handleClientConnected(msg: FromClientMsg): Unit = {
+    log.info("Client connected [" + msg.sessionId + "]")
 
-    connections.get(msg.meetingId) foreach { connection =>
-      connection.actorRef forward msg
-    }
-
-    connections -= msg.meetingId
-  }
-
-  private def handleConnect(msg: MeetingCreated) {
-    log.info("Creating connection [" + msg.meetingId + "]")
-
-    connections.get(msg.meetingId) match {
+    connections.get(msg.sessionId) match {
       case None => {
         if (log.isDebugEnabled) {
-          log.debug("Creating connection=[" + msg.meetingId + "]")
+          log.debug("First encounter of connection=[" + msg.sessionId + "]")
         }
-        val newConnection = new Connection()
-        connections += msg.meetingId -> newConnection
+
+        val newConnection = system.actorOf(Connection.props(bus, msg.sessionId), msg.sessionId)
+        connections += msg.sessionId -> newConnection
 
       }
       case Some(conn) => {
         if (log.isDebugEnabled) {
-          log.debug("Connection already exists. meetingId=[" + msg.meetingId + "]")
+          log.debug("Connection already exists. sessionId=[" + msg.sessionId + "]")
         }
       }
     }
   }
-  */
+
+  private def handleClientDisconnected(msg: FromClientMsg) {
+    log.info("Client disconnected [" + msg.sessionId + "]")
+
+    connections.get(msg.sessionId) foreach { connection =>
+      connection forward msg
+    }
+
+    connections -= msg.sessionId
+  }
+
 }

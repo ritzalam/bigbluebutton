@@ -5,12 +5,13 @@ import akka.event.{EventBus, LookupClassification}
 
 trait Red5AppsMsgTrait
 
-case class Red5AppsMsg(val topic: String, val payload: Red5AppsMsgTrait)
+case class Red5AppsMsg(topic: String, payload: Red5AppsMsgTrait)
 
-case class FromClientMsg(val name: String, val json: String, val connectionId: String) extends Red5AppsMsgTrait
-case class ToClientMsg(val payload: String) extends Red5AppsMsgTrait
-case class FromPubSubJsonMsg(val payload: String) extends Red5AppsMsgTrait
-case class ToPubSubJsonMsg(val payload: String) extends Red5AppsMsgTrait
+case class FromClientMsg(name: String, json: String, connectionId: String, sessionId: String)
+  extends Red5AppsMsgTrait
+case class ToClientMsg(payload: String) extends Red5AppsMsgTrait
+case class FromPubSubJsonMsg(payload: String) extends Red5AppsMsgTrait
+case class ToPubSubJsonMsg(payload: String) extends Red5AppsMsgTrait
 
 class Red5AppsMsgBus extends EventBus with LookupClassification {
   type Event = Red5AppsMsg
@@ -28,8 +29,7 @@ class Red5AppsMsgBus extends EventBus with LookupClassification {
 
   // must define a full order over the subscribers, expressed as expected from
   // `java.lang.Comparable.compare`
-  override protected def compareSubscribers(a: Subscriber, b: Subscriber): Int =
-    a.compareTo(b)
+  override protected def compareSubscribers(a: Subscriber, b: Subscriber): Int = a.compareTo(b)
 
   // determines the initial size of the index data structure
   // used internally (i.e. the expected number of different classifiers)

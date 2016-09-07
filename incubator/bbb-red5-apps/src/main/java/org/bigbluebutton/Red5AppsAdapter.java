@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bigbluebutton.red5apps.messages.Red5InJsonMsg;
 import org.red5.logging.Red5LoggerFactory;
-import org.red5.server.adapter.IApplication;
 import org.red5.server.adapter.MultiThreadedApplicationAdapter;
 import org.red5.server.api.IClient;
 import org.red5.server.api.IConnection;
@@ -77,7 +76,7 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
 
     @Override
     public boolean roomConnect(IConnection connection, Object[] params) {
-        String sessionToken = ((String) params[0]).toString();
+        String sessionToken = (params[0]).toString();
         System.out.println("******* SESSION TOKEN=" + sessionToken);
 
         connection.setAttribute("SESSION_TOKEN", sessionToken);
@@ -92,7 +91,7 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
         Gson gson = new Gson();
         String json = gson.toJson(message);
 
-        Red5InJsonMsg inMsg = new Red5InJsonMsg("ClientConnected", json, connectionId);
+        Red5InJsonMsg inMsg = new Red5InJsonMsg("ClientConnected", json, connectionId, sessionToken);
         red5InGW.handle(inMsg);
 
         return super.roomConnect(connection, params);
@@ -126,7 +125,7 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
         Gson gson = new Gson();
         String json = gson.toJson(message);
 
-        Red5InJsonMsg inMsg = new Red5InJsonMsg("ClientDisconnected", json, connectionId);
+        Red5InJsonMsg inMsg = new Red5InJsonMsg("ClientDisconnected", json, connectionId, sessionToken);
         red5InGW.handle(inMsg);
 
         super.roomDisconnect(conn);
@@ -152,7 +151,8 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
         log.warn("messageFromClientRemoteCall: \n" + json + "\n");
 
         String connectionId = Red5.getConnectionLocal().getSessionId();
-        Red5InJsonMsg inMsg = new Red5InJsonMsg(extractName(json), json, connectionId);
+        String sessionToken = (String) Red5.getConnectionLocal().getAttribute("SESSION_TOKEN");
+        Red5InJsonMsg inMsg = new Red5InJsonMsg(extractName(json), json, connectionId, sessionToken);
         red5InGW.handle(inMsg);
     }
 

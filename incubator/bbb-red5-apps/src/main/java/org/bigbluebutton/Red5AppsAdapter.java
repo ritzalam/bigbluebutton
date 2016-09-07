@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bigbluebutton.red5apps.messages.Red5InJsonMsg;
 import org.red5.logging.Red5LoggerFactory;
-import org.red5.server.adapter.IApplication;
 import org.red5.server.adapter.MultiThreadedApplicationAdapter;
 import org.red5.server.api.IClient;
 import org.red5.server.api.IConnection;
@@ -77,7 +76,7 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
 
     @Override
     public boolean roomConnect(IConnection connection, Object[] params) {
-        String sessionToken = ((String) params[0]).toString();
+        String sessionToken = (params[0]).toString();
         System.out.println("******* SESSION TOKEN=" + sessionToken);
 
         connection.setAttribute("SESSION_TOKEN", sessionToken);

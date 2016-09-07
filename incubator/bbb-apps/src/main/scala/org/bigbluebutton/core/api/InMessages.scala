@@ -7,6 +7,8 @@ import org.bigbluebutton.core.apps.presentation.domain._
 import org.bigbluebutton.core.apps.presentation.PreuploadedPresentation
 import org.bigbluebutton.core.domain._
 
+case class InMessageHeader(name: String, meetingId: Option[String], senderId: Option[String], replyTo: Option[String])
+
 object IncomingMsg {
 
   trait InMsg
@@ -56,6 +58,9 @@ object IncomingMsg {
    * @param mProps
    */
   case class CreateMeetingRequestInMsg(meetingId: IntMeetingId, mProps: MeetingProperties2x) extends InMsg
+
+  case class CreateMeetingRequestInMsg2x(header: InMessageHeader, body: CreateMeetingRequestInMsgBody) extends InMsg
+  case class CreateMeetingRequestInMsgBody(props: MeetingProperties2x) extends InMsg
 
   /**
    * Request to end the meeting from the 3rd-party applications.

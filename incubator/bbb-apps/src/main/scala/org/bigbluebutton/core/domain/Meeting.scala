@@ -40,7 +40,7 @@ case class MeetingInfo(
 
 case class MeetingProperties2x(
   id: IntMeetingId,
-  extId: ExtMeetingId,
+  externalId: ExtMeetingId,
   name: Name,
   voiceConf: VoiceConf,
   duration: Int,

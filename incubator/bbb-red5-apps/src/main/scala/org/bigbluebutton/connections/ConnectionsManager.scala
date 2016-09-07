@@ -2,15 +2,17 @@ package org.bigbluebutton.connections
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import org.bigbluebutton.bus.{FromClientMsg, Red5AppsMsgBus}
+import org.bigbluebutton.endpoint.redis.RedisPublisher
 
 import scala.collection.mutable
 
 object ConnectionsManager {
-  def props(system: ActorSystem, bus: Red5AppsMsgBus): Props =
-    Props(classOf[ConnectionsManager], system, bus)
+  def props(system: ActorSystem, bus: Red5AppsMsgBus, redisPublisher: RedisPublisher): Props =
+    Props(classOf[ConnectionsManager], system, bus, redisPublisher)
 }
 
-class ConnectionsManager(system: ActorSystem, bus: Red5AppsMsgBus) extends Actor with ActorLogging {
+class ConnectionsManager(system: ActorSystem, bus: Red5AppsMsgBus, redisPublisher:
+RedisPublisher) extends Actor with ActorLogging {
   log.warning("Creating a new ConnectionsManager warn")
 
   val actorName = "connection-manager-actor"
@@ -40,34 +42,35 @@ class ConnectionsManager(system: ActorSystem, bus: Red5AppsMsgBus) extends Actor
 
 
   private def handleClientConnected(msg: FromClientMsg): Unit = {
-    log.info("Client connected [" + msg.sessionId + "]")
+    log.info(s"Client connected sToken=${msg.sessionToken} connId=${msg.connectionId}")
 
-    connections.get(msg.sessionId) match {
+    connections.get(msg.sessionToken) match {
       case None => {
         if (log.isDebugEnabled) {
-          log.debug("First encounter of connection=[" + msg.sessionId + "]")
+          log.debug(s"First encounter of connId=${msg.connectionId} for sToken=${msg.sessionToken}")
         }
 
-        val newConnection = system.actorOf(Connection.props(bus, msg.sessionId), msg.sessionId)
-        connections += msg.sessionId -> newConnection
+        val newConnection = system.actorOf(Connection.props(bus, redisPublisher, msg
+          .sessionToken, msg.connectionId), msg.sessionToken)
+        connections += msg.sessionToken -> newConnection
 
       }
       case Some(conn) => {
         if (log.isDebugEnabled) {
-          log.debug("Connection already exists. sessionId=[" + msg.sessionId + "]")
+          log.debug(s"Connection connId=${msg.connectionId} for sToken=${msg.sessionToken} already exists")
         }
       }
     }
   }
 
   private def handleClientDisconnected(msg: FromClientMsg) {
-    log.info("Client disconnected [" + msg.sessionId + "]")
+    log.info(s"Client disconnected sToken=${msg.sessionToken} connId=${msg.connectionId}")
 
-    connections.get(msg.sessionId) foreach { connection =>
+    connections.get(msg.sessionToken) foreach { connection =>
       connection forward msg
     }
 
-    connections -= msg.sessionId
+    connections -= msg.sessionToken
   }
 
 }

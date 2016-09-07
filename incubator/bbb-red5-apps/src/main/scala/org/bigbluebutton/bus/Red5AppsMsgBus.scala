@@ -7,7 +7,7 @@ trait Red5AppsMsgTrait
 
 case class Red5AppsMsg(topic: String, payload: Red5AppsMsgTrait)
 
-case class FromClientMsg(name: String, json: String, connectionId: String, sessionId: String)
+case class FromClientMsg(name: String, json: String, connectionId: String, sessionToken: String)
   extends Red5AppsMsgTrait
 case class ToClientMsg(payload: String) extends Red5AppsMsgTrait
 case class FromPubSubJsonMsg(payload: String) extends Red5AppsMsgTrait

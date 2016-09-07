@@ -45,7 +45,7 @@ class Connection(bus: Red5AppsMsgBus, redisPublisher: RedisPublisher , sessionTo
     log.info(s"ValidateAuthToken [$json]")
 
    // send to pubsub with replychannel
-    redisPublisher.publish(MessagingConstants.FROM_BBB_APPS_PATTERN, json)
+    redisPublisher.publish(MessagingConstants.TO_MEETING_CHANNEL, json)
   }
 
   private def addReplyChannelToJsonMessage(message: String): String = {

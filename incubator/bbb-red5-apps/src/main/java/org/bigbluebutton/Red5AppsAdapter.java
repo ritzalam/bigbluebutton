@@ -91,7 +91,7 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
         Gson gson = new Gson();
         String json = gson.toJson(message);
 
-        Red5InJsonMsg inMsg = new Red5InJsonMsg("ClientConnected", json, connectionId);
+        Red5InJsonMsg inMsg = new Red5InJsonMsg("ClientConnected", json, connectionId, sessionToken);
         red5InGW.handle(inMsg);
 
         return super.roomConnect(connection, params);
@@ -125,7 +125,7 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
         Gson gson = new Gson();
         String json = gson.toJson(message);
 
-        Red5InJsonMsg inMsg = new Red5InJsonMsg("ClientDisconnected", json, connectionId);
+        Red5InJsonMsg inMsg = new Red5InJsonMsg("ClientDisconnected", json, connectionId, sessionToken);
         red5InGW.handle(inMsg);
 
         super.roomDisconnect(conn);
@@ -151,7 +151,8 @@ public class Red5AppsAdapter extends MultiThreadedApplicationAdapter {
         log.warn("messageFromClientRemoteCall: \n" + json + "\n");
 
         String connectionId = Red5.getConnectionLocal().getSessionId();
-        Red5InJsonMsg inMsg = new Red5InJsonMsg(extractName(json), json, connectionId);
+        String sessionToken = (String) Red5.getConnectionLocal().getAttribute("SESSION_TOKEN");
+        Red5InJsonMsg inMsg = new Red5InJsonMsg(extractName(json), json, connectionId, sessionToken);
         red5InGW.handle(inMsg);
     }
 

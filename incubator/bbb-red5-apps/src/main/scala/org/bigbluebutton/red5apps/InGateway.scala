@@ -20,20 +20,24 @@ class InGateway(val red5OutGW: Red5OutGateway) extends IRed5InGW with SystemConf
   println("*************** meetingManagerChannel " + meetingManagerChannel + " *******************")
 
   val bus = new Red5AppsMsgBus
-  val connectionsManager = new ConnectionsManager(bus)
+  val connectionsManager = system.actorOf(ConnectionsManager.props(system, bus),
+    "red5-apps-connections-manager")
 
   def handle(msg: Red5InJsonMsg): Unit = {
     println("\n\n InGW:"  + msg.name + " \n\n")
 
     msg.name match {
       case "ClientConnected" =>
-        bus.publish(Red5AppsMsg("connection-manager-actor", new FromClientMsg(msg.name, msg.json, msg.connectionId)))
+        bus.publish(Red5AppsMsg("connection-manager-actor", new FromClientMsg(msg.name, msg.json, msg.connectionId, msg.sessionId)))
       case "ClientDisconnected" =>
-        bus.publish(Red5AppsMsg("connection-manager-actor", new FromClientMsg(msg.name, msg.json, msg.connectionId)))
+        bus.publish(Red5AppsMsg("connection-manager-actor", new FromClientMsg(msg.name, msg.json, msg.connectionId, msg.sessionId)))
       case "ValidateAuthToken" =>
-        bus.publish(Red5AppsMsg("connection-manager-actor", new FromClientMsg(msg.name, msg.json, msg.connectionId)))
+        bus.publish(Red5AppsMsg(msg.sessionId, new FromClientMsg(msg.name, msg.json, msg.connectionId, msg.sessionId)))
+
       // case all other messages =>
-        // publish to connection actor
+      // publish to connection actor
+      case _ =>
+        bus.publish(Red5AppsMsg(msg.sessionId, new FromClientMsg(msg.name, msg.json, msg.connectionId, msg.sessionId)))
     }
 
   }

@@ -145,8 +145,8 @@ public class ConnectionInvokerService {
   private void handlDisconnectClientMessage(DisconnectClientMessage msg) {
     IScope meetingScope = getScope(msg.getMeetingId());
     if (meetingScope != null) {
-      String sessionId = CONN + msg.getUserId();
-      IConnection conn = getConnection(meetingScope, sessionId);
+      String sessionToken = CONN + msg.getUserId();
+      IConnection conn = getConnection(meetingScope, sessionToken);
       if (conn != null) {
         if (conn.isConnected()) {
           log.info("Disconnecting user=[{}] from meeting=[{}]", msg.getUserId(), msg.getMeetingId());
@@ -176,13 +176,13 @@ public class ConnectionInvokerService {
     log.debug("Handle direct message: " + msg.getMessageName() + " msg=" + json);
    // }
 
-    final String sessionId = CONN + msg.getUserID();
+    final String sessionToken = CONN + msg.getUserID();
     Runnable sender = new Runnable() {
       public void run() {
         IScope meetingScope = getScope(msg.getMeetingID());
         if (meetingScope != null) {
 
-          IConnection conn = getConnection(meetingScope, sessionId);
+          IConnection conn = getConnection(meetingScope, sessionToken);
           if (conn != null) {
             if (conn.isConnected()) {
               List<Object> params = new ArrayList<Object>();
@@ -198,7 +198,7 @@ public class ConnectionInvokerService {
               ServiceUtils.invokeOnConnection(conn, "onMessageFromServer", params.toArray());
             }
           } else {
-            log.info("Cannot send message=[" + msg.getMessageName() + "] to [" + sessionId 
+            log.info("Cannot send message=[" + msg.getMessageName() + "] to [" + sessionToken
                 + "] as no such session on meeting=[" + msg.getMeetingID() + "]");
           }
         }	
@@ -218,12 +218,12 @@ public class ConnectionInvokerService {
       long timeLeft = endNanos - System.nanoTime();         
       f.get(timeLeft, TimeUnit.NANOSECONDS);   
     } catch (ExecutionException e) {       
-      log.warn("ExecutionException while sending direct message on connection[" + sessionId + "]");
+      log.warn("ExecutionException while sending direct message on connection[" + sessionToken + "]");
     } catch (InterruptedException e) {        
-      log.warn("Interrupted exception while sending direct message on connection[" + sessionId + "]");
+      log.warn("Interrupted exception while sending direct message on connection[" + sessionToken + "]");
       Thread.currentThread().interrupt();         
     } catch (TimeoutException e) {               
-      log.warn("Timeout exception while sending direct message on connection[" + sessionId + "]");
+      log.warn("Timeout exception while sending direct message on connection[" + sessionToken + "]");
       f.cancel(true);     
     } 
   }

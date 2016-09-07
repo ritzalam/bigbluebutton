@@ -32,9 +32,10 @@ RedisPublisher) extends Actor with ActorLogging {
   def receive = {
     case msg:FromClientMsg => {
       msg.name match {
+        case "ClientConnected"      => handleClientConnected(msg)
+        case "ClientDisconnected"   => handleClientDisconnected(msg)
 
-        case "ClientConnected" => handleClientConnected(msg)
-        case "ClientDisconnected" => handleClientDisconnected(msg)
+        case _                      => handleTransitMessage(msg)
       }
     }
     case msg: Any => log.warning("Unknown message " + msg)
@@ -54,11 +55,14 @@ RedisPublisher) extends Actor with ActorLogging {
           .sessionToken, msg.connectionId), msg.sessionToken)
         connections += msg.sessionToken -> newConnection
 
+        newConnection ! msg
+
       }
       case Some(conn) => {
         if (log.isDebugEnabled) {
           log.debug(s"Connection connId=${msg.connectionId} for sToken=${msg.sessionToken} already exists")
         }
+        conn ! msg
       }
     }
   }
@@ -71,6 +75,12 @@ RedisPublisher) extends Actor with ActorLogging {
     }
 
     connections -= msg.sessionToken
+  }
+
+  private def handleTransitMessage(msg: FromClientMsg): Unit = {
+    connections.get(msg.sessionToken) foreach { connection =>
+      connection ! msg
+    }
   }
 
 }

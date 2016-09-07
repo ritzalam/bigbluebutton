@@ -32,6 +32,9 @@ class Connection(bus: Red5AppsMsgBus, redisPublisher: RedisPublisher , sessionTo
     case msg: FromClientMsg => {
       msg.name match {
         case "ValidateAuthTokenRequestMessage" => handleValidateAuthTokenRequest(msg)
+        case "ClientConnected"                 => handleClientConnected(msg)
+        case "ClientDisconnected"              => handleClientDisconnected(msg)
+        case _                                 => handleTransitMessage(msg)
       }
     }
 
@@ -44,8 +47,20 @@ class Connection(bus: Red5AppsMsgBus, redisPublisher: RedisPublisher , sessionTo
     val json = addReplyChannelToJsonMessage(msg.json)
     log.info(s"ValidateAuthToken [$json]")
 
-   // send to pubsub with replychannel
+    // send to pubsub with replyChannel
     redisPublisher.publish(MessagingConstants.FROM_BBB_APPS_PATTERN, json)
+  }
+
+  private def handleClientConnected(msg: FromClientMsg): Unit = {
+    log.info(s"_____handleClientConnected___${msg.sessionToken}  ${msg.connectionId}")
+  }
+
+  private def handleClientDisconnected(msg: FromClientMsg): Unit = {
+    log.info(s"_____handleClientDisconnected___${msg.sessionToken}  ${msg.connectionId}")
+  }
+
+  private def handleTransitMessage(msg: FromClientMsg): Unit = {
+    redisPublisher.publish(MessagingConstants.FROM_BBB_APPS_PATTERN, msg.json)
   }
 
   private def addReplyChannelToJsonMessage(message: String): String = {

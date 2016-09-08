@@ -2,7 +2,7 @@ package org.bigbluebutton.messages.chat;
 
 import org.bigbluebutton.messages.AbstractMessage;
 import org.bigbluebutton.messages.body.MessageHeader;
-import org.bigbluebutton.messages.vo.ChatMessage;
+import org.bigbluebutton.messages.vo.ChatPropertiesBody;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
@@ -25,9 +25,9 @@ public class SendPrivateChatMessage extends AbstractMessage {
 
     public static class Body {
         public String requesterID;
-        public ChatMessage chatMessage;
+        public ChatPropertiesBody chatMessage;
 
-        public Body(String requesterID, ChatMessage chatMessage) {
+        public Body(String requesterID, ChatPropertiesBody chatMessage) {
             this.requesterID = requesterID;
             this.chatMessage = chatMessage;
         }

@@ -3,7 +3,7 @@ package org.bigbluebutton.messages.vo;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
-public class ChatMessage {
+public class ChatPropertiesBody {
     public String fromColor;
     public String fromTime;
     public String chatType;
@@ -14,9 +14,9 @@ public class ChatMessage {
     public String toUsername;
     public String fromTimezoneOffset;
 
-    public ChatMessage(String fromColor, String fromTime, String chatType, String toUserID,
-                       String message, String fromUsername, String fromUserID, String toUsername,
-                       String fromTimezoneOffset) {
+    public ChatPropertiesBody(String fromColor, String fromTime, String chatType, String toUserID,
+                              String message, String fromUsername, String fromUserID, String toUsername,
+                              String fromTimezoneOffset) {
         this.fromColor = fromColor;
         this.fromTime = fromTime;
         this.chatType = chatType;
@@ -28,8 +28,8 @@ public class ChatMessage {
         this.fromTimezoneOffset= fromTimezoneOffset;
     }
 
-    public static ChatMessage fromJson(String message) {
+    public static ChatPropertiesBody fromJson(String message) {
         ObjectMapper mapper = JsonFactory.create();
-        return mapper.readValue(message, ChatMessage.class);
+        return mapper.readValue(message, ChatPropertiesBody.class);
     }
 }

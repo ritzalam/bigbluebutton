@@ -2,7 +2,7 @@ package org.bigbluebutton.messages.chat;
 
 import org.bigbluebutton.messages.AbstractMessage;
 import org.bigbluebutton.messages.body.MessageHeader;
-import org.bigbluebutton.messages.vo.ChatMessage;
+import org.bigbluebutton.messages.vo.ChatPropertiesBody;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
@@ -26,10 +26,10 @@ public class GetChatHistoryReplyMessage extends AbstractMessage {
     }
 
     public static class Body {
-        public ArrayList<ChatMessage> chatHistory;
+        public ArrayList<ChatPropertiesBody> chatHistory;
         public String requesterID;
 
-        public Body(String requesterID, ArrayList<ChatMessage> chatHistory) {
+        public Body(String requesterID, ArrayList<ChatPropertiesBody> chatHistory) {
             this.requesterID = requesterID;
             this.chatHistory = chatHistory;
         }

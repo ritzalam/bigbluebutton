@@ -1,6 +1,6 @@
 package org.bigbluebutton.core.api.json
 
-import org.bigbluebutton.core.api.IncomingMsg.{ CreateMeetingRequestInMsg2x, CreateMeetingRequestInMsgBody }
+import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.domain._
 import spray.json.{ DefaultJsonProtocol, DeserializationException, JsBoolean, JsValue, JsonFormat }
@@ -14,4 +14,9 @@ trait InJsonMsgProtocol extends AnyValTypeProtocol {
   implicit val inMessageHeaderFormat = jsonFormat4(InMessageHeader)
   implicit val createMeetingRequestInMsgBodyFormat = jsonFormat1(CreateMeetingRequestInMsgBody)
   implicit val createMeetingRequestInMsg2xFormat = jsonFormat2(CreateMeetingRequestInMsg2x)
+
+  implicit val chatProperties2xFormat = jsonFormat9(ChatProperties2x)
+  implicit val sendPublicChatInMsgBodyFormat = jsonFormat1(SendPublicChatInMsgBody)
+  implicit val sendPublicChatInMsg2xFormat = jsonFormat2(SendPublicChatInMsg2x)
+
 }

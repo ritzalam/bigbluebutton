@@ -304,6 +304,9 @@ object IncomingMsg {
   case class ChatSendPrivateMessageInMsg(
     meetingId: IntMeetingId, senderId: IntUserId, message: Map[String, String]) extends InMsg
 
+  case class SendPublicChatInMsg2x(header: InMessageHeader, body: SendPublicChatInMsgBody) extends InMsg
+  case class SendPublicChatInMsgBody(chatMessage: ChatProperties2x) extends InMsg
+
   case class UserConnectedToGlobalAudio(
     meetingId: IntMeetingId,
     /** Not used. Just to satisfy trait **/

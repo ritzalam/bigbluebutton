@@ -17,6 +17,9 @@ class Connection(bus: Red5AppsMsgBus, redisPublisher: RedisPublisher , sessionTo
                  connectionId: String) extends Actor with ActorLogging {
   log.warning(s"Creating a new Connection: sessionToken=$sessionToken connectionId=$connectionId")
 
+  var connectionTime: Long = 0L
+  var disconnectionTime: Long = 0L
+
 
   override def preStart(): Unit = {
     bus.subscribe(self, sessionToken)
@@ -53,10 +56,12 @@ class Connection(bus: Red5AppsMsgBus, redisPublisher: RedisPublisher , sessionTo
 
   private def handleClientConnected(msg: FromClientMsg): Unit = {
     log.info(s"_____handleClientConnected___${msg.sessionToken}  ${msg.connectionId}")
+    connectionTime = genTimestamp()
   }
 
   private def handleClientDisconnected(msg: FromClientMsg): Unit = {
     log.info(s"_____handleClientDisconnected___${msg.sessionToken}  ${msg.connectionId}")
+    disconnectionTime = genTimestamp()
   }
 
   private def handleTransitMessage(msg: FromClientMsg): Unit = {
@@ -81,5 +86,7 @@ class Connection(bus: Red5AppsMsgBus, redisPublisher: RedisPublisher , sessionTo
     }
     json
   }
+
+  private def genTimestamp() = java.util.concurrent.TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
 
 }

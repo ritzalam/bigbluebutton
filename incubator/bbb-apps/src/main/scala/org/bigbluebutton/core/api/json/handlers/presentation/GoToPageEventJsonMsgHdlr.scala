@@ -3,7 +3,7 @@ package org.bigbluebutton.core.api.json.handlers.presentation
 import org.bigbluebutton.core.api.IncomingMsg.GoToPageInEventInMessage
 import org.bigbluebutton.core.api.RedisMsgHdlrActor
 import org.bigbluebutton.core.domain.{ IntMeetingId, IntUserId }
-import org.bigbluebutton.core.api.json.{ BigBlueButtonInMessage, IncomingEventBus2x, ReceivedJsonMessage }
+import org.bigbluebutton.core.api.json.{ BigBlueButtonInMessage, InHeaderAndJsonBody, IncomingEventBus2x, ReceivedJsonMessage }
 import org.bigbluebutton.core.api.json.handlers.UnhandledJsonMsgHdlr
 import org.bigbluebutton.messages.presentation.GoToPageEventMessage
 
@@ -12,22 +12,16 @@ trait GoToPageEventJsonMsgHdlr extends UnhandledJsonMsgHdlr {
 
   val eventBus: IncomingEventBus2x
 
-  override def handleReceivedJsonMsg(msg: ReceivedJsonMessage): Unit = {
+  override def handleReceivedJsonMsg(msg: InHeaderAndJsonBody): Unit = {
     def publish(meetingId: IntMeetingId, senderId: IntUserId, pageId: String): Unit = {
-      log.debug(s"Publishing ${msg.name} [ $pageId $senderId]")
+      log.debug(s"Publishing ${msg.header.name} [ $pageId $senderId]")
       eventBus.publish(
         BigBlueButtonInMessage(meetingId.value,
           new GoToPageInEventInMessage(meetingId, senderId, pageId)))
     }
 
-    if (msg.name == GoToPageEventMessage.NAME) {
-      log.debug("Received JSON message [" + msg.name + "]")
-      val m = GoToPageEventMessage.fromJson(msg.data)
-      for {
-        meetingId <- Option(m.header.meetingId)
-        senderId <- Option(m.header.senderId)
-        pageId <- Option(m.body.pageId)
-      } yield publish(IntMeetingId(meetingId), IntUserId(senderId), pageId)
+    if (msg.header.name == GoToPageEventMessage.NAME) {
+      log.debug("Received JSON message [" + msg.header.name + "]")
     } else {
       super.handleReceivedJsonMsg(msg)
     }

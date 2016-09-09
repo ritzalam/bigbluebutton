@@ -3,7 +3,7 @@ package org.bigbluebutton.core.api.json.handlers
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.{ CreateMeetingRequestInMsg2x, CreateMeetingRequestInMsgBody }
-import org.bigbluebutton.core.api.json.{ InJsonMsgProtocol }
+import org.bigbluebutton.core.api.json.{ InJsonMsgProtocol, JsonMsgUnmarshaller }
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.messages.CreateMeetingRequestMessage
 import org.bigbluebutton.messages.CreateMeetingRequestMessage.CreateMeetingRequestMessageBody
@@ -50,33 +50,17 @@ class CreateMeetingRequestJsonMsgHdlrTests extends UnitSpec {
 
     println("* 1 \n" + msg.toJson)
 
-    val json: JsObject = JsonParser(msg.toJson).asJsObject
+    val headAndBody = JsonMsgUnmarshaller.decode(msg.toJson)
 
-    println("* 2 \n" + json)
+    headAndBody match {
+      case Some(hb) =>
+        val body = CreateMeetingRequestJsonMsgHdlrHelper.convertTo(hb.body)
+        body match {
+          case Some(b) => assert(b.props.externalId.value == externalId)
+          case None => fail("Failed to parse message body.")
+        }
 
-    val inMsgFoo = json.convertTo[CreateMeetingRequestInMsg2x]
-
-    println(inMsgFoo)
-
-    assert(inMsgFoo.header.name == messageName)
-
-    val inHeader = InMessageHeader(messageName, Some(meetingId), Some(senderId), None)
-    println("* 3 \n" + inHeader.toJson)
-
-    //val inJsonH = inHeader.toJson
-    //println(inJsonH)
-
-    val extProp = MeetingExtensionProp2x(maxExtensions, extendByMinutes, sendNotice)
-    val recProp = MeetingRecordingProp(Recorded(recorded), autoStartRecording, allowStartStopRecording)
-    val inProps = MeetingProperties2x(IntMeetingId(id), ExtMeetingId(externalId), Name(name), VoiceConf(voiceConf),
-      duration, maxUsers, allowVoiceOnly, isBreakout, extProp, recProp)
-    val inBody = CreateMeetingRequestInMsgBody(inProps)
-
-    println("* 4 \n" + inBody.toJson)
-
-    val inMsg = CreateMeetingRequestInMsg2x(inHeader, inBody)
-
-    val inJson = inMsg.toJson
-    println("* 5 \n" + inJson)
+      case None => fail("Failed to parse message")
+    }
   }
 }

@@ -2,9 +2,7 @@ package org.bigbluebutton.core.api
 
 import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core.api.json.handlers._
-import org.bigbluebutton.core.api.json.handlers.presentation._
-import org.bigbluebutton.core.api.json.handlers.whiteboard.SendWhiteboardAnnotationRequestEventJsonMsgHdlr
-import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, IncomingJsonMessageBus, ReceivedJsonMessage }
+import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, IncomingJsonMessageBus, JsonMsgUnmarshaller, ReceivedJsonMessage }
 
 object RedisMsgHdlrActor {
   def props(eventBus: IncomingEventBus2x, incomingJsonMessageBus: IncomingJsonMessageBus): Props =
@@ -16,32 +14,15 @@ class RedisMsgHdlrActor(
   val incomingJsonMessageBus: IncomingJsonMessageBus)
     extends Actor with ActorLogging
     with UnhandledJsonMsgHdlr
-
-    // presentation.*
-    with ClearPresentationEventJsonMsgHdlr
-    with GetPageInfoEventJsonMsgHdlr
-    with GetPresentationInfoEventJsonMsgHdlr
-    with GoToPageEventJsonMsgHdlr
-    with PresentationConversionCompletedEventJsonMsgHdlr
-    with PresentationConversionUpdateEventJsonMsgHdlr
-    with PresentationPageCountErrorEventJsonMsgHdlr
-    with PresentationPageGeneratedEventJsonMsgHdlr
-    with PreuploadedPresentationsEventJsonMsgHdlr
-    with RemovePresentationEventJsonMsgHdlr
-
-    // whiteboard.*
-    with SendWhiteboardAnnotationRequestEventJsonMsgHdlr
-
-    with CreateMeetingRequestJsonMsgHdlr
-    with KeepAliveJsonMsgHdlr
-    with PubSubPingJsonMsgHdlr
-    with JsonMsgHdlr
-    with RegisterUserRequestJsonMsgHdlr
-    with UserJoinMeetingJsonMsgHdlr
-    with ValidateAuthTokenRequestJsonMsgHdlr {
+    with CreateMeetingRequestJsonMsgHdlr {
 
   def receive = {
-    case msg: ReceivedJsonMessage => handleReceivedJsonMsg(msg)
+    case msg: ReceivedJsonMessage => {
+      JsonMsgUnmarshaller.decode(msg.data) match {
+        case Some(m) => handleReceivedJsonMsg(m)
+        case None => log.warning("Invalid JSON message. {}", msg.data)
+      }
+    }
     case _ => // do nothing
   }
 

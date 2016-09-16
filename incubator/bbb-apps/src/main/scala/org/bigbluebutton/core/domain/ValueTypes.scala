@@ -95,3 +95,11 @@ case class ChatType(value: String) extends AnyVal
 case class Username(value: String) extends AnyVal
 case class ChatMessageText(value: String) extends AnyVal
 case class TimeZoneOffset(value: String) extends AnyVal
+case class WhiteboardId(value: String) extends AnyVal
+case class AnnotationStatus(value: String) extends AnyVal
+case class AnnotationType(value: String) extends AnyVal
+
+case class AnnotationTextContent(value: String) extends AnyVal
+case class AnnotationTextBoxHeight(value: String) extends AnyVal
+case class AnnotationTextBoxWidth(value: java.lang.Double) extends AnyVal
+

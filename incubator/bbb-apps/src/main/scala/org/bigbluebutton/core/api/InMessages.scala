@@ -2,8 +2,6 @@ package org.bigbluebutton.core.api
 
 import org.bigbluebutton.core.apps.presentation.{ Presentation, PreuploadedPresentation }
 import org.bigbluebutton.core.apps.presentation.domain._
-import org.bigbluebutton.core.domain.{ AnnotationVO, BreakoutUser, ClientUserAgent, MeetingProperties2x, Role, Stream, Voice4x }
-import org.bigbluebutton.core.apps.presentation.domain._
 import org.bigbluebutton.core.apps.presentation.PreuploadedPresentation
 import org.bigbluebutton.core.domain._
 
@@ -449,6 +447,11 @@ object IncomingMsg {
   /////////////////////////////////////////////////////////////////////////////////////
   // Whiteboard
   /////////////////////////////////////////////////////////////////////////////////////
+
+  case class SendWbAnnotationReqInMsg2x(header: InMessageHeader,
+    body: SendWbAnnotationReqInMsgBody) extends InMsg
+  //case class SendWbAnnotationReqInMsgBody(whiteboardId: String, annotationType: String, annotation: Map[String, Object]) extends InMsg
+  case class SendWbAnnotationReqInMsgBody(props: WhiteboardProperties2x) extends InMsg
 
   case class SendWhiteboardAnnotationRequest(
     meetingId: IntMeetingId, requesterId: IntUserId, annotation: AnnotationVO) extends InMsg

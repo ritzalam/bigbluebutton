@@ -22,7 +22,7 @@ object JsonMsgUnmarshaller {
       case Some(header) =>
         header.convertTo[InMessageHeader]
       case None =>
-        throw MessageProcessException("Cannot get payload information: [" + msg + "]")
+        throw MessageProcessException("Cannot get header information: [" + msg + "]")
     }
   }
 

@@ -9,7 +9,8 @@ public class ValidateAuthTokenRequestMessageTest {
   public void testValidateAuthTokenRequestMessage() {
     String meetingId = "abc123";
     MessageHeader header =
-            new MessageHeader(ValidateAuthTokenRequestMessage.NAME, meetingId, "senderId");
+            new MessageHeader(ValidateAuthTokenRequestMessage.NAME, meetingId, "senderId",
+                    "replyTo");
     ValidateAuthTokenRequestMessage.Body body =
             new ValidateAuthTokenRequestMessage.Body("myToken");
 

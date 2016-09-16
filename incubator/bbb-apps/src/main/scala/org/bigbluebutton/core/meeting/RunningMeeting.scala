@@ -29,19 +29,8 @@ class RunningMeeting(val mProps: MeetingProperties2x, val outGW: OutMessageGatew
   val captions = new CaptionModel
   val extension: MeetingExtensionStatus = new MeetingExtensionStatus
 
-  val state: MeetingStateModel = new MeetingStateModel(mProps,
-    abilities,
-    clients,
-    registeredUsers,
-    users,
-    chats,
-    layouts,
-    polls,
-    whiteboards,
-    presentations,
-    breakoutRooms,
-    captions,
-    new MeetingStatus)
+  val state: MeetingStateModel = new MeetingStateModel(mProps, abilities, clients, registeredUsers,
+    users, chats, layouts, polls, whiteboards, presentations, breakoutRooms, captions, new MeetingStatus)
 
   val actorRef = context.actorOf(MeetingActorMsg.props(mProps, eventBus, outGW, state), mProps.id.value)
 

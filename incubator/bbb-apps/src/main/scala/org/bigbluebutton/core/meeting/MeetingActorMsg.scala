@@ -90,20 +90,11 @@ class MeetingActorMsg(
   }
 
   def receive = {
-    case msg: RegisterUserInMessage =>
-      log.debug("Handling RegisterUserRequestInMessage")
-      handleRegisterUser(msg)
-    case msg: ValidateAuthTokenInMessage =>
-      log.debug("Handling ValidateAuthTokenRequestInMessage")
-      handleValidateAuthToken(msg)
-    case msg: UserJoinMeetingInMessage =>
-      log.debug("Handling NewUserPresence2x")
-      handleUserJoinMeetingRequestInMessage(msg)
-    case msg: EjectUserFromMeetingInMsg =>
-      log.debug("Handling EjectUserFromMeeting")
-      handleEjectUserFromMeeting(msg)
-    case msg: RegisterSessionIdInMsg =>
-      handleRegisterSessionIdInMsg(msg)
+    case msg: RegisterUserInMessage => handleRegisterUser(msg)
+    case msg: ValidateAuthTokenInMessage => handleValidateAuthToken(msg)
+    case msg: UserJoinMeetingInMessage => handleUserJoinMeetingRequestInMessage(msg)
+    case msg: EjectUserFromMeetingInMsg => handleEjectUserFromMeeting(msg)
+    case msg: RegisterSessionIdInMsg => handleRegisterSessionIdInMsg(msg)
   }
 
 }

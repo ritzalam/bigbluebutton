@@ -7,6 +7,7 @@ import org.bigbluebutton.core.domain.MeetingProperties2x
 import org.bigbluebutton.core.api.json.IncomingEventBus2x
 import org.bigbluebutton.core.meeting.handlers._
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
+import org.bigbluebutton.core.reguser.handlers.{ RegisterUserCommandMsgHdlr, ValidateAuthTokenCommandMsgFilter }
 
 import scala.concurrent.duration._
 

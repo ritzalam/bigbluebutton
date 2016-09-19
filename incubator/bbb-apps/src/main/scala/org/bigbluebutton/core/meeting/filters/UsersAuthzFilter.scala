@@ -16,7 +16,7 @@ trait UsersHandlerFilter extends UsersHandler2x {
   object DefaultAbilitiesFilter extends DefaultAbilitiesFilter
   val abilitiesFilter = DefaultAbilitiesFilter
 
-  abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMsg): Unit = {
+  def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMsg): Unit = {
     UsersModel.findWithId(msg.ejectedBy, state.usersModel.toVector) foreach { user =>
 
       val abilities = abilitiesFilter.calcEffectiveAbilities(
@@ -25,26 +25,27 @@ trait UsersHandlerFilter extends UsersHandler2x {
         state.abilities.get.removed)
 
       if (abilitiesFilter.can(CanEjectUser, abilities)) {
-        super.handleEjectUserFromMeeting(msg)
+        //super.handleEjectUserFromMeeting(msg)
       } else {
         outGW.send(new DisconnectUser2x(msg.meetingId, msg.ejectedBy))
       }
     }
   }
 
-  abstract override def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage): Unit = {
+  def handleValidateAuthToken2x(msg: ValidateAuthTokenInMessage): Unit = {
     RegisteredUsersModel.findWithToken(msg.token, state.registeredUsersModel.toVector) match {
       case Some(u) =>
-        super.handleValidateAuthToken2x(msg)
+      //super.handleValidateAuthToken2x(msg)
       case None =>
         outGW.send(new DisconnectUser2x(msg.meetingId, msg.senderId))
     }
   }
 
-  abstract override def handleUserJoinWeb2x(msg: UserJoinMeetingInMessage): Unit = {
+  def handleUserJoinWeb2x(msg: UserJoinMeetingInMessage): Unit = {
     RegisteredUsersModel.findWithToken(msg.sessionToken, state.registeredUsersModel.toVector) match {
       case Some(u) =>
-        super.handleUserJoinWeb2x(msg)
+      //super.handleUserJoinWeb2x(msg)
+      //outGW.send(new DisconnectUser2x(msg.meetingId, msg.senderId))
       case None =>
         outGW.send(new DisconnectUser2x(msg.meetingId, msg.senderId))
     }

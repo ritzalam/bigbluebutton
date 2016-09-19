@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.meeting.handlers.user
+package org.bigbluebutton.core.user.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.UserJoinMeetingInMessage

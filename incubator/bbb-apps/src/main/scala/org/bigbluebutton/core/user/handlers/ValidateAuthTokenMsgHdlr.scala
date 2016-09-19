@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.meeting.handlers.user
+package org.bigbluebutton.core.user.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.ValidateAuthTokenInMessage
@@ -8,7 +8,7 @@ import org.bigbluebutton.core.meeting.models.MeetingStateModel
 import org.bigbluebutton.core.reguser.RegisteredUsersModel
 
 trait ValidateAuthTokenMsgHdlr {
-  this: UserActorMsgHdlr =>
+  this: UserInMsgHdlr =>
 
   val outGW: OutMessageGateway
 

@@ -5,7 +5,9 @@ import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
 import org.bigbluebutton.core.domain.CanEjectUser
 import org.bigbluebutton.core.meeting.handlers.UsersHandler2x
-import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, RegisteredUsersModel, UsersModel }
+import org.bigbluebutton.core.meeting.models.MeetingStateModel
+import org.bigbluebutton.core.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.user.UsersModel
 
 trait UsersHandlerFilter extends UsersHandler2x {
   val state: MeetingStateModel

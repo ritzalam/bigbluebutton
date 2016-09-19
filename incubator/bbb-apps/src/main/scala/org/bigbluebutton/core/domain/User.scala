@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.domain
 
 import com.softwaremill.quicklens._
+import org.bigbluebutton.core.client._
 
 object User {
   def create(id: IntUserId, externalId: ExtUserId, name: Name, roles: Set[Role]): User = {

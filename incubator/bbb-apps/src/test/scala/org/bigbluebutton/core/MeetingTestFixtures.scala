@@ -6,8 +6,11 @@ import java.util.Date
 import org.bigbluebutton.common.messages2x.objects.AnnotationStatus
 import org.bigbluebutton.core.apps.presentation.{ Page, Presentation, PresentationModel }
 import org.bigbluebutton.core.apps.presentation.domain._
+import org.bigbluebutton.core.client.FlashWebUserAgent
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.meeting.models._
+import org.bigbluebutton.core.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.user.UsersModel
 
 trait MeetingTestFixtures {
   val bbbDevIntMeetingId = IntMeetingId("bbb-dev-weekly-meeting")

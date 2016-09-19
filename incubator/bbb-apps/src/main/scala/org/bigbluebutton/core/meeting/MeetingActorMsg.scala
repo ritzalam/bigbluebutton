@@ -68,6 +68,7 @@ class MeetingActorMsg(
   val bus: IncomingEventBus2x,
   val outGW: OutMessageGateway,
   val state: MeetingStateModel) extends Actor with ActorLogging
+    with DefaultInMsgHandler
     with RegisterSessionIdInMsgHdlr
     with ValidateAuthTokenCommandMsgFilter
     with RegisterUserCommandMsgHdlr
@@ -90,11 +91,11 @@ class MeetingActorMsg(
   }
 
   def receive = {
-    case msg: RegisterUserInMessage => handleRegisterUser(msg)
-    case msg: ValidateAuthTokenInMessage => handleValidateAuthToken(msg)
-    case msg: UserJoinMeetingInMessage => handleUserJoinMeetingRequestInMessage(msg)
-    case msg: EjectUserFromMeetingInMsg => handleEjectUserFromMeeting(msg)
-    case msg: RegisterSessionIdInMsg => handleRegisterSessionIdInMsg(msg)
+    case msg: RegisterUserInMessage => handle(msg)
+    case msg: ValidateAuthTokenInMessage => handle(msg)
+    case msg: UserJoinMeetingInMessage => handle(msg)
+    case msg: EjectUserFromMeetingInMsg => handle(msg)
+    case msg: RegisterSessionIdInMsg => handle(msg)
   }
 
 }

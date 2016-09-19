@@ -1,7 +1,8 @@
 package org.bigbluebutton.core.meeting.handlers
 
 import org.bigbluebutton.core.{ OutMessageGateway, TokenIdFactory }
-import org.bigbluebutton.core.api.IncomingMsg.RegisterSessionIdInMsg
+import org.bigbluebutton.core.api.IncomingMsg.{ InMsg, RegisterSessionIdInMsg }
+import org.bigbluebutton.core.client._
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
 
@@ -9,7 +10,7 @@ trait RegisterSessionIdInMsgHdlr {
   val state: MeetingStateModel
   val outGW: OutMessageGateway
 
-  def handleRegisterSessionIdInMsg(message: RegisterSessionIdInMsg): Unit = {
+  def handle(message: RegisterSessionIdInMsg): Unit = {
     def getClientWithSessionToken(user: User, sessionToken: SessionToken): Client = {
       User.findClientWithSessionToken(user.client, sessionToken) match {
         case Some(client) => client

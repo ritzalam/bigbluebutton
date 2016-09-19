@@ -4,7 +4,9 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.UserJoinMeetingInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.{ PresenterAssignedEventOutMsg, UserJoinedEvent2x }
 import org.bigbluebutton.core.domain.{ Presenter, PresenterRole, User }
-import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, RegisteredUsersModel, UsersModel }
+import org.bigbluebutton.core.meeting.models.MeetingStateModel
+import org.bigbluebutton.core.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.user.UsersModel
 
 trait UserJoinMeetingMsgHdlr {
   val outGW: OutMessageGateway

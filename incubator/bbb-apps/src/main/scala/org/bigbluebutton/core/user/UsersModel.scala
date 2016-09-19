@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.meeting.models
+package org.bigbluebutton.core.user
 
 import org.bigbluebutton.core.domain._
 

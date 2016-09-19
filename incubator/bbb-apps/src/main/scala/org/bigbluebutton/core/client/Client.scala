@@ -1,6 +1,7 @@
-package org.bigbluebutton.core.domain
+package org.bigbluebutton.core.client
 
 import com.softwaremill.quicklens._
+import org.bigbluebutton.core.domain.{ ClientId, IntUserId, SessionId, SessionToken, Stream, UserAgent, Voice4x }
 
 trait ClientUserAgent
 case object FlashWebUserAgent extends ClientUserAgent

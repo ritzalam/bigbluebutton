@@ -4,7 +4,8 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.domain.{ RegisteredUser, User, UserState }
-import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, UsersModel }
+import org.bigbluebutton.core.meeting.models.MeetingStateModel
+import org.bigbluebutton.core.user.UsersModel
 
 class UserActorMsgHdlr(
   val user: RegisteredUser,

@@ -3,9 +3,12 @@ package org.bigbluebutton.core.meeting
 import akka.actor.ActorContext
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.apps.presentation.PresentationModel
-import org.bigbluebutton.core.domain.{ Clients, MeetingExtensionStatus, MeetingProperties2x }
+import org.bigbluebutton.core.domain.{ MeetingExtensionStatus, MeetingProperties2x }
 import org.bigbluebutton.core.api.json.IncomingEventBus2x
+import org.bigbluebutton.core.client.Clients
 import org.bigbluebutton.core.meeting.models._
+import org.bigbluebutton.core.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.user.UsersModel
 
 object RunningMeeting {
   def apply(mProps: MeetingProperties2x, outGW: OutMessageGateway,

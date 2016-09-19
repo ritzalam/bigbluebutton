@@ -2,9 +2,10 @@ package org.bigbluebutton.core.api
 
 import org.bigbluebutton.core.apps.presentation.{ Presentation, PreuploadedPresentation }
 import org.bigbluebutton.core.apps.presentation.domain._
-import org.bigbluebutton.core.domain.{ AnnotationVO, BreakoutUser, ClientUserAgent, MeetingProperties2x, Role, Stream, Voice4x }
+import org.bigbluebutton.core.domain.{ AnnotationVO, BreakoutUser, MeetingProperties2x, Role, Stream, Voice4x }
 import org.bigbluebutton.core.apps.presentation.domain._
 import org.bigbluebutton.core.apps.presentation.PreuploadedPresentation
+import org.bigbluebutton.core.client.ClientUserAgent
 import org.bigbluebutton.core.domain._
 
 case class InMessageHeader(name: String, meetingId: Option[String], senderId: Option[String], replyTo: Option[String])

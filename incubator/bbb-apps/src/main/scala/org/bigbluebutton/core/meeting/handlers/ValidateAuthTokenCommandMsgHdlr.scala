@@ -20,7 +20,7 @@ trait ValidateAuthTokenCommandMsgHdlr {
     def handle(regUser: RegisteredUser): Unit = {
       val userHandler = userHandlers.createHandler(regUser, outGW)
       log.debug("Handing off to user handler.")
-      userHandler.handleValidateAuthToken2x(msg, state)
+      //userHandler.handleValidateAuthToken2x(msg, state)
     }
 
     for {

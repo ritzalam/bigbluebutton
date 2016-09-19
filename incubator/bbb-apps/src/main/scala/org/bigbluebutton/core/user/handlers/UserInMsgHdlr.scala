@@ -16,4 +16,10 @@ class UserInMsgHdlr(
 
   val userState: UserState = new UserState(user)
 
+  def handle(msg: InMsg, meeting: MeetingStateModel): Unit = {
+    msg match {
+      case m: ValidateAuthTokenInMessage => handleValidateAuthTokenInMessage(m, meeting)
+      //case m: UserJoinMeetingInMessage => handle(m, meeting)
+    }
+  }
 }

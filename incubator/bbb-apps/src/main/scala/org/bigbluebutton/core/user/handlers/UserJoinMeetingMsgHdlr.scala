@@ -11,7 +11,7 @@ import org.bigbluebutton.core.user.UsersModel
 trait UserJoinMeetingMsgHdlr {
   val outGW: OutMessageGateway
 
-  def handleUserJoinMeetingMessage(msg: UserJoinMeetingInMessage, meeting: MeetingStateModel): Unit = {
+  def handle(msg: UserJoinMeetingInMessage, meeting: MeetingStateModel): Unit = {
     def becomePresenterIfNeeded(user: User): Unit = {
       // Become presenter if only moderator in meeting
       if (user.isModerator && !UsersModel.hasPresenter(meeting.usersModel.toVector)) {

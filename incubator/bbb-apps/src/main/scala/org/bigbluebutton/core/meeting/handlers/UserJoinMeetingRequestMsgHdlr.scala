@@ -18,7 +18,7 @@ trait UserJoinMeetingRequestMsgHdlr {
     // Compare sessionId, if sessionId is not same then this is a reconnect
     // Just update the sessionId and send join success
 
-    userHandlers.get(msg.senderId) foreach { handler => handler.handleUserJoinMeetingMessage(msg, state) }
+    //userHandlers.get(msg.senderId) foreach { handler => handler.handleUserJoinMeetingMessage(msg, state) }
 
     // TODO: Keep track if there are still web users in the meeting.
     //          if (Users2x.numberOfWebUsers(meeting.state.users.toVector) > 0) {

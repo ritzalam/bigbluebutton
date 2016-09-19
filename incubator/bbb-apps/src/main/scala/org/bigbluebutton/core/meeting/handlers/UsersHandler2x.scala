@@ -28,7 +28,7 @@ trait UsersHandler2x {
     def handle(regUser: RegisteredUser): Unit = {
       val userHandler = new UserInMsgHdlr(regUser, outGW)
       userHandlers += msg.senderId.value -> userHandler
-      userHandler.handleValidateAuthToken2x(msg, state)
+      //userHandler.handleValidateAuthToken2x(msg, state)
     }
 
     for {

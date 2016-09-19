@@ -151,9 +151,10 @@ object IncomingMsg {
 
   case class ChatSendPrivateMessageInMsg(meetingId: IntMeetingId, senderId: IntUserId, message: Map[String, String]) extends InMsg
 
-  case class UserConnectedToGlobalAudio(meetingId: IntMeetingId,
-    /** Not used. Just to satisfy trait **/
-    voiceConf: String, userId: IntUserId, name: Name) extends InMsg
+  case class UserConnectedToGlobalAudio(meetingId: IntMeetingId, /** Not used. Just to satisfy trait **/ voiceConf: String,
+    userid: String, name: String)
+  case class SendPublicChatInMsg2x(header: InMessageHeader, body: SendPublicChatInMsgBody) extends InMsg
+  case class SendPublicChatInMsgBody(chatMessage: ChatProperties2x) extends InMsg
 
   case class UserDisconnectedFromGlobalAudio(meetingId: IntMeetingId,
     /** Not used. Just to satisfy trait **/
@@ -260,6 +261,9 @@ object IncomingMsg {
   /////////////////////////////////////////////////////////////////////////////////////
   // Whiteboard
   /////////////////////////////////////////////////////////////////////////////////////
+
+  case class SendWbAnnotationReqInMsg2x(header: InMessageHeader, body: SendWbAnnotationReqInMsgBody) extends InMsg
+  case class SendWbAnnotationReqInMsgBody(props: WhiteboardProperties2x) extends InMsg
 
   case class SendWhiteboardAnnotationRequest(meetingId: IntMeetingId, requesterId: IntUserId, annotation: AnnotationVO) extends InMsg
   case class GetWhiteboardShapesRequest(meetingId: IntMeetingId, requesterId: IntUserId, whiteboardId: String, replyTo: String) extends InMsg

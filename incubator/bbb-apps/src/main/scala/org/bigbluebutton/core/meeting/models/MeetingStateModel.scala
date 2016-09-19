@@ -2,7 +2,7 @@ package org.bigbluebutton.core.meeting.models
 
 import org.bigbluebutton.core.apps.presentation.PresentationModel
 import org.bigbluebutton.core.client.Clients
-import org.bigbluebutton.core.domain.{Abilities, MeetingProperties2x}
+import org.bigbluebutton.core.domain.{ Abilities, MeetingProperties2x }
 import org.bigbluebutton.core.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.user.UsersModel
 

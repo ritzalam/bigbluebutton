@@ -89,4 +89,17 @@ case class MessageName(value: String) extends AnyVal
 case class ComponentId(value: String) extends AnyVal
 case class MeetingActorRef(id: IntMeetingId, value: ActorRef)
 case class UserActorRef(id: IntUserId, actorRef: ActorRef)
+case class Color(value: String) extends AnyVal
+case class FromTime(value: String) extends AnyVal
+case class ChatType(value: String) extends AnyVal
+case class Username(value: String) extends AnyVal
+case class ChatMessageText(value: String) extends AnyVal
+case class TimeZoneOffset(value: String) extends AnyVal
+case class WhiteboardId(value: String) extends AnyVal
+case class AnnotationStatus(value: String) extends AnyVal
+case class AnnotationType(value: String) extends AnyVal
+
+case class AnnotationTextContent(value: String) extends AnyVal
+case class AnnotationTextBoxHeight(value: String) extends AnyVal
+case class AnnotationTextBoxWidth(value: java.lang.Double) extends AnyVal
 

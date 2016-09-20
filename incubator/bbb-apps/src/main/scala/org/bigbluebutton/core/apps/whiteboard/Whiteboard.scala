@@ -1,4 +1,6 @@
-package org.bigbluebutton.core.domain
+package org.bigbluebutton.core.apps.whiteboard
+
+import org.bigbluebutton.core.domain.{ AnnotationType, WhiteboardId }
 
 case class AnnotationVO(
   id: String,

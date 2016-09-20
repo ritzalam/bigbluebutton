@@ -2,6 +2,7 @@ package org.bigbluebutton.core.api.json
 
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.{ SendWbAnnotationReqInMsg2x, SendWbAnnotationReqInMsgBody }
+import org.bigbluebutton.core.apps.whiteboard.{ Annotation, ShapeAnnotation, TextAnnotation, WhiteboardProperties2x }
 import org.bigbluebutton.core.domain._
 import spray.json.{ DefaultJsonProtocol, DeserializationException, JsArray, JsBoolean, JsFalse, JsNumber, JsObject, JsString, JsTrue, JsValue, JsonFormat, SerializationException }
 

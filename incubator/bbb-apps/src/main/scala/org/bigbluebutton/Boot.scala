@@ -11,6 +11,7 @@ import org.bigbluebutton.endpoint.redis.AppsRedisSubscriberActor
 import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.core.api.json.{ IncomingJsonMessageBus, OutgoingEventBus }
+import org.bigbluebutton.core.meetingsmanager.BigBlueButtonActor
 
 object Boot extends App with SystemConfiguration {
 

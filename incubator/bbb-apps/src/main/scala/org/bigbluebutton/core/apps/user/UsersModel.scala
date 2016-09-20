@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.user
+package org.bigbluebutton.core.apps.user
 
 import org.bigbluebutton.core.domain._
 

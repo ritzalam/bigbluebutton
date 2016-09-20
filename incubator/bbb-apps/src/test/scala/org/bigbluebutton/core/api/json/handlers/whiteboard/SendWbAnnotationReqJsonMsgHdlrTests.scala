@@ -5,6 +5,7 @@ import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.{ SendPublicChatInMsg2x, SendWbAnnotationReqInMsg2x, SendWbAnnotationReqInMsgBody }
 import org.bigbluebutton.core.api.json.handlers.CreateMeetingRequestJsonMsgHdlrHelper
 import org.bigbluebutton.core.api.json.{ InJsonMsgProtocol, JsonMsgUnmarshaller }
+import org.bigbluebutton.core.apps.whiteboard.{ TextAnnotation, WhiteboardProperties2x }
 import org.bigbluebutton.core.domain._
 import spray.json.DefaultJsonProtocol
 

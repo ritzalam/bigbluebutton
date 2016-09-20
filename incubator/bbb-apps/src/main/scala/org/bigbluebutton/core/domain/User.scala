@@ -53,4 +53,4 @@ case class User(id: IntUserId, externalId: ExtUserId, name: Name, emojiStatus: E
   def isModerator: Boolean = roles.contains(ModeratorRole)
 }
 
-case class UserAbilities(removed: Set[Abilities], added: Set[Abilities], applyMeetingAbilities: Boolean)
+case class UserAbilities(removed: Set[Ability], added: Set[Ability], applyMeetingAbilities: Boolean)

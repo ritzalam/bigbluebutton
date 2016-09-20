@@ -1,10 +1,14 @@
 package org.bigbluebutton.core.api
 
+import org.bigbluebutton.core.apps.breakout.BreakoutUser
+import org.bigbluebutton.core.apps.chat.ChatProperties2x
 import org.bigbluebutton.core.apps.presentation.{ Presentation, PreuploadedPresentation }
 import org.bigbluebutton.core.apps.presentation.domain._
-import org.bigbluebutton.core.domain.{ AnnotationVO, BreakoutUser, MeetingProperties2x, Role, Stream, Voice4x }
+import org.bigbluebutton.core.domain.{ MeetingProperties2x, Role, Stream }
 import org.bigbluebutton.core.apps.presentation.domain._
 import org.bigbluebutton.core.apps.presentation.PreuploadedPresentation
+import org.bigbluebutton.core.apps.voice.Voice4x
+import org.bigbluebutton.core.apps.whiteboard.{ AnnotationVO, WhiteboardProperties2x }
 import org.bigbluebutton.core.client.ClientUserAgent
 import org.bigbluebutton.core.domain._
 
@@ -13,6 +17,23 @@ case class InMessageHeader(name: String, meetingId: Option[String], senderId: Op
 object IncomingMsg {
 
   trait InMsg
+
+  ///////////////////////////////////////////////////////////////////////////////
+  // 2x messages
+  //////////////////////////////////////////////////////////////////////////////
+  case class CreateMeetingRequestInMsg2x(header: InMessageHeader, body: CreateMeetingRequestInMsgBody) extends InMsg
+  case class CreateMeetingRequestInMsgBody(props: MeetingProperties2x)
+
+  case class RegisterUserInMsg2x(header: InMessageHeader, body: RegisterUserInMsgBody2x) extends InMsg
+  case class RegisterUserInMsgBody2x(meetingId: IntMeetingId, userId: IntUserId, name: Name, roles: Set[Role],
+    extUserId: ExtUserId, authToken: SessionToken, avatar: Avatar, logoutUrl: LogoutUrl,
+    welcome: Welcome, dialNumbers: Set[DialNumber], config: String, extData: String)
+
+  case class AssignUserSessionTokenInMsg2x(header: InMessageHeader, body: AssignUserSessionTokenInMsgBody2x) extends InMsg
+  case class AssignUserSessionTokenInMsgBody2x(meetingId: IntMeetingId, userId: IntUserId, sessionToken: SessionToken)
+
+  case class ValidateAuthTokenInMsg2x(header: InMessageHeader, body: ValidateAuthTokenInMsgBody) extends InMsg
+  case class ValidateAuthTokenInMsgBody(token: SessionToken, userAgent: UserAgent, componentId: ComponentId)
 
   //////////////////////////////////////////////////////////////////////////////
   // System
@@ -41,9 +62,6 @@ object IncomingMsg {
   case class GetUserInfoInMsg(sessionId: SessionId, sessionToken: SessionToken) extends InMsg
 
   case class CreateMeetingRequestInMsg(meetingId: IntMeetingId, mProps: MeetingProperties2x) extends InMsg
-
-  case class CreateMeetingRequestInMsg2x(header: InMessageHeader, body: CreateMeetingRequestInMsgBody) extends InMsg
-  case class CreateMeetingRequestInMsgBody(props: MeetingProperties2x)
 
   case class EndMeetingInMsg(meetingId: IntMeetingId) extends InMsg
 
@@ -93,9 +111,6 @@ object IncomingMsg {
   //////////////////////////////////////////////////////////////////////////////////
   // Users
   /////////////////////////////////////////////////////////////////////////////////
-
-  case class ValidateAuthTokenInMsg2x(header: InMessageHeader, body: ValidateAuthTokenInMsgBody) extends InMsg
-  case class ValidateAuthTokenInMsgBody(token: SessionToken, userAgent: UserAgent, componentId: ComponentId)
 
   case class ValidateAuthTokenInMessage(meetingId: IntMeetingId, senderId: IntUserId, token: SessionToken) extends InMsg
 

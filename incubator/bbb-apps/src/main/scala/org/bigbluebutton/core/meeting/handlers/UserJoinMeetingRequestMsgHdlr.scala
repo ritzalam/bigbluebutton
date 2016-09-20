@@ -3,8 +3,8 @@ package org.bigbluebutton.core.meeting.handlers
 import org.bigbluebutton.core.{ OutMessageGateway, UserHandlers }
 import org.bigbluebutton.core.api.IncomingMsg.UserJoinMeetingInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.DisconnectUser2x
+import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
-import org.bigbluebutton.core.reguser.RegisteredUsersModel
 
 trait UserJoinMeetingRequestMsgHdlr {
   val state: MeetingStateModel

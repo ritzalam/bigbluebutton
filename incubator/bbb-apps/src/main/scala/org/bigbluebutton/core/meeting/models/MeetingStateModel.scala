@@ -1,12 +1,14 @@
 package org.bigbluebutton.core.meeting.models
 
+import org.bigbluebutton.core.apps.breakout.BreakoutRoomModel
 import org.bigbluebutton.core.apps.presentation.PresentationModel
+import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.apps.user.UsersModel
+import org.bigbluebutton.core.apps.whiteboard.WhiteboardModel
 import org.bigbluebutton.core.client.Clients
-import org.bigbluebutton.core.domain.{ Abilities, MeetingProperties2x }
-import org.bigbluebutton.core.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.user.UsersModel
+import org.bigbluebutton.core.domain.{ Ability, MeetingProperties2x }
 
-case class MeetingAbilities(removed: Set[Abilities], added: Set[Abilities])
+case class MeetingAbilities(removed: Set[Ability], added: Set[Ability])
 
 class MeetingPermissions {
   private var permissions: MeetingAbilities = new MeetingAbilities(Set.empty, Set.empty)

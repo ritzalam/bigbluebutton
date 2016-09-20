@@ -4,6 +4,7 @@ import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.{ SendPublicChatInMsg2x, SendPublicChatInMsgBody }
 import org.bigbluebutton.core.api.json.InJsonMsgProtocol
+import org.bigbluebutton.core.apps.chat.ChatProperties2x
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.messages.body.MessageHeader
 import org.bigbluebutton.messages.chat.SendPublicChatMessage

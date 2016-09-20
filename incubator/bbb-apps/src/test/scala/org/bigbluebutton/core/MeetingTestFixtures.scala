@@ -4,13 +4,15 @@ import org.bigbluebutton.core.api.IncomingMsg._
 import java.util.Date
 
 import org.bigbluebutton.common.messages2x.objects.AnnotationStatus
+import org.bigbluebutton.core.apps.breakout.BreakoutRoomModel
 import org.bigbluebutton.core.apps.presentation.{ Page, Presentation, PresentationModel }
 import org.bigbluebutton.core.apps.presentation.domain._
+import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.apps.user.UsersModel
+import org.bigbluebutton.core.apps.whiteboard.WhiteboardModel
 import org.bigbluebutton.core.client.FlashWebUserAgent
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.meeting.models._
-import org.bigbluebutton.core.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.user.UsersModel
 
 trait MeetingTestFixtures {
   val bbbDevIntMeetingId = IntMeetingId("bbb-dev-weekly-meeting")

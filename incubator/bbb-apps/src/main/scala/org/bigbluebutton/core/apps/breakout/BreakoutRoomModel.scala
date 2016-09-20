@@ -1,6 +1,4 @@
-package org.bigbluebutton.core.meeting.models
-
-import org.bigbluebutton.core.domain.{ BreakoutRoom, BreakoutUser }
+package org.bigbluebutton.core.apps.breakout
 
 class BreakoutRoomModel {
   private var rooms = new collection.immutable.HashMap[String, BreakoutRoom]

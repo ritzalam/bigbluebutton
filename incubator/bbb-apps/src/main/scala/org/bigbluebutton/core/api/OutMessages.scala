@@ -1,7 +1,10 @@
 package org.bigbluebutton.core.api
 
+import org.bigbluebutton.core.apps.breakout.BreakoutUser
 import org.bigbluebutton.core.apps.presentation.{ Page, Presentation }
 import org.bigbluebutton.core.apps.presentation.domain.PresentationId
+import org.bigbluebutton.core.apps.voice.Voice4x
+import org.bigbluebutton.core.apps.whiteboard.AnnotationVO
 import org.bigbluebutton.core.domain._
 
 object OutGoingMsg {

@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.reguser
+package org.bigbluebutton.core.apps.reguser
 
 import org.bigbluebutton.core.domain._
 

@@ -1,10 +1,10 @@
-package org.bigbluebutton.core.reguser.handlers
+package org.bigbluebutton.core.apps.reguser.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.RegisterUserInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.UserRegisteredEvent2x
+import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, PinNumberGenerator }
-import org.bigbluebutton.core.reguser.RegisteredUsersModel
 
 trait RegisterUserCommandMsgHdlr {
   val state: MeetingStateModel

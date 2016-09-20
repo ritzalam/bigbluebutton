@@ -7,11 +7,11 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
 import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, OutgoingEventBus }
+import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.apps.user.UsersModel
 import org.bigbluebutton.core.client.Clients
 import org.bigbluebutton.core.meeting.MeetingActorMsg
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }
-import org.bigbluebutton.core.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.user.UsersModel
 import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._

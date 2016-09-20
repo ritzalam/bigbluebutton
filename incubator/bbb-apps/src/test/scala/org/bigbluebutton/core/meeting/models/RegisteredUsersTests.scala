@@ -1,7 +1,7 @@
 package org.bigbluebutton.core.meeting.models
 
-import org.bigbluebutton.core.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.user.UsersModel
+import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.apps.user.UsersModel
 import org.bigbluebutton.core.{ MeetingTestFixtures, UnitSpec }
 
 class RegisteredUsersTests extends UnitSpec with MeetingTestFixtures {

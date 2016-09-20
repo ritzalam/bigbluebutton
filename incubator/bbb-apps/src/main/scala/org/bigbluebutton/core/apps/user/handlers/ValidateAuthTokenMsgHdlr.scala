@@ -1,18 +1,18 @@
-package org.bigbluebutton.core.user.handlers
+package org.bigbluebutton.core.apps.user.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.ValidateAuthTokenInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMsg
+import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.domain.RegisteredUser
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
-import org.bigbluebutton.core.reguser.RegisteredUsersModel
 
 trait ValidateAuthTokenMsgHdlr {
   this: UserInMsgHdlr =>
 
   val outGW: OutMessageGateway
 
-  def handleValidateAuthTokenInMessage(msg: ValidateAuthTokenInMessage, meeting: MeetingStateModel): Unit = {
+  def handle(msg: ValidateAuthTokenInMessage, meeting: MeetingStateModel): Unit = {
     def sendResponse(user: RegisteredUser): Unit = {
       val reply = new ValidateAuthTokenSuccessReplyOutMsg(
         msg.meetingId, msg.senderId, user.name, user.roles,

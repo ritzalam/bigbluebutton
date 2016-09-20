@@ -5,10 +5,12 @@ import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.apps.presentation.PresentationModel
 import org.bigbluebutton.core.domain.{ MeetingExtensionStatus, MeetingProperties2x }
 import org.bigbluebutton.core.api.json.IncomingEventBus2x
+import org.bigbluebutton.core.apps.breakout.BreakoutRoomModel
+import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.apps.user.UsersModel
+import org.bigbluebutton.core.apps.whiteboard.WhiteboardModel
 import org.bigbluebutton.core.client.Clients
 import org.bigbluebutton.core.meeting.models._
-import org.bigbluebutton.core.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.user.UsersModel
 
 object RunningMeeting {
   def apply(mProps: MeetingProperties2x, outGW: OutMessageGateway,

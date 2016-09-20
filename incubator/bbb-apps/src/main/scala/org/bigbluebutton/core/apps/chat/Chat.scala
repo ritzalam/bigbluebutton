@@ -1,4 +1,6 @@
-package org.bigbluebutton.core.domain
+package org.bigbluebutton.core.apps.chat
+
+import org.bigbluebutton.core.domain._
 
 case class ChatProperties2x(
   fromColor: Color,

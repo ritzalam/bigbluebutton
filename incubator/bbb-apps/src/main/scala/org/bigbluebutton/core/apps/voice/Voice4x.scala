@@ -1,6 +1,7 @@
-package org.bigbluebutton.core.domain
+package org.bigbluebutton.core.apps.voice
 
 import com.softwaremill.quicklens._
+import org.bigbluebutton.core.domain._
 
 object Voice4x {
   def mute(voice: Voice4x): Voice4x = {

@@ -1,11 +1,11 @@
-package org.bigbluebutton.core.user.handlers
+package org.bigbluebutton.core.apps.user.handlers
 
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg._
+import org.bigbluebutton.core.apps.user.UsersModel
 import org.bigbluebutton.core.domain.{ RegisteredUser, User, UserState }
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
-import org.bigbluebutton.core.user.UsersModel
 
 class UserInMsgHdlr(
   val user: RegisteredUser,
@@ -16,10 +16,10 @@ class UserInMsgHdlr(
 
   val userState: UserState = new UserState(user)
 
-  def handle(msg: InMsg, meeting: MeetingStateModel): Unit = {
+  def receive(msg: InMsg, meeting: MeetingStateModel): Unit = {
     msg match {
-      case m: ValidateAuthTokenInMessage => handleValidateAuthTokenInMessage(m, meeting)
-      //case m: UserJoinMeetingInMessage => handle(m, meeting)
+      case m: ValidateAuthTokenInMessage => handle(m, meeting)
+      case m: UserJoinMeetingInMessage => handle(m, meeting)
     }
   }
 }

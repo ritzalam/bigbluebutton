@@ -1,7 +1,7 @@
 package org.bigbluebutton.core
 
+import org.bigbluebutton.core.apps.user.handlers.UserInMsgHdlr
 import org.bigbluebutton.core.domain.{ IntUserId, RegisteredUser }
-import org.bigbluebutton.core.user.handlers.UserInMsgHdlr
 
 class UserHandlers {
   private var userHandlers = new collection.immutable.HashMap[String, UserInMsgHdlr]

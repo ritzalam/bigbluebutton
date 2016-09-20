@@ -1,6 +1,4 @@
-package org.bigbluebutton.core.meeting.models
-
-import org.bigbluebutton.core.domain.{ AnnotationVO, Whiteboard }
+package org.bigbluebutton.core.apps.whiteboard
 
 class WhiteboardModel {
   private var _whiteboards = new scala.collection.immutable.HashMap[String, Whiteboard]()

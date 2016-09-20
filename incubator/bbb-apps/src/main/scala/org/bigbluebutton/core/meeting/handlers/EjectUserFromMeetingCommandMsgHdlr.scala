@@ -3,10 +3,10 @@ package org.bigbluebutton.core.meeting.handlers
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.EjectUserFromMeetingInMsg
 import org.bigbluebutton.core.api.OutGoingMsg.{ DisconnectUser2x, UserEjectedFromMeetingEventOutMsg, UserLeftEventOutMsg }
+import org.bigbluebutton.core.apps.user.UsersModel
 import org.bigbluebutton.core.domain.{ CanEjectUser, User }
 import org.bigbluebutton.core.meeting.filters.DefaultAbilitiesFilter
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
-import org.bigbluebutton.core.user.UsersModel
 
 trait EjectUserFromMeetingCommandMsgHdlr {
   val state: MeetingStateModel

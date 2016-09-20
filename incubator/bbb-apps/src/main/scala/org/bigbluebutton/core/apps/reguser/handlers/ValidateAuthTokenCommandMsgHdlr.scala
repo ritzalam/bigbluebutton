@@ -1,11 +1,11 @@
-package org.bigbluebutton.core.reguser.handlers
+package org.bigbluebutton.core.apps.reguser.handlers
 
 import org.bigbluebutton.core.api.IncomingMsg.ValidateAuthTokenInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.DisconnectUser2x
+import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.domain.RegisteredUser
 import org.bigbluebutton.core.meeting.MeetingActorMsg
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
-import org.bigbluebutton.core.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.{ OutMessageGateway, UserHandlers }
 
 trait ValidateAuthTokenCommandMsgHdlr {

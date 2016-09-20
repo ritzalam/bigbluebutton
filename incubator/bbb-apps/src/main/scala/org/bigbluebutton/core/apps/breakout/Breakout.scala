@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.domain
+package org.bigbluebutton.core.apps.breakout
 
 case class BreakoutId(value: String) extends AnyVal
 

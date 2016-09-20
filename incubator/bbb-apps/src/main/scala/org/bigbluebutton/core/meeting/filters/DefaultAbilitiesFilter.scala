@@ -26,12 +26,12 @@ object ClientTypeAbilities {
 }
 
 trait DefaultAbilitiesFilter {
-  def can(action: Abilities, abilities: Set[Abilities]): Boolean = {
+  def can(action: Ability, abilities: Set[Ability]): Boolean = {
     abilities contains action
   }
 
-  def calcRolesAbilities(roles: Set[Role]): Set[Abilities] = {
-    var abilities: Set[Abilities] = Set.empty
+  def calcRolesAbilities(roles: Set[Role]): Set[Ability] = {
+    var abilities: Set[Ability] = Set.empty
 
     roles.foreach { r =>
       r match {
@@ -45,19 +45,19 @@ trait DefaultAbilitiesFilter {
     abilities
   }
 
-  def add(abilities: Set[Abilities], to: Set[Abilities]): Set[Abilities] = {
+  def add(abilities: Set[Ability], to: Set[Ability]): Set[Ability] = {
     to ++ abilities
   }
 
-  def subtract(abilities: Set[Abilities], from: Set[Abilities]): Set[Abilities] = {
+  def subtract(abilities: Set[Ability], from: Set[Ability]): Set[Ability] = {
     from -- abilities
   }
 
   def calcEffectiveAbilities(
     roles: Set[Role],
     userAbilities: UserAbilities,
-    meetingAbilities: Set[Abilities]): Set[Abilities] = {
-    var effectiveAbilities: Set[Abilities] = Set.empty
+    meetingAbilities: Set[Ability]): Set[Ability] = {
+    var effectiveAbilities: Set[Ability] = Set.empty
     effectiveAbilities = subtract(userAbilities.removed, calcRolesAbilities(roles))
     if (userAbilities.applyMeetingAbilities) {
       effectiveAbilities = subtract(meetingAbilities, effectiveAbilities)
@@ -68,11 +68,11 @@ trait DefaultAbilitiesFilter {
 
   def calcEffectiveAbilities(
     roles: Set[Role],
-    clientAbilities: Set[Abilities],
+    clientAbilities: Set[Ability],
     userAbilities: UserAbilities,
-    meetingAbilities: Set[Abilities]): Set[Abilities] = {
+    meetingAbilities: Set[Ability]): Set[Ability] = {
 
-    var effectiveAbilities: Set[Abilities] = Set.empty
+    var effectiveAbilities: Set[Ability] = Set.empty
     effectiveAbilities = subtract(userAbilities.removed, add(calcRolesAbilities(roles), clientAbilities))
     if (userAbilities.applyMeetingAbilities) {
       effectiveAbilities = add(effectiveAbilities, meetingAbilities)

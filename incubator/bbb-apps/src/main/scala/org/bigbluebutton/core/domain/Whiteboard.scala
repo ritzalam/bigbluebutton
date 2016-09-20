@@ -14,8 +14,8 @@ case class WhiteboardProperties2x(
   annotationType: AnnotationType,
   annotation: Annotation)
 
-//case class MapWrapper(annotation: scala.collection.immutable.HashMap[String, String])
 trait Annotation
 
-case class TextAnnotation(text: String, fontColor: Int, thickness: Int) extends Annotation
+case class TextAnnotation(text: AnnotationTextContent, fontColor: AnnotationTextFontColor,
+  thickness: AnnotationTextThickness) extends Annotation
 case class ShapeAnnotation(color: Int) extends Annotation

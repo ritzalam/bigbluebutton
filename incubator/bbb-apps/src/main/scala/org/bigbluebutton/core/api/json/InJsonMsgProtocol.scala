@@ -19,11 +19,5 @@ trait InJsonMsgProtocol extends AnyValTypeProtocol {
   implicit val sendPublicChatInMsgBodyFormat = jsonFormat1(SendPublicChatInMsgBody)
   implicit val sendPublicChatInMsg2xFormat = jsonFormat2(SendPublicChatInMsg2x)
 
-  //  case class SchemaMap(annotation: scala.collection.immutable.HashMap[String, String])
-  //  val schemaMapMarshall = jsonFormat1(SchemaMap.apply)
-  //  implicit val annotationFormat = jsonFormat1(SchemaMap.apply)
   implicit val sendWbAnnotationReqInMsg2xFormat = jsonFormat2(SendWbAnnotationReqInMsg2x)
-  implicit val sendWbAnnotationReqInMsgBodyFormat = jsonFormat1(SendWbAnnotationReqInMsgBody)
-  //  implicit val whiteboardProperties2xFormat = jsonFormat2(WhiteboardProperties2x)
-  //  implicit val whiteboardProperties2xFormat = jsonFormat3(WhiteboardProperties2x)
 }

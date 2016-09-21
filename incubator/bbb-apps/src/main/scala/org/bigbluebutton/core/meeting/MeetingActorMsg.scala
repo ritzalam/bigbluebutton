@@ -1,11 +1,10 @@
 package org.bigbluebutton.core.meeting
 
 import akka.actor.{ Actor, ActorLogging, Props }
-import org.bigbluebutton.core.{ OutMessageGateway, UserHandlers }
+import org.bigbluebutton.core.{ IncomingEventBus2x, OutMessageGateway, UserHandlers }
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.domain.MeetingProperties2x
-import org.bigbluebutton.core.api.json.IncomingEventBus2x
-import org.bigbluebutton.core.apps.reguser.handlers.{ RegisterUserCommandMsgHdlr, ValidateAuthTokenCommandMsgFilter }
+import org.bigbluebutton.core.apps.reguser.handlers.RegisterUserCommandMsgHdlr
 import org.bigbluebutton.core.meeting.handlers._
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
 
@@ -71,7 +70,7 @@ class MeetingActorMsg(
   val state: MeetingStateModel) extends Actor with ActorLogging
     with DefaultInMsgHandler
     with RegisterSessionIdInMsgHdlr
-    with ValidateAuthTokenCommandMsgFilter
+    //    with ValidateAuthTokenCommandMsgFilter
     with RegisterUserCommandMsgHdlr
     with UserJoinMeetingRequestMsgHdlrFilter
     with EjectUserFromMeetingCommandMsgFilter {
@@ -93,7 +92,7 @@ class MeetingActorMsg(
 
   def receive = {
     case msg: RegisterUserInMessage => handle(msg)
-    case msg: ValidateAuthTokenInMessage => handle(msg)
+    //    case msg: ValidateAuthTokenInMsg2x => handle(msg)
     case msg: UserJoinMeetingInMessage => handle(msg)
     case msg: EjectUserFromMeetingInMsg => handle(msg)
     case msg: RegisterSessionIdInMsg => handle(msg)

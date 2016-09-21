@@ -1,9 +1,8 @@
 package org.bigbluebutton.core.meetingsmanager.handlers
 
-import org.bigbluebutton.core.OutMessageGateway
+import org.bigbluebutton.core.{ IncomingEventBus2x, OutMessageGateway }
 import org.bigbluebutton.core.api.IncomingMsg.CreateMeetingRequestInMsg
 import org.bigbluebutton.core.api.OutGoingMsg.MeetingCreatedEventOutMsg
-import org.bigbluebutton.core.api.json.IncomingEventBus2x
 import org.bigbluebutton.core.meeting.RunningMeeting
 import org.bigbluebutton.core.meetingsmanager.BigBlueButtonActor
 

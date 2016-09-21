@@ -1,14 +1,13 @@
 package org.bigbluebutton.core.api.json.handlers.presentation
 
+import org.bigbluebutton.core.{ BigBlueButtonInMessage, IncomingEventBus2x }
 import org.bigbluebutton.core.api.IncomingMsg.PresentationConversionCompletedEventInMessage
 import org.bigbluebutton.core.api.RedisMsgHdlrActor
-import org.bigbluebutton.core.apps.presentation.{ Page, Presentation }
-import org.bigbluebutton.core.apps.presentation.domain._
-import org.bigbluebutton.core.api.json.{ BigBlueButtonInMessage, InHeaderAndJsonBody, IncomingEventBus2x, ReceivedJsonMessage }
+import org.bigbluebutton.core.apps.presentation.{ Presentation }
+import org.bigbluebutton.core.api.json.{ InHeaderAndJsonBody }
 import org.bigbluebutton.core.api.json.handlers.UnhandledJsonMsgHdlr
 import org.bigbluebutton.core.domain.IntMeetingId
 import org.bigbluebutton.messages.presentation.PresentationConversionCompletedEventMessage
-import org.bigbluebutton.messages.vo.{ PageBody, PresentationBody }
 
 trait PresentationConversionCompletedEventJsonMsgHdlr extends UnhandledJsonMsgHdlr {
 

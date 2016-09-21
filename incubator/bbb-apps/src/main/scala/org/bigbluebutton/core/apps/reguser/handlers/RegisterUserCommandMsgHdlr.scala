@@ -1,16 +1,19 @@
 package org.bigbluebutton.core.apps.reguser.handlers
 
-import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.RegisterUserInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.UserRegisteredEvent2x
-import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, PinNumberGenerator }
+import org.bigbluebutton.core.apps.reguser.{ RegisteredUserActor, RegisteredUsersModel }
+import org.bigbluebutton.core.meeting.MeetingActorMsg
+import org.bigbluebutton.core.meeting.models.{ PinNumberGenerator }
 
 trait RegisterUserCommandMsgHdlr {
-  val state: MeetingStateModel
-  val outGW: OutMessageGateway
+  this: MeetingActorMsg =>
 
   def handle(msg: RegisterUserInMessage): Unit = {
+
+    val actorRef = context.actorOf(RegisteredUserActor.props(msg.meetingId, msg.userId, bus, outGW),
+      msg.meetingId.value + "/" + msg.userId.value)
+
     val pinNumber = PinNumberGenerator.generatePin(state.props.voiceConf, state.status.get)
     val regUser = RegisteredUsersModel.create(msg.userId, msg.extUserId, msg.name, msg.roles,
       msg.authToken, msg.avatar, msg.logoutUrl, msg.welcome, msg.dialNumbers, pinNumber, msg.config, msg.extData)

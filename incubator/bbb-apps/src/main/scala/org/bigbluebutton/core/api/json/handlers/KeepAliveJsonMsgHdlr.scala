@@ -1,9 +1,10 @@
 package org.bigbluebutton.core.api.json.handlers
 
+import org.bigbluebutton.core.{ BigBlueButtonInMessage, IncomingEventBus2x }
 import org.bigbluebutton.core.api.IncomingMsg.KeepAliveMessageInMsg
 import org.bigbluebutton.core.api.RedisMsgHdlrActor
 import org.bigbluebutton.core.domain.{ IntMeetingId, IntUserId }
-import org.bigbluebutton.core.api.json.{ BigBlueButtonInMessage, InHeaderAndJsonBody, IncomingEventBus2x, ReceivedJsonMessage }
+import org.bigbluebutton.core.api.json.{ InHeaderAndJsonBody }
 import org.bigbluebutton.messages.KeepAliveMessage
 
 trait KeepAliveJsonMsgHdlr extends UnhandledJsonMsgHdlr {

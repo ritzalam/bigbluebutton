@@ -1,10 +1,9 @@
 package org.bigbluebutton.core.meeting
 
 import akka.actor.ActorContext
-import org.bigbluebutton.core.OutMessageGateway
+import org.bigbluebutton.core.{ IncomingEventBus2x, OutMessageGateway }
 import org.bigbluebutton.core.apps.presentation.PresentationModel
 import org.bigbluebutton.core.domain.{ MeetingExtensionStatus, MeetingProperties2x }
-import org.bigbluebutton.core.api.json.IncomingEventBus2x
 import org.bigbluebutton.core.apps.breakout.BreakoutRoomModel
 import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.apps.user.UsersModel

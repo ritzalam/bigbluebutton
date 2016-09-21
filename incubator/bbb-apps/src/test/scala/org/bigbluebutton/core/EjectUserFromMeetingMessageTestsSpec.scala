@@ -6,7 +6,6 @@ import com.typesafe.config.ConfigFactory
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
-import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, OutgoingEventBus }
 import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.apps.user.UsersModel
 import org.bigbluebutton.core.client.Clients

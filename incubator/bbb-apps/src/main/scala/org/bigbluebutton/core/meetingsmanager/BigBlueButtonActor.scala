@@ -3,10 +3,9 @@ package org.bigbluebutton.core.meetingsmanager
 import akka.actor.{ Actor, ActorLogging, ActorSystem, Props }
 import akka.util.Timeout
 import org.bigbluebutton.SystemConfiguration
-import org.bigbluebutton.core.OutMessageGateway
+import org.bigbluebutton.core.{ IncomingEventBus2x, OutMessageGateway }
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
-import org.bigbluebutton.core.api.json.IncomingEventBus2x
 import org.bigbluebutton.core.meeting.RunningMeeting
 import org.bigbluebutton.core.meetingsmanager.handlers.CreateMeetingInMsgHdlr
 

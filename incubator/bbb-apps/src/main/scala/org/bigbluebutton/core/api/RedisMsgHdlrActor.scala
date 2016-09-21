@@ -1,8 +1,9 @@
 package org.bigbluebutton.core.api
 
 import akka.actor.{ Actor, ActorLogging, Props }
+import org.bigbluebutton.core.IncomingEventBus2x
 import org.bigbluebutton.core.api.json.handlers._
-import org.bigbluebutton.core.api.json.{ IncomingEventBus2x, IncomingJsonMessageBus, JsonMsgUnmarshaller, ReceivedJsonMessage }
+import org.bigbluebutton.core.api.json.{ IncomingJsonMessageBus, JsonMsgUnmarshaller, ReceivedJsonMessage }
 
 object RedisMsgHdlrActor {
   def props(eventBus: IncomingEventBus2x, incomingJsonMessageBus: IncomingJsonMessageBus): Props =

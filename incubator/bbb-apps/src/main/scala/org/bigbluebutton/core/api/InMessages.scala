@@ -12,7 +12,7 @@ import org.bigbluebutton.core.apps.whiteboard.{ AnnotationVO, WhiteboardProperti
 import org.bigbluebutton.core.client.ClientUserAgent
 import org.bigbluebutton.core.domain._
 
-case class InMessageHeader(name: String, senderId: Option[String], replyTo: Option[String])
+case class InMessageHeader(name: String, dest: String, senderId: Option[String], replyTo: Option[String])
 
 object IncomingMsg {
 

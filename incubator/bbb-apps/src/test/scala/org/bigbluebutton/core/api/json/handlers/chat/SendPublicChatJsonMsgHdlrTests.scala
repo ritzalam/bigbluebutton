@@ -54,7 +54,7 @@ class SendPublicChatJsonMsgHdlrTests extends UnitSpec {
 
     assert(inMsgFoo.header.name == messageName)
 
-    val inHeader = InMessageHeader(messageName, Some(senderId), Some(replyTo))
+    val inHeader = InMessageHeader(messageName, meetingId, Some(senderId), Some(replyTo))
     println("* 3 \n" + inHeader.toJson)
 
     val inProps = ChatProperties2x(Color(fromColor), FromTime(fromTime), ChatType(chatType),

@@ -1,9 +1,8 @@
 package org.bigbluebutton.core.api.json
 
 import org.bigbluebutton.core.api.IncomingMsg._
-import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.domain._
-import spray.json.{ DefaultJsonProtocol, DeserializationException, JsBoolean, JsValue, JsonFormat }
+import spray.json.DefaultJsonProtocol
 
 trait InJsonMsgProtocol extends AnyValTypeProtocol {
   this: DefaultJsonProtocol =>

@@ -2,7 +2,7 @@ package org.bigbluebutton.core.api.json.handlers.whiteboard
 
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core.api.InMessageHeader
-import org.bigbluebutton.core.api.IncomingMsg.{ SendWbAnnotationReqInMsg2x }
+import org.bigbluebutton.core.api.IncomingMsg.SendWbAnnotationReqInMsg2x
 import org.bigbluebutton.core.api.json.{ InJsonMsgProtocol, JsonMsgUnmarshaller }
 import org.bigbluebutton.core.domain._
 import spray.json.DefaultJsonProtocol
@@ -15,10 +15,20 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
   it should "convert json message to scala case class" in {
     import TestProtocol1._
 
-    val text = AnnotationTextContent("Hello")
+    val text = AnnotationTextContent("KKKKKKKK\r")
+    val textBoxHeight = AnnotationTextBoxHeight(2.747678)
+    val textBoxWidth = AnnotationTextBoxWidth(11.747968)
     val fontColor = AnnotationTextFontColor(new Integer(1))
-    val thickness = AnnotationTextThickness(new Integer(0))
-    val textA = TextAnnotation(text, fontColor, thickness)
+    val fontSize = AnnotationTextFontSize(new Integer(18))
+    val y = AnnotationY(41.795666)
+    val calcedFontSize = AnnotationTextCalcedFontSize(2.7863777)
+    val dataPoints = AnnotationDataPoints("84.52381,41.795666")
+    val x = AnnotationX(84.52381)
+    val status = AnnotationStatus("DRAW_END")
+    val annotationID = AnnotationId("bla_shape_132")
+
+    val textA = TextAnnotation(text, textBoxHeight, textBoxWidth, fontColor, fontSize, x,
+      calcedFontSize, dataPoints, y, status, annotationID)
     val wbProps1 = WhiteboardProperties2x(WhiteboardId("AAA"), AnnotationType("text"), textA)
 
     val messageName = "SendWbAnnotationReq"
@@ -48,5 +58,46 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
         fail("Failed to parse message")
       }
     }
+
+    val shapeColor = AnnotationShapeColor(1)
+    val transparency = AnnotationShapeTransparency(false)
+    val thickness = AnnotationShapeThickness(1)
+    val a: Vector[Double] = List(84.52381, 10.46123, 89.4546, 41.795666).toVector
+    val shapeDataPoints = AnnotationShapeDataPoints(a)
+    val shapeStatus = AnnotationStatus("DRAW_END")
+    val shapeAnnotationID = AnnotationId("bla_shape_132")
+
+    val shapeA = ShapeAnnotation(shapeColor, transparency, shapeStatus, shapeAnnotationID,
+      thickness, shapeDataPoints)
+    val wbProps2 = WhiteboardProperties2x(WhiteboardId("BBB"), AnnotationType("triangle"), shapeA)
+
+    val shapeMessageName = "SendWbAnnotationReq"
+    val shapeMeetingId = "someMeetingId"
+    val shapeSenderId = "sender"
+    val shapeReplyTo = "sessionTokenOfSender"
+
+    val shapeHeader = InMessageHeader(shapeMessageName, Some(shapeMeetingId), Some(shapeSenderId), Some(shapeReplyTo))
+
+    val shapeMsg = SendWbAnnotationReqInMsg2x(shapeHeader, wbProps2)
+
+    val shapeJsonMsg = shapeMsg.toJson
+
+    println("*2 -------------------- " + shapeJsonMsg)
+
+    val shapeHeadAndBody = JsonMsgUnmarshaller.decode(shapeJsonMsg.toString)
+
+    shapeHeadAndBody match {
+      case Some(hb) =>
+        val body = SendWbAnnotationReqJsonMsgHdlrHelper.convertTo(hb.body)
+        body match {
+          case Some(b) => assert(b.whiteboardId.value == wbProps2.whiteboardId.value)
+          case None => fail("Failed to parse message body.")
+        }
+
+      case None => {
+        fail("Failed to parse message")
+      }
+    }
+
   }
 }

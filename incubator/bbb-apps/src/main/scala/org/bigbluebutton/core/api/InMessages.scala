@@ -12,7 +12,7 @@ import org.bigbluebutton.core.apps.whiteboard.{ AnnotationVO, WhiteboardProperti
 import org.bigbluebutton.core.client.ClientUserAgent
 import org.bigbluebutton.core.domain._
 
-case class InMessageHeader(name: String, meetingId: Option[String], senderId: Option[String], replyTo: Option[String])
+case class InMessageHeader(name: String, senderId: Option[String], replyTo: Option[String])
 
 object IncomingMsg {
 
@@ -34,6 +34,13 @@ object IncomingMsg {
 
   case class ValidateAuthTokenInMsg2x(header: InMessageHeader, body: ValidateAuthTokenInMsgBody) extends InMsg
   case class ValidateAuthTokenInMsgBody(token: SessionToken, userAgent: UserAgent, componentId: ComponentId)
+
+  case class RequestUserProfileInMsg2x(header: InMessageHeader, body: RequestUserProfileInMsgBody2x) extends InMsg
+  case class RequestUserProfileInMsgBody2x(sessionToken: SessionToken, userAgent: ClientUserAgent)
+
+  case class JoinMeetingUserInMsg2x(header: InMessageHeader, body: JoinMeetingUserInMsgBody2x) extends InMsg
+  case class JoinMeetingUserInMsgBody2x(meetingId: IntMeetingId, senderId: IntUserId, sessionToken: SessionToken,
+    sessionId: SessionId, clientId: ClientId, userAgent: ClientUserAgent)
 
   //////////////////////////////////////////////////////////////////////////////
   // System

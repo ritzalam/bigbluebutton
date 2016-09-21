@@ -35,7 +35,7 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
     val senderId = "sender"
     val replyTo = "sessionTokenOfSender"
 
-    val header = InMessageHeader(messageName, Some(meetingId), Some(senderId), Some(replyTo))
+    val header = InMessageHeader(messageName, Some(senderId), Some(replyTo))
 
     val msg = SendWbAnnotationReqInMsg2x(header, textbody)
     import spray.json._

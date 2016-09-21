@@ -9,7 +9,7 @@ import spray.json.{ DefaultJsonProtocol, DeserializationException, JsArray, JsBo
 trait AnyValTypeProtocol {
   this: DefaultJsonProtocol =>
 
-  implicit val inMessageHeaderFormat = jsonFormat4(InMessageHeader)
+  implicit val InMessageHeaderFormat = jsonFormat3(InMessageHeader)
 
   implicit object RecordedFormat extends JsonFormat[Recorded] {
     def write(obj: Recorded): JsValue = JsBoolean(obj.value)
@@ -249,7 +249,7 @@ trait AnyValTypeProtocol {
     def write(x: SendWbAnnotationReqInMsg2x): JsValue = {
       JsObject(Map[String, JsValue](
         "body" -> SendWbAnnotationReqInMsgBodyFormat.write(x.body),
-        "header" -> inMessageHeaderFormat.write(x.header)))
+        "header" -> InMessageHeaderFormat.write(x.header)))
     }
 
     def read(json: JsValue): SendWbAnnotationReqInMsg2x = {

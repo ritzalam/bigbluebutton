@@ -2,7 +2,6 @@ package org.bigbluebutton.messages.whiteboard;
 
 import org.bigbluebutton.messages.AbstractMessage;
 import org.bigbluebutton.messages.body.MessageHeader;
-//import org.bigbluebutton.messages.vo.Annotation;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 
@@ -39,29 +38,5 @@ public class SendWbAnnotationReq extends AbstractMessage {
 
         }
     }
-
-//    @Override
-//    public String toJson() {
-//        ObjectMapper mapper = JsonFactory.create();
-//
-//        System.out.println("-----------------SendWbAnnotationReq::toJson" + this.body.annotationType);
-//        if (this.body.annotationType.equals("text")) {
-//            String a = this.body.annotation.toJson();
-//            System.out.println("AAAAAA");
-//            return ((TextAnnotation) this.body.annotation).toJson();
-//
-//        } else {
-//            System.out.println("BBBBBBB");
-//        }
-//
-//
-//        // 2 cases depending on what kind of shape it is
-//
-//
-//
-//
-////        return mapper.writeValueAsString(this);
-//        return "~~~~~~~~~~~~~~~";
-//    }
 
 }

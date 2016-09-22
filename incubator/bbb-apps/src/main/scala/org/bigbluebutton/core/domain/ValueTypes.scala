@@ -98,8 +98,17 @@ case class TimeZoneOffset(value: String) extends AnyVal
 case class WhiteboardId(value: String) extends AnyVal
 case class AnnotationStatus(value: String) extends AnyVal
 case class AnnotationType(value: String) extends AnyVal
-
 case class AnnotationTextContent(value: String) extends AnyVal
-case class AnnotationTextBoxHeight(value: String) extends AnyVal
+case class AnnotationTextBoxHeight(value: java.lang.Double) extends AnyVal
 case class AnnotationTextBoxWidth(value: java.lang.Double) extends AnyVal
-
+case class AnnotationTextFontColor(value: java.lang.Integer) extends AnyVal
+case class AnnotationTextFontSize(value: java.lang.Integer) extends AnyVal
+case class AnnotationY(value: java.lang.Double) extends AnyVal
+case class AnnotationX(value: java.lang.Double) extends AnyVal
+case class AnnotationTextCalcedFontSize(value: java.lang.Double) extends AnyVal
+case class AnnotationDataPoints(value: String) extends AnyVal
+case class AnnotationId(value: String) extends AnyVal
+case class AnnotationShapeColor(value: java.lang.Integer) extends AnyVal
+case class AnnotationShapeThickness(value: java.lang.Integer) extends AnyVal
+case class AnnotationShapeTransparency(value: Boolean) extends AnyVal
+case class AnnotationShapeDataPoints(value: Vector[Double])

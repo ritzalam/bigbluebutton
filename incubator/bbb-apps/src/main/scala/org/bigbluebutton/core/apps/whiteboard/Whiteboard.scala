@@ -1,6 +1,6 @@
 package org.bigbluebutton.core.apps.whiteboard
 
-import org.bigbluebutton.core.domain.{ AnnotationType, WhiteboardId }
+import org.bigbluebutton.core.domain._
 
 case class AnnotationVO(
   id: String,
@@ -16,8 +16,24 @@ case class WhiteboardProperties2x(
   annotationType: AnnotationType,
   annotation: Annotation)
 
-//case class MapWrapper(annotation: scala.collection.immutable.HashMap[String, String])
 trait Annotation
 
-case class TextAnnotation(text: String, fontColor: Int, thickness: Int) extends Annotation
-case class ShapeAnnotation(color: Int) extends Annotation
+case class TextAnnotation(text: AnnotationTextContent,
+  textBoxHeight: AnnotationTextBoxHeight,
+  textBoxWidth: AnnotationTextBoxWidth,
+  fontColor: AnnotationTextFontColor,
+  fontSize: AnnotationTextFontSize,
+  x: AnnotationX,
+  calcedFontSize: AnnotationTextCalcedFontSize,
+  dataPoints: AnnotationDataPoints,
+  y: AnnotationY,
+  status: AnnotationStatus,
+  id: AnnotationId) extends Annotation
+
+case class ShapeAnnotation(color: AnnotationShapeColor,
+  transparency: AnnotationShapeTransparency,
+  status: AnnotationStatus,
+  id: AnnotationId,
+  thickness: AnnotationShapeThickness,
+  points: AnnotationShapeDataPoints) extends Annotation
+

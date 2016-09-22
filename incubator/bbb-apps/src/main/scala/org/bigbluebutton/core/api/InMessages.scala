@@ -284,8 +284,7 @@ object IncomingMsg {
   // Whiteboard
   /////////////////////////////////////////////////////////////////////////////////////
 
-  case class SendWbAnnotationReqInMsg2x(header: InMessageHeader, body: SendWbAnnotationReqInMsgBody) extends InMsg
-  case class SendWbAnnotationReqInMsgBody(props: WhiteboardProperties2x) extends InMsg
+  case class SendWbAnnotationReqInMsg2x(header: InMessageHeader, body: WhiteboardProperties2x) extends InMsg
 
   case class SendWhiteboardAnnotationRequest(meetingId: IntMeetingId, requesterId: IntUserId, annotation: AnnotationVO) extends InMsg
   case class GetWhiteboardShapesRequest(meetingId: IntMeetingId, requesterId: IntUserId, whiteboardId: String, replyTo: String) extends InMsg

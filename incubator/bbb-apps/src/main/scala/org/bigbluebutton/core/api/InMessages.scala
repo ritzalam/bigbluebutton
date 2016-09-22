@@ -450,6 +450,12 @@ object IncomingMsg {
 
   case class SendWbAnnotationReqInMsg2x(header: InMessageHeader,
     body: WhiteboardProperties2x) extends InMsg
+  case class SendWbHistoryReqInMsg2x(header: InMessageHeader,
+    body: SendWbHistoryReqInMsg2xBody) extends InMsg
+  case class SendWbHistoryReqInMsg2xBody(whiteboardId: WhiteboardId) extends InMsg
+  case class SendWbHistoryReplyInMsg2x(header: InMessageHeader,
+    body: SendWbHistoryReplyInMsg2xBody) extends InMsg
+  case class SendWbHistoryReplyInMsg2xBody(annotations: AnnotationHistory) extends InMsg
 
   case class SendWhiteboardAnnotationRequest(
     meetingId: IntMeetingId, requesterId: IntUserId, annotation: AnnotationVO) extends InMsg

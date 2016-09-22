@@ -2,13 +2,16 @@ package org.bigbluebutton.core.api.json.handlers.whiteboard
 
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core.api.InMessageHeader
-import org.bigbluebutton.core.api.IncomingMsg.SendWbAnnotationReqInMsg2x
+import org.bigbluebutton.core.api.IncomingMsg.{
+  SendWbHistoryReplyInMsg2x,
+  SendWbHistoryReplyInMsg2xBody
+}
 import org.bigbluebutton.core.api.json.{ InJsonMsgProtocol, JsonMsgUnmarshaller }
 import org.bigbluebutton.core.domain._
 import spray.json.DefaultJsonProtocol
 import spray.json._
 
-class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
+class SendWbHistoryReplyJsonMsgHdlrTests extends UnitSpec {
 
   object TestProtocol1 extends DefaultJsonProtocol with InJsonMsgProtocol
 
@@ -27,39 +30,11 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
     val x = AnnotationX(84.52381)
     val status = AnnotationStatus("DRAW_END")
     val annotationID = AnnotationId("bla_shape_132")
-    val annotationType = AnnotationType("text")
+    val textAnnotationType = AnnotationType("text")
 
     val textA = TextAnnotation(text, textBoxHeight, textBoxWidth, fontColor, fontSize, x,
-      calcedFontSize, dataPoints, y, status, annotationID, annotationType)
-    val wbProps1 = WhiteboardProperties2x(WhiteboardId("AAA"), annotationType, textA)
-
-    val messageName = "SendWbAnnotationReq"
-    val meetingId = "someMeetingId"
-    val senderId = "sender"
-    val replyTo = "sessionTokenOfSender"
-
-    val header = InMessageHeader(messageName, Some(meetingId), Some(senderId), Some(replyTo))
-
-    val msg = SendWbAnnotationReqInMsg2x(header, wbProps1)
-
-    val jsonMsg = msg.toJson
-
-    println("*1 " + jsonMsg)
-
-    val headAndBody = JsonMsgUnmarshaller.decode(jsonMsg.toString)
-
-    headAndBody match {
-      case Some(hb) =>
-        val body = SendWbAnnotationReqJsonMsgHdlrHelper.convertTo(hb.body)
-        body match {
-          case Some(b) => assert(b.whiteboardId.value == wbProps1.whiteboardId.value)
-          case None => fail("Failed to parse message body.")
-        }
-
-      case None => {
-        fail("Failed to parse message")
-      }
-    }
+      calcedFontSize, dataPoints, y, status, annotationID, textAnnotationType)
+    val wbProps1 = WhiteboardProperties2x(WhiteboardId("AAA"), textAnnotationType, textA)
 
     // Shape annotation
     val shapeColor = AnnotationShapeColor(1)
@@ -75,16 +50,24 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
       thickness, shapeDataPoints, shapeAnnotationType)
     val wbProps2 = WhiteboardProperties2x(WhiteboardId("BBB"), shapeAnnotationType, shapeA)
 
-    val shapeMessageName = "SendWbAnnotationReq"
-    val shapeMeetingId = "someMeetingId"
-    val shapeSenderId = "sender"
-    val shapeReplyTo = "sessionTokenOfSender"
+    val annotations = new Vector[Annotation]
+    annotations :+ wbProps1
+    annotations :+ wbProps2
+    val ah = new AnnotationHistory(annotations)
 
-    val shapeHeader = InMessageHeader(shapeMessageName, Some(shapeMeetingId), Some(shapeSenderId), Some(shapeReplyTo))
+    println("===========" + annotations.length)
 
-    val shapeMsg = SendWbAnnotationReqInMsg2x(shapeHeader, wbProps2)
+    val messageName = "SendWbHistoryReply"
+    val meetingId = "someMeetingId"
+    val senderId = "sender"
+    val replyTo = "sessionTokenOfSender"
 
-    val shapeJsonMsg = shapeMsg.toJson
+    val header = InMessageHeader(messageName, Some(meetingId), Some(senderId), Some(replyTo))
+    val body = SendWbHistoryReplyInMsg2xBody(annotations)
+
+    val msg = SendWbHistoryReplyInMsg2x(header, body)
+
+    val shapeJsonMsg = msg.toJson
 
     println("*2 -------------------- " + shapeJsonMsg)
 
@@ -102,6 +85,36 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
         fail("Failed to parse message")
       }
     }
+
+    //
+    //    val wbId = WhiteboardId("AAA")
+    //    val messageName = "SendWbHistoryReq"
+    //    val meetingId = "someMeetingId"
+    //    val senderId = "sender"
+    //    val replyTo = "sessionTokenOfSender"
+    //
+    //    val header = InMessageHeader(messageName, Some(meetingId), Some(senderId), Some(replyTo))
+    //
+    //    val msg = SendWbHistoryReqInMsg2x(header, SendWbHistoryReqInMsg2xBody(wbId))
+    //
+    //    val jsonMsg = msg.toJson
+    //
+    //    println("*1 " + jsonMsg)
+    //
+    //    val headAndBody = JsonMsgUnmarshaller.decode(jsonMsg.toString)
+    //
+    //    headAndBody match {
+    //      case Some(hb) =>
+    //        val body = SendWbHistoryReqJsonMsgHdlrHelper.convertTo(hb.body)
+    //        body match {
+    //          case Some(b) => assert(b.whiteboardId.value == wbId.value)
+    //          case None => fail("Failed to parse message body.")
+    //        }
+    //
+    //      case None => {
+    //        fail("Failed to parse message")
+    //      }
+    //    }
 
   }
 }

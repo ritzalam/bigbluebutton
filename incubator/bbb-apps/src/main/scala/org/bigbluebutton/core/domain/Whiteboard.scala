@@ -11,7 +11,7 @@ case class Whiteboard(id: String, shapes: Seq[AnnotationVO])
 
 case class WhiteboardProperties2x(
   whiteboardId: WhiteboardId,
-  annotationType: AnnotationType,
+  annotationType: AnnotationType, //TODO remove
   annotation: Annotation)
 
 trait Annotation
@@ -26,12 +26,14 @@ case class TextAnnotation(text: AnnotationTextContent,
   dataPoints: AnnotationDataPoints,
   y: AnnotationY,
   status: AnnotationStatus,
-  id: AnnotationId) extends Annotation
+  id: AnnotationId,
+  annotationType: AnnotationType) extends Annotation
 
 case class ShapeAnnotation(color: AnnotationShapeColor,
   transparency: AnnotationShapeTransparency,
   status: AnnotationStatus,
   id: AnnotationId,
   thickness: AnnotationShapeThickness,
-  points: AnnotationShapeDataPoints) extends Annotation
+  points: AnnotationShapeDataPoints,
+  annotationType: AnnotationType) extends Annotation
 

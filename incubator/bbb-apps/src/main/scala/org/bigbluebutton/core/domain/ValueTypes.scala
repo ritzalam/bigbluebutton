@@ -112,3 +112,4 @@ case class AnnotationShapeColor(value: java.lang.Integer) extends AnyVal
 case class AnnotationShapeThickness(value: java.lang.Integer) extends AnyVal
 case class AnnotationShapeTransparency(value: Boolean) extends AnyVal
 case class AnnotationShapeDataPoints(value: Vector[Double])
+case class AnnotationHistory(value: Vector[Annotation])

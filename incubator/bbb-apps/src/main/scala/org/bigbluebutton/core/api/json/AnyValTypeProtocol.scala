@@ -149,23 +149,21 @@ trait AnyValTypeProtocol {
     }
   }
 
-  //implicit val annotationTextContent = jsonFormat1(AnnotationTextContent)
   implicit object AnnotationTextContentFormat extends JsonFormat[AnnotationTextContent] {
     def write(obj: AnnotationTextContent): JsValue = JsString(obj.value)
 
     def read(json: JsValue): AnnotationTextContent = json match {
       case JsString(str) => AnnotationTextContent(str)
-      case _ => throw new DeserializationException("String expected")
+      case _ => throw DeserializationException("String expected")
     }
   }
 
-  // implicit val annotationTextBoxWidthFormat = jsonFormat1(AnnotationTextBoxWidth)
   implicit object AnnotationTextBoxWidthFormat extends JsonFormat[AnnotationTextBoxWidth] {
     def write(obj: AnnotationTextBoxWidth): JsValue = JsNumber(obj.value)
 
     def read(json: JsValue): AnnotationTextBoxWidth = json match {
       case JsNumber(num) => AnnotationTextBoxWidth(num.doubleValue())
-      case _ => throw new DeserializationException("Double expected")
+      case _ => throw DeserializationException("Double expected")
     }
   }
 
@@ -266,7 +264,7 @@ trait AnyValTypeProtocol {
 
     def read(json: JsValue): AnnotationShapeThickness = json match {
       case JsNumber(num) => AnnotationShapeThickness(num.toInt)
-      case _ => throw new DeserializationException("Int expected")
+      case _ => throw DeserializationException("Int expected")
     }
   }
 
@@ -275,7 +273,7 @@ trait AnyValTypeProtocol {
 
     def read(json: JsValue): AnnotationShapeTransparency = json match {
       case JsBoolean(num) => AnnotationShapeTransparency(num)
-      case _ => throw new DeserializationException("Int expected")
+      case _ => throw DeserializationException("Int expected")
     }
   }
 
@@ -294,8 +292,8 @@ trait AnyValTypeProtocol {
     }
   }
 
-  implicit val TextAnnotationFormat = jsonFormat11(TextAnnotation)
-  implicit val ShapeAnnotationFormat = jsonFormat6(ShapeAnnotation)
+  implicit val TextAnnotationFormat = jsonFormat12(TextAnnotation)
+  implicit val ShapeAnnotationFormat = jsonFormat7(ShapeAnnotation)
 
   implicit object WhiteboardProperties2xFormat extends JsonFormat[WhiteboardProperties2x] {
     def write(x: WhiteboardProperties2x): JsValue = {
@@ -329,5 +327,29 @@ trait AnyValTypeProtocol {
       }
     }
   }
+
+  // AnnotationHistory
+  //  implicit object AnnotationHistoryFormat extends JsonFormat[AnnotationHistory] {
+  //
+  //    def write(obj: AnnotationHistory) = {
+  //      //      val jsNumVector = obj.value.map(num => JsNumber(num))
+  //      //      JsArray(jsNumVector)
+  //      new JsString("aaa")
+  //    }
+  //
+  //    def read(json: JsValue): AnnotationHistory = json match {
+  //      case JsArray(num) =>
+  //        println("\n~~1:" + json)
+  //        json.asJsObject.getFields("annotationType") match {
+  //          case Seq(JsString(annotationType)) =>
+  //            println("\n~~1: text--" + annotationType)
+  //            val annotations2 = Vector[Annotation]
+  //            AnnotationHistory(annotations2)
+  //
+  //          case _ => throw DeserializationException("WhiteboardProperties2x expected")
+  //        }
+  //      case _ => throw DeserializationException("Vector[Double] expected")
+  //    }
+  //  }
 
 }

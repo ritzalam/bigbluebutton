@@ -44,7 +44,7 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
 
     val jsonMsg = msg.toJson
 
-    println("*1 " + jsonMsg)
+    println("*1 ------------------ " + jsonMsg)
 
     val headAndBody = JsonMsgUnmarshaller.decode(jsonMsg.toString)
 

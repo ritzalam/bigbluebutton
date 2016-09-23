@@ -17,6 +17,7 @@ class SendWbHistoryReplyJsonMsgHdlrTests extends UnitSpec {
 
   it should "convert json message to scala case class" in {
     import TestProtocol1._
+    /*
 
     // Text annotation
     val text = AnnotationTextContent("KKKKKKKK\r")
@@ -85,6 +86,7 @@ class SendWbHistoryReplyJsonMsgHdlrTests extends UnitSpec {
         fail("Failed to parse message")
       }
     }
+    */
 
     //
     //    val wbId = WhiteboardId("AAA")

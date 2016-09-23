@@ -295,34 +295,52 @@ trait AnyValTypeProtocol {
   implicit val TextAnnotationFormat = jsonFormat12(TextAnnotation)
   implicit val ShapeAnnotationFormat = jsonFormat7(ShapeAnnotation)
 
+  implicit object AnnotationFormat extends JsonFormat[Annotation] {
+    def write(x: Annotation): JsValue = {
+      x match {
+        case obj: TextAnnotation => TextAnnotationFormat.write(obj).toJson
+        case obj: ShapeAnnotation => ShapeAnnotationFormat.write(obj).toJson
+        case _ => throw DeserializationException("Annotation expected " + x.getClass)
+      }
+    }
+
+    def read(json: JsValue): Annotation = {
+      // println("\n~~1:" + json)
+      // println("\n~~1:" + json.asJsObject.fields("annotationType"))
+
+      val aType = json.asJsObject.fields("annotationType")
+      aType match {
+        case JsString("text") => TextAnnotationFormat.read(json)
+        case JsString("triangle") => ShapeAnnotationFormat.read(json) // TODO etc
+        case _ => throw DeserializationException("Annotation expected")
+      }
+
+    }
+  }
+
   implicit object WhiteboardProperties2xFormat extends JsonFormat[WhiteboardProperties2x] {
     def write(x: WhiteboardProperties2x): JsValue = {
-      if ("text".equalsIgnoreCase(x.annotationType.value)) {
-        new JsObject(Map[String, JsValue](
-          "whiteboardId" -> JsString(x.whiteboardId.value),
-          "annotationType" -> JsString(x.annotationType.value),
-          "annotation" -> TextAnnotationFormat.write(x.annotation.asInstanceOf[TextAnnotation]).toJson))
-      } else {
-        new JsObject(Map[String, JsValue](
-          "whiteboardId" -> JsString(x.whiteboardId.value),
-          "annotationType" -> JsString(x.annotationType.value),
-          "annotation" -> ShapeAnnotationFormat.write(x.annotation.asInstanceOf[ShapeAnnotation]).toJson))
+      x.annotation match {
+        case obj: TextAnnotation =>
+          new JsObject(Map[String, JsValue](
+            "whiteboardId" -> JsString(x.whiteboardId.value),
+            "annotationType" -> JsString(x.annotationType.value),
+            "annotation" -> TextAnnotationFormat.write(obj).toJson))
+        case obj: ShapeAnnotation =>
+          new JsObject(Map[String, JsValue](
+            "whiteboardId" -> JsString(x.whiteboardId.value),
+            "annotationType" -> JsString(x.annotationType.value),
+            "annotation" -> ShapeAnnotationFormat.write(x.annotation.asInstanceOf[ShapeAnnotation]).toJson))
+        case _ => throw DeserializationException("WhiteboardProperties2x expected")
       }
     }
 
     def read(json: JsValue): WhiteboardProperties2x = {
-      // println("\n~~1:" + json)
+      println("\n~~3:" + json)
       json.asJsObject.getFields("whiteboardId", "annotationType", "annotation") match {
         case Seq(JsString(whiteboardId), JsString(annotationType), JsObject(annotation)) =>
-          if ("text".equalsIgnoreCase(annotationType)) {
-            // println("\n~~1: text--" + annotation.toJson)
-            WhiteboardProperties2x(WhiteboardId(whiteboardId), AnnotationType(annotationType),
-              TextAnnotationFormat.read(annotation.toJson))
-          } else {
-            // println("\n~~1: shape--" + annotation.toJson)
-            WhiteboardProperties2x(WhiteboardId(whiteboardId), AnnotationType(annotationType),
-              ShapeAnnotationFormat.read(annotation.toJson))
-          }
+          WhiteboardProperties2x(WhiteboardId(whiteboardId), AnnotationType(annotationType),
+            AnnotationFormat.read(annotation.toJson))
         case _ => throw DeserializationException("WhiteboardProperties2x expected")
       }
     }
@@ -340,6 +358,7 @@ trait AnyValTypeProtocol {
   //    def read(json: JsValue): AnnotationHistory = json match {
   //      case JsArray(num) =>
   //        println("\n~~1:" + json)
+  //        num.foreach(num => num.asJsObject().toJson)
   //        json.asJsObject.getFields("annotationType") match {
   //          case Seq(JsString(annotationType)) =>
   //            println("\n~~1: text--" + annotationType)

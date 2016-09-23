@@ -64,7 +64,7 @@ object SendWbAnnotationReqJsonMsgHdlrHelper {
     convertBody(body) match {
       case Success(b) => Some(b)
       case Failure(ex) =>
-        print("*******************************" + ex)
+        print("***SendWbAnnotationReq****************************" + ex)
         None
     }
   }

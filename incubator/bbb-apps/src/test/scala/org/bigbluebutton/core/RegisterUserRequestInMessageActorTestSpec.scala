@@ -23,6 +23,7 @@ class RegisterUserRequestInMessageActorTestSpec extends TestKit(ActorSystem("Reg
   val outGW = new OutMessageGateway(outgoingEventBus)
   outgoingEventBus.subscribe(testActor, outgoingMessageChannel)
 
+  /*
   "A MeetingActor" should {
     "Send a UserRegisteredEvent when receiving UserRegisterCommand" in {
       within(500 millis) {
@@ -36,5 +37,5 @@ class RegisterUserRequestInMessageActorTestSpec extends TestKit(ActorSystem("Reg
       }
     }
   }
-
+  */
 }

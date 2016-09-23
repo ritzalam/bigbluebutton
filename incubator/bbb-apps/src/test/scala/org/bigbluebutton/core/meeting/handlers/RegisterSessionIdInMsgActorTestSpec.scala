@@ -25,6 +25,7 @@ class RegisterSessionIdInMsgActorTestSpec extends TestKit(ActorSystem("RegisterS
   val outGW = new OutMessageGateway(outgoingEventBus)
   outgoingEventBus.subscribe(testActor, outgoingMessageChannel)
 
+  /*
   "A MeetingActor" should {
     "Send a SessionIdRegisteredOutMsg when receiving RegisterSessionIdInMsg" in {
       within(500 millis) {
@@ -42,5 +43,5 @@ class RegisterSessionIdInMsgActorTestSpec extends TestKit(ActorSystem("RegisterS
       }
     }
   }
-
+  */
 }

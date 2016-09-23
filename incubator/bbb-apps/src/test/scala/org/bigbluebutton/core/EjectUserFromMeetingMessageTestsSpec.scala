@@ -15,7 +15,7 @@ import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._
 
-class EjectUserFromMeetingMessageTestsSpec extends TestKit(ActorSystem("MeetingActorTestsSpec",
+class EjectUserFromMeetingMessageTestsSpec extends TestKit(ActorSystem("EjectUserFromMeetingMessageTestsSpec",
   ConfigFactory.parseString(TestKitUsageSpec.config)))
     with DefaultTimeout with ImplicitSender with WordSpecLike
     with Matchers with StopSystemAfterAll with MeetingTestFixtures with SystemConfiguration {

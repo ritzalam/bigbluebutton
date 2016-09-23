@@ -6,9 +6,8 @@ import org.bigbluebutton.core.client._
 object User {
   def create(id: IntUserId, externalId: ExtUserId, name: Name, roles: Set[Role]): User = {
 
-    new User(id, externalId, name, EmojiStatus("none"), roles,
-      Set.empty, new UserAbilities(Set.empty, Set.empty, false),
-      Set.empty, Set.empty, Set.empty)
+    new User(id, externalId, name, EmojiStatus("none"), Avatar("none"), roles, Set.empty,
+      Set.empty, new UserAbilities(Set.empty, Set.empty, false), Set.empty, Set.empty)
   }
 
   def update(old: Client, user: User, updated: Client): User = {
@@ -46,8 +45,9 @@ object User {
 
 }
 
-case class User(id: IntUserId, externalId: ExtUserId, name: Name, emojiStatus: EmojiStatus, roles: Set[Role],
-    client: Set[Client], permissions: UserAbilities, roleData: Set[RoleData],
+case class User(id: IntUserId, externalId: ExtUserId, name: Name, emojiStatus: EmojiStatus,
+    avatar: Avatar, roles: Set[Role], roleData: Set[RoleData],
+    client: Set[Client], permissions: UserAbilities,
     config: Set[String], externalData: Set[String]) {
 
   def isModerator: Boolean = roles.contains(ModeratorRole)

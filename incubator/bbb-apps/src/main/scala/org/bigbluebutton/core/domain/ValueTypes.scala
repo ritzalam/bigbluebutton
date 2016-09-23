@@ -87,8 +87,6 @@ case class SenderId(value: String) extends AnyVal
 case class ReceiverId(value: String) extends AnyVal
 case class MessageName(value: String) extends AnyVal
 case class ComponentId(value: String) extends AnyVal
-case class MeetingActorRef(id: IntMeetingId, value: ActorRef)
-case class UserActorRef(id: IntUserId, actorRef: ActorRef)
 case class Color(value: String) extends AnyVal
 case class FromTime(value: String) extends AnyVal
 case class ChatType(value: String) extends AnyVal

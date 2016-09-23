@@ -39,8 +39,8 @@ object IncomingMsg {
   case class RequestUserProfileInMsgBody2x(sessionToken: SessionToken, userAgent: ClientUserAgent)
 
   case class JoinMeetingUserInMsg2x(header: InMessageHeader, body: JoinMeetingUserInMsgBody2x) extends InMsg
-  case class JoinMeetingUserInMsgBody2x(meetingId: IntMeetingId, senderId: IntUserId, sessionToken: SessionToken,
-    sessionId: SessionId, clientId: ClientId, userAgent: ClientUserAgent)
+  case class JoinMeetingUserInMsgBody2x(meetingId: IntMeetingId, userId: IntUserId, sessionToken: SessionToken,
+    userAgent: ClientUserAgent)
 
   //////////////////////////////////////////////////////////////////////////////
   // System

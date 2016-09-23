@@ -70,7 +70,7 @@ class MeetingActorMsg(
   val state: MeetingStateModel) extends Actor with ActorLogging
     with DefaultInMsgHandler
     with RegisterSessionIdInMsgHdlr
-    //    with ValidateAuthTokenCommandMsgFilter
+    with AssignUserSessionTokenInMsgHdlr
     with RegisterUserCommandMsgHdlr
     with UserJoinMeetingRequestMsgHdlrFilter
     with EjectUserFromMeetingCommandMsgFilter {
@@ -92,7 +92,7 @@ class MeetingActorMsg(
 
   def receive = {
     case msg: RegisterUserInMessage => handle(msg)
-    //    case msg: ValidateAuthTokenInMsg2x => handle(msg)
+    case msg: AssignUserSessionTokenInMsg2x => handle(msg)
     case msg: UserJoinMeetingInMessage => handle(msg)
     case msg: EjectUserFromMeetingInMsg => handle(msg)
     case msg: RegisterSessionIdInMsg => handle(msg)

@@ -11,7 +11,6 @@ case class Whiteboard(id: String, shapes: Seq[AnnotationVO])
 
 case class WhiteboardProperties2x(
   whiteboardId: WhiteboardId,
-  annotationType: AnnotationType, //TODO remove
   annotation: Annotation)
 
 trait Annotation

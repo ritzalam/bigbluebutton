@@ -23,6 +23,6 @@ trait InJsonMsgProtocol extends AnyValTypeProtocol {
   implicit val sendWbHistoryReqInMsg2xBodyFormat = jsonFormat1(SendWbHistoryReqInMsg2xBody)
   implicit val sendWbHistoryReqInMsg2xFormat = jsonFormat2(SendWbHistoryReqInMsg2x)
 
-  //  implicit val sendWbHistoryReplyInMsg2xBodyFormat = jsonFormat1(SendWbHistoryReplyInMsg2xBody)
-  //  implicit val sendWbHistoryReplyInMsg2xFormat = jsonFormat2(SendWbHistoryReplyInMsg2x)
+  implicit val sendWbHistoryReplyInMsg2xBodyFormat = jsonFormat1(SendWbHistoryReplyInMsg2xBody)
+  implicit val sendWbHistoryReplyInMsg2xFormat = jsonFormat2(SendWbHistoryReplyInMsg2x)
 }

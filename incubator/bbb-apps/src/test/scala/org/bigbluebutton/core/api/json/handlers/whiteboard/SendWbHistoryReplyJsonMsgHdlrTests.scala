@@ -17,7 +17,6 @@ class SendWbHistoryReplyJsonMsgHdlrTests extends UnitSpec {
 
   it should "convert json message to scala case class" in {
     import TestProtocol1._
-    /*
 
     // Text annotation
     val text = AnnotationTextContent("KKKKKKKK\r")
@@ -35,7 +34,6 @@ class SendWbHistoryReplyJsonMsgHdlrTests extends UnitSpec {
 
     val textA = TextAnnotation(text, textBoxHeight, textBoxWidth, fontColor, fontSize, x,
       calcedFontSize, dataPoints, y, status, annotationID, textAnnotationType)
-    val wbProps1 = WhiteboardProperties2x(WhiteboardId("AAA"), textAnnotationType, textA)
 
     // Shape annotation
     val shapeColor = AnnotationShapeColor(1)
@@ -49,14 +47,9 @@ class SendWbHistoryReplyJsonMsgHdlrTests extends UnitSpec {
 
     val shapeA = ShapeAnnotation(shapeColor, transparency, shapeStatus, shapeAnnotationID,
       thickness, shapeDataPoints, shapeAnnotationType)
-    val wbProps2 = WhiteboardProperties2x(WhiteboardId("BBB"), shapeAnnotationType, shapeA)
 
-    val annotations = new Vector[Annotation]
-    annotations :+ wbProps1
-    annotations :+ wbProps2
-    val ah = new AnnotationHistory(annotations)
-
-    println("===========" + annotations.length)
+    val annotations = Vector[Annotation](textA, shapeA)
+    val ah = AnnotationHistory(annotations)
 
     val messageName = "SendWbHistoryReply"
     val meetingId = "someMeetingId"
@@ -64,21 +57,28 @@ class SendWbHistoryReplyJsonMsgHdlrTests extends UnitSpec {
     val replyTo = "sessionTokenOfSender"
 
     val header = InMessageHeader(messageName, Some(meetingId), Some(senderId), Some(replyTo))
-    val body = SendWbHistoryReplyInMsg2xBody(annotations)
+    val body = SendWbHistoryReplyInMsg2xBody(ah)
 
     val msg = SendWbHistoryReplyInMsg2x(header, body)
 
     val shapeJsonMsg = msg.toJson
 
-    println("*2 -------------------- " + shapeJsonMsg)
+    println("*2 " + shapeJsonMsg)
 
     val shapeHeadAndBody = JsonMsgUnmarshaller.decode(shapeJsonMsg.toString)
 
     shapeHeadAndBody match {
       case Some(hb) =>
-        val body = SendWbAnnotationReqJsonMsgHdlrHelper.convertTo(hb.body)
+        val body = SendWbHistoryReplyJsonMsgHdlrHelper.convertTo(hb.body)
         body match {
-          case Some(b) => assert(b.whiteboardId.value == wbProps2.whiteboardId.value)
+          case Some(b) =>
+            val headA = b.annotations.value.head
+            headA match {
+              case annotation: TextAnnotation =>
+                assert(annotation.textBoxWidth == textA.textBoxWidth)
+              case _ =>
+                assert(headA.asInstanceOf[ShapeAnnotation].thickness.value == shapeA.thickness.value)
+            }
           case None => fail("Failed to parse message body.")
         }
 
@@ -86,37 +86,6 @@ class SendWbHistoryReplyJsonMsgHdlrTests extends UnitSpec {
         fail("Failed to parse message")
       }
     }
-    */
-
-    //
-    //    val wbId = WhiteboardId("AAA")
-    //    val messageName = "SendWbHistoryReq"
-    //    val meetingId = "someMeetingId"
-    //    val senderId = "sender"
-    //    val replyTo = "sessionTokenOfSender"
-    //
-    //    val header = InMessageHeader(messageName, Some(meetingId), Some(senderId), Some(replyTo))
-    //
-    //    val msg = SendWbHistoryReqInMsg2x(header, SendWbHistoryReqInMsg2xBody(wbId))
-    //
-    //    val jsonMsg = msg.toJson
-    //
-    //    println("*1 " + jsonMsg)
-    //
-    //    val headAndBody = JsonMsgUnmarshaller.decode(jsonMsg.toString)
-    //
-    //    headAndBody match {
-    //      case Some(hb) =>
-    //        val body = SendWbHistoryReqJsonMsgHdlrHelper.convertTo(hb.body)
-    //        body match {
-    //          case Some(b) => assert(b.whiteboardId.value == wbId.value)
-    //          case None => fail("Failed to parse message body.")
-    //        }
-    //
-    //      case None => {
-    //        fail("Failed to parse message")
-    //      }
-    //    }
 
   }
 }

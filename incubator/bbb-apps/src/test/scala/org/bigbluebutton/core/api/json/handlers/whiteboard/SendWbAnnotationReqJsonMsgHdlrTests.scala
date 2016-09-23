@@ -31,7 +31,7 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
 
     val textA = TextAnnotation(text, textBoxHeight, textBoxWidth, fontColor, fontSize, x,
       calcedFontSize, dataPoints, y, status, annotationID, annotationType)
-    val wbProps1 = WhiteboardProperties2x(WhiteboardId("AAA"), annotationType, textA)
+    val wbProps1 = WhiteboardProperties2x(WhiteboardId("AAA"), textA)
 
     val messageName = "SendWbAnnotationReq"
     val meetingId = "someMeetingId"
@@ -73,7 +73,7 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
 
     val shapeA = ShapeAnnotation(shapeColor, transparency, shapeStatus, shapeAnnotationID,
       thickness, shapeDataPoints, shapeAnnotationType)
-    val wbProps2 = WhiteboardProperties2x(WhiteboardId("BBB"), shapeAnnotationType, shapeA)
+    val wbProps2 = WhiteboardProperties2x(WhiteboardId("BBB"), shapeA)
 
     val shapeMessageName = "SendWbAnnotationReq"
     val shapeMeetingId = "someMeetingId"

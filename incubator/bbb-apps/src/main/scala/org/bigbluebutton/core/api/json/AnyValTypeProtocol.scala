@@ -1,9 +1,8 @@
 package org.bigbluebutton.core.api.json
 
 import org.bigbluebutton.core.api.InMessageHeader
-import org.bigbluebutton.core.api.IncomingMsg.{ SendWbAnnotationReqInMsg2x }
 import org.bigbluebutton.core.domain._
-import spray.json.{ DefaultJsonProtocol, DeserializationException, JsArray, JsBoolean, JsFalse, JsNumber, JsObject, JsString, JsTrue, JsValue, JsonFormat, SerializationException }
+import spray.json._
 
 trait AnyValTypeProtocol {
   this: DefaultJsonProtocol =>
@@ -305,16 +304,12 @@ trait AnyValTypeProtocol {
     }
 
     def read(json: JsValue): Annotation = {
-      // println("\n~~1:" + json)
-      // println("\n~~1:" + json.asJsObject.fields("annotationType"))
-
       val aType = json.asJsObject.fields("annotationType")
       aType match {
         case JsString("text") => TextAnnotationFormat.read(json)
         case JsString("triangle") => ShapeAnnotationFormat.read(json) // TODO etc
         case _ => throw DeserializationException("Annotation expected")
       }
-
     }
   }
 
@@ -324,51 +319,34 @@ trait AnyValTypeProtocol {
         case obj: TextAnnotation =>
           new JsObject(Map[String, JsValue](
             "whiteboardId" -> JsString(x.whiteboardId.value),
-            "annotationType" -> JsString(x.annotationType.value),
             "annotation" -> TextAnnotationFormat.write(obj).toJson))
         case obj: ShapeAnnotation =>
           new JsObject(Map[String, JsValue](
             "whiteboardId" -> JsString(x.whiteboardId.value),
-            "annotationType" -> JsString(x.annotationType.value),
             "annotation" -> ShapeAnnotationFormat.write(x.annotation.asInstanceOf[ShapeAnnotation]).toJson))
         case _ => throw DeserializationException("WhiteboardProperties2x expected")
       }
     }
 
     def read(json: JsValue): WhiteboardProperties2x = {
-      println("\n~~3:" + json)
-      json.asJsObject.getFields("whiteboardId", "annotationType", "annotation") match {
-        case Seq(JsString(whiteboardId), JsString(annotationType), JsObject(annotation)) =>
-          WhiteboardProperties2x(WhiteboardId(whiteboardId), AnnotationType(annotationType),
-            AnnotationFormat.read(annotation.toJson))
+      json.asJsObject.getFields("whiteboardId", "annotation") match {
+        case Seq(JsString(whiteboardId), JsObject(annotation)) =>
+          WhiteboardProperties2x(WhiteboardId(whiteboardId), AnnotationFormat.read(annotation.toJson))
         case _ => throw DeserializationException("WhiteboardProperties2x expected")
       }
     }
   }
 
-  // AnnotationHistory
-  //  implicit object AnnotationHistoryFormat extends JsonFormat[AnnotationHistory] {
-  //
-  //    def write(obj: AnnotationHistory) = {
-  //      //      val jsNumVector = obj.value.map(num => JsNumber(num))
-  //      //      JsArray(jsNumVector)
-  //      new JsString("aaa")
-  //    }
-  //
-  //    def read(json: JsValue): AnnotationHistory = json match {
-  //      case JsArray(num) =>
-  //        println("\n~~1:" + json)
-  //        num.foreach(num => num.asJsObject().toJson)
-  //        json.asJsObject.getFields("annotationType") match {
-  //          case Seq(JsString(annotationType)) =>
-  //            println("\n~~1: text--" + annotationType)
-  //            val annotations2 = Vector[Annotation]
-  //            AnnotationHistory(annotations2)
-  //
-  //          case _ => throw DeserializationException("WhiteboardProperties2x expected")
-  //        }
-  //      case _ => throw DeserializationException("Vector[Double] expected")
-  //    }
-  //  }
+  implicit object AnnotationHistoryFormat extends JsonFormat[AnnotationHistory] {
+    def write(obj: AnnotationHistory): JsValue = {
+      JsArray(obj.value.map(a => AnnotationFormat.write(a))).toJson
+    }
+
+    def read(json: JsValue): AnnotationHistory =
+      json match {
+        case JsArray(num) => AnnotationHistory(num.map(a => AnnotationFormat.read(a)))
+        case _ => throw DeserializationException("Vector[Double] expected")
+      }
+  }
 
 }

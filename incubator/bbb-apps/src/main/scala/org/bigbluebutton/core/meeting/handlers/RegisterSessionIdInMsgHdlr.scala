@@ -2,7 +2,7 @@ package org.bigbluebutton.core.meeting.handlers
 
 import org.bigbluebutton.core.{ OutMessageGateway, TokenIdFactory }
 import org.bigbluebutton.core.api.IncomingMsg.{ InMsg, RegisterSessionIdInMsg }
-import org.bigbluebutton.core.apps.user.client._
+import org.bigbluebutton.core.user.client._
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
 

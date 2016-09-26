@@ -1,10 +1,13 @@
-package org.bigbluebutton.core.apps.user.client.handlers
+package org.bigbluebutton.core.user.client.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.JoinMeetingUserInMsg2x
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
+import org.bigbluebutton.core.user.client.ClientInMsgHdlr
 
 trait UserJoinMeetingMsgHdlr {
+  this: ClientInMsgHdlr =>
+
   val outGW: OutMessageGateway
 
   def handle(msg: JoinMeetingUserInMsg2x, meeting: MeetingStateModel): Unit = {

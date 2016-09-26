@@ -1,10 +1,10 @@
-package org.bigbluebutton.core.apps.reguser.handlers
+package org.bigbluebutton.core.reguser.handlers
 
 import org.bigbluebutton.core.api.IncomingMsg.RegisterUserInMessage
 import org.bigbluebutton.core.api.OutGoingMsg.UserRegisteredEvent2x
-import org.bigbluebutton.core.apps.reguser.{ RegisteredUserActor, RegisteredUsersModel, SessionTokens }
 import org.bigbluebutton.core.meeting.MeetingActorMsg
 import org.bigbluebutton.core.meeting.models.PinNumberGenerator
+import org.bigbluebutton.core.reguser.{ RegisteredUserActor, RegisteredUsersModel, SessionTokens }
 
 trait RegisterUserCommandMsgHdlr {
   this: MeetingActorMsg =>

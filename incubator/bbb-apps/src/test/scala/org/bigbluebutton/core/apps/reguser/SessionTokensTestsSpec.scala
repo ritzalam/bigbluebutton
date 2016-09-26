@@ -2,6 +2,7 @@ package org.bigbluebutton.core.apps.reguser
 
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core.domain.SessionToken
+import org.bigbluebutton.core.reguser.SessionTokens
 
 class SessionTokensTestsSpec extends UnitSpec {
   it should "add a token" in {

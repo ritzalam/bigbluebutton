@@ -3,11 +3,11 @@ package org.bigbluebutton.core.meeting.handlers
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
-import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.apps.user.UsersModel
-import org.bigbluebutton.core.apps.user.handlers.UserInMsgHdlr
-import org.bigbluebutton.core.domain.{ RegisteredUser, User, UserVO }
+import org.bigbluebutton.core.domain.{ RegisteredUser, User }
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, PinNumberGenerator }
+import org.bigbluebutton.core.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.user.UsersModel
+import org.bigbluebutton.core.user.handlers.UserInMsgHdlr
 
 trait UsersHandler2x {
   val state: MeetingStateModel

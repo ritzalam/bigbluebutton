@@ -7,9 +7,9 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core._
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.{ JoinMeetingUserInMsg2x, JoinMeetingUserInMsgBody2x }
-import org.bigbluebutton.core.apps.reguser.{ RegisteredUserActor, SessionTokens }
-import org.bigbluebutton.core.apps.user.client.FlashWebUserAgent
+import org.bigbluebutton.core.user.client.FlashWebUserAgent
 import org.bigbluebutton.core.domain.{ IntMeetingId, IntUserId, SessionToken }
+import org.bigbluebutton.core.reguser.{ RegisteredUserActor, SessionTokens }
 import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._

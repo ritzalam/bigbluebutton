@@ -1,9 +1,9 @@
-package org.bigbluebutton.core.apps.reguser
+package org.bigbluebutton.core.reguser
 
 import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core.{ IncomingEventBus2x, OutMessageGateway }
 import org.bigbluebutton.core.api.IncomingMsg.{ AssignUserSessionTokenInMsg2x, JoinMeetingUserInMsg2x, ValidateAuthTokenInMsg2x }
-import org.bigbluebutton.core.apps.reguser.handlers.{ AssignUserSessionTokenInMsgHdlr, JoinMeetingUserInMsgHdlr, ValidateAuthTokenInMsgHdlr }
+import org.bigbluebutton.core.reguser.handlers.{ AssignUserSessionTokenInMsgHdlr, JoinMeetingUserInMsgHdlr, ValidateAuthTokenInMsgHdlr }
 
 object RegisteredUserActor {
   def props(meetingId: String,

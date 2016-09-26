@@ -1,10 +1,9 @@
-package org.bigbluebutton.core.apps.user.handlers
+package org.bigbluebutton.core.user.handlers
 
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg._
-import org.bigbluebutton.core.apps.user.UsersModel
-import org.bigbluebutton.core.domain.{ RegisteredUser, User, UserState }
+import org.bigbluebutton.core.domain.{ RegisteredUser, UserState }
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
 
 class UserInMsgHdlr(

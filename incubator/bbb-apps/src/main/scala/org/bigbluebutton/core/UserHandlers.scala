@@ -1,6 +1,6 @@
 package org.bigbluebutton.core
 
-import org.bigbluebutton.core.apps.user.handlers.UserInMsgHdlr
+import org.bigbluebutton.core.user.handlers.UserInMsgHdlr
 import org.bigbluebutton.core.domain.{ IntUserId, RegisteredUser }
 
 class UserHandlers {

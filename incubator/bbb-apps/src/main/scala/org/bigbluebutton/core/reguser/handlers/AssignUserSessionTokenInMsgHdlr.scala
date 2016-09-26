@@ -1,10 +1,10 @@
-package org.bigbluebutton.core.apps.reguser.handlers
+package org.bigbluebutton.core.reguser.handlers
 
 import org.bigbluebutton.core.api.IncomingMsg.AssignUserSessionTokenInMsg2x
 import org.bigbluebutton.core.api.OutGoingMsg.{ UserSessionTokenAssignedBody, UserSessionTokenAssignedMsg, UserSessionTokenAssignedOutMsg2x }
 import org.bigbluebutton.core.api.{ BroadcastMsgType, MsgHeader, OutGoingMsg }
-import org.bigbluebutton.core.apps.reguser.RegisteredUserActor
 import org.bigbluebutton.core.domain.{ IntMeetingId, IntUserId }
+import org.bigbluebutton.core.reguser.RegisteredUserActor
 
 trait AssignUserSessionTokenInMsgHdlr {
   this: RegisteredUserActor =>

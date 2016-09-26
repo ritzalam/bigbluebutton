@@ -8,8 +8,8 @@ import org.bigbluebutton.core._
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.{ AssignUserSessionTokenInMsg2x, AssignUserSessionTokenInMsgBody2x }
 import org.bigbluebutton.core.api.OutGoingMsg.UserSessionTokenAssignedOutMsg2x
-import org.bigbluebutton.core.apps.reguser.{ RegisteredUserActor, SessionTokens }
 import org.bigbluebutton.core.domain.{ IntMeetingId, IntUserId, SessionToken }
+import org.bigbluebutton.core.reguser.{ RegisteredUserActor, SessionTokens }
 import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._

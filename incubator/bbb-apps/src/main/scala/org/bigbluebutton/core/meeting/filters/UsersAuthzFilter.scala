@@ -3,11 +3,11 @@ package org.bigbluebutton.core.meeting.filters
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
-import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.apps.user.UsersModel
+import org.bigbluebutton.core.user.UsersModel
 import org.bigbluebutton.core.domain.CanEjectUser
 import org.bigbluebutton.core.meeting.handlers.UsersHandler2x
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
+import org.bigbluebutton.core.reguser.RegisteredUsersModel
 
 trait UsersHandlerFilter extends UsersHandler2x {
   val state: MeetingStateModel

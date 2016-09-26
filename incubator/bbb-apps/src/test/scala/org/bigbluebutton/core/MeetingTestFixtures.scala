@@ -7,12 +7,12 @@ import org.bigbluebutton.common.messages2x.objects.AnnotationStatus
 import org.bigbluebutton.core.apps.breakout.BreakoutRoomModel
 import org.bigbluebutton.core.apps.presentation.{ Page, Presentation, PresentationModel }
 import org.bigbluebutton.core.apps.presentation.domain._
-import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.apps.user.UsersModel
-import org.bigbluebutton.core.apps.user.client.FlashWebUserAgent
+import org.bigbluebutton.core.user.UsersModel
+import org.bigbluebutton.core.user.client.FlashWebUserAgent
 import org.bigbluebutton.core.apps.whiteboard.WhiteboardModel
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.meeting.models._
+import org.bigbluebutton.core.reguser.RegisteredUsersModel
 
 trait MeetingTestFixtures {
   val bbbDevIntMeetingId = IntMeetingId("bbb-dev-weekly-meeting")

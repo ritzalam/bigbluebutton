@@ -4,9 +4,9 @@ import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core.{ IncomingEventBus2x, OutMessageGateway, UserHandlers }
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.domain.MeetingProperties2x
-import org.bigbluebutton.core.apps.reguser.handlers.RegisterUserCommandMsgHdlr
 import org.bigbluebutton.core.meeting.handlers._
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
+import org.bigbluebutton.core.reguser.handlers.RegisterUserCommandMsgHdlr
 
 import scala.concurrent.duration._
 

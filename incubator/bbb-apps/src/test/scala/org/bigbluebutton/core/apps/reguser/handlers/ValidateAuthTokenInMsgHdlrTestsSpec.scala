@@ -7,9 +7,10 @@ import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core._
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.{ ValidateAuthTokenInMsg2x, ValidateAuthTokenInMsgBody }
-import org.bigbluebutton.core.api.OutGoingMsg.{ ValidateAuthTokenReplyOutMsg2x }
-import org.bigbluebutton.core.apps.reguser.{ RegisteredUserActor, SessionTokens }
+import org.bigbluebutton.core.api.OutGoingMsg.ValidateAuthTokenReplyOutMsg2x
+import org.bigbluebutton.core.reguser.SessionTokens
 import org.bigbluebutton.core.domain._
+import org.bigbluebutton.core.reguser.{ RegisteredUserActor, SessionTokens }
 import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._

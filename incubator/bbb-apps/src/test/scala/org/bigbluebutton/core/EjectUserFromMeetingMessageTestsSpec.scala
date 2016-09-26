@@ -6,11 +6,11 @@ import com.typesafe.config.ConfigFactory
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
-import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.apps.user.UsersModel
-import org.bigbluebutton.core.apps.user.client.Clients
+import org.bigbluebutton.core.user.UsersModel
+import org.bigbluebutton.core.user.client.Clients
 import org.bigbluebutton.core.meeting.MeetingActorMsg
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }
+import org.bigbluebutton.core.reguser.RegisteredUsersModel
 import org.scalatest.{ Matchers, WordSpecLike }
 
 import scala.concurrent.duration._

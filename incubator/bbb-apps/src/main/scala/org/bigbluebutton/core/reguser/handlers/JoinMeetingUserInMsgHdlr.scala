@@ -1,11 +1,11 @@
-package org.bigbluebutton.core.apps.reguser.handlers
+package org.bigbluebutton.core.reguser.handlers
 
 import org.bigbluebutton.core.BigBlueButtonInMessage
 import org.bigbluebutton.core.api.IncomingMsg.JoinMeetingUserInMsg2x
 import org.bigbluebutton.core.api.OutGoingMsg.{ UserSessionTokenAssignedBody, UserSessionTokenAssignedMsg, UserSessionTokenAssignedOutMsg2x }
 import org.bigbluebutton.core.api.{ BroadcastMsgType, MsgHeader, OutGoingMsg }
-import org.bigbluebutton.core.apps.reguser.RegisteredUserActor
 import org.bigbluebutton.core.domain.{ IntMeetingId, IntUserId }
+import org.bigbluebutton.core.reguser.RegisteredUserActor
 
 trait JoinMeetingUserInMsgHdlr {
   this: RegisteredUserActor =>

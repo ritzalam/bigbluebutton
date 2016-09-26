@@ -1,10 +1,10 @@
-package org.bigbluebutton.core.apps.reguser.handlers
+package org.bigbluebutton.core.reguser.handlers
 
 import org.bigbluebutton.core.api.IncomingMsg.ValidateAuthTokenInMsg2x
-import org.bigbluebutton.core.apps.reguser.RegisteredUserActor
 import org.bigbluebutton.core.api.OutGoingMsg.{ ValidateAuthTokenReplyBody, ValidateAuthTokenReplyMsg, ValidateAuthTokenReplyOutMsg2x }
 import org.bigbluebutton.core.api.{ DirectMsgType, MsgHeader, OutGoingMsg }
 import org.bigbluebutton.core.domain.{ IntMeetingId, IntUserId }
+import org.bigbluebutton.core.reguser.RegisteredUserActor
 
 trait ValidateAuthTokenInMsgHdlr {
   this: RegisteredUserActor =>

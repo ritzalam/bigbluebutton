@@ -4,6 +4,7 @@ import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.{ SendPublicChatInMsg2x, SendPublicChatInMsgBody }
 import org.bigbluebutton.core.api.json.InJsonMsgProtocol
+import org.bigbluebutton.core.apps.chat.ChatProperties2x
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.messages.body.MessageHeader
 import org.bigbluebutton.messages.chat.SendPublicChatMessage
@@ -41,20 +42,13 @@ class SendPublicChatJsonMsgHdlrTests extends UnitSpec {
 
     val msg: SendPublicChatMessage = new SendPublicChatMessage(header, body)
 
-    println("* 1 \n" + msg.toJson)
-
     val json: JsObject = JsonParser(msg.toJson).asJsObject
-
-    println("* 2 \n" + json)
 
     val inMsgFoo = json.convertTo[SendPublicChatInMsg2x]
 
-    println(inMsgFoo)
-
     assert(inMsgFoo.header.name == messageName)
 
-    val inHeader = InMessageHeader(messageName, Some(meetingId), Some(senderId), Some(replyTo))
-    println("* 3 \n" + inHeader.toJson)
+    val inHeader = InMessageHeader(messageName, meetingId, Some(senderId), Some(replyTo))
 
     val inProps = ChatProperties2x(Color(fromColor), FromTime(fromTime), ChatType(chatType),
       IntUserId(toUserID), ChatMessageText(message), Username(fromUsername), IntUserId(fromUserID),
@@ -62,11 +56,8 @@ class SendPublicChatJsonMsgHdlrTests extends UnitSpec {
 
     val inBody = SendPublicChatInMsgBody(inProps)
 
-    println("* 4 \n" + inBody.toJson)
-
     val inMsg = SendPublicChatInMsg2x(inHeader, inBody)
 
     val inJson = inMsg.toJson
-    println("* 5 \n" + inJson)
   }
 }

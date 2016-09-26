@@ -1,10 +1,10 @@
 package org.bigbluebutton.core.meeting
 
 import akka.actor.{ Actor, ActorLogging, Props }
-import org.bigbluebutton.core.{ OutMessageGateway, UserHandlers }
+import org.bigbluebutton.core.{ IncomingEventBus2x, OutMessageGateway, UserHandlers }
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.domain.MeetingProperties2x
-import org.bigbluebutton.core.api.json.IncomingEventBus2x
+import org.bigbluebutton.core.apps.reguser.handlers.RegisterUserCommandMsgHdlr
 import org.bigbluebutton.core.meeting.handlers._
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
 
@@ -68,8 +68,9 @@ class MeetingActorMsg(
   val bus: IncomingEventBus2x,
   val outGW: OutMessageGateway,
   val state: MeetingStateModel) extends Actor with ActorLogging
+    with DefaultInMsgHandler
     with RegisterSessionIdInMsgHdlr
-    with ValidateAuthTokenCommandMsgFilter
+    with AssignUserSessionTokenInMsgHdlr
     with RegisterUserCommandMsgHdlr
     with UserJoinMeetingRequestMsgHdlrFilter
     with EjectUserFromMeetingCommandMsgFilter {
@@ -90,20 +91,11 @@ class MeetingActorMsg(
   }
 
   def receive = {
-    case msg: RegisterUserInMessage =>
-      log.debug("Handling RegisterUserRequestInMessage")
-      handleRegisterUser(msg)
-    case msg: ValidateAuthTokenInMessage =>
-      log.debug("Handling ValidateAuthTokenRequestInMessage")
-      handleValidateAuthToken(msg)
-    case msg: UserJoinMeetingInMessage =>
-      log.debug("Handling NewUserPresence2x")
-      handleUserJoinMeetingRequestInMessage(msg)
-    case msg: EjectUserFromMeetingInMsg =>
-      log.debug("Handling EjectUserFromMeeting")
-      handleEjectUserFromMeeting(msg)
-    case msg: RegisterSessionIdInMsg =>
-      handleRegisterSessionIdInMsg(msg)
+    case msg: RegisterUserInMessage => handle(msg)
+    case msg: AssignUserSessionTokenInMsg2x => handle(msg)
+    case msg: UserJoinMeetingInMessage => handle(msg)
+    case msg: EjectUserFromMeetingInMsg => handle(msg)
+    case msg: RegisterSessionIdInMsg => handle(msg)
   }
 
 }

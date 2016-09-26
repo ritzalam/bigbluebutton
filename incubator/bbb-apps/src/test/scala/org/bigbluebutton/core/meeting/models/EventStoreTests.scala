@@ -9,9 +9,7 @@ class EventStoreTests extends UnitSpec {
     var eventNum = eventNumber.increment()
     eventStore.add(new Event(eventNum))
 
-    println(eventStore.getAll)
     eventStore.add(new Event(eventNumber.increment()))
-    println(eventStore.getAll)
     assert(eventStore.getAll.length == 2)
   }
 }

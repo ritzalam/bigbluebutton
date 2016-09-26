@@ -7,6 +7,7 @@ import org.bigbluebutton.core.api.IncomingMsg.{
   SendWbHistoryReplyInMsg2xBody
 }
 import org.bigbluebutton.core.api.json.{ InJsonMsgProtocol, JsonMsgUnmarshaller }
+import org.bigbluebutton.core.apps.whiteboard._
 import org.bigbluebutton.core.domain._
 import spray.json.DefaultJsonProtocol
 import spray.json._
@@ -56,7 +57,7 @@ class SendWbHistoryReplyJsonMsgHdlrTests extends UnitSpec {
     val senderId = "sender"
     val replyTo = "sessionTokenOfSender"
 
-    val header = InMessageHeader(messageName, Some(meetingId), Some(senderId), Some(replyTo))
+    val header = InMessageHeader(messageName, meetingId, Some(senderId), Some(replyTo))
     val body = SendWbHistoryReplyInMsg2xBody(ah)
 
     val msg = SendWbHistoryReplyInMsg2x(header, body)

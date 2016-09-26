@@ -1,12 +1,33 @@
 package org.bigbluebutton.core.api
 
+import org.bigbluebutton.core.apps.breakout.BreakoutUser
 import org.bigbluebutton.core.apps.presentation.{ Page, Presentation }
 import org.bigbluebutton.core.apps.presentation.domain.PresentationId
+import org.bigbluebutton.core.apps.voice.Voice4x
+import org.bigbluebutton.core.apps.whiteboard.AnnotationVO
 import org.bigbluebutton.core.domain._
 
 object OutGoingMsg {
 
   trait OutMsg
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // 2x messages
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+  val UserSessionTokenAssignedOutMsgName = "UserSessionTokenAssignedMsg"
+  case class UserSessionTokenAssignedOutMsg2x(header: MsgHeader, body: UserSessionTokenAssignedMsg) extends OutMsg
+  case class UserSessionTokenAssignedMsg(name: String, body: UserSessionTokenAssignedBody)
+  case class UserSessionTokenAssignedBody(meetingId: IntMeetingId, userId: IntUserId, sessionToken: SessionToken)
+
+  val ValidateAuthTokenReplyOutMsgName = "ValidateAuthTokenReplyMsg"
+  case class ValidateAuthTokenReplyOutMsg2x(header: MsgHeader, body: ValidateAuthTokenReplyMsg) extends OutMsg
+  case class ValidateAuthTokenReplyMsg(name: String, body: ValidateAuthTokenReplyBody)
+  case class ValidateAuthTokenReplyBody(meetingId: IntMeetingId, requesterId: IntUserId,
+    token: SessionToken, valid: Boolean)
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // end 2x messages
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   case class SessionAddedOutMsg(meetingId: IntMeetingId, component: ComponentId, sessionId: SessionId,
     sessionToken: SessionToken) extends OutMsg

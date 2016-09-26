@@ -4,6 +4,7 @@ import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.SendWbAnnotationReqInMsg2x
 import org.bigbluebutton.core.api.json.{ InJsonMsgProtocol, JsonMsgUnmarshaller }
+import org.bigbluebutton.core.apps.whiteboard.{ ShapeAnnotation, TextAnnotation, WhiteboardProperties2x }
 import org.bigbluebutton.core.domain._
 import spray.json.DefaultJsonProtocol
 import spray.json._
@@ -38,13 +39,11 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
     val senderId = "sender"
     val replyTo = "sessionTokenOfSender"
 
-    val header = InMessageHeader(messageName, Some(meetingId), Some(senderId), Some(replyTo))
+    val header = InMessageHeader(messageName, meetingId, Some(senderId), Some(replyTo))
 
     val msg = SendWbAnnotationReqInMsg2x(header, wbProps1)
 
     val jsonMsg = msg.toJson
-
-    println("*1 ------------------ " + jsonMsg)
 
     val headAndBody = JsonMsgUnmarshaller.decode(jsonMsg.toString)
 
@@ -80,13 +79,11 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
     val shapeSenderId = "sender"
     val shapeReplyTo = "sessionTokenOfSender"
 
-    val shapeHeader = InMessageHeader(shapeMessageName, Some(shapeMeetingId), Some(shapeSenderId), Some(shapeReplyTo))
+    val shapeHeader = InMessageHeader(shapeMessageName, shapeMeetingId, Some(shapeSenderId), Some(shapeReplyTo))
 
     val shapeMsg = SendWbAnnotationReqInMsg2x(shapeHeader, wbProps2)
 
     val shapeJsonMsg = shapeMsg.toJson
-
-    println("*2 -------------------- " + shapeJsonMsg)
 
     val shapeHeadAndBody = JsonMsgUnmarshaller.decode(shapeJsonMsg.toString)
 

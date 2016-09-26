@@ -21,7 +21,7 @@ class SendWbHistoryReqJsonMsgHdlrTests extends UnitSpec {
     val senderId = "sender"
     val replyTo = "sessionTokenOfSender"
 
-    val header = InMessageHeader(messageName, Some(meetingId), Some(senderId), Some(replyTo))
+    val header = InMessageHeader(messageName, meetingId, Some(senderId), Some(replyTo))
 
     val msg = SendWbHistoryReqInMsg2x(header, SendWbHistoryReqInMsg2xBody(wbId))
 

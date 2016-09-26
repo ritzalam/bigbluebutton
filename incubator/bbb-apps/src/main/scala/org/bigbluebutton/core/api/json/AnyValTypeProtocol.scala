@@ -3,11 +3,12 @@ package org.bigbluebutton.core.api.json
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.domain._
 import spray.json._
+import org.bigbluebutton.core.apps.whiteboard.{ Annotation, ShapeAnnotation, TextAnnotation, WhiteboardProperties2x }
 
 trait AnyValTypeProtocol {
   this: DefaultJsonProtocol =>
 
-  implicit val inMessageHeaderFormat = jsonFormat4(InMessageHeader)
+  implicit val InMessageHeaderFormat = jsonFormat4(InMessageHeader)
 
   implicit object RecordedFormat extends JsonFormat[Recorded] {
     def write(obj: Recorded): JsValue = JsBoolean(obj.value)

@@ -1,14 +1,14 @@
 package org.bigbluebutton.core.api.json.handlers.whiteboard
 
 import org.bigbluebutton.core.api.IncomingMsg.SendWbAnnotationReqInMsg2x
-import org.bigbluebutton.core.api.RedisMsgHdlrActor
-import org.bigbluebutton.core.domain.WhiteboardProperties2x
-import org.bigbluebutton.core.api.json.{ BigBlueButtonInMessage, InHeaderAndJsonBody, IncomingEventBus2x }
+import org.bigbluebutton.core.api.json.InHeaderAndJsonBody
 import org.bigbluebutton.core.api.json.handlers.UnhandledJsonMsgHdlr
 import org.bigbluebutton.messages.whiteboard.SendWbAnnotationReq
 import org.bigbluebutton.SystemConfiguration
+import org.bigbluebutton.core.{ BigBlueButtonInMessage, IncomingEventBus2x }
 import org.bigbluebutton.core.api.RedisMsgHdlrActor
 import org.bigbluebutton.core.api.json._
+import org.bigbluebutton.core.apps.whiteboard.WhiteboardProperties2x
 import spray.json.{ DefaultJsonProtocol, DeserializationException, JsObject }
 
 import scala.util.{ Failure, Success, Try }

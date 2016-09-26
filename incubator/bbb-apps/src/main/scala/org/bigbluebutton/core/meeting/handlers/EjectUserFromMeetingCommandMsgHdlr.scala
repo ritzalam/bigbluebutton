@@ -3,15 +3,16 @@ package org.bigbluebutton.core.meeting.handlers
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.EjectUserFromMeetingInMsg
 import org.bigbluebutton.core.api.OutGoingMsg.{ DisconnectUser2x, UserEjectedFromMeetingEventOutMsg, UserLeftEventOutMsg }
+import org.bigbluebutton.core.apps.user.UsersModel
 import org.bigbluebutton.core.domain.{ CanEjectUser, User }
 import org.bigbluebutton.core.meeting.filters.DefaultAbilitiesFilter
-import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, UsersModel }
+import org.bigbluebutton.core.meeting.models.MeetingStateModel
 
 trait EjectUserFromMeetingCommandMsgHdlr {
   val state: MeetingStateModel
   val outGW: OutMessageGateway
 
-  def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMsg) {
+  def handle(msg: EjectUserFromMeetingInMsg) {
     def removeAndEject(user: User): Unit = {
       // remove user from list of users
       state.usersModel.remove(user.id)
@@ -43,7 +44,7 @@ trait EjectUserFromMeetingCommandMsgFilter extends EjectUserFromMeetingCommandMs
   object DefaultAbilitiesFilter extends DefaultAbilitiesFilter
   val abilitiesFilter = DefaultAbilitiesFilter
 
-  abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMsg): Unit = {
+  abstract override def handle(msg: EjectUserFromMeetingInMsg): Unit = {
     UsersModel.findWithId(msg.ejectedBy, state.usersModel.toVector) foreach { user =>
 
       val abilities = abilitiesFilter.calcEffectiveAbilities(
@@ -52,7 +53,7 @@ trait EjectUserFromMeetingCommandMsgFilter extends EjectUserFromMeetingCommandMs
         state.abilities.get.removed)
 
       if (abilitiesFilter.can(CanEjectUser, abilities)) {
-        super.handleEjectUserFromMeeting(msg)
+        super.handle(msg)
       } else {
         outGW.send(new DisconnectUser2x(msg.meetingId, msg.ejectedBy))
       }
@@ -61,7 +62,6 @@ trait EjectUserFromMeetingCommandMsgFilter extends EjectUserFromMeetingCommandMs
 }
 
 trait EjectUserFromMeetingCommandLogFilter extends EjectUserFromMeetingCommandMsgHdlr {
-  abstract override def handleEjectUserFromMeeting(msg: EjectUserFromMeetingInMsg): Unit = {
-    println("**** handleEjectUserFromMeeting ****")
+  abstract override def handle(msg: EjectUserFromMeetingInMsg): Unit = {
   }
 }

@@ -43,8 +43,6 @@ class ValidateAuthTokenSuccessReplyOutMessageJsonSenderHelperTests extends UnitS
 
     val message: ValidateAuthTokenSuccessMessage = Helper.convert(outMsg)
 
-    //  println(message.toJson)
-
     val rxMessage = ValidateAuthTokenSuccessMessage.fromJson(message.toJson)
     assert(rxMessage.body.roles.size() == 1)
     assert(rxMessage.body.roles.contains("moderator"))

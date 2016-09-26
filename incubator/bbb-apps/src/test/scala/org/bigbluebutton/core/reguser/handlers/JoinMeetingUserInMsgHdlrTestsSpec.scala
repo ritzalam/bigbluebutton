@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.apps.reguser.handlers
+package org.bigbluebutton.core.reguser.handlers
 
 import akka.actor.ActorSystem
 import akka.testkit.{ DefaultTimeout, ImplicitSender, TestKit }

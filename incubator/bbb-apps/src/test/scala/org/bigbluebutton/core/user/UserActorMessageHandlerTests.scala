@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.apps.user
+package org.bigbluebutton.core.user
 
 import org.bigbluebutton.core.{ MeetingTestFixtures, OutMessageGateway, UnitSpec }
 import org.bigbluebutton.core.api.IncomingMsg._

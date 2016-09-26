@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.apps.reguser
+package org.bigbluebutton.core.reguser
 
 import org.bigbluebutton.core.UnitSpec
 import org.bigbluebutton.core.domain.SessionToken

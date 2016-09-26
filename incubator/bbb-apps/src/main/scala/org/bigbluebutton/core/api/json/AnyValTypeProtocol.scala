@@ -315,15 +315,12 @@ trait AnyValTypeProtocol {
     }
 
     def read(json: JsValue): WhiteboardProperties2x = {
-      // println("\n~~1:" + json)
       json.asJsObject.getFields("whiteboardId", "annotationType", "annotation") match {
         case Seq(JsString(whiteboardId), JsString(annotationType), JsObject(annotation)) =>
           if ("text".equalsIgnoreCase(annotationType)) {
-            // println("\n~~1: text--" + annotation.toJson)
             WhiteboardProperties2x(WhiteboardId(whiteboardId), AnnotationType(annotationType),
               TextAnnotationFormat.read(annotation.toJson))
           } else {
-            // println("\n~~1: shape--" + annotation.toJson)
             WhiteboardProperties2x(WhiteboardId(whiteboardId), AnnotationType(annotationType),
               ShapeAnnotationFormat.read(annotation.toJson))
           }

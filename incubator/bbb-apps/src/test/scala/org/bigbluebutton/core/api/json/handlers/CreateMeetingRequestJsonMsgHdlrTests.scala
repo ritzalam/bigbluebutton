@@ -48,8 +48,6 @@ class CreateMeetingRequestJsonMsgHdlrTests extends UnitSpec {
 
     val msg: CreateMeetingRequestMessage = new CreateMeetingRequestMessage(header, body)
 
-    println("* 1 \n" + msg.toJson)
-
     val headAndBody = JsonMsgUnmarshaller.decode(msg.toJson)
 
     headAndBody match {

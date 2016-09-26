@@ -95,7 +95,6 @@ object PollFactory {
   }
 
   private def createQuestion(qType: String, answers: Option[Seq[String]]): Option[Question] = {
-    println("**** Creating quesion")
 
     val qt = qType.toUpperCase()
     var questionOption: Option[Question] = None

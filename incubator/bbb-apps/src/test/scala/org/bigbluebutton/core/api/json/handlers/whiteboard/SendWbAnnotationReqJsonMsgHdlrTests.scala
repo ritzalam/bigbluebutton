@@ -43,8 +43,6 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
 
     val jsonMsg = msg.toJson
 
-    println("*1 " + jsonMsg)
-
     val headAndBody = JsonMsgUnmarshaller.decode(jsonMsg.toString)
 
     headAndBody match {
@@ -82,8 +80,6 @@ class SendWbAnnotationReqJsonMsgHdlrTests extends UnitSpec {
     val shapeMsg = SendWbAnnotationReqInMsg2x(shapeHeader, wbProps2)
 
     val shapeJsonMsg = shapeMsg.toJson
-
-    println("*2 -------------------- " + shapeJsonMsg)
 
     val shapeHeadAndBody = JsonMsgUnmarshaller.decode(shapeJsonMsg.toString)
 

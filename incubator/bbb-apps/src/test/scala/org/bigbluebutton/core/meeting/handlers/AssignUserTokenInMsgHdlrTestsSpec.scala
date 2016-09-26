@@ -51,7 +51,6 @@ class AssignUserTokenInMsgHdlrTestsSpec extends TestKit(ActorSystem("AssignUserT
         expectMsgPF() {
           case event: AssignUserSessionTokenInMsg2x =>
             assert(event.header.dest == dest)
-            println(event)
         }
       }
     }

@@ -36,7 +36,6 @@ public abstract class AbstractWhiteboardRecordEvent extends RecordEvent {
 		 * compatible with 0.81 and earlier. (ralam Sept 2, 2014)
 		 */
 		Integer num = new Integer(page);
-//		System.out.println("WB Page Number real pagenum=[" + num + "] rec pagenum=[" + (num - 1) + "]");
 		eventMap.put("pageNumber", new Integer(num - 1).toString());
 	}
 	

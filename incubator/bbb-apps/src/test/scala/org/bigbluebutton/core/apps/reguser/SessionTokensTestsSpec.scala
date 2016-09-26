@@ -8,7 +8,6 @@ class SessionTokensTestsSpec extends UnitSpec {
     val sessionTokens = new SessionTokens
     val foo = SessionToken("foo")
     sessionTokens.add(foo)
-    println(sessionTokens.tokens())
     assert(sessionTokens.contains(foo))
   }
 
@@ -18,7 +17,6 @@ class SessionTokensTestsSpec extends UnitSpec {
     sessionTokens.add(foo)
     val bar = SessionToken("bar")
     sessionTokens.add(bar)
-    println(sessionTokens.tokens())
     assert(sessionTokens.contains(foo))
     assert(sessionTokens.contains(bar))
     sessionTokens.remove(foo)

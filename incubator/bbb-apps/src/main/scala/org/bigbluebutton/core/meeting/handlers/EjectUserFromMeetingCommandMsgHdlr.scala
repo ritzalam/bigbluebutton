@@ -63,6 +63,5 @@ trait EjectUserFromMeetingCommandMsgFilter extends EjectUserFromMeetingCommandMs
 
 trait EjectUserFromMeetingCommandLogFilter extends EjectUserFromMeetingCommandMsgHdlr {
   abstract override def handle(msg: EjectUserFromMeetingInMsg): Unit = {
-    println("**** handleEjectUserFromMeeting ****")
   }
 }

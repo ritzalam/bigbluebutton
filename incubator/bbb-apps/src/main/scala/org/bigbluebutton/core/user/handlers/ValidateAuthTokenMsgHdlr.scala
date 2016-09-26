@@ -6,6 +6,7 @@ import org.bigbluebutton.core.api.OutGoingMsg.ValidateAuthTokenSuccessReplyOutMs
 import org.bigbluebutton.core.domain.RegisteredUser
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
 import org.bigbluebutton.core.reguser.RegisteredUsersModel
+import org.bigbluebutton.core.user.UserInMsgHdlr
 
 trait ValidateAuthTokenMsgHdlr {
   this: UserInMsgHdlr =>

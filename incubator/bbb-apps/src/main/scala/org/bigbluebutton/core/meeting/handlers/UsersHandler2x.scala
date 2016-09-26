@@ -6,8 +6,7 @@ import org.bigbluebutton.core.api.OutGoingMsg._
 import org.bigbluebutton.core.domain.{ RegisteredUser, User }
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, PinNumberGenerator }
 import org.bigbluebutton.core.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.user.UsersModel
-import org.bigbluebutton.core.user.handlers.UserInMsgHdlr
+import org.bigbluebutton.core.user.{ UserInMsgHdlr, UsersModel }
 
 trait UsersHandler2x {
   val state: MeetingStateModel

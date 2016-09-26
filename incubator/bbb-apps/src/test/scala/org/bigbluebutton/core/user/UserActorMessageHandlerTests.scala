@@ -3,10 +3,8 @@ package org.bigbluebutton.core.user
 import org.bigbluebutton.core.{ MeetingTestFixtures, OutMessageGateway, UnitSpec }
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.user.client.Clients
-import org.bigbluebutton.core.user.handlers.UserInMsgHdlr
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }
 import org.bigbluebutton.core.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.user.UsersModel
 import org.mockito.Mockito._
 import org.scalatest.mock.MockitoSugar
 

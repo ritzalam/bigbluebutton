@@ -16,7 +16,6 @@ trait JoinMeetingUserInMsgHdlr {
       val message = msg.copy(header = header)
       inGW.publish(BigBlueButtonInMessage(msg.body.meetingId.value, message))
     } else {
-      println(" *** No valid session.")
     }
   }
 }

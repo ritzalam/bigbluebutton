@@ -1,10 +1,11 @@
-package org.bigbluebutton.core.user.handlers
+package org.bigbluebutton.core.user
 
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.domain.{ RegisteredUser, UserState }
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
+import org.bigbluebutton.core.user.handlers.{ UserJoinMeetingMsgHdlr, ValidateAuthTokenMsgHdlr }
 
 class UserInMsgHdlr(
   val user: RegisteredUser,

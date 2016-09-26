@@ -2,7 +2,9 @@ package org.bigbluebutton.core.user.client.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.api.IncomingMsg.JoinMeetingUserInMsg2x
+import org.bigbluebutton.core.domain.ClientId
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
+import org.bigbluebutton.core.user.UsersModel
 import org.bigbluebutton.core.user.client.ClientInMsgHdlr
 
 trait UserJoinMeetingMsgHdlr {
@@ -28,6 +30,7 @@ trait UserJoinMeetingMsgHdlr {
       outGW.send(new UserJoinedEvent2x(msg.body.meetingId, meeting.props.recordingProp.recorded, user))
       becomePresenterIfNeeded(user)
     }
+   */
 
     UsersModel.findWithId(msg.body.userId, meeting.usersModel.toVector) match {
       case Some(user) =>
@@ -36,13 +39,8 @@ trait UserJoinMeetingMsgHdlr {
 
       // TODO: Send reconnecting message
       case None =>
-        for {
-          ru <- RegisteredUsersModel.findWithToken(msg.sessionToken, meeting.registeredUsersModel.toVector)
-          u = User.create(msg.senderId, ru.extId, ru.name, ru.roles)
-          presence = User.create(msg.clientId, u.id, msg.sessionToken, msg.userAgent)
-          user = User.add(u, presence)
-        } yield process(user)
+      // TODO: User joined with new client.
     }
-   */
+
   }
 }

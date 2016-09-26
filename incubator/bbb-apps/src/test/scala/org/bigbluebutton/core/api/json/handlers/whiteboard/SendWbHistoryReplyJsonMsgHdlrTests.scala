@@ -64,8 +64,6 @@ class SendWbHistoryReplyJsonMsgHdlrTests extends UnitSpec {
 
     val shapeJsonMsg = msg.toJson
 
-    println("*2 " + shapeJsonMsg)
-
     val shapeHeadAndBody = JsonMsgUnmarshaller.decode(shapeJsonMsg.toString)
 
     shapeHeadAndBody match {

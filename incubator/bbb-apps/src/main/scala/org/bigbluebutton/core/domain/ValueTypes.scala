@@ -1,6 +1,7 @@
 package org.bigbluebutton.core.domain
 
 import akka.actor.ActorRef
+import org.bigbluebutton.core.apps.whiteboard.Annotation
 
 case class UserVO(
   id: IntUserId,
@@ -110,3 +111,4 @@ case class AnnotationShapeColor(value: java.lang.Integer) extends AnyVal
 case class AnnotationShapeThickness(value: java.lang.Integer) extends AnyVal
 case class AnnotationShapeTransparency(value: Boolean) extends AnyVal
 case class AnnotationShapeDataPoints(value: Vector[Double])
+case class AnnotationHistory(value: Vector[Annotation])

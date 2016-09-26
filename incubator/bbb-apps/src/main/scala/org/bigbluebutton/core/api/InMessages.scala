@@ -3,7 +3,6 @@ package org.bigbluebutton.core.api
 import org.bigbluebutton.core.apps.breakout.BreakoutUser
 import org.bigbluebutton.core.apps.chat.ChatProperties2x
 import org.bigbluebutton.core.apps.presentation.{ Presentation, PreuploadedPresentation }
-import org.bigbluebutton.core.apps.presentation.domain._
 import org.bigbluebutton.core.domain.{ MeetingProperties2x, Role, Stream }
 import org.bigbluebutton.core.apps.presentation.domain._
 import org.bigbluebutton.core.apps.presentation.PreuploadedPresentation
@@ -285,6 +284,10 @@ object IncomingMsg {
   /////////////////////////////////////////////////////////////////////////////////////
 
   case class SendWbAnnotationReqInMsg2x(header: InMessageHeader, body: WhiteboardProperties2x) extends InMsg
+  case class SendWbHistoryReqInMsg2x(header: InMessageHeader, body: SendWbHistoryReqInMsg2xBody) extends InMsg
+  case class SendWbHistoryReqInMsg2xBody(whiteboardId: WhiteboardId) extends InMsg
+  case class SendWbHistoryReplyInMsg2x(header: InMessageHeader, body: SendWbHistoryReplyInMsg2xBody) extends InMsg
+  case class SendWbHistoryReplyInMsg2xBody(annotations: AnnotationHistory) extends InMsg
 
   case class SendWhiteboardAnnotationRequest(meetingId: IntMeetingId, requesterId: IntUserId, annotation: AnnotationVO) extends InMsg
   case class GetWhiteboardShapesRequest(meetingId: IntMeetingId, requesterId: IntUserId, whiteboardId: String, replyTo: String) extends InMsg

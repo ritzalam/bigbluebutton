@@ -2,8 +2,8 @@ package org.bigbluebutton.core.apps.reguser
 
 import akka.actor.{ Actor, ActorLogging, Props }
 import org.bigbluebutton.core.{ IncomingEventBus2x, OutMessageGateway }
-import org.bigbluebutton.core.api.IncomingMsg.{ AssignUserSessionTokenInMsg2x, ValidateAuthTokenInMsg2x }
-import org.bigbluebutton.core.apps.reguser.handlers.{ AssignUserSessionTokenInMsgHdlr, ValidateAuthTokenInMsgHdlr }
+import org.bigbluebutton.core.api.IncomingMsg.{ AssignUserSessionTokenInMsg2x, JoinMeetingUserInMsg2x, ValidateAuthTokenInMsg2x }
+import org.bigbluebutton.core.apps.reguser.handlers.{ AssignUserSessionTokenInMsgHdlr, JoinMeetingUserInMsgHdlr, ValidateAuthTokenInMsgHdlr }
 
 object RegisteredUserActor {
   def props(meetingId: String,
@@ -20,7 +20,8 @@ class RegisteredUserActor(val meetingId: String,
   val inGW: IncomingEventBus2x,
   val outGW: OutMessageGateway) extends Actor with ActorLogging
     with ValidateAuthTokenInMsgHdlr
-    with AssignUserSessionTokenInMsgHdlr {
+    with AssignUserSessionTokenInMsgHdlr
+    with JoinMeetingUserInMsgHdlr {
 
   private val regUserIdChannel = userId + "@" + meetingId
 
@@ -41,6 +42,7 @@ class RegisteredUserActor(val meetingId: String,
   def receive = {
     case m: ValidateAuthTokenInMsg2x => handle(m)
     case m: AssignUserSessionTokenInMsg2x => handle(m)
+    case m: JoinMeetingUserInMsg2x => handle(m)
     case _ => // do nothing
   }
 }

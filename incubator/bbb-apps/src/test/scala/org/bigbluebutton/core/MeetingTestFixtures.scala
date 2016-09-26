@@ -9,8 +9,8 @@ import org.bigbluebutton.core.apps.presentation.{ Page, Presentation, Presentati
 import org.bigbluebutton.core.apps.presentation.domain._
 import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.apps.user.UsersModel
+import org.bigbluebutton.core.apps.user.client.FlashWebUserAgent
 import org.bigbluebutton.core.apps.whiteboard.WhiteboardModel
-import org.bigbluebutton.core.client.FlashWebUserAgent
 import org.bigbluebutton.core.domain._
 import org.bigbluebutton.core.meeting.models._
 

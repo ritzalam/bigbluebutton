@@ -1,4 +1,4 @@
-package org.bigbluebutton.core.client
+package org.bigbluebutton.core.apps.user.client
 
 import com.softwaremill.quicklens._
 import org.bigbluebutton.core.apps.voice.Voice4x

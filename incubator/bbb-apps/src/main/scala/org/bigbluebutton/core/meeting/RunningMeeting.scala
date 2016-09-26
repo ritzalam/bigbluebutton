@@ -7,8 +7,8 @@ import org.bigbluebutton.core.domain.{ MeetingExtensionStatus, MeetingProperties
 import org.bigbluebutton.core.apps.breakout.BreakoutRoomModel
 import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.apps.user.UsersModel
+import org.bigbluebutton.core.apps.user.client.Clients
 import org.bigbluebutton.core.apps.whiteboard.WhiteboardModel
-import org.bigbluebutton.core.client.Clients
 import org.bigbluebutton.core.meeting.models._
 
 object RunningMeeting {

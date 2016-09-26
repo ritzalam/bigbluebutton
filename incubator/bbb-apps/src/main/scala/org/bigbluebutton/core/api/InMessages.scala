@@ -7,9 +7,9 @@ import org.bigbluebutton.core.apps.presentation.domain._
 import org.bigbluebutton.core.domain.{ MeetingProperties2x, Role, Stream }
 import org.bigbluebutton.core.apps.presentation.domain._
 import org.bigbluebutton.core.apps.presentation.PreuploadedPresentation
+import org.bigbluebutton.core.apps.user.client.ClientUserAgent
 import org.bigbluebutton.core.apps.voice.Voice4x
 import org.bigbluebutton.core.apps.whiteboard.{ AnnotationVO, WhiteboardProperties2x }
-import org.bigbluebutton.core.client.ClientUserAgent
 import org.bigbluebutton.core.domain._
 
 case class InMessageHeader(name: String, dest: String, src: Option[String], replyTo: Option[String])

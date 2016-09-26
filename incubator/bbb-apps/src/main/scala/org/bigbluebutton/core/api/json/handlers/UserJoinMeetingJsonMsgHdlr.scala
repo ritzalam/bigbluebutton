@@ -4,8 +4,8 @@ import org.bigbluebutton.core.{ BigBlueButtonInMessage, IncomingEventBus2x }
 import org.bigbluebutton.core.api.IncomingMsg.UserJoinMeetingInMessage
 import org.bigbluebutton.core.api.RedisMsgHdlrActor
 import org.bigbluebutton.core.domain._
-import org.bigbluebutton.core.api.json.{ InHeaderAndJsonBody }
-import org.bigbluebutton.core.client.ClientUserAgent
+import org.bigbluebutton.core.api.json.InHeaderAndJsonBody
+import org.bigbluebutton.core.apps.user.client.ClientUserAgent
 import org.bigbluebutton.messages.UserJoinMeetingMessage
 
 trait UserJoinMeetingJsonMsgHdlr extends UnhandledJsonMsgHdlr {

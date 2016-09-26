@@ -9,7 +9,7 @@ import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.{ AssignUserSessionTokenInMsg2x, AssignUserSessionTokenInMsgBody2x }
 import org.bigbluebutton.core.api.OutGoingMsg.{ UserSessionTokenAssignedOutMsg2x, ValidateAuthTokenReplyOutMsg2x }
 import org.bigbluebutton.core.apps.reguser.{ RegisteredUserActor, SessionTokens }
-import org.bigbluebutton.core.client.Clients
+import org.bigbluebutton.core.apps.user.client.Clients
 import org.bigbluebutton.core.domain.{ IntMeetingId, IntUserId, SessionToken }
 import org.bigbluebutton.core.meeting.MeetingActorMsg
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }

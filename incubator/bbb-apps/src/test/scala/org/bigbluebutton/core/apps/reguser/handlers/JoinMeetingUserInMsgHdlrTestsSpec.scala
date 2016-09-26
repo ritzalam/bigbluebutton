@@ -8,7 +8,7 @@ import org.bigbluebutton.core._
 import org.bigbluebutton.core.api.InMessageHeader
 import org.bigbluebutton.core.api.IncomingMsg.{ JoinMeetingUserInMsg2x, JoinMeetingUserInMsgBody2x }
 import org.bigbluebutton.core.apps.reguser.{ RegisteredUserActor, SessionTokens }
-import org.bigbluebutton.core.client.FlashWebUserAgent
+import org.bigbluebutton.core.apps.user.client.FlashWebUserAgent
 import org.bigbluebutton.core.domain.{ IntMeetingId, IntUserId, SessionToken }
 import org.scalatest.{ Matchers, WordSpecLike }
 

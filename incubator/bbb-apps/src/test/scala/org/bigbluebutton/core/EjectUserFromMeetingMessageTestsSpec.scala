@@ -8,7 +8,7 @@ import org.bigbluebutton.core.api.IncomingMsg._
 import org.bigbluebutton.core.api.OutGoingMsg._
 import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.apps.user.UsersModel
-import org.bigbluebutton.core.client.Clients
+import org.bigbluebutton.core.apps.user.client.Clients
 import org.bigbluebutton.core.meeting.MeetingActorMsg
 import org.bigbluebutton.core.meeting.models.{ MeetingStateModel, MeetingStatus }
 import org.scalatest.{ Matchers, WordSpecLike }

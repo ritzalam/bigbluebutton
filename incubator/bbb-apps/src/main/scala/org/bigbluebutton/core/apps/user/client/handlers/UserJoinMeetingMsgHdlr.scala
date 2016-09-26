@@ -1,11 +1,7 @@
-package org.bigbluebutton.core.apps.user.handlers
+package org.bigbluebutton.core.apps.user.client.handlers
 
 import org.bigbluebutton.core.OutMessageGateway
-import org.bigbluebutton.core.api.IncomingMsg.{ JoinMeetingUserInMsg2x, UserJoinMeetingInMessage }
-import org.bigbluebutton.core.api.OutGoingMsg.{ PresenterAssignedEventOutMsg, UserJoinedEvent2x }
-import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
-import org.bigbluebutton.core.apps.user.UsersModel
-import org.bigbluebutton.core.domain.{ ClientId, Presenter, PresenterRole, User }
+import org.bigbluebutton.core.api.IncomingMsg.JoinMeetingUserInMsg2x
 import org.bigbluebutton.core.meeting.models.MeetingStateModel
 
 trait UserJoinMeetingMsgHdlr {

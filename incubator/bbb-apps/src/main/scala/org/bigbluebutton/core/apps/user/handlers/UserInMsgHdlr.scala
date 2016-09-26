@@ -19,7 +19,7 @@ class UserInMsgHdlr(
   def receive(msg: InMsg, meeting: MeetingStateModel): Unit = {
     msg match {
       case m: ValidateAuthTokenInMessage => handle(m, meeting)
-      case m: UserJoinMeetingInMessage => handle(m, meeting)
+      case m: JoinMeetingUserInMsg2x => handle(m, meeting)
     }
   }
 }

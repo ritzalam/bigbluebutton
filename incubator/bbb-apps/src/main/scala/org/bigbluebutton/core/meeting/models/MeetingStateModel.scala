@@ -4,9 +4,9 @@ import org.bigbluebutton.core.apps.breakout.BreakoutRoomModel
 import org.bigbluebutton.core.apps.presentation.PresentationModel
 import org.bigbluebutton.core.apps.reguser.RegisteredUsersModel
 import org.bigbluebutton.core.apps.user.UsersModel
+import org.bigbluebutton.core.apps.user.client.Clients
 import org.bigbluebutton.core.apps.whiteboard.WhiteboardModel
-import org.bigbluebutton.core.client.Clients
-import org.bigbluebutton.core.domain.{ Ability, MeetingProperties2x }
+import org.bigbluebutton.core.domain.{Ability, MeetingProperties2x}
 
 case class MeetingAbilities(removed: Set[Ability], added: Set[Ability])
 

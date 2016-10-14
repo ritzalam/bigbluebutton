@@ -25,6 +25,10 @@ object OutGoingMsg {
   case class ValidateAuthTokenReplyBody(meetingId: IntMeetingId, requesterId: IntUserId,
     token: SessionToken, valid: Boolean)
 
+  val RegisterClientReplyOutMsgName = "RegisterClientReplyOutMsg"
+  case class RegisterClientReplyOutMsg2x(header: MsgHeader, body: RegisterClientReplyOutMsgBody) extends OutMsg
+  case class RegisterClientReplyOutMsgBody(registered: Boolean, clientId: Option[ClientId])
+
   //////////////////////////////////////////////////////////////////////////////////////////////////////////
   // end 2x messages
   /////////////////////////////////////////////////////////////////////////////////////////////////////////

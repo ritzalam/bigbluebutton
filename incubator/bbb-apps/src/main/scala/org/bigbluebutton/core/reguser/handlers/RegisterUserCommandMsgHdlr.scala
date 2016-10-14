@@ -12,8 +12,7 @@ trait RegisterUserCommandMsgHdlr {
   def handle(msg: RegisterUserInMessage): Unit = {
 
     val actorRef = context.actorOf(
-      RegisteredUserActor.props(msg.meetingId.value, msg.userId.value,
-        new SessionTokens, bus, outGW),
+      RegisteredUserActor.props(msg.meetingId.value, msg.userId.value, new SessionTokens(), bus, outGW),
       msg.userId.value + "@" + msg.meetingId.value)
 
     val pinNumber = PinNumberGenerator.generatePin(state.props.voiceConf, state.status.get)

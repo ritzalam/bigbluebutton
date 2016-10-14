@@ -11,6 +11,7 @@ import org.bigbluebutton.core.apps.voice.Voice4x
 import org.bigbluebutton.core.apps.whiteboard.{ AnnotationVO, WhiteboardProperties2x }
 import org.bigbluebutton.core.domain._
 
+case class MsgEnvelope(name: String, dest: String, replyTo: String)
 case class InMessageHeader(name: String, dest: String, src: Option[String], replyTo: Option[String])
 
 object IncomingMsg {
@@ -33,6 +34,9 @@ object IncomingMsg {
 
   case class ValidateAuthTokenInMsg2x(header: InMessageHeader, body: ValidateAuthTokenInMsgBody) extends InMsg
   case class ValidateAuthTokenInMsgBody(token: SessionToken, userAgent: UserAgent, componentId: ComponentId)
+
+  case class RegisterClientInMsg2x(header: InMessageHeader, body: RegisterClientInMsgBody) extends InMsg
+  case class RegisterClientInMsgBody(token: SessionToken, userAgent: UserAgent, componentId: ComponentId)
 
   case class RequestUserProfileInMsg2x(header: InMessageHeader, body: RequestUserProfileInMsgBody2x) extends InMsg
   case class RequestUserProfileInMsgBody2x(sessionToken: SessionToken, userAgent: ClientUserAgent)

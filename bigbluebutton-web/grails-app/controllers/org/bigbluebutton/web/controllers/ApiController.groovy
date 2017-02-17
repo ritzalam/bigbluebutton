@@ -196,6 +196,7 @@ class ApiController {
     respondWithConference(newMeeting, null, null)
   }
 
+
   /**********************************************
    * JOIN API
    *********************************************/
@@ -425,32 +426,25 @@ class ApiController {
       respondWithErrors(errors);
     }
 
-    String guest;
-    if (!StringUtils.isEmpty(params.guest) && params.guest.equalsIgnoreCase("true"))
-      guest = "true";
-    else
-      guest = "false";
+    Boolean guest = false;
+    if (!StringUtils.isEmpty(params.guest)) {
+      guest = Boolean.parseBoolean(params.guest)
+    }
 
+    Boolean authenticated;
+    if (!StringUtils.isEmpty(params.auth)) {
+      authenticated = Boolean.parseBoolean(params.auth)
+    }
 
-    String auth;
-    if (!StringUtils.isEmpty(params.auth) && params.auth.equalsIgnoreCase("true"))
-      auth = "true";
-    else
-      auth = "false";
-
-    //Adding user to waiting list if guest is true;
-    //Please note that guest is a string here
     String allowed = "ALLOW" ;
-    //Wacky name but auth has been used somewhere else;
     Boolean userAuth
-    if("true".equals(auth)){
+    if ("true".equals(auth)){
       userAuth = true;
-    }else{
+    } else{
       userAuth = false;
     }
-    if("true".equals(guest)){
-      //Note that a different way to allow a user to join, would be to set guest to true, rather than setting the status to ALLOWED
-      //This will cause the client to load right away!
+
+    if ("true".equals(guest)){
       String policy = meeting.getGuestPolicy();
       switch (policy){
         case "ASK_MODERATOR":
@@ -536,9 +530,12 @@ class ApiController {
     session[sessionToken] = sessionToken
     meetingService.addUserSession(sessionToken, us);
 
+    // Hardcode for now.
+    Boolean needsModApproval = true;
+
     // Register user into the meeting.
     meetingService.registerUser(us.meetingID, us.internalUserId, us.fullname, us.role, us.externUserID,
-            us.authToken, us.avatarURL, Boolean.parseBoolean(us.guest), Boolean.parseBoolean(us.auth))
+            us.authToken, us.avatarURL, Boolean.parseBoolean(us.guest), Boolean.parseBoolean(us.auth), needsModApproval)
 
     // Validate if the maxParticipants limit has been reached based on registeredUsers. If so, complain.
     // when maxUsers is set to 0, the validation is ignored
@@ -566,10 +563,10 @@ class ApiController {
     boolean redirectClient = true;
     String clientURL = paramsProcessorUtil.getDefaultClientUrl();
 
-    if(! StringUtils.isEmpty(params.redirect)) {
-      try{
+    if (! StringUtils.isEmpty(params.redirect)) {
+      try {
         redirectClient = Boolean.parseBoolean(params.redirect);
-      }catch(Exception e){
+      } catch(Exception e){
         redirectClient = true;
       }
     }
@@ -1578,6 +1575,65 @@ class ApiController {
 
       response.addHeader("Cache-Control", "no-cache")
       render text: us.configXML, contentType: 'text/xml'
+    }
+  }
+
+  def guestEntrance = {
+    String API_CALL = 'guestEntrance'
+    log.debug CONTROLLER_NAME + "#${API_CALL}"
+    ApiErrors errors = new ApiErrors()
+
+    boolean reject = false;
+
+    if (StringUtils.isEmpty(params.sessionToken)) {
+      println("SessionToken is missing.")
+    }
+
+    String sessionToken = StringUtils.strip(params.sessionToken)
+
+    UserSession us = null;
+    Meeting meeting = null;
+
+    if (!session[sessionToken]) {
+      reject = true;
+    } else {
+      if (meetingService.getUserSession(sessionToken) == null)
+        reject = true;
+      else {
+        us = meetingService.getUserSession(sessionToken);
+        meeting = meetingService.getMeeting(us.meetingID);
+        if (meeting == null || meeting.isForciblyEnded()) {
+          reject = true
+        }
+      }
+    }
+
+    if (reject) {
+      log.info("No session for user in conference.")
+
+      // Determine the logout url so we can send the user there.
+      String logoutUrl = paramsProcessorUtil.getDefaultLogoutUrl()
+
+      if (us != null) {
+        logoutUrl = us.logoutUrl
+      }
+
+      response.addHeader("Cache-Control", "no-cache")
+      withFormat {
+        json {
+          render(contentType: "application/json") {
+            response = {
+              returncode = "FAILED"
+              message = "Could not find conference."
+              logoutURL = logoutUrl
+            }
+          }
+        }
+      }
+    } else {
+      String destUrl = clientURL + "?sessionToken=" + sessionToken
+      log.info("Successfully joined. Redirecting to ${destUrl}");
+      redirect(url: destUrl);
     }
   }
 

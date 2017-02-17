@@ -69,6 +69,7 @@ public class ParamsProcessorUtil {
     private boolean autoStartRecording;
     private boolean allowStartStopRecording;
     private boolean webcamsOnlyForModerator;
+	private String defaultGuestPolicy;
 
     private String defaultConfigXML = null;
 
@@ -436,6 +437,9 @@ public class ParamsProcessorUtil {
             meeting.setParentMeetingId(parentMeetingId);
         }
 
+        // Set the default guest policy.
+        meeting.setGuestPolicy(defaultGuestPolicy);
+
         return meeting;
     }
 	
@@ -776,6 +780,10 @@ public class ParamsProcessorUtil {
 	
 	public void setdefaultAvatarURL(String url) {
 		this.defaultAvatarURL = url;
+	}
+
+	public void setDefaultGuestPolicy(String policy) {
+		this.defaultGuestPolicy = policy;
 	}
 
 	public ArrayList<String> decodeIds(String encodeid) {

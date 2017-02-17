@@ -1,6 +1,7 @@
 package org.bigbluebutton.messages;
 
 
+import com.google.gson.Gson;
 import org.bigbluebutton.common.messages.IBigBlueButtonMessage;
 
 public class RegisterUserMessage implements IBigBlueButtonMessage {
@@ -14,6 +15,10 @@ public class RegisterUserMessage implements IBigBlueButtonMessage {
         this.payload = payload;
     }
 
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
 
     public static class RegisterUserMessagePayload {
         public final String meetingID;
@@ -25,10 +30,11 @@ public class RegisterUserMessage implements IBigBlueButtonMessage {
         public final String avatarURL;
         public final Boolean guest;
         public final Boolean authenticated;
+        public final Boolean needsModApproval;
 
         public RegisterUserMessagePayload(String meetingID, String internalUserId, String fullname, String role,
                                           String externUserID, String authToken, String avatarURL,
-                                          Boolean guest, Boolean authenticated) {
+                                          Boolean guest, Boolean authenticated, Boolean needsModApproval) {
             this.meetingID = meetingID;
             this.internalUserId = internalUserId;
             this.fullname = fullname;
@@ -38,6 +44,7 @@ public class RegisterUserMessage implements IBigBlueButtonMessage {
             this.avatarURL = avatarURL;
             this.guest = guest;
             this.authenticated = authenticated;
+            this.needsModApproval = needsModApproval;
         }
     }
 

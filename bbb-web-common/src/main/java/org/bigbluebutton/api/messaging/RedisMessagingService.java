@@ -61,16 +61,16 @@ public class RedisMessagingService implements MessagingService {
 	}
 	
 	public void registerUser(String meetingID, String internalUserId, String fullname, String role,
-							 String externUserID, String authToken, String avatarURL, Boolean guest, Boolean authed) {
+							 String externUserID, String authToken, String avatarURL, Boolean guest,
+							 Boolean authed, Boolean needsModApproval) {
 		RegisterUserMessage.RegisterUserMessagePayload payload =
 				new RegisterUserMessage.RegisterUserMessagePayload(meetingID, internalUserId, fullname, role,
-				externUserID, authToken, avatarURL, guest, authed);
+				externUserID, authToken, avatarURL, guest, authed, needsModApproval);
 
 		RegisterUserMessage msg = new RegisterUserMessage(payload);
-		Gson gson = new Gson();
-		String json = gson.toJson(msg);
+		String json = msg.toJson();
 		log.info("Sending register user message to bbb-apps:[{}]", json);
-		sender.send(MessagingConstants.TO_MEETING_CHANNEL, json);		
+		sender.send(MessagingConstants.TO_MEETING_CHANNEL, json);
 	}
 	
     public void createMeeting(String meetingID, String externalMeetingID,

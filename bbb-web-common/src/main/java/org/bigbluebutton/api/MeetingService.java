@@ -80,8 +80,7 @@ public class MeetingService implements MessageListener {
     private BlockingQueue<IMessage> receivedMessages = new LinkedBlockingQueue<IMessage>();
     private volatile boolean processMessage = false;
 
-    private final Executor msgProcessorExec = Executors
-            .newSingleThreadExecutor();
+    private final Executor msgProcessorExec = Executors.newSingleThreadExecutor();
     private final Executor runExec = Executors.newSingleThreadExecutor();
 
     /**
@@ -121,9 +120,9 @@ public class MeetingService implements MessageListener {
 
     public void registerUser(String meetingID, String internalUserId,
                              String fullname, String role, String externUserID,
-                             String authToken, String avatarURL, Boolean guest, Boolean authed) {
+                             String authToken, String avatarURL, Boolean guest, Boolean authed, Boolean needsModApproval) {
         handle(new RegisterUser(meetingID, internalUserId, fullname, role,
-                externUserID, authToken, avatarURL, guest, authed));
+                externUserID, authToken, avatarURL, guest, authed, needsModApproval));
     }
 
     public UserSession getUserSession(String token) {
@@ -355,10 +354,10 @@ public class MeetingService implements MessageListener {
         handleCreateMeeting(message.meeting);
     }
 
-    private void processRegisterUser(RegisterUser message) {
+    private void  processRegisterUser(RegisterUser message) {
         messagingService.registerUser(message.meetingID,
                 message.internalUserId, message.fullname, message.role,
-                message.externUserID, message.authToken, message.avatarURL, message.guest, message.authed);
+                message.externUserID, message.authToken, message.avatarURL, message.guest, message.authed, message.needsModApproval);
     }
 
     public String addSubscription(String meetingId, String event,

@@ -11,9 +11,10 @@ public class RegisterUser implements IMessage {
 	public final String avatarURL;
 	public final Boolean guest;
 	public final Boolean authed;
+	public final Boolean needsModApproval;
 	
 	public RegisterUser(String meetingID, String internalUserId, String fullname, String role, String externUserID,
-						String authToken, String avatarURL, Boolean guest, Boolean authed) {
+						String authToken, String avatarURL, Boolean guest, Boolean authed, Boolean needsModApproval) {
 		this.meetingID = meetingID;
 		this.internalUserId = internalUserId;
 		this.fullname = fullname;
@@ -23,5 +24,6 @@ public class RegisterUser implements IMessage {
 		this.avatarURL = avatarURL;
 		this.guest = guest;
 		this.authed = authed;
+		this.needsModApproval = needsModApproval;
 	}
 }

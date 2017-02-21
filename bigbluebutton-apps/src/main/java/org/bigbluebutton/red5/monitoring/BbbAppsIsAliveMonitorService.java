@@ -13,10 +13,10 @@ import org.bigbluebutton.common.messages.PubSubPingMessage;
 import org.bigbluebutton.common.messages.payload.PubSubPingMessagePayload;
 import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
 import org.bigbluebutton.red5.client.messaging.DisconnectAllMessage;
-import org.bigbluebutton.red5.pubsub.redis.MessageSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.bigbluebutton.apps.common.pubsub.MessagePublisher;
+import org.bigbluebutton.apps.common.pubsub.redis.MessageSender;
 import com.google.gson.Gson;
 
 public class BbbAppsIsAliveMonitorService {

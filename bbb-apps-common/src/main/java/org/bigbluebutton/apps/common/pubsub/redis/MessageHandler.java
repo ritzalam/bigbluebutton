@@ -16,7 +16,7 @@
 * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 *
 */
-package org.bigbluebutton.red5.pubsub.redis;
+package org.bigbluebutton.apps.common.pubsub.redis;
 
 public interface MessageHandler {
 	void handleMessage(String pattern, String channel, String message);

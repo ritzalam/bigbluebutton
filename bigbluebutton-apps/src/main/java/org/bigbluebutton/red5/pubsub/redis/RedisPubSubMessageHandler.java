@@ -13,6 +13,7 @@ import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
 import org.bigbluebutton.red5.monitoring.BbbAppsIsKeepAliveHandler;
 import org.red5.logging.Red5LoggerFactory;
 import org.slf4j.Logger;
+import org.bigbluebutton.apps.common.pubsub.redis.MessageHandler;
 
 public class RedisPubSubMessageHandler implements MessageHandler {
   private static Logger log = Red5LoggerFactory.getLogger(RedisPubSubMessageHandler.class, "bigbluebutton");

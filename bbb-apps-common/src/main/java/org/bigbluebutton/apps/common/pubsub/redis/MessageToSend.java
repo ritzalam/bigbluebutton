@@ -1,4 +1,4 @@
-package org.bigbluebutton.red5.pubsub.redis;
+package org.bigbluebutton.apps.common.pubsub.redis;
 
 public class MessageToSend {
 	private final String channel;

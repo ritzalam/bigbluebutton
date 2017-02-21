@@ -27,7 +27,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
-import org.bigbluebutton.red5.pubsub.MessagePublisher;
 import org.red5.logging.Red5LoggerFactory;
 import org.red5.server.adapter.IApplication;
 import org.red5.server.adapter.MultiThreadedApplicationAdapter;
@@ -36,7 +35,7 @@ import org.red5.server.api.IConnection;
 import org.red5.server.api.Red5;
 import org.red5.server.api.scope.IScope;
 import org.slf4j.Logger;
-
+import org.bigbluebutton.apps.common.pubsub.MessagePublisher;
 import com.google.gson.Gson;
 
 public class BigBlueButtonApplication extends MultiThreadedApplicationAdapter {

@@ -1,20 +1,19 @@
-package org.bigbluebutton.red5.pubsub.redis;
+package org.bigbluebutton.apps.common.pubsub.redis;
+
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.Protocol;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.red5.logging.Red5LoggerFactory;
-import org.slf4j.Logger;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.Protocol;
-
 public class MessageSender {
-	private static Logger log = Red5LoggerFactory.getLogger(MessageSender.class, "bigbluebutton");
+	private static Logger log = LoggerFactory.getLogger(MessageSender.class);
 	
 	private volatile boolean sendMessage = false;	
 	private final Executor msgSenderExec = Executors.newSingleThreadExecutor();

@@ -19,8 +19,8 @@
 package org.bigbluebutton.red5.service;
 
 import org.slf4j.Logger;
-import org.bigbluebutton.red5.pubsub.MessagePublisher;
 import org.red5.logging.Red5LoggerFactory;
+import org.bigbluebutton.apps.common.pubsub.MessagePublisher;
 
 public class PresentationApplication {
 	private static Logger log = Red5LoggerFactory.getLogger( PresentationApplication.class, "bigbluebutton" );

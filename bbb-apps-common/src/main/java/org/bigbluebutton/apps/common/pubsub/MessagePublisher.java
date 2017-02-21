@@ -1,9 +1,9 @@
-package org.bigbluebutton.red5.pubsub;
+package org.bigbluebutton.apps.common.pubsub;
+
+import org.bigbluebutton.apps.common.pubsub.redis.MessageSender;
+import org.bigbluebutton.common.messages.*;
 
 import java.util.Map;
-
-import org.bigbluebutton.common.messages.*;
-import org.bigbluebutton.red5.pubsub.redis.MessageSender;
 
 public class MessagePublisher {
 

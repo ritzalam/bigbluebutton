@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 
-public class UserUnshareWebcamRequestMessage implements ISubscribedMessage {
+public class UserUnshareWebcamRequestMessage implements IBigBlueButtonMessage {
 	public static final String USER_UNSHARE_WEBCAM_REQUEST  = "user_unshare_webcam_request_message";
 	public static final String VERSION = "0.0.1";
 	
@@ -30,7 +30,12 @@ public class UserUnshareWebcamRequestMessage implements ISubscribedMessage {
 
 		return MessageBuilder.buildJson(header, payload);				
 	}
-	
+
+	public String getChannel() {
+		// TODO
+		return "FIX MEE!!!";
+	}
+
 	public static UserUnshareWebcamRequestMessage fromJson(String message) {
 		JsonParser parser = new JsonParser();
 		JsonObject obj = (JsonObject) parser.parse(message);

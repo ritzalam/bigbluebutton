@@ -21,4 +21,9 @@ public class BreakoutRoomsTimeRemainingUpdate implements IBigBlueButtonMessage {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
+
+    public String getChannel() {
+        // TODO
+        return "FIX MEE!!!";
+    }
 }

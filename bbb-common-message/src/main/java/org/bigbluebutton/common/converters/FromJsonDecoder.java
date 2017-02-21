@@ -11,33 +11,33 @@ import com.google.gson.JsonParser;
 
 public class FromJsonDecoder {
 
-	public IBigBlueButtonMessage decodeMessage(String message) {
-		JsonParser parser = new JsonParser();
-		JsonObject obj = (JsonObject) parser.parse(message);
-	
-		if (obj.has("header") && obj.has("payload")) {
-			JsonObject header = (JsonObject) obj.get("header");
-			if (header.has("name")) {
-				String messageName = header.get("name").getAsString();
-				if (PubSubPingMessage.PUBSUB_PING.equals(messageName)){
-					Gson gson = new Gson();
-					PubSubPingMessage msg = gson.fromJson(message, PubSubPingMessage.class);
-					return msg;
-				}else if (PubSubPongMessage.PUBSUB_PONG.equals(messageName)){
-					Gson gson = new Gson();
-					PubSubPongMessage msg = gson.fromJson(message, PubSubPongMessage.class);
-					return msg;
-				} else if (StartCustomPollRequestMessage.START_CUSTOM_POLL_REQUEST.equals(messageName)){
-					Gson gson = new Gson();
-					StartCustomPollRequestMessage msg = gson.fromJson(message, StartCustomPollRequestMessage.class);
-					return msg;
-				} else {
-					// System.out.println("Unknown message name=[" + messageName + "]");
-					return null;
-				}
-			}
-		}
-		System.out.println("Invalid message format");
-		return null;
-	}
+  public IBigBlueButtonMessage decodeMessage(String message) {
+    JsonParser parser = new JsonParser();
+    JsonObject obj = (JsonObject) parser.parse(message);
+
+    if (obj.has("header") && obj.has("payload")) {
+      JsonObject header = (JsonObject) obj.get("header");
+      if (header.has("name")) {
+        String messageName = header.get("name").getAsString();
+        if (PubSubPingMessage.PUBSUB_PING.equals(messageName)) {
+          Gson gson = new Gson();
+          PubSubPingMessage msg = gson.fromJson(message, PubSubPingMessage.class);
+          return msg;
+        } else if (PubSubPongMessage.PUBSUB_PONG.equals(messageName)) {
+          Gson gson = new Gson();
+          PubSubPongMessage msg = gson.fromJson(message, PubSubPongMessage.class);
+          return msg;
+        } else if (StartCustomPollRequestMessage.START_CUSTOM_POLL_REQUEST.equals(messageName)) {
+          Gson gson = new Gson();
+          StartCustomPollRequestMessage msg = gson.fromJson(message, StartCustomPollRequestMessage.class);
+          return msg;
+        } else {
+          // System.out.println("Unknown message name=[" + messageName + "]");
+          return null;
+        }
+      }
+    }
+    System.out.println("Invalid message format");
+    return null;
+  }
 }

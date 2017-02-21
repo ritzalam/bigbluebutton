@@ -9,4 +9,14 @@ public class KeepAliveMessage implements IBigBlueButtonMessage {
 	public KeepAliveMessage(String keepAliveId) {
 		this.keepAliveId = keepAliveId;	
 	}
+
+	public String toJson() {
+		// TODO
+		return "FIX MEE!!!";
+	}
+
+	public String getChannel() {
+		// TODO
+		return "FIX MEE!!!";
+	}
 }

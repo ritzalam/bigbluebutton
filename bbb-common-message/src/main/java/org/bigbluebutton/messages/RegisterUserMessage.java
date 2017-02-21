@@ -20,6 +20,11 @@ public class RegisterUserMessage implements IBigBlueButtonMessage {
         return gson.toJson(this);
     }
 
+    public String getChannel() {
+        // TODO
+        return "FIX MEE!!!";
+    }
+
     public static class RegisterUserMessagePayload {
         public final String meetingID;
         public final String internalUserId;

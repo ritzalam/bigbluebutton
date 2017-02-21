@@ -8,4 +8,14 @@ public class PubSubPongMessage implements IBigBlueButtonMessage {
 	
 	public MessageHeader header;		
 	public PubSubPingMessagePayload payload;
+
+	public String toJson() {
+		// TODO
+		return "FIX MEE!!!";
+	}
+
+	public String getChannel() {
+		// TODO
+		return "FIX MEE!!!";
+	}
 }

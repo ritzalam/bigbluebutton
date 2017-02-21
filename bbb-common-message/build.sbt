@@ -15,8 +15,12 @@ testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/sc
 
 libraryDependencies ++= {
   Seq(
-	  "com.google.code.gson"      %  "gson"              % "2.5"
-	)}
+    "com.google.code.gson" % "gson" % "2.5",
+    "redis.clients" % "jedis" % "2.7.2",
+    "org.apache.commons" % "commons-pool2" % "2.3",
+    "org.slf4j" % "slf4j-api" % "1.7.5"
+  )
+}
 
 libraryDependencies += "junit" % "junit" % "4.12" % "test"
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
@@ -41,12 +45,12 @@ crossPaths := false
 // This forbids including Scala related libraries into the dependency
 autoScalaLibrary := false
 
-/***************************
-* When developing, change the version above to x.x.x-SNAPSHOT then use the file resolver to
-* publish to the local maven repo using "sbt publish"
-*/
+/** *************************
+  * When developing, change the version above to x.x.x-SNAPSHOT then use the file resolver to
+  * publish to the local maven repo using "sbt publish"
+  */
 // Uncomment this to publish to local maven repo while commenting out the nexus repo
-publishTo := Some(Resolver.file("file",  new File(Path.userHome.absolutePath+"/.m2/repository")))
+publishTo := Some(Resolver.file("file", new File(Path.userHome.absolutePath + "/.m2/repository")))
 
 
 // Comment this out when publishing to local maven repo using SNAPSHOT version.
@@ -71,14 +75,14 @@ pomExtra := (
     <url>git@github.com:bigbluebutton/bigbluebutton.git</url>
     <connection>scm:git:git@github.com:bigbluebutton/bigbluebutton.git</connection>
   </scm>
-  <developers>
-    <developer>
-      <id>ritzalam</id>
-      <name>Richard Alam</name>
-      <url>http://www.bigbluebutton.org</url>
-    </developer>
-  </developers>)
-  
+    <developers>
+      <developer>
+        <id>ritzalam</id>
+        <name>Richard Alam</name>
+        <url>http://www.bigbluebutton.org</url>
+      </developer>
+    </developers>)
+
 licenses := Seq("LGPL-3.0" -> url("http://opensource.org/licenses/LGPL-3.0"))
 
 homepage := Some(url("http://www.bigbluebutton.org"))

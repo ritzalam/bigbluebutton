@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 
-public class UserVoiceTalkingMessage implements ISubscribedMessage {
+public class UserVoiceTalkingMessage implements IBigBlueButtonMessage {
 	public static final String USER_VOICE_TALKING  = "user_voice_talking_message";
 	public static final String VERSION = "0.0.1";
 	
@@ -31,7 +31,12 @@ public class UserVoiceTalkingMessage implements ISubscribedMessage {
 
 		return MessageBuilder.buildJson(header, payload);				
 	}
-	
+
+	public String getChannel() {
+		// TODO
+		return "FIX MEE!!!";
+	}
+
 	public static UserVoiceTalkingMessage fromJson(String message) {
 		JsonParser parser = new JsonParser();
 		JsonObject obj = (JsonObject) parser.parse(message);

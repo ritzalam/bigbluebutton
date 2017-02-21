@@ -30,9 +30,6 @@ project/*.iml
 project/*/*.iml
 project/.idea
 project/.idea/*
-.idea
-.idea/*
-.idea/**/*
 .DS_Store
 project/.DS_Store
 project/*/.DS_Store

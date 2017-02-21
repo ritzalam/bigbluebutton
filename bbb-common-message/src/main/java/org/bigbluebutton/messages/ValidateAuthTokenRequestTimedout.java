@@ -1,5 +1,6 @@
 package org.bigbluebutton.messages;
 
+import com.google.gson.Gson;
 import org.bigbluebutton.common.messages.IBigBlueButtonMessage;
 
 
@@ -13,7 +14,17 @@ public class ValidateAuthTokenRequestTimedout implements IBigBlueButtonMessage {
     this.header = new Header(NAME);
     this.payload = payload;
   }
-  
+
+  public String getChannel() {
+    // TODO
+    return "FIX MEE!!!";
+  }
+
+  public String toJson() {
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
+
   static class ValidateAuthTokenRequestTimedoutPayload {
     public final String meetingId;
     public final String userId;

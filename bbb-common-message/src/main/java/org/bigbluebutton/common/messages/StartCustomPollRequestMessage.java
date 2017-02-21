@@ -8,4 +8,14 @@ public class StartCustomPollRequestMessage implements IBigBlueButtonMessage {
 	
 	public MessageHeader header;		
 	public StartCustomPollRequestMessagePayload payload;
+
+	public String toJson() {
+		// TODO
+		return "FIX MEE!!!";
+	}
+
+	public String getChannel() {
+		// TODO
+		return "FIX MEE!!!";
+	}
 }

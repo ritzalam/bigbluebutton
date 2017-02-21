@@ -25,4 +25,9 @@ public class CreateBreakoutRoomsRequest implements IBigBlueButtonMessage {
 		return gson.toJson(this);
 	}
 
+	public String getChannel() {
+		// TODO
+		return "FIX MEE!!!";
+	}
+
 }

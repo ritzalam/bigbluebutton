@@ -1,5 +1,6 @@
 package org.bigbluebutton.messages;
 
+import com.google.gson.Gson;
 import org.bigbluebutton.common.messages.IBigBlueButtonMessage;
 
 public class CreateMeetingRequest implements IBigBlueButtonMessage {
@@ -11,6 +12,16 @@ public class CreateMeetingRequest implements IBigBlueButtonMessage {
     public CreateMeetingRequest(CreateMeetingRequestPayload payload) {
         this.header = new Header(NAME);
         this.payload = payload;
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public String getChannel() {
+        // TODO
+        return "FIX MEE!!!";
     }
 
     public static class CreateMeetingRequestPayload {

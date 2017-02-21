@@ -37,4 +37,14 @@ public class CreateMeetingMessage implements IBigBlueButtonMessage {
 		this.createTime = createTime;
 		this.createDate = createDate;
 	}
+
+	public String toJson() {
+		// TODO
+		return "FIX MEE!!!";
+	}
+
+	public String getChannel() {
+		// TODO
+		return "FIX MEE!!!";
+	}
 }

@@ -9,4 +9,14 @@ public class EndMeetingMessage implements IBigBlueButtonMessage {
 	public EndMeetingMessage(String meetingId) {
 		this.meetingId = meetingId;
 	}
+
+	public String toJson() {
+		// TODO
+		return "FIX MEE!!!";
+	}
+
+	public String getChannel() {
+		// TODO
+		return "FIX MEE!!!";
+	}
 }

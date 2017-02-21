@@ -8,59 +8,64 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class GetUsersReplyMessage implements ISubscribedMessage {
-	public static final String GET_USERS_REPLY = "get_users_reply";
-	public final String VERSION = "0.0.1";
+public class GetUsersReplyMessage implements IBigBlueButtonMessage {
+  public static final String GET_USERS_REPLY = "get_users_reply";
+  public final String VERSION = "0.0.1";
 
-	public final String meetingId;
-	public final String requesterId;
-	public final ArrayList<Map<String, Object>> users;
-	
-	public GetUsersReplyMessage(String meetingID, String requesterId, ArrayList<Map<String, Object>> users) {
-		this.meetingId = meetingID;
-		this.requesterId = requesterId;
-		this.users = users;
-	}
+  public final String meetingId;
+  public final String requesterId;
+  public final ArrayList<Map<String, Object>> users;
 
-	public String toJson() {
-		HashMap<String, Object> payload = new HashMap<String, Object>();
-		payload.put(Constants.MEETING_ID, meetingId);
+  public GetUsersReplyMessage(String meetingID, String requesterId, ArrayList<Map<String, Object>> users) {
+    this.meetingId = meetingID;
+    this.requesterId = requesterId;
+    this.users = users;
+  }
 
-		java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(GET_USERS_REPLY, VERSION, null);
+  public String toJson() {
+    HashMap<String, Object> payload = new HashMap<String, Object>();
+    payload.put(Constants.MEETING_ID, meetingId);
 
-		return MessageBuilder.buildJson(header, payload);				
-	}
-	
-	public static GetUsersReplyMessage fromJson(String message) {
-		JsonParser parser = new JsonParser();
-		JsonObject obj = (JsonObject) parser.parse(message);
+    java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(GET_USERS_REPLY, VERSION, null);
 
-		if (obj.has("header") && obj.has("payload")) {
-			JsonObject header = (JsonObject) obj.get("header");
-			JsonObject payload = (JsonObject) obj.get("payload");
+    return MessageBuilder.buildJson(header, payload);
+  }
 
-			if (header.has("name")) {
-				String messageName = header.get("name").getAsString();
-				if (GET_USERS_REPLY.equals(messageName)) {
-					if (payload.has(Constants.MEETING_ID)
-							&& payload.has(Constants.REQUESTER_ID)
-							&& payload.has(Constants.USERS)) {
-						String meetingID = payload.get(Constants.MEETING_ID).getAsString();
-						String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
+  public String getChannel() {
+    // TODO
+    return "FIX MEE!!!";
+  }
 
-						JsonArray users = (JsonArray) payload.get(Constants.USERS);
-						
-						Util util = new Util();
-						ArrayList<Map<String, Object>> usersList = util.extractUsers(users);
-						
-						if (usersList != null) {
-							return new GetUsersReplyMessage(meetingID, requesterId, usersList);							
-						}						
-					}
-				}
-			}
-		}
+  public static GetUsersReplyMessage fromJson(String message) {
+    JsonParser parser = new JsonParser();
+    JsonObject obj = (JsonObject) parser.parse(message);
 
-		return null;
-	}
+    if (obj.has("header") && obj.has("payload")) {
+      JsonObject header = (JsonObject) obj.get("header");
+      JsonObject payload = (JsonObject) obj.get("payload");
+
+      if (header.has("name")) {
+        String messageName = header.get("name").getAsString();
+        if (GET_USERS_REPLY.equals(messageName)) {
+          if (payload.has(Constants.MEETING_ID)
+                  && payload.has(Constants.REQUESTER_ID)
+                  && payload.has(Constants.USERS)) {
+            String meetingID = payload.get(Constants.MEETING_ID).getAsString();
+            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
+
+            JsonArray users = (JsonArray) payload.get(Constants.USERS);
+
+            Util util = new Util();
+            ArrayList<Map<String, Object>> usersList = util.extractUsers(users);
+
+            if (usersList != null) {
+              return new GetUsersReplyMessage(meetingID, requesterId, usersList);
+            }
+          }
+        }
+      }
+    }
+
+    return null;
+  }
 }

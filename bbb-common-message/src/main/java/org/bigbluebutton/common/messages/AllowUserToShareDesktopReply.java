@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class AllowUserToShareDesktopReply implements ISubscribedMessage {
+public class AllowUserToShareDesktopReply implements IBigBlueButtonMessage {
     public static final String NAME = "AllowUserToShareDesktopReply";
     public static final String VERSION = "0.0.1";
 
@@ -36,6 +36,11 @@ public class AllowUserToShareDesktopReply implements ISubscribedMessage {
 
         java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(NAME, VERSION, null);
         return MessageBuilder.buildJson(header, payload);
+    }
+
+    public String getChannel() {
+        // TODO
+        return "FIX MEE!!!";
     }
 
     public static AllowUserToShareDesktopReply fromJson(String message) {

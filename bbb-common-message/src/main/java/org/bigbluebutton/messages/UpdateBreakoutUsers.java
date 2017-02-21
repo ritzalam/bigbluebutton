@@ -17,6 +17,11 @@ public class UpdateBreakoutUsers implements IBigBlueButtonMessage {
 
 	}
 
+	public String getChannel() {
+		// TODO
+		return "FIX MEE!!!";
+	}
+
 	public String toJson() {
 		Gson gson = new Gson();
 		return gson.toJson(this);

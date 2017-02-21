@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 
-public class ShowPollResultRequestMessage implements ISubscribedMessage {
+public class ShowPollResultRequestMessage implements IBigBlueButtonMessage {
 	public static final String SHOW_POLL_RESULT_REQUEST  = "show_poll_result_request_message";
 	public static final String VERSION = "0.0.1";
 	
@@ -37,7 +37,11 @@ public class ShowPollResultRequestMessage implements ISubscribedMessage {
 
 		return MessageBuilder.buildJson(header, payload);				
 	}
-	
+
+	public String getChannel() {
+		return MessagingConstants.TO_POLLING_CHANNEL;
+	}
+
 	public static ShowPollResultRequestMessage fromJson(String message) {
 		JsonParser parser = new JsonParser();
 		JsonObject obj = (JsonObject) parser.parse(message);

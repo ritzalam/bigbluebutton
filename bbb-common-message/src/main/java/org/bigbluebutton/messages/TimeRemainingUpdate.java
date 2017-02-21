@@ -15,7 +15,13 @@ public class TimeRemainingUpdate implements IBigBlueButtonMessage {
     header = new Header(NAME);
     this.payload = payload;
   }
-  
+
+
+  public String getChannel() {
+    // TODO
+    return "FIX MEE!!!";
+  }
+
   public String toJson() {
     Gson gson = new Gson();
     return gson.toJson(this);

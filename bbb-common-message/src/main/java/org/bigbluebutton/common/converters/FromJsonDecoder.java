@@ -19,15 +19,7 @@ public class FromJsonDecoder {
       JsonObject header = (JsonObject) obj.get("header");
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
-        if (PubSubPingMessage.PUBSUB_PING.equals(messageName)) {
-          Gson gson = new Gson();
-          PubSubPingMessage msg = gson.fromJson(message, PubSubPingMessage.class);
-          return msg;
-        } else if (PubSubPongMessage.PUBSUB_PONG.equals(messageName)) {
-          Gson gson = new Gson();
-          PubSubPongMessage msg = gson.fromJson(message, PubSubPongMessage.class);
-          return msg;
-        } else if (StartCustomPollRequestMessage.START_CUSTOM_POLL_REQUEST.equals(messageName)) {
+        if (StartCustomPollRequestMessage.START_CUSTOM_POLL_REQUEST.equals(messageName)) {
           Gson gson = new Gson();
           StartCustomPollRequestMessage msg = gson.fromJson(message, StartCustomPollRequestMessage.class);
           return msg;

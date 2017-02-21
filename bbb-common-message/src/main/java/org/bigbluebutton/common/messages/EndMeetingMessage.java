@@ -1,22 +1,34 @@
 package org.bigbluebutton.common.messages;
 
+import com.google.gson.Gson;
+import org.bigbluebutton.messages.Header;
+
 public class EndMeetingMessage implements IBigBlueButtonMessage {
-	public static final String END_MEETING_REQUEST_EVENT  = "end_meeting_request_event";
-	public static final String VERSION = "0.0.1";
+  public static final String NAME = "end_meeting_request_event";
 
-	public final String meetingId;
-	
-	public EndMeetingMessage(String meetingId) {
-		this.meetingId = meetingId;
-	}
+  public final Header header;
+  public final EndMeetingMessagePayload payload;
 
-	public String toJson() {
-		// TODO
-		return "FIX MEE!!!";
-	}
+  public EndMeetingMessage(EndMeetingMessagePayload payload) {
+    this.header = new Header(NAME);
+    this.payload = payload;
+  }
 
-	public String getChannel() {
-		// TODO
-		return "FIX MEE!!!";
-	}
+  public String toJson() {
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
+
+  public String getChannel() {
+    return MessagingConstants.TO_MEETING_CHANNEL;
+  }
+
+  public static class EndMeetingMessagePayload {
+    public final String id;
+
+    public EndMeetingMessagePayload(String id) {
+      this.id = id;
+    }
+  }
+
 }

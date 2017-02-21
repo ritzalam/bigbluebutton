@@ -60,7 +60,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         </property> 
     </bean>
       	
-  	<bean id="meetingMessageHandler" class="org.bigbluebutton.api.messaging.MeetingMessageHandler">
+  	<bean id="meetingMessageHandler" class="org.bigbluebutton.api.messaging.pubsub.MeetingMessageHandler">
   	     <property name="messageListeners">
             <set>
                 <ref bean="meetingService" />

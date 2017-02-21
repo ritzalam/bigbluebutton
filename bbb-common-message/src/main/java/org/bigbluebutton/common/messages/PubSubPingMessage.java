@@ -1,21 +1,38 @@
 package org.bigbluebutton.common.messages;
 
-import org.bigbluebutton.common.messages.payload.PubSubPingMessagePayload;
+import com.google.gson.Gson;
+import org.bigbluebutton.messages.Header;
 
 public class PubSubPingMessage implements IBigBlueButtonMessage {
 
-	public static final String PUBSUB_PING = "BbbPubSubPingMessage";
-	
-	public MessageHeader header;		
-	public PubSubPingMessagePayload payload;
+  public static final String NAME = "BbbPubSubPingMessage";
 
-	public String toJson() {
-		// TODO
-		return "FIX MEE!!!";
-	}
+  public final Header header;
+  public final PubSubPingMessagePayload payload;
 
-	public String getChannel() {
-		// TODO
-		return "FIX MEE!!!";
-	}
+  public PubSubPingMessage(PubSubPingMessagePayload payload) {
+    this.header = new Header(NAME);
+    this.payload = payload;
+  }
+
+  public String toJson() {
+    Gson gson = new Gson();
+    return gson.toJson(this);
+  }
+
+  public String getChannel() {
+    return MessagingConstants.TO_SYSTEM_CHANNEL;
+  }
+
+  public static class PubSubPingMessagePayload {
+    public final String system;
+    public final Long timestamp;
+
+    public PubSubPingMessagePayload(String system, Long timestamp) {
+      this.system = system;
+      this.timestamp = timestamp;
+    }
+  }
+
+
 }

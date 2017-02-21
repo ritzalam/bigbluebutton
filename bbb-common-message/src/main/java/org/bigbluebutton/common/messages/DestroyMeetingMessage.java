@@ -1,22 +1,33 @@
 package org.bigbluebutton.common.messages;
 
+import com.google.gson.Gson;
+import org.bigbluebutton.messages.Header;
+
 public class DestroyMeetingMessage implements IBigBlueButtonMessage {
-  public static final String DESTROY_MEETING_REQUEST_EVENT = "destroy_meeting_request_event";
-  public static final String VERSION = "0.0.1";
+  public static final String NAME = "destroy_meeting_request_event";
 
-  public final String meetingId;
+  public final Header header;
+  public final DestroyMeetingMessagePayload payload;
 
-  public DestroyMeetingMessage(String meetingId) {
-    this.meetingId = meetingId;
+  public DestroyMeetingMessage(DestroyMeetingMessagePayload payload) {
+    this.header = new Header(NAME);
+    this.payload = payload;
   }
 
   public String toJson() {
-    // TODO
-    return "FIX MEE!!!";
+    Gson gson = new Gson();
+    return gson.toJson(this);
   }
 
   public String getChannel() {
-    // TODO
-    return "FIX MEE!!!";
+    return MessagingConstants.TO_MEETING_CHANNEL;
+  }
+
+  public static class DestroyMeetingMessagePayload {
+    public final String id;
+
+    public DestroyMeetingMessagePayload(String id) {
+      this.id = id;
+    }
   }
 }

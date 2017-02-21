@@ -1,22 +1,34 @@
 package org.bigbluebutton.common.messages;
 
+import org.bigbluebutton.messages.Header;
+
 public class KeepAliveMessage implements IBigBlueButtonMessage {
-	public static final String KEEP_ALIVE_REQUEST                 = "keep_alive_request";
-	public static final String VERSION = "0.0.1";
-	
-	public final String keepAliveId;
-	
-	public KeepAliveMessage(String keepAliveId) {
-		this.keepAliveId = keepAliveId;	
-	}
+  public static final String NAME = "keep_alive_request";
 
-	public String toJson() {
-		// TODO
-		return "FIX MEE!!!";
-	}
+  public final Header header;
+  public final KeepAliveMessagePayload payload;
 
-	public String getChannel() {
-		// TODO
-		return "FIX MEE!!!";
-	}
+  public KeepAliveMessage(KeepAliveMessagePayload payload) {
+    this.header = new Header(NAME);
+    this.payload = payload;
+  }
+
+  public String toJson() {
+    // TODO
+    return "FIX MEE!!!";
+  }
+
+  public String getChannel() {
+    // TODO
+    return "FIX MEE!!!";
+  }
+
+  public static class KeepAliveMessagePayload {
+    public final String id;
+
+    public KeepAliveMessagePayload(String id) {
+      this.id = id;
+    }
+  }
+
 }

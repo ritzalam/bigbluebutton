@@ -1,7 +1,10 @@
-package org.bigbluebutton.api.messaging;
+package org.bigbluebutton.api.messaging.pubsub;
 
 import java.util.Set;
 
+import org.bigbluebutton.api.messaging.Constants;
+import org.bigbluebutton.api.messaging.MessageListener;
+import org.bigbluebutton.api.messaging.MessagingConstants;
 import org.bigbluebutton.api.messaging.messages.CreateBreakoutRoom;
 import org.bigbluebutton.api.messaging.messages.EndBreakoutRoom;
 import org.bigbluebutton.api.messaging.messages.IMessage;
@@ -26,7 +29,7 @@ import org.bigbluebutton.messages.EndBreakoutRoomRequest;
 import org.bigbluebutton.common.messages.SendStunTurnInfoRequestMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.bigbluebutton.pubsub.redis.MessageHandler;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -103,7 +106,7 @@ public class MeetingMessageHandler implements MessageHandler {
         if (header.has("name")) {
           String messageName = header.get("name").getAsString();
           IMessage rxMsg = null;
-          if (PubSubPongMessage.PUBSUB_PONG.equals(messageName)) {
+          if (PubSubPongMessage.NAME.equals(messageName)) {
             IBigBlueButtonMessage msg = decoder.decodeMessage(message);
             if (msg != null) {
               PubSubPongMessage m = (PubSubPongMessage) msg;

@@ -18,12 +18,6 @@ public class MessageFromJsonConverter {
 				switch (messageName) {
 				  case CreateMeetingMessage.CREATE_MEETING_REQUEST_EVENT:
 					  return processCreateMeeting(payload);
-				  case DestroyMeetingMessage.DESTROY_MEETING_REQUEST_EVENT:
-					  return processDestroyMeeting(payload);
-				  case EndMeetingMessage.END_MEETING_REQUEST_EVENT:
-					  return processEndMeetingMessage(payload);
-				  case KeepAliveMessage.KEEP_ALIVE_REQUEST:
-					  return processKeepAlive(payload);
 				  case ValidateAuthTokenMessage.VALIDATE_AUTH_TOKEN:
 					  return processValidateAuthTokenMessage(header, payload);
 					  // return ValidateAuthTokenMessage.fromJson(message);
@@ -70,19 +64,6 @@ public class MessageFromJsonConverter {
 				          createTime, createDate);
 	}
 	
-	private static IBigBlueButtonMessage processDestroyMeeting(JsonObject payload) {
-		String id = payload.get(Constants.MEETING_ID).getAsString();		
-		return new DestroyMeetingMessage(id);
-	}
-	
-	private static IBigBlueButtonMessage processEndMeetingMessage(JsonObject payload) {
-		String id = payload.get(Constants.MEETING_ID).getAsString();		
-		return new EndMeetingMessage(id);
-	}	
-	
-	private static IBigBlueButtonMessage processKeepAlive(JsonObject payload) {
-		String id = payload.get(Constants.KEEP_ALIVE_ID).getAsString();		
-		return new KeepAliveMessage(id);
-	}
+
 
 }

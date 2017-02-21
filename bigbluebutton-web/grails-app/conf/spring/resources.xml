@@ -26,7 +26,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         http://www.springframework.org/schema/util 
         http://www.springframework.org/schema/util/spring-util-2.0.xsd">  
 
-    <bean id="messagingService" class="org.bigbluebutton.api.messaging.RedisMessagingService">
+    <bean id="messagingService" class="org.bigbluebutton.api.messaging.pubsub.RedisMessagingService">
         <property name="messageSender" ref="messageSender"/>
         <property name="redisStorageService" ref="redisStorageService"/>
     </bean>

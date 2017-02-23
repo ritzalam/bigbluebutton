@@ -37,8 +37,6 @@ libraryDependencies +=  "org.slf4j" % "slf4j-api" % "1.7.5"
 
 libraryDependencies +=  "com.google.code.gson" % "gson" % "2.5"
 libraryDependencies += "io.spray" %% "spray-json" % "1.3.2"
-libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.7.2"
-libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.7.2"
 
 libraryDependencies += "org.pegdown" % "pegdown" % "1.4.0" % "test"
 libraryDependencies += "junit" % "junit" % "4.12" % "test"

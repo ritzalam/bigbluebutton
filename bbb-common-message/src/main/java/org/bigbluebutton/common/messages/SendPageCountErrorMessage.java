@@ -45,8 +45,7 @@ public class SendPageCountErrorMessage implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    // TODO
-    return "FIX MEE!!!";
+    return MessagingConstants.TO_PRESENTATION_CHANNEL;
   }
 
   public static SendPageCountErrorMessage fromJson(String message) {

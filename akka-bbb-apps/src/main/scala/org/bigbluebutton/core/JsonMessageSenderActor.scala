@@ -21,7 +21,6 @@ import org.bigbluebutton.core.apps.SimplePollOutVO
 import org.bigbluebutton.core.pubsub.senders.UsersMessageToJsonConverter
 import org.bigbluebutton.common.messages._
 import org.bigbluebutton.core.pubsub.senders.WhiteboardMessageToJsonConverter
-import org.bigbluebutton.common.converters.ToJsonEncoder
 import org.bigbluebutton.common.messages.payload._
 import org.bigbluebutton.common.messages._
 import org.bigbluebutton.messages.payload._

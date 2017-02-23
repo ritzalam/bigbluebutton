@@ -38,8 +38,7 @@ public class SendStunTurnInfoReplyMessage implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    // TODO
-    return "FIX MEE!!!";
+    return MessagingConstants.TO_BBB_HTML5_CHANNEL;
   }
 
   public static SendStunTurnInfoReplyMessage fromJson(String message) {

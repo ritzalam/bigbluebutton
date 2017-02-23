@@ -12,7 +12,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Protocol;
 
-public class RedisStorageService {
+public class RedisStorageService implements IStorageService {
 	private static Logger log = LoggerFactory.getLogger(RedisStorageService.class);
 	
 	private JedisPool redisPool;

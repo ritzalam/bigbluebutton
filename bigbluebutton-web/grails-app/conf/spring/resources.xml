@@ -26,9 +26,12 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         http://www.springframework.org/schema/util 
         http://www.springframework.org/schema/util/spring-util-2.0.xsd">  
 
+    <bean id="newMessagingService" class="org.bigbluebutton.web.pubsub.RedisPublisher">
+        <constructor-arg index="0" ref="messagePublisher"/>
+    </bean>
+
     <bean id="messagingService" class="org.bigbluebutton.api.messaging.pubsub.RedisMessagingService">
-        <property name="messageSender" ref="messageSender"/>
-        <property name="redisStorageService" ref="redisStorageService"/>
+        <property name="messageSender" ref="messagePublisher" />
     </bean>
 
     <bean id="expiredMeetingCleanupTimerTask" class="org.bigbluebutton.web.services.ExpiredMeetingCleanupTimerTask"/>
@@ -38,7 +41,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
   <bean id="keepAliveService" class="org.bigbluebutton.web.services.KeepAliveService" 
        init-method="start" destroy-method="stop">
     <property name="runEvery" value="${checkBBBServerEvery}"/>
-    <property name="messagingService" ref="messagingService" />
+    <property name="messagingService" ref="newMessagingService" />
   </bean>
 
     <bean id="meetingService" class="org.bigbluebutton.api.MeetingService" init-method="start" destroy-method="stop">
@@ -47,7 +50,9 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         <property name="removeMeetingWhenEnded" value="${removeMeetingWhenEnded}"/>
         <property name="expiredMeetingCleanupTimerTask" ref="expiredMeetingCleanupTimerTask"/>
         <property name="messagingService" ref="messagingService"/>
+        <property name="messagingService2x" ref="newMessagingService"/>
         <property name="recordingService" ref="recordingService"/>
+        <property name="storageService" ref="redisStorageService"/>
         <property name="presDownloadService" ref="presDownloadService"/>
         <property name="paramsProcessorUtil" ref="paramsProcessorUtil"/>
         <property name="stunTurnService" ref="stunTurnService"/>

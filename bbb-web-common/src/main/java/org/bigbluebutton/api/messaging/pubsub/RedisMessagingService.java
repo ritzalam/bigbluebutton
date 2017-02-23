@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bigbluebutton.api.messaging.MessagingService;
-import org.bigbluebutton.api.messaging.RedisStorageService;
 import org.bigbluebutton.common.messages.*;
 import org.bigbluebutton.common.messages.PubSubPingMessage;
 import org.bigbluebutton.messages.RegisterUserMessage;
@@ -42,12 +41,9 @@ import com.google.gson.Gson;
 public class RedisMessagingService implements MessagingService {
   private static Logger log = LoggerFactory.getLogger(RedisMessagingService.class);
 
-  private RedisStorageService storeService;
   private MessagePublisher sender;
 
-  public void recordMeetingInfo(String meetingId, Map<String, String> info, Map<String, String> breakoutInfo) {
-    storeService.recordMeetingInfo(meetingId, info, breakoutInfo);
-  }
+
 
   public void destroyMeeting(String meetingID) {
     DestroyMeetingMessage.DestroyMeetingMessagePayload payload =
@@ -106,8 +102,12 @@ public class RedisMessagingService implements MessagingService {
     sender.send(msg);
   }
 
+  public void send(IBigBlueButtonMessage message) {
+    sender.send(message.getChannel(), message.toJson());
+  }
+
   public void send(String channel, String message) {
-    //sender.send(channel, message);
+    sender.send(channel, message);
   }
 
   public void sendPolls(String meetingId, String title, String question, String questionType, List<String> answers) {
@@ -121,32 +121,13 @@ public class RedisMessagingService implements MessagingService {
     map.put("questionType", questionType);
     map.put("answers", answers);
 
-    //sender.send(MessagingConstants.TO_POLLING_CHANNEL, gson.toJson(map));
+    sender.send(MessagingConstants.TO_POLLING_CHANNEL, gson.toJson(map));
   }
 
   public void setMessageSender(MessagePublisher sender) {
     this.sender = sender;
   }
 
-  public void setRedisStorageService(RedisStorageService storeService) {
-    this.storeService = storeService;
-  }
-
-  public String storeSubscription(String meetingId, String externalMeetingID, String callbackURL) {
-    return storeService.storeSubscription(meetingId, externalMeetingID, callbackURL);
-  }
-
-  public boolean removeSubscription(String meetingId, String subscriptionId) {
-    return storeService.removeSubscription(meetingId, subscriptionId);
-  }
-
-  public List<Map<String, String>> listSubscriptions(String meetingId) {
-    return storeService.listSubscriptions(meetingId);
-  }
-
-  public void removeMeeting(String meetingId) {
-    storeService.removeMeeting(meetingId);
-  }
 
   public void sendStunTurnInfo(String meetingId, String internalUserId, Set<StunServer> stuns, Set<TurnEntry> turns) {
     ArrayList<String> stunsArrayList = new ArrayList<String>();
@@ -177,6 +158,6 @@ public class RedisMessagingService implements MessagingService {
     SendStunTurnInfoReplyMessage msg = new SendStunTurnInfoReplyMessage(meetingId, internalUserId,
             stunsArrayList, turnsArrayList);
 
-    //sender.send(MessagingConstants.TO_BBB_HTML5_CHANNEL, msg.toJson());
+    sender.send(msg);
   }
 }

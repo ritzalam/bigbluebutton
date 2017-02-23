@@ -4,6 +4,23 @@ organization := "org.bigbluebutton"
 
 version := "0.0.19-SNAPSHOT"
 
+scalaVersion := "2.11.8"
+
+scalacOptions ++= Seq(
+  "-unchecked",
+  "-deprecation",
+  "-Xlint",
+  "-Ywarn-dead-code",
+  "-language:_",
+  "-target:jvm-1.8",
+  "-encoding", "UTF-8"
+)
+
+resolvers ++= Seq(
+  "spray repo" at "http://repo.spray.io/",
+  "rediscala" at "http://dl.bintray.com/etaty/maven"
+)
+
 // We want to have our jar files in lib_managed dir.
 // This way we'll have the right path when we import
 // into eclipse.
@@ -13,17 +30,21 @@ testOptions in Test += Tests.Argument(TestFrameworks.Specs2, "html", "console", 
 
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/scalatest-reports")
 
-libraryDependencies ++= {
-  Seq(
-    "com.google.code.gson" % "gson" % "2.5",
-    "redis.clients" % "jedis" % "2.7.2",
-    "org.apache.commons" % "commons-pool2" % "2.3",
-    "org.slf4j" % "slf4j-api" % "1.7.5"
-  )
-}
 
+libraryDependencies +=  "redis.clients" % "jedis" % "2.7.2"
+libraryDependencies +=  "org.apache.commons" % "commons-pool2" % "2.3"
+libraryDependencies +=  "org.slf4j" % "slf4j-api" % "1.7.5"
+
+libraryDependencies +=  "com.google.code.gson" % "gson" % "2.5"
+libraryDependencies += "io.spray" %% "spray-json" % "1.3.2"
+libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.7.2"
+libraryDependencies += "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.7.2"
+
+libraryDependencies += "org.pegdown" % "pegdown" % "1.4.0" % "test"
 libraryDependencies += "junit" % "junit" % "4.12" % "test"
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
+libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
 seq(Revolver.settings: _*)
 

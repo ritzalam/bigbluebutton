@@ -2,7 +2,6 @@ package org.bigbluebutton.core.pubsub.receivers;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.bigbluebutton.common.messages.DestroyMeetingMessage;
 import org.bigbluebutton.common.messages.EndMeetingMessage;
 import org.bigbluebutton.common.messages.GetAllMeetingsRequest;
@@ -60,10 +59,10 @@ public class MeetingMessageReceiver implements MessageHandler {
             if (msg != null) {
                 if (msg instanceof EndMeetingMessage) {
                     EndMeetingMessage emm = (EndMeetingMessage) msg;
-                    bbbGW.endMeeting(emm.meetingId);
+                    bbbGW.endMeeting(emm.payload.id);
                 }  else if (msg instanceof DestroyMeetingMessage) {
                     DestroyMeetingMessage dmm = (DestroyMeetingMessage) msg;
-                    bbbGW.destroyMeeting(dmm.meetingId);
+                    bbbGW.destroyMeeting(dmm.payload.id);
                 } else if (msg instanceof ValidateAuthTokenMessage) {
                     ValidateAuthTokenMessage vam = (ValidateAuthTokenMessage) msg;
                     String sessionId = "tobeimplemented";
@@ -117,7 +116,7 @@ public class MeetingMessageReceiver implements MessageHandler {
                 JsonObject header = (JsonObject) obj.get("header");
                 if (header.has("name")) {
                     String messageName = header.get("name").getAsString();
-                    if (PubSubPingMessage.PUBSUB_PING.equals(messageName)) {
+                    if (PubSubPingMessage.NAME.equals(messageName)) {
                         Gson gson = new Gson();
                         PubSubPingMessage msg = gson.fromJson(message, PubSubPingMessage.class);
                         bbbGW.handleBigBlueButtonMessage(msg);
@@ -127,7 +126,7 @@ public class MeetingMessageReceiver implements MessageHandler {
                         if (msg != null) {
                             if (msg instanceof KeepAliveMessage) {
                                 KeepAliveMessage kam = (KeepAliveMessage) msg;
-                                bbbGW.isAliveAudit(kam.keepAliveId);
+                                bbbGW.isAliveAudit(kam.payload.id);
                             }
                         } else {
                             System.out.println("Unknown message: [" + message + "]");

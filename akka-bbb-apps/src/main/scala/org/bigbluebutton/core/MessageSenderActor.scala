@@ -30,8 +30,8 @@ import org.bigbluebutton.common.messages.GetCurrentLayoutReplyMessage
 import org.bigbluebutton.common.messages.BroadcastLayoutMessage
 import org.bigbluebutton.common.messages.UserEjectedFromMeetingMessage
 import org.bigbluebutton.common.messages.LockLayoutMessage
+import org.bigbluebutton.common.messages.PubSubPongMessage.PubSubPongMessagePayload
 import org.bigbluebutton.core.pubsub.senders.WhiteboardMessageToJsonConverter
-import org.bigbluebutton.common.converters.ToJsonEncoder
 import org.bigbluebutton.common.messages.TransferUserToVoiceConfRequestMessage
 import org.bigbluebutton.core
 
@@ -43,7 +43,6 @@ object MessageSenderActor {
 class MessageSenderActor(val service: MessageSender)
     extends Actor with ActorLogging {
 
-  val encoder = new ToJsonEncoder()
   def receive = {
     case msg: UserEjectedFromMeeting => handleUserEjectedFromMeeting(msg)
     case msg: GetChatHistoryReply => handleGetChatHistoryReply(msg)
@@ -203,8 +202,10 @@ class MessageSenderActor(val service: MessageSender)
   }
 
   private def handlePubSubPong(msg: PubSubPong) {
-    val json = encoder.encodePubSubPongMessage(msg.system, msg.timestamp)
-    service.send(MessagingConstants.FROM_SYSTEM_CHANNEL, json)
+    //  val json = encoder.encodePubSubPongMessage(msg.system, msg.timestamp)
+    //  val payload = PubSubPongMessagePayload(msg.system, msg.timestamp)
+    //  val pong = PubSubPongMe
+    //  service.send(MessagingConstants.FROM_SYSTEM_CHANNEL, json)
   }
 
   private def handleKeepAliveMessageReply(msg: KeepAliveMessageReply) {

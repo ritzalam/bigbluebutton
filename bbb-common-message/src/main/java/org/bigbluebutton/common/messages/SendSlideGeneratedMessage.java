@@ -45,8 +45,7 @@ public class SendSlideGeneratedMessage implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    // TODO
-    return "FIX MEE!!!";
+    return MessagingConstants.TO_PRESENTATION_CHANNEL;
   }
 
   public static SendSlideGeneratedMessage fromJson(String message) {

@@ -5,17 +5,13 @@ import akka.actor.{ ActorSystem, Props }
 
 import scala.concurrent.duration._
 import scala.concurrent.{ Await, Future }
-import org.bigbluebutton.endpoint.redis.RedisPublisher
-import org.bigbluebutton.endpoint.redis.KeepAliveRedisPublisher
-import org.bigbluebutton.endpoint.redis.AppsRedisSubscriberActor
-import org.bigbluebutton.core.api.MessageOutGateway
-import org.bigbluebutton.core.api.IBigBlueButtonInGW
+import org.bigbluebutton.endpoint.redis.{ AppsRedisSubscriberActor, KeepAliveRedisPublisher, RedisMessageReceiver2x, RedisPublisher }
+import org.bigbluebutton.core.api.{ IBigBlueButtonInGW, MessageOutGateway, OutMessageListener2, RedisMsgHdlrActor }
 import org.bigbluebutton.core.MessageSender
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.MessageSenderActor
 import org.bigbluebutton.core.RecorderActor
 import org.bigbluebutton.core.pubsub.receivers.RedisMessageReceiver
-import org.bigbluebutton.core.api.OutMessageListener2
 import org.bigbluebutton.core.pubsub.senders._
 import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
@@ -52,7 +48,12 @@ object Boot extends App with SystemConfiguration {
   val bbbInGW = new BigBlueButtonInGW(system, eventBus, outGW, red5DeskShareIP, red5DeskShareApp)
   val redisMsgReceiver = new RedisMessageReceiver(bbbInGW)
 
-  val redisSubscriberActor = system.actorOf(AppsRedisSubscriberActor.props(redisMsgReceiver), "redis-subscriber")
+  val incomingJsonMessageBus = new IncomingJsonMessageBus
+  val redisMessageHandlerActor = system.actorOf(RedisMsgHdlrActor.props(incomingJsonMessageBus))
+  incomingJsonMessageBus.subscribe(redisMessageHandlerActor, "incoming-json-message")
+
+  val redisMessageReceiver2x = new RedisMessageReceiver2x(bbbInGW)
+  val redisSubscriberActor = system.actorOf(AppsRedisSubscriberActor.props(redisMsgReceiver, incomingJsonMessageBus), "redis-subscriber")
 
   val keepAliveRedisPublisher = new KeepAliveRedisPublisher(system, redisPublisher)
 }

@@ -32,26 +32,30 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
       <property name="host" value="${redisHost}" />
       <property name="port" value="${redisPort}" />
     </bean>
+
+    <bean id="messagePublisher" class="org.bigbluebutton.pubsub.redis.MessagePublisher">
+        <property name="messageSender" ref="messageSender" />
+    </bean>
     	
-    <bean id="messageSender" class="org.bigbluebutton.api.messaging.MessageSender" 
+    <bean id="messageSender" class="org.bigbluebutton.pubsub.redis.MessageSender"
                     init-method="start" destroy-method="stop">
       <property name="host" value="${redisHost}" />
       <property name="port" value="${redisPort}" />
   	</bean>
 
-    <bean id="redisMessageReceiver" class="org.bigbluebutton.api.messaging.MessageReceiver" 
+    <bean id="redisMessageReceiver" class="org.bigbluebutton.pubsub.redis.MessageReceiver"
                     init-method="start" destroy-method="stop">
        <property name="host" value="${redisHost}" />
        <property name="port" value="${redisPort}" />
     	<property name="messageHandler"> <ref local="redisMessageHandler"/> </property>
   	</bean>
 
-    <bean id="redisMessageHandler" class="org.bigbluebutton.api.messaging.ReceivedMessageHandler" 
+    <bean id="redisMessageHandler" class="org.bigbluebutton.pubsub.redis.ReceivedMessageHandler"
                     init-method="start" destroy-method="stop">
       <property name="messageDistributor"><ref bean="redisMessageDistributor" /></property>
     </bean>
 
-    <bean id="redisMessageDistributor" class="org.bigbluebutton.api.messaging.MessageDistributor">
+    <bean id="redisMessageDistributor" class="org.bigbluebutton.pubsub.redis.MessageDistributor">
          <property name="messageHandler"> <ref local="redisMessageHandler"/> </property>
          <property name="messageListeners">
             <set>

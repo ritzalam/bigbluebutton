@@ -17,6 +17,9 @@ public class MessagePublisher {
     sender.send(msg.getChannel(), msg.toJson());
   }
 
+  public void send(String channel, String json) {
+    sender.send(channel, json);
+  }
 
   // Polling
   private void votePoll(String meetingId, String userId, String pollId, Integer questionId, Integer answerId) {

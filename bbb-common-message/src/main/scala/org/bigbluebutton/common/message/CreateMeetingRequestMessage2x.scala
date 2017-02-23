@@ -1,9 +1,8 @@
 package org.bigbluebutton.common.message
 
 import org.bigbluebutton.common.{InHeaderAndJsonBody, MessageProcessException}
-import org.bigbluebutton.common.messages.MessagingConstants
 import spray.json.{DefaultJsonProtocol, DeserializationException, JsObject}
-
+import org.bigbluebutton.common.messages.MessagingConstants
 import scala.util.{Failure, Success, Try}
 
 case class CreateMeetingRequestMessageBody(id: String, externalId: String,
@@ -52,7 +51,7 @@ trait CreateMeetingRequestMessageUnmarshaller {
     } yield b
   }
 
-  def unmarshall(msg: InHeaderAndJsonBody): Try[CreateMeetingRequestMessage2x] = {
+  override def unmarshall(msg: InHeaderAndJsonBody): Try[CreateMeetingRequestMessage2x] = {
     if (msg.header.name == CreateMeetingRequestMessageConst.NAME) {
       convertBody(msg.body) match {
         case Success(body) => Success(CreateMeetingRequestMessage2x(msg.header, body))
@@ -64,15 +63,13 @@ trait CreateMeetingRequestMessageUnmarshaller {
   }
 }
 
-/*
-object CreateMeetingRequestJsonMsgHdlrHelper {
+trait CreateMeetingRequestMessageMarshaller {
+  import spray.json._
 
+  object JsonDecoderProtol extends DefaultJsonProtocol with CreateMeetingRequestMessageProtocol
 
-  def convertTo(body: JsObject): Try[CreateMeetingRequestMessageBody] = {
-    convertBody(body) match {
-      case Success(b) => Try(b)
-      case Failure(ex) => throw ex
-    }
+  def marshall(msg: CreateMeetingRequestMessage2x): String = {
+    import JsonDecoderProtol._
+    msg.toJson.toString()
   }
 }
-*/

@@ -1,7 +1,6 @@
 package org.bigbluebutton.core.pubsub.senders
 
 import org.bigbluebutton.core.api._
-import org.bigbluebutton.common.messages.MessagingConstants
 import org.bigbluebutton.core.messaging.Util
 import com.google.gson.Gson
 import org.bigbluebutton.core.models.{ RegisteredUser, UserVO }

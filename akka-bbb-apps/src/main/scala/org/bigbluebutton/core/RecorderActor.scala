@@ -33,7 +33,6 @@ import org.bigbluebutton.core.recorders.events.DeskShareStartRTMPRecordEvent
 import org.bigbluebutton.core.recorders.events.DeskShareStopRTMPRecordEvent
 import org.bigbluebutton.core.recorders.events.DeskShareNotifyViewersRTMPRecordEvent
 // import org.bigbluebutton.core.service.whiteboard.WhiteboardKeyUtil
-import org.bigbluebutton.common.messages.WhiteboardKeyUtil
 import org.bigbluebutton.core.recorders.events.ModifyTextWhiteboardRecordEvent
 import org.bigbluebutton.core.recorders.events.EditCaptionHistoryRecordEvent
 import scala.collection.immutable.StringOps

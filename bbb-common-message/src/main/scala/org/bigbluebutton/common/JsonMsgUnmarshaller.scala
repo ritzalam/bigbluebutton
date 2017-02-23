@@ -8,6 +8,8 @@ import spray.json.JsonParser.ParsingException
 case class InHeaderAndJsonBody(header: Header, body: JsObject, origMsg: String)
 case class MessageProcessException(message: String) extends Exception(message)
 
+trait
+
 object JsonMsgUnmarshaller {
   import spray.json._
 

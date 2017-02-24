@@ -1,6 +1,6 @@
 package org.bigbluebutton.core.pubsub.receivers;
 
-import org.bigbluebutton.common.messages.MessagingConstants;
+import org.bigbluebutton.common.messages.ChannelConstants;
 import org.bigbluebutton.common.messages.EditCaptionHistoryMessage;
 import org.bigbluebutton.common.messages.SendCaptionHistoryRequestMessage;
 import org.bigbluebutton.common.messages.UpdateCaptionOwnerMessage;
@@ -20,7 +20,7 @@ public class CaptionMessageReceiver implements MessageHandler{
 
 	@Override
 	public void handleMessage(String pattern, String channel, String message) {
-		if (channel.equalsIgnoreCase(MessagingConstants.TO_CAPTION_CHANNEL)) {
+		if (channel.equalsIgnoreCase(ChannelConstants.TO_CAPTION_CHANNEL)) {
 			JsonParser parser = new JsonParser();
 			JsonObject obj = (JsonObject) parser.parse(message);
 			if (obj.has("header") && obj.has("payload")) {

@@ -26,17 +26,17 @@ public class SendLockSettingsMessage implements IBigBlueButtonMessage {
 
     Map<String, Boolean> settingsMap = new HashMap<String, Boolean>();
 
-    settingsMap.put(Constants.DISABLE_CAMERA, newSettings.get("disableCam"));
-    settingsMap.put(Constants.DISABLE_MICROPHONE, newSettings.get("disableMic"));
-    settingsMap.put(Constants.DISABLE_PRIVATE_CHAT, newSettings.get("disablePrivateChat"));
-    settingsMap.put(Constants.DISABLE_PUBLIC_CHAT, newSettings.get("disablePublicChat"));
-    settingsMap.put(Constants.LOCKED_LAYOUT, newSettings.get("lockedLayout"));
-    settingsMap.put(Constants.LOCK_ON_JOIN, newSettings.get("lockOnJoin"));
-    settingsMap.put(Constants.LOCK_ON_JOIN_CONFIGURABLE, newSettings.get("lockOnJoinConfigurable"));
+    settingsMap.put(MessageBodyConstants.DISABLE_CAMERA, newSettings.get("disableCam"));
+    settingsMap.put(MessageBodyConstants.DISABLE_MICROPHONE, newSettings.get("disableMic"));
+    settingsMap.put(MessageBodyConstants.DISABLE_PRIVATE_CHAT, newSettings.get("disablePrivateChat"));
+    settingsMap.put(MessageBodyConstants.DISABLE_PUBLIC_CHAT, newSettings.get("disablePublicChat"));
+    settingsMap.put(MessageBodyConstants.LOCKED_LAYOUT, newSettings.get("lockedLayout"));
+    settingsMap.put(MessageBodyConstants.LOCK_ON_JOIN, newSettings.get("lockOnJoin"));
+    settingsMap.put(MessageBodyConstants.LOCK_ON_JOIN_CONFIGURABLE, newSettings.get("lockOnJoinConfigurable"));
 
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.USER_ID, userId);
-    payload.put(Constants.SETTINGS, settingsMap);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.USER_ID, userId);
+    payload.put(MessageBodyConstants.SETTINGS, settingsMap);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(SEND_LOCK_SETTINGS, VERSION, null);
     return MessageBuilder.buildJson(header, payload);
@@ -59,32 +59,32 @@ public class SendLockSettingsMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (SEND_LOCK_SETTINGS.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.SETTINGS)) {
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.SETTINGS)) {
 
-            JsonObject settingsObj = (JsonObject) payload.get(Constants.SETTINGS).getAsJsonObject();
-            if (settingsObj.has(Constants.DISABLE_CAMERA)
-                    && settingsObj.has(Constants.DISABLE_CAMERA)
-                    && settingsObj.has(Constants.DISABLE_MICROPHONE)
-                    && settingsObj.has(Constants.DISABLE_PRIVATE_CHAT)
-                    && settingsObj.has(Constants.DISABLE_PUBLIC_CHAT)
-                    && settingsObj.has(Constants.LOCKED_LAYOUT)
-                    && settingsObj.has(Constants.LOCK_ON_JOIN)
-                    && settingsObj.has(Constants.LOCK_ON_JOIN_CONFIGURABLE)) {
+            JsonObject settingsObj = (JsonObject) payload.get(MessageBodyConstants.SETTINGS).getAsJsonObject();
+            if (settingsObj.has(MessageBodyConstants.DISABLE_CAMERA)
+                    && settingsObj.has(MessageBodyConstants.DISABLE_CAMERA)
+                    && settingsObj.has(MessageBodyConstants.DISABLE_MICROPHONE)
+                    && settingsObj.has(MessageBodyConstants.DISABLE_PRIVATE_CHAT)
+                    && settingsObj.has(MessageBodyConstants.DISABLE_PUBLIC_CHAT)
+                    && settingsObj.has(MessageBodyConstants.LOCKED_LAYOUT)
+                    && settingsObj.has(MessageBodyConstants.LOCK_ON_JOIN)
+                    && settingsObj.has(MessageBodyConstants.LOCK_ON_JOIN_CONFIGURABLE)) {
 
               Map<String, Boolean> settingsMap = new HashMap<String, Boolean>();
 
-              settingsMap.put("disableCam", settingsObj.get(Constants.DISABLE_CAMERA).getAsBoolean());
-              settingsMap.put("disableMic", settingsObj.get(Constants.DISABLE_MICROPHONE).getAsBoolean());
-              settingsMap.put("disablePrivateChat", settingsObj.get(Constants.DISABLE_PRIVATE_CHAT).getAsBoolean());
-              settingsMap.put("disablePublicChat", settingsObj.get(Constants.DISABLE_PUBLIC_CHAT).getAsBoolean());
-              settingsMap.put("lockedLayout", settingsObj.get(Constants.LOCKED_LAYOUT).getAsBoolean());
-              settingsMap.put("lockOnJoin", settingsObj.get(Constants.LOCK_ON_JOIN).getAsBoolean());
-              settingsMap.put("lockOnJoinConfigurable", settingsObj.get(Constants.LOCK_ON_JOIN_CONFIGURABLE).getAsBoolean());
+              settingsMap.put("disableCam", settingsObj.get(MessageBodyConstants.DISABLE_CAMERA).getAsBoolean());
+              settingsMap.put("disableMic", settingsObj.get(MessageBodyConstants.DISABLE_MICROPHONE).getAsBoolean());
+              settingsMap.put("disablePrivateChat", settingsObj.get(MessageBodyConstants.DISABLE_PRIVATE_CHAT).getAsBoolean());
+              settingsMap.put("disablePublicChat", settingsObj.get(MessageBodyConstants.DISABLE_PUBLIC_CHAT).getAsBoolean());
+              settingsMap.put("lockedLayout", settingsObj.get(MessageBodyConstants.LOCKED_LAYOUT).getAsBoolean());
+              settingsMap.put("lockOnJoin", settingsObj.get(MessageBodyConstants.LOCK_ON_JOIN).getAsBoolean());
+              settingsMap.put("lockOnJoinConfigurable", settingsObj.get(MessageBodyConstants.LOCK_ON_JOIN_CONFIGURABLE).getAsBoolean());
 
-              String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-              String userId = payload.get(Constants.USER_ID).getAsString();
+              String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+              String userId = payload.get(MessageBodyConstants.USER_ID).getAsString();
 
               return new SendLockSettingsMessage(meetingId, userId, settingsMap);
             }

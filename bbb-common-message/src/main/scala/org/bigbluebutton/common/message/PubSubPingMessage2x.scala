@@ -1,14 +1,13 @@
 package org.bigbluebutton.common.message
 
-import org.bigbluebutton.common.messages.MessagingConstants
-import org.bigbluebutton.common.{InHeaderAndJsonBody, MessageProcessException}
+import org.bigbluebutton.common.{InHeaderAndJsonBody, MessageProcessException, PubSubChannels}
 import spray.json.{DefaultJsonProtocol, DeserializationException, JsObject}
 
 import scala.util.{Failure, Success, Try}
 
 object PubSubPingMessage2xConst {
   val NAME = "PubSubPingMessage"
-  val CHANNEL = MessagingConstants.TO_SYSTEM_CHANNEL
+  val CHANNEL = PubSubChannels.TO_SYSTEM_CHANNEL
 }
 
 case class PubSubPingMessageBody(system: String, timestamp: Long)
@@ -22,7 +21,7 @@ trait PubSubPingMessageProtocol extends HeaderProtocol {
   implicit val pubSubPingMessageFormat = jsonFormat2(PubSubPingMessage2x)
 }
 
-trait PubSubPingMessageUnmarshaller {
+object PubSubPingMessageUnmarshaller {
 
   object JsonDecoderProtol extends DefaultJsonProtocol with PubSubPingMessageProtocol
 
@@ -45,7 +44,7 @@ trait PubSubPingMessageUnmarshaller {
     } yield b
   }
 
-  override def unmarshall(msg: InHeaderAndJsonBody): Try[PubSubPingMessage2x] = {
+  def unmarshall(msg: InHeaderAndJsonBody): Try[PubSubPingMessage2x] = {
     if (msg.header.name == PubSubPingMessage2xConst.NAME) {
       convertBody(msg.body) match {
         case Success(body) => Success(PubSubPingMessage2x(msg.header, body))
@@ -58,11 +57,10 @@ trait PubSubPingMessageUnmarshaller {
 }
 
 trait PubSubPingMessageMarshaller {
-  import spray.json._
-
-  object JsonDecoderProtol extends DefaultJsonProtocol with PubSubPingMessageProtocol
-
   def marshall(msg: PubSubPingMessage2x): String = {
+    import spray.json._
+
+    object JsonDecoderProtol extends DefaultJsonProtocol with PubSubPingMessageProtocol
     import JsonDecoderProtol._
     msg.toJson.toString()
   }

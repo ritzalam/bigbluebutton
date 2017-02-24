@@ -20,7 +20,7 @@ public class UserJoinedMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(USER_JOINED, VERSION, null);
 
@@ -43,11 +43,11 @@ public class UserJoinedMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (USER_JOINED.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER)) {
-            String meetingID = payload.get(Constants.MEETING_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER)) {
+            String meetingID = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
 
-            JsonObject user = (JsonObject) payload.get(Constants.USER);
+            JsonObject user = (JsonObject) payload.get(MessageBodyConstants.USER);
 
             Util util = new Util();
             Map<String, Object> userMap = util.extractUser(user);

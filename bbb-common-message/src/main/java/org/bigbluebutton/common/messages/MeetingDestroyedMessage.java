@@ -17,7 +17,7 @@ public class MeetingDestroyedMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
 
     HashMap<String, Object> header = MessageBuilder.buildHeader(NAME, VERSION, null);
 
@@ -40,8 +40,8 @@ public class MeetingDestroyedMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (NAME.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
 
             return new MeetingDestroyedMessage(meetingId);
           }

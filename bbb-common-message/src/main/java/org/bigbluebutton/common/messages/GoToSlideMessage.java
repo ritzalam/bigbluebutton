@@ -19,8 +19,8 @@ public class GoToSlideMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.PAGE, page);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.PAGE, page);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(GO_TO_SLIDE, VERSION, null);
 
@@ -43,10 +43,10 @@ public class GoToSlideMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (GO_TO_SLIDE.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.PAGE)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String page = payload.get(Constants.PAGE).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.PAGE)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String page = payload.get(MessageBodyConstants.PAGE).getAsString();
 
             return new GoToSlideMessage(meetingId, page);
           }

@@ -26,11 +26,11 @@ public class ResizeAndMoveSlideMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.X_OFFSET, xOffset);
-    payload.put(Constants.Y_OFFSET, yOffset);
-    payload.put(Constants.HEIGHT_RATIO, heightRatio);
-    payload.put(Constants.WIDTH_RATIO, widthRatio);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.X_OFFSET, xOffset);
+    payload.put(MessageBodyConstants.Y_OFFSET, yOffset);
+    payload.put(MessageBodyConstants.HEIGHT_RATIO, heightRatio);
+    payload.put(MessageBodyConstants.WIDTH_RATIO, widthRatio);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(RESIZE_AND_MOVE_SLIDE, VERSION, null);
     return MessageBuilder.buildJson(header, payload);
@@ -52,16 +52,16 @@ public class ResizeAndMoveSlideMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (RESIZE_AND_MOVE_SLIDE.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.X_OFFSET)
-                  && payload.has(Constants.Y_OFFSET)
-                  && payload.has(Constants.HEIGHT_RATIO)
-                  && payload.has(Constants.WIDTH_RATIO)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            double xOffset = payload.get(Constants.X_OFFSET).getAsDouble();
-            double yOffset = payload.get(Constants.Y_OFFSET).getAsDouble();
-            double heightRatio = payload.get(Constants.HEIGHT_RATIO).getAsDouble();
-            double widthRatio = payload.get(Constants.WIDTH_RATIO).getAsDouble();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.X_OFFSET)
+                  && payload.has(MessageBodyConstants.Y_OFFSET)
+                  && payload.has(MessageBodyConstants.HEIGHT_RATIO)
+                  && payload.has(MessageBodyConstants.WIDTH_RATIO)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            double xOffset = payload.get(MessageBodyConstants.X_OFFSET).getAsDouble();
+            double yOffset = payload.get(MessageBodyConstants.Y_OFFSET).getAsDouble();
+            double heightRatio = payload.get(MessageBodyConstants.HEIGHT_RATIO).getAsDouble();
+            double widthRatio = payload.get(MessageBodyConstants.WIDTH_RATIO).getAsDouble();
 
             return new ResizeAndMoveSlideMessage(meetingId, xOffset, yOffset, widthRatio, heightRatio);
           }

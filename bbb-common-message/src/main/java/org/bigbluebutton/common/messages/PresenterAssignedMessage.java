@@ -24,10 +24,10 @@ public class PresenterAssignedMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.NEW_PRESENTER_ID, newPresenterId);
-    payload.put(Constants.NEW_PRESENTER_NAME, newPresenterName);
-    payload.put(Constants.ASSIGNED_BY, assignedBy);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.NEW_PRESENTER_ID, newPresenterId);
+    payload.put(MessageBodyConstants.NEW_PRESENTER_NAME, newPresenterName);
+    payload.put(MessageBodyConstants.ASSIGNED_BY, assignedBy);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(PRESENTER_ASSIGNED, VERSION, null);
 
@@ -50,14 +50,14 @@ public class PresenterAssignedMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (PRESENTER_ASSIGNED.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.NEW_PRESENTER_ID)
-                  && payload.has(Constants.NEW_PRESENTER_NAME)
-                  && payload.has(Constants.ASSIGNED_BY)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
-            String presenterId = payload.get(Constants.NEW_PRESENTER_ID).getAsString();
-            String presenterName = payload.get(Constants.NEW_PRESENTER_NAME).getAsString();
-            String assignedBy = payload.get(Constants.ASSIGNED_BY).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.NEW_PRESENTER_ID)
+                  && payload.has(MessageBodyConstants.NEW_PRESENTER_NAME)
+                  && payload.has(MessageBodyConstants.ASSIGNED_BY)) {
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String presenterId = payload.get(MessageBodyConstants.NEW_PRESENTER_ID).getAsString();
+            String presenterName = payload.get(MessageBodyConstants.NEW_PRESENTER_NAME).getAsString();
+            String assignedBy = payload.get(MessageBodyConstants.ASSIGNED_BY).getAsString();
             return new PresenterAssignedMessage(id, presenterId, presenterName, assignedBy);
           }
         }

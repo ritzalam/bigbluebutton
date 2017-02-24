@@ -22,9 +22,9 @@ public class UserListeningOnlyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.USER_ID, userId);
-    payload.put(Constants.LISTEN_ONLY, listenOnly);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.USER_ID, userId);
+    payload.put(MessageBodyConstants.LISTEN_ONLY, listenOnly);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(USER_LISTENING_ONLY, VERSION, null);
 
@@ -47,12 +47,12 @@ public class UserListeningOnlyMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (USER_LISTENING_ONLY.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.LISTEN_ONLY)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
-            String userid = payload.get(Constants.USER_ID).getAsString();
-            Boolean listenOnly = payload.get(Constants.LISTEN_ONLY).getAsBoolean();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.LISTEN_ONLY)) {
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userid = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            Boolean listenOnly = payload.get(MessageBodyConstants.LISTEN_ONLY).getAsBoolean();
             return new UserListeningOnlyMessage(id, userid, listenOnly);
           }
         }

@@ -44,7 +44,7 @@ public class VotePollUserRequestMessage implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    return MessagingConstants.TO_POLLING_CHANNEL;
+    return ChannelConstants.TO_POLLING_CHANNEL;
   }
 
   public static VotePollUserRequestMessage fromJson(String message) {
@@ -58,12 +58,12 @@ public class VotePollUserRequestMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (VOTE_POLL_REQUEST.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
+          if (payload.has(MessageBodyConstants.MEETING_ID)
                   && payload.has(USER_ID)
                   && payload.has(POLL_ID)
                   && payload.has(QUESTION_ID)
                   && payload.has(ANSWER_ID)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
             String userId = payload.get(USER_ID).getAsString();
             String pollId = payload.get(POLL_ID).getAsString();
             Integer questionId = payload.get(QUESTION_ID).getAsInt();

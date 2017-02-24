@@ -23,9 +23,9 @@ public class UserVoiceTalkingMessage implements IBigBlueButtonMessage {
 	
 	public String toJson() {
 		HashMap<String, Object> payload = new HashMap<String, Object>();
-		payload.put(Constants.MEETING_ID, meetingId); 
-		payload.put(Constants.USER, user);
-		payload.put(Constants.VOICE_CONF, voiceConf);
+		payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+		payload.put(MessageBodyConstants.USER, user);
+		payload.put(MessageBodyConstants.VOICE_CONF, voiceConf);
 		
 		java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(USER_VOICE_TALKING, VERSION, null);
 
@@ -48,12 +48,12 @@ public class UserVoiceTalkingMessage implements IBigBlueButtonMessage {
 			if (header.has("name")) {
 				String messageName = header.get("name").getAsString();
 				if (USER_VOICE_TALKING.equals(messageName)) {
-					if (payload.has(Constants.MEETING_ID) 
-							&& payload.has(Constants.USER)) {
-						String id = payload.get(Constants.MEETING_ID).getAsString();
-						String voiceConf = payload.get(Constants.VOICE_CONF).getAsString();
+					if (payload.has(MessageBodyConstants.MEETING_ID)
+							&& payload.has(MessageBodyConstants.USER)) {
+						String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+						String voiceConf = payload.get(MessageBodyConstants.VOICE_CONF).getAsString();
 						
-						JsonObject user = (JsonObject) payload.get(Constants.USER);
+						JsonObject user = (JsonObject) payload.get(MessageBodyConstants.USER);
 						
 						Util util = new Util();
 						Map<String, Object> userMap = util.extractUser(user);

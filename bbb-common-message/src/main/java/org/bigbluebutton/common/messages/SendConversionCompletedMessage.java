@@ -30,13 +30,13 @@ public class SendConversionCompletedMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.MESSAGE_KEY, messageKey);
-    payload.put(Constants.CODE, code);
-    payload.put(Constants.PRESENTATION_ID, presId);
-    payload.put(Constants.NUM_PAGES, numPages);
-    payload.put(Constants.PRESENTATION_NAME, presName);
-    payload.put(Constants.PRESENTATION_BASE_URL, presBaseUrl);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MESSAGE_KEY, messageKey);
+    payload.put(MessageBodyConstants.CODE, code);
+    payload.put(MessageBodyConstants.PRESENTATION_ID, presId);
+    payload.put(MessageBodyConstants.NUM_PAGES, numPages);
+    payload.put(MessageBodyConstants.PRESENTATION_NAME, presName);
+    payload.put(MessageBodyConstants.PRESENTATION_BASE_URL, presBaseUrl);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(SEND_CONVERSION_COMPLETED, VERSION, null);
 
@@ -59,20 +59,20 @@ public class SendConversionCompletedMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (SEND_CONVERSION_COMPLETED.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.MESSAGE_KEY)
-                  && payload.has(Constants.CODE)
-                  && payload.has(Constants.PRESENTATION_ID)
-                  && payload.has(Constants.NUM_PAGES)
-                  && payload.has(Constants.PRESENTATION_NAME)
-                  && payload.has(Constants.PRESENTATION_BASE_URL)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String messageKey = payload.get(Constants.MESSAGE_KEY).getAsString();
-            String code = payload.get(Constants.CODE).getAsString();
-            String presId = payload.get(Constants.PRESENTATION_ID).getAsString();
-            int numPages = payload.get(Constants.NUM_PAGES).getAsInt();
-            String presName = payload.get(Constants.PRESENTATION_NAME).getAsString();
-            String presBaseUrl = payload.get(Constants.PRESENTATION_BASE_URL).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.MESSAGE_KEY)
+                  && payload.has(MessageBodyConstants.CODE)
+                  && payload.has(MessageBodyConstants.PRESENTATION_ID)
+                  && payload.has(MessageBodyConstants.NUM_PAGES)
+                  && payload.has(MessageBodyConstants.PRESENTATION_NAME)
+                  && payload.has(MessageBodyConstants.PRESENTATION_BASE_URL)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String messageKey = payload.get(MessageBodyConstants.MESSAGE_KEY).getAsString();
+            String code = payload.get(MessageBodyConstants.CODE).getAsString();
+            String presId = payload.get(MessageBodyConstants.PRESENTATION_ID).getAsString();
+            int numPages = payload.get(MessageBodyConstants.NUM_PAGES).getAsInt();
+            String presName = payload.get(MessageBodyConstants.PRESENTATION_NAME).getAsString();
+            String presBaseUrl = payload.get(MessageBodyConstants.PRESENTATION_BASE_URL).getAsString();
 
             return new SendConversionCompletedMessage(messageKey, meetingId, code, presId, numPages, presName, presBaseUrl);
           }

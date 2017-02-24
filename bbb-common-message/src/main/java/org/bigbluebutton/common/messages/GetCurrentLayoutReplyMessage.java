@@ -31,7 +31,7 @@ public class GetCurrentLayoutReplyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
     payload.put(REQUESTED_BY_USERID, requestedByUserid);
     payload.put(SET_BY_USERID, setByUserid);
     payload.put(LAYOUT, layout);
@@ -58,12 +58,12 @@ public class GetCurrentLayoutReplyMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (GET_CURRENT_LAYOUT_REPLY.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
+          if (payload.has(MessageBodyConstants.MEETING_ID)
                   && payload.has(REQUESTED_BY_USERID)
                   && payload.has(SET_BY_USERID)
                   && payload.has(LOCKED)
                   && payload.has(LAYOUT)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
             String requestedByUserid = payload.get(REQUESTED_BY_USERID).getAsString();
             String setByUserid = payload.get(SET_BY_USERID).getAsString();
             String layout = payload.get(LAYOUT).getAsString();

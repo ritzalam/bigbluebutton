@@ -26,11 +26,11 @@ public class ValidateAuthTokenTimeoutMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.REPLY_TO, replyTo);
-    payload.put(Constants.VALID, valid);
-    payload.put(Constants.USER_ID, userId);
-    payload.put(Constants.AUTH_TOKEN, token);
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.REPLY_TO, replyTo);
+    payload.put(MessageBodyConstants.VALID, valid);
+    payload.put(MessageBodyConstants.USER_ID, userId);
+    payload.put(MessageBodyConstants.AUTH_TOKEN, token);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(VALIDATE_AUTH_TOKEN_TIMEOUT, VERSION, replyTo);
 
@@ -53,16 +53,16 @@ public class ValidateAuthTokenTimeoutMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (VALIDATE_AUTH_TOKEN_TIMEOUT.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.AUTH_TOKEN)
-                  && payload.has(Constants.VALID)
-                  && payload.has(Constants.REPLY_TO)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
-            String userid = payload.get(Constants.USER_ID).getAsString();
-            String authToken = payload.get(Constants.AUTH_TOKEN).getAsString();
-            String replyTo = payload.get(Constants.REPLY_TO).getAsString();
-            Boolean valid = payload.get(Constants.VALID).getAsBoolean();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.AUTH_TOKEN)
+                  && payload.has(MessageBodyConstants.VALID)
+                  && payload.has(MessageBodyConstants.REPLY_TO)) {
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userid = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            String authToken = payload.get(MessageBodyConstants.AUTH_TOKEN).getAsString();
+            String replyTo = payload.get(MessageBodyConstants.REPLY_TO).getAsString();
+            Boolean valid = payload.get(MessageBodyConstants.VALID).getAsBoolean();
             return new ValidateAuthTokenTimeoutMessage(id, userid, authToken, valid, replyTo);
           }
         }

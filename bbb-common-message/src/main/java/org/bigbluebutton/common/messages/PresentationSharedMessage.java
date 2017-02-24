@@ -21,8 +21,8 @@ public class PresentationSharedMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.PRESENTATION, presentation);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.PRESENTATION, presentation);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(PRESENTATION_SHARED_MESSAGE, VERSION, null);
 
@@ -45,11 +45,11 @@ public class PresentationSharedMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (PRESENTATION_SHARED_MESSAGE.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.PRESENTATION)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.PRESENTATION)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
 
-            JsonObject presentationObject = (JsonObject) payload.get(Constants.PRESENTATION).getAsJsonObject();
+            JsonObject presentationObject = (JsonObject) payload.get(MessageBodyConstants.PRESENTATION).getAsJsonObject();
             Util util = new Util();
 
             Map<String, Object> presentation = util.extractPresentation(presentationObject);

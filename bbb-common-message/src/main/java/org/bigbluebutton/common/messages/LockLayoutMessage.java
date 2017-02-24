@@ -30,7 +30,7 @@ public class LockLayoutMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
     payload.put(SET_BY_USERID, setByUserid);
     payload.put(LOCKED, locked);
     payload.put(USERS, users);
@@ -56,11 +56,11 @@ public class LockLayoutMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (LOCK_LAYOUT.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
+          if (payload.has(MessageBodyConstants.MEETING_ID)
                   && payload.has(LOCKED)
                   && payload.has(SET_BY_USERID)
                   && payload.has(USERS)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
             String setByUserid = payload.get(SET_BY_USERID).getAsString();
             Boolean locked = payload.get(LOCKED).getAsBoolean();
             JsonArray usersArr = (JsonArray) payload.get(USERS);

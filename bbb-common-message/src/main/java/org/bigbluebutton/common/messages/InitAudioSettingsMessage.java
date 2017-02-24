@@ -21,9 +21,9 @@ public class InitAudioSettingsMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.USER_ID, userId);
-    payload.put(Constants.MUTED, muted);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.USER_ID, userId);
+    payload.put(MessageBodyConstants.MUTED, muted);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(INIT_AUDIO_SETTING, VERSION, null);
 
@@ -46,12 +46,12 @@ public class InitAudioSettingsMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (INIT_AUDIO_SETTING.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.MUTED)) {
-            String meetingID = payload.get(Constants.MEETING_ID).getAsString();
-            String userId = payload.get(Constants.USER_ID).getAsString();
-            Boolean muted = payload.get(Constants.MUTED).getAsBoolean();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.MUTED)) {
+            String meetingID = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userId = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            Boolean muted = payload.get(MessageBodyConstants.MUTED).getAsBoolean();
 
             return new InitAudioSettingsMessage(meetingID, userId, muted);
           }

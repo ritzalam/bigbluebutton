@@ -36,7 +36,7 @@ public class StopPollRequestMessage implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    return MessagingConstants.TO_POLLING_CHANNEL;
+    return ChannelConstants.TO_POLLING_CHANNEL;
   }
 
   public static StopPollRequestMessage fromJson(String message) {
@@ -50,10 +50,10 @@ public class StopPollRequestMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (STOP_POLL_REQUEST.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
+          if (payload.has(MessageBodyConstants.MEETING_ID)
                   && payload.has(REQUESTER_ID)
                   && payload.has(POLL_ID)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
             String requesterId = payload.get(REQUESTER_ID).getAsString();
             String pollId = payload.get(POLL_ID).getAsString();
             return new StopPollRequestMessage(id, requesterId, pollId);

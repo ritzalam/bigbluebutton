@@ -25,9 +25,9 @@ public class ValidateAuthTokenMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.USER_ID, userId);
-    payload.put(Constants.AUTH_TOKEN, token);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.USER_ID, userId);
+    payload.put(MessageBodyConstants.AUTH_TOKEN, token);
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(VALIDATE_AUTH_TOKEN, VERSION, replyTo);
 
     return MessageBuilder.buildJson(header, payload);
@@ -51,15 +51,15 @@ public class ValidateAuthTokenMessage implements IBigBlueButtonMessage {
         String messageName = header.get("name").getAsString();
         if (VALIDATE_AUTH_TOKEN.equals(messageName)) {
 
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.AUTH_TOKEN)
-                  && header.has(Constants.REPLY_TO)) {
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.AUTH_TOKEN)
+                  && header.has(MessageBodyConstants.REPLY_TO)) {
 
-            String id = payload.get(Constants.MEETING_ID).getAsString();
-            String userid = payload.get(Constants.USER_ID).getAsString();
-            String authToken = payload.get(Constants.AUTH_TOKEN).getAsString();
-            String replyTo = header.get(Constants.REPLY_TO).getAsString();
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userid = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            String authToken = payload.get(MessageBodyConstants.AUTH_TOKEN).getAsString();
+            String replyTo = header.get(MessageBodyConstants.REPLY_TO).getAsString();
             String sessionId = "tobeimplemented";
             return new ValidateAuthTokenMessage(id, userid, authToken, replyTo,
                     sessionId);

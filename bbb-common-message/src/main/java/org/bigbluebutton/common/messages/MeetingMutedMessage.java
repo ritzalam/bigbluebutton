@@ -19,7 +19,7 @@ public class MeetingMutedMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(MEETING_MUTED, VERSION, null);
 
@@ -42,10 +42,10 @@ public class MeetingMutedMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (MEETING_MUTED.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.MEETING_MUTED)) {
-            String meetingID = payload.get(Constants.MEETING_ID).getAsString();
-            Boolean muted = payload.get(Constants.MEETING_MUTED).getAsBoolean();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.MEETING_MUTED)) {
+            String meetingID = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            Boolean muted = payload.get(MessageBodyConstants.MEETING_MUTED).getAsBoolean();
 
             return new MeetingMutedMessage(meetingID, muted);
           }

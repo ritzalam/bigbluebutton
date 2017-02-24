@@ -1,6 +1,6 @@
 package org.bigbluebutton.common.messages;
 
-public class Constants {
+public class MessageBodyConstants {
   public static final String NAME                            = "name";
   public static final String HEADER                          = "header";
   public static final String PAYLOAD                         = "payload";

@@ -2,15 +2,10 @@ package org.bigbluebutton.core.pubsub.receivers;
 
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
+import org.bigbluebutton.common.messages.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.bigbluebutton.common.messages.DeskShareStartedEventMessage;
-import org.bigbluebutton.common.messages.DeskShareStoppedEventMessage;
-import org.bigbluebutton.common.messages.DeskShareRTMPBroadcastStartedEventMessage;
-import org.bigbluebutton.common.messages.DeskShareRTMPBroadcastStoppedEventMessage;
-import org.bigbluebutton.common.messages.DeskShareGetInfoRequestMessage;
-import org.bigbluebutton.common.messages.MessagingConstants;
 import org.bigbluebutton.core.api.IBigBlueButtonInGW;
 
 public class DeskShareMessageReceiver implements MessageHandler {
@@ -23,7 +18,7 @@ public class DeskShareMessageReceiver implements MessageHandler {
 
 	@Override
 	public void handleMessage(String pattern, String channel, String message) {
-		if (channel.equalsIgnoreCase(MessagingConstants.FROM_VOICE_CONF_SYSTEM_CHAN)) {
+		if (channel.equalsIgnoreCase(ChannelConstants.FROM_VOICE_CONF_SYSTEM_CHAN)) {
 			JsonParser parser = new JsonParser();
 			JsonObject obj = (JsonObject) parser.parse(message);
 			if (obj.has("header") && obj.has("payload")) {

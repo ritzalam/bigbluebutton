@@ -21,6 +21,18 @@ resolvers ++= Seq(
   "rediscala" at "http://dl.bintray.com/etaty/maven"
 )
 
+//resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases"
+
+// NOTE: If you get compile errors about unresolved dependency on
+// com.artima.supersafe:sbtplugin:1.1.0, you need to add the following on
+// ~/.sbt/0.13/global.sbt
+//
+// resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases"
+//
+// See http://www.scalatest.org/install
+//
+// Adding it to build.sbt doesn't seem to work.
+
 // We want to have our jar files in lib_managed dir.
 // This way we'll have the right path when we import
 // into eclipse.
@@ -43,6 +55,8 @@ libraryDependencies += "junit" % "junit" % "4.12" % "test"
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1" % "test"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+
+
 
 seq(Revolver.settings: _*)
 

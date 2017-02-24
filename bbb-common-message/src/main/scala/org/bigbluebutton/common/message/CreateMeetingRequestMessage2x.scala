@@ -1,8 +1,7 @@
 package org.bigbluebutton.common.message
 
-import org.bigbluebutton.common.{InHeaderAndJsonBody, MessageProcessException}
+import org.bigbluebutton.common.{InHeaderAndJsonBody, MessageProcessException, PubSubChannels}
 import spray.json.{DefaultJsonProtocol, DeserializationException, JsObject}
-import org.bigbluebutton.common.messages.MessagingConstants
 import scala.util.{Failure, Success, Try}
 
 case class CreateMeetingRequestMessageBody(id: String, externalId: String,
@@ -16,10 +15,11 @@ case class CreateMeetingRequestMessageBody(id: String, externalId: String,
 
 object CreateMeetingRequestMessageConst {
   val NAME = "CreateMeetingRequestMessage"
-  val CHANNEL = MessagingConstants.TO_MEETING_CHANNEL
+  val CHANNEL = PubSubChannels.TO_MEETING_CHANNEL
 }
 
-case class CreateMeetingRequestMessage2x(header: Header, body: CreateMeetingRequestMessageBody)
+case class CreateMeetingRequestMessage2x(header: Header, body: CreateMeetingRequestMessageBody) extends BbbMsg
+
 
 trait CreateMeetingRequestMessageProtocol extends HeaderProtocol {
   this: DefaultJsonProtocol =>
@@ -28,7 +28,7 @@ trait CreateMeetingRequestMessageProtocol extends HeaderProtocol {
   implicit val createMeetingRequestMessage2xFormat = jsonFormat2(CreateMeetingRequestMessage2x)
 }
 
-trait CreateMeetingRequestMessageUnmarshaller {
+object CreateMeetingRequestMessageUnmarshaller {
 
   object JsonDecoderProtol extends DefaultJsonProtocol with CreateMeetingRequestMessageProtocol
 
@@ -51,7 +51,8 @@ trait CreateMeetingRequestMessageUnmarshaller {
     } yield b
   }
 
-  override def unmarshall(msg: InHeaderAndJsonBody): Try[CreateMeetingRequestMessage2x] = {
+
+  def unmarshall(msg: InHeaderAndJsonBody): Try[CreateMeetingRequestMessage2x] = {
     if (msg.header.name == CreateMeetingRequestMessageConst.NAME) {
       convertBody(msg.body) match {
         case Success(body) => Success(CreateMeetingRequestMessage2x(msg.header, body))
@@ -64,11 +65,12 @@ trait CreateMeetingRequestMessageUnmarshaller {
 }
 
 trait CreateMeetingRequestMessageMarshaller {
-  import spray.json._
 
-  object JsonDecoderProtol extends DefaultJsonProtocol with CreateMeetingRequestMessageProtocol
 
   def marshall(msg: CreateMeetingRequestMessage2x): String = {
+    object JsonDecoderProtol extends DefaultJsonProtocol with CreateMeetingRequestMessageProtocol
+
+    import spray.json._
     import JsonDecoderProtol._
     msg.toJson.toString()
   }

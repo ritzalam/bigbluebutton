@@ -32,13 +32,13 @@ public class PresentationConversionErrorMessage implements IBigBlueButtonMessage
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.PRESENTATION_ID, presentationId);
-    payload.put(Constants.CODE, code);
-    payload.put(Constants.MESSAGE_KEY, messageKey);
-    payload.put(Constants.PRESENTATION_NAME, presentationName);
-    payload.put(Constants.NUM_PAGES, numPages);
-    payload.put(Constants.MAX_NUM_PAGES, maxNumPages);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.PRESENTATION_ID, presentationId);
+    payload.put(MessageBodyConstants.CODE, code);
+    payload.put(MessageBodyConstants.MESSAGE_KEY, messageKey);
+    payload.put(MessageBodyConstants.PRESENTATION_NAME, presentationName);
+    payload.put(MessageBodyConstants.NUM_PAGES, numPages);
+    payload.put(MessageBodyConstants.MAX_NUM_PAGES, maxNumPages);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(PRESENTATION_CONVERSION_ERROR, VERSION, null);
 
@@ -61,20 +61,20 @@ public class PresentationConversionErrorMessage implements IBigBlueButtonMessage
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (PRESENTATION_CONVERSION_ERROR.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.CODE)
-                  && payload.has(Constants.MESSAGE_KEY)
-                  && payload.has(Constants.MAX_NUM_PAGES)
-                  && payload.has(Constants.NUM_PAGES)
-                  && payload.has(Constants.PRESENTATION_NAME)
-                  && payload.has(Constants.PRESENTATION_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String presentationId = payload.get(Constants.PRESENTATION_ID).getAsString();
-            String presentationName = payload.get(Constants.PRESENTATION_NAME).getAsString();
-            String code = payload.get(Constants.CODE).getAsString();
-            String messageKey = payload.get(Constants.MESSAGE_KEY).getAsString();
-            int numPages = payload.get(Constants.NUM_PAGES).getAsInt();
-            int maxNumPages = payload.get(Constants.MAX_NUM_PAGES).getAsInt();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.CODE)
+                  && payload.has(MessageBodyConstants.MESSAGE_KEY)
+                  && payload.has(MessageBodyConstants.MAX_NUM_PAGES)
+                  && payload.has(MessageBodyConstants.NUM_PAGES)
+                  && payload.has(MessageBodyConstants.PRESENTATION_NAME)
+                  && payload.has(MessageBodyConstants.PRESENTATION_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String presentationId = payload.get(MessageBodyConstants.PRESENTATION_ID).getAsString();
+            String presentationName = payload.get(MessageBodyConstants.PRESENTATION_NAME).getAsString();
+            String code = payload.get(MessageBodyConstants.CODE).getAsString();
+            String messageKey = payload.get(MessageBodyConstants.MESSAGE_KEY).getAsString();
+            int numPages = payload.get(MessageBodyConstants.NUM_PAGES).getAsInt();
+            int maxNumPages = payload.get(MessageBodyConstants.MAX_NUM_PAGES).getAsInt();
 
             return new PresentationConversionErrorMessage(meetingId, presentationId,
                     code, messageKey, presentationName, numPages, maxNumPages);

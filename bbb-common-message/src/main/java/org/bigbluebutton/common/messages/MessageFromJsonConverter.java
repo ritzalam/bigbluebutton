@@ -34,29 +34,29 @@ public class MessageFromJsonConverter {
 	}
 		
 	private static IBigBlueButtonMessage processValidateAuthTokenMessage(JsonObject header, JsonObject payload) {
-		String id = payload.get(Constants.MEETING_ID).getAsString();
-		String userid = payload.get(Constants.USER_ID).getAsString();
-		String authToken = payload.get(Constants.AUTH_TOKEN).getAsString();
-		String replyTo = header.get(Constants.REPLY_TO).getAsString();
+		String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+		String userid = payload.get(MessageBodyConstants.USER_ID).getAsString();
+		String authToken = payload.get(MessageBodyConstants.AUTH_TOKEN).getAsString();
+		String replyTo = header.get(MessageBodyConstants.REPLY_TO).getAsString();
 		String sessionId = "tobeimplemented";
 		return new ValidateAuthTokenMessage(id, userid, authToken, replyTo,
 		    sessionId);
 	}
 	
 	private static IBigBlueButtonMessage processCreateMeeting(JsonObject payload) {
-		String id = payload.get(Constants.MEETING_ID).getAsString();
-		String externalId = payload.get(Constants.EXTERNAL_MEETING_ID).getAsString();
-		String name = payload.get(Constants.NAME).getAsString();
-		Boolean record = payload.get(Constants.RECORDED).getAsBoolean();
-		String voiceBridge = payload.get(Constants.VOICE_CONF).getAsString();
-		Long duration = payload.get(Constants.DURATION).getAsLong();
-		Boolean autoStartRecording = payload.get(Constants.AUTO_START_RECORDING).getAsBoolean();
-		Boolean allowStartStopRecording = payload.get(Constants.ALLOW_START_STOP_RECORDING).getAsBoolean();
-		Boolean webcamsOnlyForModerator = payload.get(Constants.WEBCAMS_ONLY_FOR_MODERATOR).getAsBoolean();
-		String moderatorPassword = payload.get(Constants.MODERATOR_PASS).getAsString();
-		String viewerPassword = payload.get(Constants.VIEWER_PASS).getAsString();
-		Long createTime = payload.get(Constants.CREATE_TIME).getAsLong();
-		String createDate = payload.get(Constants.CREATE_DATE).getAsString();
+		String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+		String externalId = payload.get(MessageBodyConstants.EXTERNAL_MEETING_ID).getAsString();
+		String name = payload.get(MessageBodyConstants.NAME).getAsString();
+		Boolean record = payload.get(MessageBodyConstants.RECORDED).getAsBoolean();
+		String voiceBridge = payload.get(MessageBodyConstants.VOICE_CONF).getAsString();
+		Long duration = payload.get(MessageBodyConstants.DURATION).getAsLong();
+		Boolean autoStartRecording = payload.get(MessageBodyConstants.AUTO_START_RECORDING).getAsBoolean();
+		Boolean allowStartStopRecording = payload.get(MessageBodyConstants.ALLOW_START_STOP_RECORDING).getAsBoolean();
+		Boolean webcamsOnlyForModerator = payload.get(MessageBodyConstants.WEBCAMS_ONLY_FOR_MODERATOR).getAsBoolean();
+		String moderatorPassword = payload.get(MessageBodyConstants.MODERATOR_PASS).getAsString();
+		String viewerPassword = payload.get(MessageBodyConstants.VIEWER_PASS).getAsString();
+		Long createTime = payload.get(MessageBodyConstants.CREATE_TIME).getAsLong();
+		String createDate = payload.get(MessageBodyConstants.CREATE_DATE).getAsString();
 		
 		return new CreateMeetingMessage(id, externalId, name, record, voiceBridge, 
 				          duration, autoStartRecording, allowStartStopRecording,

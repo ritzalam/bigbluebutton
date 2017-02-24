@@ -22,9 +22,9 @@ public class UserEmojiStatusMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.USER_ID, userId);
-    payload.put(Constants.EMOJI_STATUS, emojiStatus);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.USER_ID, userId);
+    payload.put(MessageBodyConstants.EMOJI_STATUS, emojiStatus);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(USER_EMOJI_STATUS, VERSION, null);
 
@@ -47,12 +47,12 @@ public class UserEmojiStatusMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (USER_EMOJI_STATUS.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.EMOJI_STATUS)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
-            String userid = payload.get(Constants.USER_ID).getAsString();
-            String emojiStatus = payload.get(Constants.EMOJI_STATUS).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.EMOJI_STATUS)) {
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userid = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            String emojiStatus = payload.get(MessageBodyConstants.EMOJI_STATUS).getAsString();
             return new UserEmojiStatusMessage(id, userid, emojiStatus);
           }
         }

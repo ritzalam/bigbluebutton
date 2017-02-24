@@ -18,7 +18,7 @@
 */
 package org.bigbluebutton.common.messages;
 
-public class MessagingConstants {
+public class ChannelConstants {
 	
 	public static final String FROM_BBB_APPS_CHANNEL = "bigbluebutton:from-bbb-apps";
 	public static final String FROM_BBB_APPS_PATTERN = FROM_BBB_APPS_CHANNEL + ":*";

@@ -20,7 +20,7 @@ public class EndMeetingMessage implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    return MessagingConstants.TO_MEETING_CHANNEL;
+    return ChannelConstants.TO_MEETING_CHANNEL;
   }
 
   public static class EndMeetingMessagePayload {

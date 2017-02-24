@@ -27,10 +27,10 @@ public class SendStunTurnInfoReplyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
-    payload.put(Constants.STUNS, stuns);
-    payload.put(Constants.TURNS, turns);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.STUNS, stuns);
+    payload.put(MessageBodyConstants.TURNS, turns);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(SEND_STUN_TURN_INFO_REPLY_MESSAGE, VERSION, null);
 
@@ -38,7 +38,7 @@ public class SendStunTurnInfoReplyMessage implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    return MessagingConstants.TO_BBB_HTML5_CHANNEL;
+    return ChannelConstants.TO_BBB_HTML5_CHANNEL;
   }
 
   public static SendStunTurnInfoReplyMessage fromJson(String message) {
@@ -52,18 +52,18 @@ public class SendStunTurnInfoReplyMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (SEND_STUN_TURN_INFO_REPLY_MESSAGE.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.STUNS)
-                  && payload.has(Constants.TURNS)
-                  && payload.has(Constants.REQUESTER_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.STUNS)
+                  && payload.has(MessageBodyConstants.TURNS)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
 
             Util util = new Util();
-            JsonArray stunsArray = (JsonArray) payload.get(Constants.STUNS);
+            JsonArray stunsArray = (JsonArray) payload.get(MessageBodyConstants.STUNS);
             ArrayList<String> stunsArrayList = util.extractStuns(stunsArray);
 
-            JsonArray turnsArray = (JsonArray) payload.get(Constants.TURNS);
+            JsonArray turnsArray = (JsonArray) payload.get(MessageBodyConstants.TURNS);
             ArrayList<Map<String, Object>> turnsArrayList = util.extractTurns(turnsArray);
 
             return new SendStunTurnInfoReplyMessage(meetingId, requesterId, stunsArrayList, turnsArrayList);

@@ -21,9 +21,9 @@ public class UserDisconnectedFromGlobalAudio implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.VOICE_CONF, voiceConf);
-    payload.put(Constants.USER_ID, userid);
-    payload.put(Constants.NAME, name);
+    payload.put(MessageBodyConstants.VOICE_CONF, voiceConf);
+    payload.put(MessageBodyConstants.USER_ID, userid);
+    payload.put(MessageBodyConstants.NAME, name);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(USER_DISCONNECTED_FROM_GLOBAL_AUDIO, VERSION, null);
 
@@ -46,12 +46,12 @@ public class UserDisconnectedFromGlobalAudio implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (USER_DISCONNECTED_FROM_GLOBAL_AUDIO.equals(messageName)) {
-          if (payload.has(Constants.VOICE_CONF)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.NAME)) {
-            String voiceConf = payload.get(Constants.VOICE_CONF).getAsString();
-            String userid = payload.get(Constants.USER_ID).getAsString();
-            String name = payload.get(Constants.NAME).getAsString();
+          if (payload.has(MessageBodyConstants.VOICE_CONF)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.NAME)) {
+            String voiceConf = payload.get(MessageBodyConstants.VOICE_CONF).getAsString();
+            String userid = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            String name = payload.get(MessageBodyConstants.NAME).getAsString();
             return new UserDisconnectedFromGlobalAudio(voiceConf, userid, name);
           }
         }

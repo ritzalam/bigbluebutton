@@ -24,7 +24,7 @@ public class GetUsersReplyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(GET_USERS_REPLY, VERSION, null);
 
@@ -47,13 +47,13 @@ public class GetUsersReplyMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (GET_USERS_REPLY.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.REQUESTER_ID)
-                  && payload.has(Constants.USERS)) {
-            String meetingID = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)
+                  && payload.has(MessageBodyConstants.USERS)) {
+            String meetingID = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
 
-            JsonArray users = (JsonArray) payload.get(Constants.USERS);
+            JsonArray users = (JsonArray) payload.get(MessageBodyConstants.USERS);
 
             Util util = new Util();
             ArrayList<Map<String, Object>> usersList = util.extractUsers(users);

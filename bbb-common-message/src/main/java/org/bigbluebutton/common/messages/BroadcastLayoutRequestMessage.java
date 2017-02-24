@@ -24,8 +24,8 @@ public class BroadcastLayoutRequestMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.USER_ID, userId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.USER_ID, userId);
     payload.put(LAYOUT, layout);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(BROADCAST_LAYOUT_REQUEST, VERSION, null);
@@ -49,11 +49,11 @@ public class BroadcastLayoutRequestMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (BROADCAST_LAYOUT_REQUEST.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
                   && payload.has(LAYOUT)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
-            String userid = payload.get(Constants.USER_ID).getAsString();
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userid = payload.get(MessageBodyConstants.USER_ID).getAsString();
             String layout = payload.get(LAYOUT).getAsString();
             return new BroadcastLayoutRequestMessage(id, userid, layout);
           }

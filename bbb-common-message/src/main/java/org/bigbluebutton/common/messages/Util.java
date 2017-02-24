@@ -11,27 +11,27 @@ import com.google.gson.JsonParser;
 
 public class Util {
 	public Map<String, Boolean> extractPermission(JsonObject vu) {
-		if (vu.has(Constants.PERM_DISABLE_CAM) && vu.has(Constants.PERM_DISABLE_MIC)
-				&& vu.has(Constants.PERM_DISABLE_PRIVCHAT) && vu.has(Constants.PERM_DISABLE_PUBCHAT)
-				&& vu.has(Constants.PERM_LOCKED_LAYOUT) && vu.has(Constants.PERM_LOCK_ON_JOIN)
-				&& vu.has(Constants.PERM_LOCK_ON_JOIN_CONFIG)){
+		if (vu.has(MessageBodyConstants.PERM_DISABLE_CAM) && vu.has(MessageBodyConstants.PERM_DISABLE_MIC)
+				&& vu.has(MessageBodyConstants.PERM_DISABLE_PRIVCHAT) && vu.has(MessageBodyConstants.PERM_DISABLE_PUBCHAT)
+				&& vu.has(MessageBodyConstants.PERM_LOCKED_LAYOUT) && vu.has(MessageBodyConstants.PERM_LOCK_ON_JOIN)
+				&& vu.has(MessageBodyConstants.PERM_LOCK_ON_JOIN_CONFIG)){
 			
 			Map<String, Boolean> vuMap = new HashMap<String, Boolean>();
-			Boolean disableCam = vu.get(Constants.PERM_DISABLE_CAM).getAsBoolean();
-			Boolean disableMic = vu.get(Constants.PERM_DISABLE_MIC).getAsBoolean();
-			Boolean disablePrivChat = vu.get(Constants.PERM_DISABLE_PRIVCHAT).getAsBoolean();
-			Boolean disablePubChat = vu.get(Constants.PERM_DISABLE_PUBCHAT).getAsBoolean();
-			Boolean lockedLayout = vu.get(Constants.PERM_LOCKED_LAYOUT).getAsBoolean();
-			Boolean lockOnJoin = vu.get(Constants.PERM_LOCK_ON_JOIN).getAsBoolean();
-			Boolean lockOnJoinConfig = vu.get(Constants.PERM_LOCK_ON_JOIN_CONFIG).getAsBoolean();
+			Boolean disableCam = vu.get(MessageBodyConstants.PERM_DISABLE_CAM).getAsBoolean();
+			Boolean disableMic = vu.get(MessageBodyConstants.PERM_DISABLE_MIC).getAsBoolean();
+			Boolean disablePrivChat = vu.get(MessageBodyConstants.PERM_DISABLE_PRIVCHAT).getAsBoolean();
+			Boolean disablePubChat = vu.get(MessageBodyConstants.PERM_DISABLE_PUBCHAT).getAsBoolean();
+			Boolean lockedLayout = vu.get(MessageBodyConstants.PERM_LOCKED_LAYOUT).getAsBoolean();
+			Boolean lockOnJoin = vu.get(MessageBodyConstants.PERM_LOCK_ON_JOIN).getAsBoolean();
+			Boolean lockOnJoinConfig = vu.get(MessageBodyConstants.PERM_LOCK_ON_JOIN_CONFIG).getAsBoolean();
 			
-			vuMap.put(Constants.PERM_DISABLE_CAM, disableCam);
-			vuMap.put(Constants.PERM_DISABLE_MIC, disableMic);
-			vuMap.put(Constants.PERM_DISABLE_PRIVCHAT, disablePrivChat);
-			vuMap.put(Constants.PERM_DISABLE_PUBCHAT, disablePubChat);
-			vuMap.put(Constants.PERM_LOCKED_LAYOUT, lockedLayout);
-			vuMap.put(Constants.PERM_LOCK_ON_JOIN, lockOnJoin);
-			vuMap.put(Constants.PERM_LOCK_ON_JOIN_CONFIG, lockOnJoinConfig);
+			vuMap.put(MessageBodyConstants.PERM_DISABLE_CAM, disableCam);
+			vuMap.put(MessageBodyConstants.PERM_DISABLE_MIC, disableMic);
+			vuMap.put(MessageBodyConstants.PERM_DISABLE_PRIVCHAT, disablePrivChat);
+			vuMap.put(MessageBodyConstants.PERM_DISABLE_PUBCHAT, disablePubChat);
+			vuMap.put(MessageBodyConstants.PERM_LOCKED_LAYOUT, lockedLayout);
+			vuMap.put(MessageBodyConstants.PERM_LOCK_ON_JOIN, lockOnJoin);
+			vuMap.put(MessageBodyConstants.PERM_LOCK_ON_JOIN_CONFIG, lockOnJoinConfig);
 			
 			return vuMap;
 		}
@@ -39,20 +39,20 @@ public class Util {
 	}
 	
 	public Map<String, Object> extractVoiceUser(JsonObject vu) {
-		if (vu.has(Constants.TALKING) && vu.has(Constants.LOCKED)
-				&& vu.has(Constants.MUTED) && vu.has(Constants.JOINED)
-				&& vu.has(Constants.CALLERNAME) && vu.has(Constants.CALLERNUM)
-				&& vu.has(Constants.WEB_USERID) && vu.has(Constants.USER_ID)){
+		if (vu.has(MessageBodyConstants.TALKING) && vu.has(MessageBodyConstants.LOCKED)
+				&& vu.has(MessageBodyConstants.MUTED) && vu.has(MessageBodyConstants.JOINED)
+				&& vu.has(MessageBodyConstants.CALLERNAME) && vu.has(MessageBodyConstants.CALLERNUM)
+				&& vu.has(MessageBodyConstants.WEB_USERID) && vu.has(MessageBodyConstants.USER_ID)){
 				
 			Map<String, Object> vuMap = new HashMap<String, Object>();
-			Boolean talking = vu.get(Constants.TALKING).getAsBoolean();
-			Boolean voiceLocked = vu.get(Constants.LOCKED).getAsBoolean();
-			Boolean muted = vu.get(Constants.MUTED).getAsBoolean();
-			Boolean joined = vu.get(Constants.JOINED).getAsBoolean();
-			String callername = vu.get(Constants.CALLERNAME).getAsString();
-			String callernum = vu.get(Constants.CALLERNUM).getAsString();
-			String webUserId = vu.get(Constants.WEB_USERID).getAsString();
-			String voiceUserId = vu.get(Constants.USER_ID).getAsString();
+			Boolean talking = vu.get(MessageBodyConstants.TALKING).getAsBoolean();
+			Boolean voiceLocked = vu.get(MessageBodyConstants.LOCKED).getAsBoolean();
+			Boolean muted = vu.get(MessageBodyConstants.MUTED).getAsBoolean();
+			Boolean joined = vu.get(MessageBodyConstants.JOINED).getAsBoolean();
+			String callername = vu.get(MessageBodyConstants.CALLERNAME).getAsString();
+			String callernum = vu.get(MessageBodyConstants.CALLERNUM).getAsString();
+			String webUserId = vu.get(MessageBodyConstants.WEB_USERID).getAsString();
+			String voiceUserId = vu.get(MessageBodyConstants.USER_ID).getAsString();
 
 			vuMap.put("talking", talking);
 			vuMap.put("locked", voiceLocked);
@@ -69,28 +69,28 @@ public class Util {
 	}
 	
 	public Map<String, Object> extractUser(JsonObject user) {
-		if (user.has(Constants.USER_ID) && user.has(Constants.NAME)
-				&& user.has(Constants.HAS_STREAM) && user.has(Constants.LISTENONLY)
-				&& user.has(Constants.EMOJI_STATUS) && user.has(Constants.PHONE_USER)
-				&& user.has(Constants.PRESENTER) && user.has(Constants.LOCKED)
-				&& user.has(Constants.EXTERN_USERID) && user.has(Constants.ROLE)
-				&& user.has(Constants.VOICEUSER) && user.has(Constants.WEBCAM_STREAM)){
+		if (user.has(MessageBodyConstants.USER_ID) && user.has(MessageBodyConstants.NAME)
+				&& user.has(MessageBodyConstants.HAS_STREAM) && user.has(MessageBodyConstants.LISTENONLY)
+				&& user.has(MessageBodyConstants.EMOJI_STATUS) && user.has(MessageBodyConstants.PHONE_USER)
+				&& user.has(MessageBodyConstants.PRESENTER) && user.has(MessageBodyConstants.LOCKED)
+				&& user.has(MessageBodyConstants.EXTERN_USERID) && user.has(MessageBodyConstants.ROLE)
+				&& user.has(MessageBodyConstants.VOICEUSER) && user.has(MessageBodyConstants.WEBCAM_STREAM)){
 				
 			Map<String, Object> userMap = new HashMap<String, Object>();					
 
-			String userid = user.get(Constants.USER_ID).getAsString();
-			String username = user.get(Constants.NAME).getAsString();
-			Boolean hasStream = user.get(Constants.HAS_STREAM).getAsBoolean();
-			Boolean listenOnly = user.get(Constants.LISTENONLY).getAsBoolean();
-			String emojiStatus = user.get(Constants.EMOJI_STATUS).getAsString();
-			Boolean phoneUser = user.get(Constants.PHONE_USER).getAsBoolean();
-			Boolean presenter = user.get(Constants.PRESENTER).getAsBoolean();
-			Boolean locked = user.get(Constants.LOCKED).getAsBoolean();
-			String extUserId = user.get(Constants.EXTERN_USERID).getAsString();
-			String role = user.get(Constants.ROLE).getAsString();
-			String avatarURL = user.get(Constants.AVATAR_URL).getAsString();
+			String userid = user.get(MessageBodyConstants.USER_ID).getAsString();
+			String username = user.get(MessageBodyConstants.NAME).getAsString();
+			Boolean hasStream = user.get(MessageBodyConstants.HAS_STREAM).getAsBoolean();
+			Boolean listenOnly = user.get(MessageBodyConstants.LISTENONLY).getAsBoolean();
+			String emojiStatus = user.get(MessageBodyConstants.EMOJI_STATUS).getAsString();
+			Boolean phoneUser = user.get(MessageBodyConstants.PHONE_USER).getAsBoolean();
+			Boolean presenter = user.get(MessageBodyConstants.PRESENTER).getAsBoolean();
+			Boolean locked = user.get(MessageBodyConstants.LOCKED).getAsBoolean();
+			String extUserId = user.get(MessageBodyConstants.EXTERN_USERID).getAsString();
+			String role = user.get(MessageBodyConstants.ROLE).getAsString();
+			String avatarURL = user.get(MessageBodyConstants.AVATAR_URL).getAsString();
 			
-			JsonArray webcamStreamJArray = user.get(Constants.WEBCAM_STREAM).getAsJsonArray();
+			JsonArray webcamStreamJArray = user.get(MessageBodyConstants.WEBCAM_STREAM).getAsJsonArray();
 			ArrayList<String> webcamStreams = extractWebcamStreams(webcamStreamJArray);
 			
 			userMap.put("userId", userid);
@@ -106,7 +106,7 @@ public class Util {
 			userMap.put("presenter", presenter);
 			userMap.put("avatarURL", avatarURL);
 			
-			JsonObject vu = (JsonObject) user.get(Constants.VOICEUSER);
+			JsonObject vu = (JsonObject) user.get(MessageBodyConstants.VOICEUSER);
 			
 			Map<String, Object> vuMap = extractVoiceUser(vu);
 			if (vuMap != null) {
@@ -148,17 +148,17 @@ public class Util {
 	}
 
 	private Map<String,Object> extractATurn(JsonObject aTurn) {
-		if (aTurn.has(Constants.USERNAME)
-				&& aTurn.has(Constants.TTL)
-				&& aTurn.has(Constants.URL)
-				&& aTurn.has(Constants.PASSWORD)) {
+		if (aTurn.has(MessageBodyConstants.USERNAME)
+				&& aTurn.has(MessageBodyConstants.TTL)
+				&& aTurn.has(MessageBodyConstants.URL)
+				&& aTurn.has(MessageBodyConstants.PASSWORD)) {
 
 			Map<String, Object> turnMap = new HashMap<String, Object>();
 
-			turnMap.put(Constants.USERNAME, aTurn.get(Constants.USERNAME).getAsString());
-			turnMap.put(Constants.URL, aTurn.get(Constants.URL).getAsString());
-			turnMap.put(Constants.PASSWORD, aTurn.get(Constants.PASSWORD).getAsString());
-			turnMap.put(Constants.TTL, aTurn.get(Constants.TTL).getAsInt());
+			turnMap.put(MessageBodyConstants.USERNAME, aTurn.get(MessageBodyConstants.USERNAME).getAsString());
+			turnMap.put(MessageBodyConstants.URL, aTurn.get(MessageBodyConstants.URL).getAsString());
+			turnMap.put(MessageBodyConstants.PASSWORD, aTurn.get(MessageBodyConstants.PASSWORD).getAsString());
+			turnMap.put(MessageBodyConstants.TTL, aTurn.get(MessageBodyConstants.TTL).getAsInt());
 
 			return turnMap;
 		}
@@ -180,27 +180,27 @@ public class Util {
 
 	private Map<String, Object> extractChat(JsonObject chat) {
 
-		if (chat.has(Constants.FROM_COLOR)
-				&& chat.has(Constants.MESSAGE)
-				&& chat.has(Constants.TO_USERNAME)
-				&& chat.has(Constants.FROM_TZ_OFFSET)
-				&& chat.has(Constants.FROM_COLOR)
-				&& chat.has(Constants.TO_USERID)
-				&& chat.has(Constants.FROM_USERID)
-				&& chat.has(Constants.FROM_TIME)
-				&& chat.has(Constants.FROM_USERNAME)){
+		if (chat.has(MessageBodyConstants.FROM_COLOR)
+				&& chat.has(MessageBodyConstants.MESSAGE)
+				&& chat.has(MessageBodyConstants.TO_USERNAME)
+				&& chat.has(MessageBodyConstants.FROM_TZ_OFFSET)
+				&& chat.has(MessageBodyConstants.FROM_COLOR)
+				&& chat.has(MessageBodyConstants.TO_USERID)
+				&& chat.has(MessageBodyConstants.FROM_USERID)
+				&& chat.has(MessageBodyConstants.FROM_TIME)
+				&& chat.has(MessageBodyConstants.FROM_USERNAME)){
 
 			Map<String, Object> chatMap = new HashMap<String, Object>();
 
-			chatMap.put(ChatKeyUtil.CHAT_TYPE, chat.get(Constants.CHAT_TYPE).getAsString());
-			chatMap.put(ChatKeyUtil.MESSAGE, chat.get(Constants.MESSAGE).getAsString());
-			chatMap.put(ChatKeyUtil.TO_USERNAME, chat.get(Constants.TO_USERNAME).getAsString());
-			chatMap.put(ChatKeyUtil.FROM_TZ_OFFSET, chat.get(Constants.FROM_TZ_OFFSET).getAsString());
-			chatMap.put(ChatKeyUtil.FROM_COLOR, chat.get(Constants.FROM_COLOR).getAsString());
-			chatMap.put(ChatKeyUtil.TO_USERID, chat.get(Constants.TO_USERID).getAsString());
-			chatMap.put(ChatKeyUtil.FROM_USERID, chat.get(Constants.FROM_USERID).getAsString());
-			chatMap.put(ChatKeyUtil.FROM_TIME, chat.get(Constants.FROM_TIME).getAsString());
-			chatMap.put(ChatKeyUtil.FROM_USERNAME, chat.get(Constants.FROM_USERNAME).getAsString());
+			chatMap.put(ChatKeyUtil.CHAT_TYPE, chat.get(MessageBodyConstants.CHAT_TYPE).getAsString());
+			chatMap.put(ChatKeyUtil.MESSAGE, chat.get(MessageBodyConstants.MESSAGE).getAsString());
+			chatMap.put(ChatKeyUtil.TO_USERNAME, chat.get(MessageBodyConstants.TO_USERNAME).getAsString());
+			chatMap.put(ChatKeyUtil.FROM_TZ_OFFSET, chat.get(MessageBodyConstants.FROM_TZ_OFFSET).getAsString());
+			chatMap.put(ChatKeyUtil.FROM_COLOR, chat.get(MessageBodyConstants.FROM_COLOR).getAsString());
+			chatMap.put(ChatKeyUtil.TO_USERID, chat.get(MessageBodyConstants.TO_USERID).getAsString());
+			chatMap.put(ChatKeyUtil.FROM_USERID, chat.get(MessageBodyConstants.FROM_USERID).getAsString());
+			chatMap.put(ChatKeyUtil.FROM_TIME, chat.get(MessageBodyConstants.FROM_TIME).getAsString());
+			chatMap.put(ChatKeyUtil.FROM_USERNAME, chat.get(MessageBodyConstants.FROM_USERNAME).getAsString());
 
 			return chatMap;
 		}
@@ -253,7 +253,7 @@ public class Util {
 
 	public Map<String, Object> extractAnnotation(JsonObject annotationElement) {
 		//NON-TEXT SHAPE
-		if (annotationElement.has(Constants.ID)
+		if (annotationElement.has(MessageBodyConstants.ID)
 				&& annotationElement.has("transparency")
 				&& annotationElement.has("color")
 				&& annotationElement.has("status")
@@ -265,9 +265,9 @@ public class Util {
 			Map<String, Object> finalAnnotation = new HashMap<String, Object>();
 
 			boolean transparency = annotationElement.get("transparency").getAsBoolean();
-			String id = annotationElement.get(Constants.ID).getAsString();
+			String id = annotationElement.get(MessageBodyConstants.ID).getAsString();
 			int color = annotationElement.get("color").getAsInt();
-			String status = annotationElement.get(Constants.STATUS).getAsString();
+			String status = annotationElement.get(MessageBodyConstants.STATUS).getAsString();
 			String whiteboardId = annotationElement.get("whiteboardId").getAsString();
 			int thickness = annotationElement.get("thickness").getAsInt();
 			String type = annotationElement.get("type").getAsString();
@@ -285,7 +285,7 @@ public class Util {
 			}
 
 			finalAnnotation.put("transparency", transparency);
-			finalAnnotation.put(Constants.ID, id);
+			finalAnnotation.put(MessageBodyConstants.ID, id);
 			finalAnnotation.put("color", color);
 			finalAnnotation.put("status", status);
 			finalAnnotation.put("whiteboardId", whiteboardId);
@@ -297,7 +297,7 @@ public class Util {
 		}
 
 		// TEXT SHAPE
-		else if (annotationElement.has(Constants.ID)
+		else if (annotationElement.has(MessageBodyConstants.ID)
 				&& annotationElement.has("text")
 				&& annotationElement.has("fontColor")
 				&& annotationElement.has("status")
@@ -316,13 +316,13 @@ public class Util {
 
 			String text = annotationElement.get("text").getAsString();
 			int fontColor = annotationElement.get("fontColor").getAsInt();
-			String status = annotationElement.get(Constants.STATUS).getAsString();
+			String status = annotationElement.get(MessageBodyConstants.STATUS).getAsString();
 			Float textBoxWidth = annotationElement.get("textBoxWidth").getAsFloat();
 			int fontSize = annotationElement.get("fontSize").getAsInt();
 			String type = annotationElement.get("type").getAsString();
 			Float calcedFontSize = annotationElement.get("calcedFontSize").getAsFloat();
 			Float textBoxHeight = annotationElement.get("textBoxHeight").getAsFloat();
-			String id = annotationElement.get(Constants.ID).getAsString();
+			String id = annotationElement.get(MessageBodyConstants.ID).getAsString();
 			String whiteboardId = annotationElement.get("whiteboardId").getAsString();
 			Float x = annotationElement.get("x").getAsFloat();
 			Float y = annotationElement.get("y").getAsFloat();
@@ -330,13 +330,13 @@ public class Util {
 
 			finalAnnotation.put("text", text);
 			finalAnnotation.put("fontColor", fontColor);
-			finalAnnotation.put(Constants.STATUS, status);
+			finalAnnotation.put(MessageBodyConstants.STATUS, status);
 			finalAnnotation.put("textBoxWidth", textBoxWidth);
 			finalAnnotation.put("fontSize", fontSize);
 			finalAnnotation.put("type", type);
 			finalAnnotation.put("calcedFontSize", calcedFontSize);
 			finalAnnotation.put("textBoxHeight", textBoxHeight);
-			finalAnnotation.put(Constants.ID, id);
+			finalAnnotation.put(MessageBodyConstants.ID, id);
 			finalAnnotation.put("whiteboardId", whiteboardId);
 			finalAnnotation.put("x", x);
 			finalAnnotation.put("y", y);
@@ -348,13 +348,13 @@ public class Util {
 	}
 
 	public Map<String, Object> extractCurrentPresenter(JsonObject vu) {
-		if (vu.has(Constants.USER_ID) && vu.has(Constants.NAME)
-				&& vu.has(Constants.ASSIGNED_BY)){
+		if (vu.has(MessageBodyConstants.USER_ID) && vu.has(MessageBodyConstants.NAME)
+				&& vu.has(MessageBodyConstants.ASSIGNED_BY)){
 
 			Map<String, Object> vuMap = new HashMap<String, Object>();
-			String presenterUserId = vu.get(Constants.USER_ID).getAsString();
-			String presenterName = vu.get(Constants.NAME).getAsString();
-			String assignedBy = vu.get(Constants.ASSIGNED_BY).getAsString();
+			String presenterUserId = vu.get(MessageBodyConstants.USER_ID).getAsString();
+			String presenterName = vu.get(MessageBodyConstants.NAME).getAsString();
+			String assignedBy = vu.get(MessageBodyConstants.ASSIGNED_BY).getAsString();
 
 			vuMap.put("userId", presenterUserId);
 			vuMap.put("name", presenterName);
@@ -424,23 +424,23 @@ public class Util {
 	}
 
 	public Map<String, Object> extractPresentation(JsonObject presObj) {
-		if (presObj.has(Constants.ID) && presObj.has(Constants.NAME)
-				&& presObj.has(Constants.CURRENT) && presObj.has(Constants.PAGES)) {
+		if (presObj.has(MessageBodyConstants.ID) && presObj.has(MessageBodyConstants.NAME)
+				&& presObj.has(MessageBodyConstants.CURRENT) && presObj.has(MessageBodyConstants.PAGES)) {
 			Map<String, Object> pres = new HashMap<String, Object>();
 
-			String presId = presObj.get(Constants.ID).getAsString();
-			String presName = presObj.get(Constants.NAME).getAsString();
-			Boolean currentPres = presObj.get(Constants.CURRENT).getAsBoolean();
+			String presId = presObj.get(MessageBodyConstants.ID).getAsString();
+			String presName = presObj.get(MessageBodyConstants.NAME).getAsString();
+			Boolean currentPres = presObj.get(MessageBodyConstants.CURRENT).getAsBoolean();
 
 			pres.put("id", presId);
 			pres.put("name", presName);
 			pres.put("current", currentPres);
 
-			JsonArray pagesJsonArray = presObj.get(Constants.PAGES).getAsJsonArray();
+			JsonArray pagesJsonArray = presObj.get(MessageBodyConstants.PAGES).getAsJsonArray();
 
 			ArrayList<Map<String, Object>> pages = extractPresentationPages(pagesJsonArray);
 			// store the pages in the presentation
-			pres.put(Constants.PAGES, pages);
+			pres.put(MessageBodyConstants.PAGES, pages);
 
 			// add this presentation into our presentations list
 			return pres;
@@ -517,18 +517,18 @@ public class Util {
 
 	public Map<String, Object> extractOuterAnnotation(JsonObject annotationElement) {
 
-		if (annotationElement.has(Constants.ID)
+		if (annotationElement.has(MessageBodyConstants.ID)
 				&& annotationElement.has("shape")
 				&& annotationElement.has("status")
 				&& annotationElement.has("shape_type")){
 
 			Map<String, Object> finalAnnotation = new HashMap<String, Object>();
 
-			String id = annotationElement.get(Constants.ID).getAsString();
+			String id = annotationElement.get(MessageBodyConstants.ID).getAsString();
 			String status = annotationElement.get("status").getAsString();
 			String type = annotationElement.get("shape_type").getAsString();
 
-			finalAnnotation.put(Constants.ID, id);
+			finalAnnotation.put(MessageBodyConstants.ID, id);
 			finalAnnotation.put("type", type);
 			finalAnnotation.put("status", status);
 
@@ -579,7 +579,7 @@ public class Util {
 		final String CURRENT = "current";
 		final String SWF_URI = "swf_uri";
 
-		if (page.has(Constants.ID)
+		if (page.has(MessageBodyConstants.ID)
 				&& page.has(WIDTH_RATIO)
 				&& page.has(Y_OFFSET)
 				&& page.has(NUM)
@@ -593,7 +593,7 @@ public class Util {
 
 			Map<String, Object> finalPage = new HashMap<String, Object>();
 
-			String id = page.get(Constants.ID).getAsString();
+			String id = page.get(MessageBodyConstants.ID).getAsString();
 			double widthRatio = page.get(WIDTH_RATIO).getAsDouble();
 			double yOffset = page.get(Y_OFFSET).getAsDouble();
 			double num = page.get(NUM).getAsDouble();
@@ -605,7 +605,7 @@ public class Util {
 			String txtUri = page.get(TXT_URI).getAsString();
 			String swfUri = page.get(SWF_URI).getAsString();
 
-			finalPage.put(Constants.ID, id);
+			finalPage.put(MessageBodyConstants.ID, id);
 			finalPage.put(WIDTH_RATIO, widthRatio);
 			finalPage.put(Y_OFFSET, yOffset);
 			finalPage.put(NUM, num);
@@ -625,11 +625,11 @@ public class Util {
 
 	public Map<String, Object> decodeSimplePollAnswer(JsonObject answer) {
 		Map<String, Object> answerMap = new HashMap<String, Object>();
-		if (answer.has(Constants.ID) && answer.has(KEY)) {
-			String id = answer.get(Constants.ID).getAsString();
+		if (answer.has(MessageBodyConstants.ID) && answer.has(KEY)) {
+			String id = answer.get(MessageBodyConstants.ID).getAsString();
 			String key = answer.get(KEY).getAsString();
 
-			answerMap.put(Constants.ID, id);
+			answerMap.put(MessageBodyConstants.ID, id);
 			answerMap.put(KEY, key);
 		}
 
@@ -646,8 +646,8 @@ public class Util {
 	public Map<String, Object> decodeSimplePoll(JsonObject poll) {
 		Map<String, Object> pollMap = new HashMap<String, Object>();
 
-		if (poll.has(Constants.ID) && poll.has(ANSWERS)) {
-			String id = poll.get(Constants.ID).getAsString();
+		if (poll.has(MessageBodyConstants.ID) && poll.has(ANSWERS)) {
+			String id = poll.get(MessageBodyConstants.ID).getAsString();
 			JsonArray answers = poll.get(ANSWERS).getAsJsonArray();
 
 			ArrayList<Map<String, Object>> collection = new ArrayList<Map<String, Object>>();
@@ -663,7 +663,7 @@ public class Util {
 				}
 			}
 
-			pollMap.put(Constants.ID, id);
+			pollMap.put(MessageBodyConstants.ID, id);
 			pollMap.put(ANSWERS, collection);
 		}
 
@@ -673,12 +673,12 @@ public class Util {
 
 	public Map<String, Object> decodeSimplePollAnswerVote(JsonObject answer) {
 		Map<String, Object> answerMap = new HashMap<String, Object>();
-		if (answer.has(Constants.ID) && answer.has(KEY)) {
-			String id = answer.get(Constants.ID).getAsString();
+		if (answer.has(MessageBodyConstants.ID) && answer.has(KEY)) {
+			String id = answer.get(MessageBodyConstants.ID).getAsString();
 			String key = answer.get(KEY).getAsString();
 			Integer numVotes = answer.get(NUM_VOTES).getAsInt();
 
-			answerMap.put(Constants.ID, id);
+			answerMap.put(MessageBodyConstants.ID, id);
 			answerMap.put(KEY, key);
 			answerMap.put(NUM_VOTES, numVotes);
 		}
@@ -688,8 +688,8 @@ public class Util {
 	public Map<String, Object> decodeSimplePollResult(JsonObject poll) {
 		Map<String, Object> pollMap = new HashMap<String, Object>();
 
-		if (poll.has(Constants.ID) && poll.has(ANSWERS)) {
-			String id = poll.get(Constants.ID).getAsString();
+		if (poll.has(MessageBodyConstants.ID) && poll.has(ANSWERS)) {
+			String id = poll.get(MessageBodyConstants.ID).getAsString();
 			Integer numRespondents = poll.get(NUM_RESPONDENTS).getAsInt();
 			Integer numResponders = poll.get(NUM_RESPONDERS).getAsInt();
 
@@ -708,7 +708,7 @@ public class Util {
 				}
 			}
 
-			pollMap.put(Constants.ID, id);
+			pollMap.put(MessageBodyConstants.ID, id);
 			pollMap.put(NUM_RESPONDENTS, numRespondents);
 			pollMap.put(NUM_RESPONDERS, numResponders);
 			pollMap.put(ANSWERS, collection);

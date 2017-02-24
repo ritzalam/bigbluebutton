@@ -24,10 +24,10 @@ public class UpdateCaptionOwnerMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingID);
-    payload.put(Constants.LOCALE, locale);
-    payload.put(Constants.LOCALE_CODE, localeCode);
-    payload.put(Constants.OWNER_ID, ownerID);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingID);
+    payload.put(MessageBodyConstants.LOCALE, locale);
+    payload.put(MessageBodyConstants.LOCALE_CODE, localeCode);
+    payload.put(MessageBodyConstants.OWNER_ID, ownerID);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(UPDATE_CAPTION_OWNER, VERSION, null);
 
@@ -50,14 +50,14 @@ public class UpdateCaptionOwnerMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (UPDATE_CAPTION_OWNER.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.LOCALE)
-                  && payload.has(Constants.LOCALE_CODE)
-                  && payload.has(Constants.OWNER_ID)) {
-            String meetingID = payload.get(Constants.MEETING_ID).getAsString();
-            String locale = payload.get(Constants.LOCALE).getAsString();
-            String localeCode = payload.get(Constants.LOCALE_CODE).getAsString();
-            String ownerID = payload.get(Constants.OWNER_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.LOCALE)
+                  && payload.has(MessageBodyConstants.LOCALE_CODE)
+                  && payload.has(MessageBodyConstants.OWNER_ID)) {
+            String meetingID = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String locale = payload.get(MessageBodyConstants.LOCALE).getAsString();
+            String localeCode = payload.get(MessageBodyConstants.LOCALE_CODE).getAsString();
+            String ownerID = payload.get(MessageBodyConstants.OWNER_ID).getAsString();
 
             return new UpdateCaptionOwnerMessage(meetingID, locale, localeCode, ownerID);
           }

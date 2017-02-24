@@ -19,7 +19,7 @@ public class DisconnectUserMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(DISCONNECT_USER, VERSION, null);
 
@@ -42,10 +42,10 @@ public class DisconnectUserMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (DISCONNECT_USER.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String userId = payload.get(Constants.USER_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userId = payload.get(MessageBodyConstants.USER_ID).getAsString();
 
             return new DisconnectUserMessage(meetingId, userId);
           }

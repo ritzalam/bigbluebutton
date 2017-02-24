@@ -1,8 +1,8 @@
 package org.bigbluebutton.core.pubsub.receivers;
 
+import org.bigbluebutton.common.messages.ChannelConstants;
 import org.bigbluebutton.common.messages.GetLockSettingsMessage;
 import org.bigbluebutton.common.messages.LockUserMessage;
-import org.bigbluebutton.common.messages.MessagingConstants;
 import org.bigbluebutton.common.messages.SendLockSettingsMessage;
 import org.bigbluebutton.core.api.IBigBlueButtonInGW;
 
@@ -19,7 +19,7 @@ public class LockMessageReceiver implements MessageHandler {
 
 	@Override
 	public void handleMessage(String pattern, String channel, String message) {
-		if (channel.equalsIgnoreCase(MessagingConstants.TO_MEETING_CHANNEL)) {
+		if (channel.equalsIgnoreCase(ChannelConstants.TO_MEETING_CHANNEL)) {
 			JsonParser parser = new JsonParser();
 			JsonObject obj = (JsonObject) parser.parse(message);
 

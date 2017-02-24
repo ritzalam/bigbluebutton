@@ -20,7 +20,7 @@ public class PollingMessageReceiver implements MessageHandler{
 
 	@Override
 	public void handleMessage(String pattern, String channel, String message) {
-		if (channel.equalsIgnoreCase(MessagingConstants.TO_POLLING_CHANNEL)) {
+		if (channel.equalsIgnoreCase(ChannelConstants.TO_POLLING_CHANNEL)) {
 			log.debug("Polling message: " + channel + " " + message);
 			JsonParser parser = new JsonParser();
 			JsonObject obj = (JsonObject) parser.parse(message);

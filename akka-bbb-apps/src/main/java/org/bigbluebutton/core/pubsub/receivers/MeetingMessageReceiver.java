@@ -2,18 +2,8 @@ package org.bigbluebutton.core.pubsub.receivers;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.bigbluebutton.common.messages.DestroyMeetingMessage;
-import org.bigbluebutton.common.messages.EndMeetingMessage;
-import org.bigbluebutton.common.messages.GetAllMeetingsRequest;
-import org.bigbluebutton.common.messages.IBigBlueButtonMessage;
-import org.bigbluebutton.common.messages.KeepAliveMessage;
-import org.bigbluebutton.common.messages.MessageFromJsonConverter;
-import org.bigbluebutton.common.messages.MessagingConstants;
-import org.bigbluebutton.common.messages.PubSubPingMessage;
+import org.bigbluebutton.common.messages.*;
 import org.bigbluebutton.messages.RegisterUserMessage;
-import org.bigbluebutton.common.messages.UserConnectedToGlobalAudio;
-import org.bigbluebutton.common.messages.UserDisconnectedFromGlobalAudio;
-import org.bigbluebutton.common.messages.ValidateAuthTokenMessage;
 import org.bigbluebutton.core.api.IBigBlueButtonInGW;
 import org.bigbluebutton.messages.CreateMeetingRequest;
 import org.slf4j.Logger;
@@ -33,7 +23,7 @@ public class MeetingMessageReceiver implements MessageHandler {
     }
 
     public void handleMessage(String pattern, String channel, String message) {
-        if (channel.equalsIgnoreCase(MessagingConstants.TO_MEETING_CHANNEL)) {
+        if (channel.equalsIgnoreCase(ChannelConstants.TO_MEETING_CHANNEL)) {
             System.out.println("Meeting message: " + channel + " " + message);
 
             JsonParser parser = new JsonParser();
@@ -108,7 +98,7 @@ public class MeetingMessageReceiver implements MessageHandler {
             } else {
                 System.out.println("Failed to decode message: [" + message + "]");
             }
-        } else if (channel.equalsIgnoreCase(MessagingConstants.TO_SYSTEM_CHANNEL)) {
+        } else if (channel.equalsIgnoreCase(ChannelConstants.TO_SYSTEM_CHANNEL)) {
             JsonParser parser = new JsonParser();
             JsonObject obj = (JsonObject) parser.parse(message);
 

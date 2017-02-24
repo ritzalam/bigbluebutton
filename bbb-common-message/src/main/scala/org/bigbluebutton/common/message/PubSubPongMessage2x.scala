@@ -1,13 +1,13 @@
 package org.bigbluebutton.common.message
 
-import org.bigbluebutton.common.{InHeaderAndJsonBody, MessageProcessException}
+import org.bigbluebutton.common.{InHeaderAndJsonBody, MessageProcessException, PubSubChannels}
 import spray.json.{DefaultJsonProtocol, DeserializationException, JsObject}
-import org.bigbluebutton.common.messages.MessagingConstants
+
 import scala.util.{Failure, Success, Try}
 
 object PubSubPongMessage2xConst {
   val NAME = "PubSubPongMessage"
-  val CHANNEL = MessagingConstants.TO_SYSTEM_CHANNEL
+  val CHANNEL = PubSubChannels.TO_SYSTEM_CHANNEL
 }
 
 case class PubSubPongMessageBody(system: String, timestamp: Long)

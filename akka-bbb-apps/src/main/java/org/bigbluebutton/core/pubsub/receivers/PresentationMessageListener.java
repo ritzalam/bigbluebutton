@@ -1,19 +1,7 @@
 package org.bigbluebutton.core.pubsub.receivers;
 
 import java.util.HashMap;
-
-import org.bigbluebutton.common.messages.GetPresentationInfoMessage;
-import org.bigbluebutton.common.messages.GetSlideInfoMessage;
-import org.bigbluebutton.common.messages.GoToSlideMessage;
-import org.bigbluebutton.common.messages.MessagingConstants;
-import org.bigbluebutton.common.messages.RemovePresentationMessage;
-import org.bigbluebutton.common.messages.ResizeAndMoveSlideMessage;
-import org.bigbluebutton.common.messages.SendConversionCompletedMessage;
-import org.bigbluebutton.common.messages.SendConversionUpdateMessage;
-import org.bigbluebutton.common.messages.SendCursorUpdateMessage;
-import org.bigbluebutton.common.messages.SendPageCountErrorMessage;
-import org.bigbluebutton.common.messages.SendSlideGeneratedMessage;
-import org.bigbluebutton.common.messages.SharePresentationMessage;
+import org.bigbluebutton.common.messages.*;
 import org.bigbluebutton.core.api.IBigBlueButtonInGW;
 
 import com.google.gson.Gson;
@@ -78,7 +66,7 @@ public class PresentationMessageListener implements MessageHandler {
 
   @Override
   public void handleMessage(String pattern, String channel, String message) {
-    if (channel.equalsIgnoreCase(MessagingConstants.TO_PRESENTATION_CHANNEL)) {
+    if (channel.equalsIgnoreCase(ChannelConstants.TO_PRESENTATION_CHANNEL)) {
       JsonParser parser = new JsonParser();
       JsonObject obj = (JsonObject) parser.parse(message);
 

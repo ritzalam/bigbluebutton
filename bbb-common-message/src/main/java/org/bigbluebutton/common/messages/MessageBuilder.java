@@ -13,11 +13,11 @@ public class MessageBuilder {
 
   public static java.util.HashMap<String, Object> buildHeader(String name, String version, String replyTo) {
     java.util.HashMap<String, Object> header = new java.util.HashMap<String, Object>();
-    header.put(Constants.NAME, name);
+    header.put(MessageBodyConstants.NAME, name);
     header.put(VERSION, version);
-    header.put(Constants.TIMESTAMP, generateTimestamp());
+    header.put(MessageBodyConstants.TIMESTAMP, generateTimestamp());
     if (replyTo != null && replyTo != "")
-      header.put(Constants.REPLY_TO, replyTo);
+      header.put(MessageBodyConstants.REPLY_TO, replyTo);
 
     return header;
   }
@@ -27,8 +27,8 @@ public class MessageBuilder {
                                  java.util.HashMap<String, Object> payload) {
 
     java.util.HashMap<String, java.util.HashMap<String, Object>> message = new java.util.HashMap<String, java.util.HashMap<String, Object>>();
-    message.put(Constants.HEADER, header);
-    message.put(Constants.PAYLOAD, payload);
+    message.put(MessageBodyConstants.HEADER, header);
+    message.put(MessageBodyConstants.PAYLOAD, payload);
 
     Gson gson = new Gson();
     return gson.toJson(message);

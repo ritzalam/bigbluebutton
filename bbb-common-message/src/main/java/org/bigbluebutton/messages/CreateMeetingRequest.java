@@ -2,7 +2,7 @@ package org.bigbluebutton.messages;
 
 import com.google.gson.Gson;
 import org.bigbluebutton.common.messages.IBigBlueButtonMessage;
-import org.bigbluebutton.common.messages.MessagingConstants;
+import org.bigbluebutton.common.messages.ChannelConstants;
 
 public class CreateMeetingRequest implements IBigBlueButtonMessage {
   public final static String NAME = "CreateMeetingRequest";
@@ -21,7 +21,7 @@ public class CreateMeetingRequest implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    return MessagingConstants.TO_MEETING_CHANNEL;
+    return ChannelConstants.TO_MEETING_CHANNEL;
   }
 
   public static class CreateMeetingRequestPayload {

@@ -1,5 +1,6 @@
 package org.bigbluebutton.core.pubsub.senders
 
+import org.bigbluebutton.common.messages._
 import org.bigbluebutton.core.api._
 
 object DeskShareMessageToJsonConverter {

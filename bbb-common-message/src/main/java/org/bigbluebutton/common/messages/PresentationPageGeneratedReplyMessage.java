@@ -31,13 +31,13 @@ public class PresentationPageGeneratedReplyMessage implements IBigBlueButtonMess
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.PRESENTATION_ID, presentationId);
-    payload.put(Constants.CODE, code);
-    payload.put(Constants.MESSAGE_KEY, messageKey);
-    payload.put(Constants.PRESENTATION_NAME, presentationName);
-    payload.put(Constants.PAGES_COMPLETED, pagesCompleted);
-    payload.put(Constants.NUM_PAGES, numPages);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.PRESENTATION_ID, presentationId);
+    payload.put(MessageBodyConstants.CODE, code);
+    payload.put(MessageBodyConstants.MESSAGE_KEY, messageKey);
+    payload.put(MessageBodyConstants.PRESENTATION_NAME, presentationName);
+    payload.put(MessageBodyConstants.PAGES_COMPLETED, pagesCompleted);
+    payload.put(MessageBodyConstants.NUM_PAGES, numPages);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(PRESENTATION_PAGE_GENERATED, VERSION, null);
 
@@ -60,20 +60,20 @@ public class PresentationPageGeneratedReplyMessage implements IBigBlueButtonMess
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (PRESENTATION_PAGE_GENERATED.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.CODE)
-                  && payload.has(Constants.MESSAGE_KEY)
-                  && payload.has(Constants.PRESENTATION_NAME)
-                  && payload.has(Constants.NUM_PAGES)
-                  && payload.has(Constants.PAGES_COMPLETED)
-                  && payload.has(Constants.PRESENTATION_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String presentationId = payload.get(Constants.PRESENTATION_ID).getAsString();
-            String presentationName = payload.get(Constants.PRESENTATION_NAME).getAsString();
-            String code = payload.get(Constants.CODE).getAsString();
-            String messageKey = payload.get(Constants.MESSAGE_KEY).getAsString();
-            int numPages = payload.get(Constants.NUM_PAGES).getAsInt();
-            int pagesCompleted = payload.get(Constants.PAGES_COMPLETED).getAsInt();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.CODE)
+                  && payload.has(MessageBodyConstants.MESSAGE_KEY)
+                  && payload.has(MessageBodyConstants.PRESENTATION_NAME)
+                  && payload.has(MessageBodyConstants.NUM_PAGES)
+                  && payload.has(MessageBodyConstants.PAGES_COMPLETED)
+                  && payload.has(MessageBodyConstants.PRESENTATION_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String presentationId = payload.get(MessageBodyConstants.PRESENTATION_ID).getAsString();
+            String presentationName = payload.get(MessageBodyConstants.PRESENTATION_NAME).getAsString();
+            String code = payload.get(MessageBodyConstants.CODE).getAsString();
+            String messageKey = payload.get(MessageBodyConstants.MESSAGE_KEY).getAsString();
+            int numPages = payload.get(MessageBodyConstants.NUM_PAGES).getAsInt();
+            int pagesCompleted = payload.get(MessageBodyConstants.PAGES_COMPLETED).getAsInt();
 
             return new PresentationPageGeneratedReplyMessage(meetingId, presentationId,
                     numPages, code, messageKey, presentationName, pagesCompleted);

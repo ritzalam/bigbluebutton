@@ -8,6 +8,7 @@ import org.bigbluebutton.core.running.{ MeetingActor, MeetingStateModel }
 import com.google.gson.Gson
 import java.util.ArrayList
 
+import org.bigbluebutton.common.messages.WhiteboardKeyUtil
 import org.bigbluebutton.core.OutMessageGateway
 import org.bigbluebutton.core.models.Users
 

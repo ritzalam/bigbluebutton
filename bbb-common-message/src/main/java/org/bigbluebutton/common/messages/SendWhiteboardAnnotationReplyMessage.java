@@ -26,10 +26,10 @@ public class SendWhiteboardAnnotationReplyMessage implements IBigBlueButtonMessa
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.SHAPE, shape);
-    payload.put(Constants.WHITEBOARD_ID, whiteboardId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.SHAPE, shape);
+    payload.put(MessageBodyConstants.WHITEBOARD_ID, whiteboardId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(SEND_WHITEBOARD_ANNOTATION_REPLY, VERSION, null);
     return MessageBuilder.buildJson(header, payload);
@@ -50,15 +50,15 @@ public class SendWhiteboardAnnotationReplyMessage implements IBigBlueButtonMessa
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (SEND_WHITEBOARD_ANNOTATION_REPLY.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.WHITEBOARD_ID)
-                  && payload.has(Constants.SHAPE)
-                  && payload.has(Constants.REQUESTER_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
-            String whiteboardId = payload.get(Constants.WHITEBOARD_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.WHITEBOARD_ID)
+                  && payload.has(MessageBodyConstants.SHAPE)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
+            String whiteboardId = payload.get(MessageBodyConstants.WHITEBOARD_ID).getAsString();
 
-            JsonObject shape = (JsonObject) payload.get(Constants.SHAPE);
+            JsonObject shape = (JsonObject) payload.get(MessageBodyConstants.SHAPE);
 
             Util util = new Util();
             Map<String, Object> annotation = util.extractOuterAnnotation(shape);

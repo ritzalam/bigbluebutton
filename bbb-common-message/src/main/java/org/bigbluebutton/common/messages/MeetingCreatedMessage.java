@@ -19,7 +19,7 @@ public class MeetingCreatedMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
 
     HashMap<String, Object> header = MessageBuilder.buildHeader(MEETING_CREATED, VERSION, null);
 
@@ -42,9 +42,9 @@ public class MeetingCreatedMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (MEETING_CREATED.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID) && payload.has(Constants.RECORDED)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            Boolean record = payload.get(Constants.RECORDED).getAsBoolean();
+          if (payload.has(MessageBodyConstants.MEETING_ID) && payload.has(MessageBodyConstants.RECORDED)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            Boolean record = payload.get(MessageBodyConstants.RECORDED).getAsBoolean();
             return new MeetingCreatedMessage(meetingId, record);
           }
         }

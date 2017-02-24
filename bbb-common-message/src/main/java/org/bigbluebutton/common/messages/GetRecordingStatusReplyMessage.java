@@ -22,9 +22,9 @@ public class GetRecordingStatusReplyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.USER_ID, userId);
-    payload.put(Constants.RECORDING, recording);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.USER_ID, userId);
+    payload.put(MessageBodyConstants.RECORDING, recording);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(Get_RECORDING_STATUS_REPLY, VERSION, null);
 
@@ -47,12 +47,12 @@ public class GetRecordingStatusReplyMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (Get_RECORDING_STATUS_REPLY.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.RECORDING)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
-            String userid = payload.get(Constants.USER_ID).getAsString();
-            Boolean recording = payload.get(Constants.RECORDING).getAsBoolean();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.RECORDING)) {
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userid = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            Boolean recording = payload.get(MessageBodyConstants.RECORDING).getAsBoolean();
             return new GetRecordingStatusReplyMessage(id, userid, recording);
           }
         }

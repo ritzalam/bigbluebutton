@@ -36,8 +36,8 @@ public class SendPrivateChatMessage implements IBigBlueButtonMessage {
     message.put(ChatKeyUtil.FROM_TIME, messageInfo.get(ChatKeyUtil.FROM_TIME));
     message.put(ChatKeyUtil.FROM_USERNAME, messageInfo.get(ChatKeyUtil.FROM_USERNAME));
 
-    payload.put(Constants.MESSAGE, message);
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MESSAGE, message);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(SEND_PRIVATE_CHAT_MESSAGE, VERSION, null);
 
@@ -60,11 +60,11 @@ public class SendPrivateChatMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (SEND_PRIVATE_CHAT_MESSAGE.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.MESSAGE)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.MESSAGE)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
 
-            JsonObject msgObj = (JsonObject) payload.get(Constants.MESSAGE).getAsJsonObject();
+            JsonObject msgObj = (JsonObject) payload.get(MessageBodyConstants.MESSAGE).getAsJsonObject();
             Map<String, String> messageInfo = new HashMap<String, String>();
 
             if (msgObj.has(ChatKeyUtil.CHAT_TYPE)
@@ -89,24 +89,24 @@ public class SendPrivateChatMessage implements IBigBlueButtonMessage {
               String requesterId = messageInfo.get(ChatKeyUtil.FROM_USERID);
 
               return new SendPrivateChatMessage(meetingId, requesterId, messageInfo);
-            } else if (msgObj.has(Constants.CHAT_TYPE)
-                    && msgObj.has(Constants.MESSAGE)
-                    && msgObj.has(Constants.TO_USERNAME)
-                    && msgObj.has(Constants.FROM_TZ_OFFSET)
-                    && msgObj.has(Constants.FROM_COLOR)
-                    && msgObj.has(Constants.TO_USERID)
-                    && msgObj.has(Constants.FROM_USERID)
-                    && msgObj.has(Constants.FROM_TIME)
-                    && msgObj.has(Constants.FROM_USERNAME)) {
-              messageInfo.put(ChatKeyUtil.CHAT_TYPE, msgObj.get(Constants.CHAT_TYPE).getAsString());
-              messageInfo.put(ChatKeyUtil.MESSAGE, msgObj.get(Constants.MESSAGE).getAsString());
-              messageInfo.put(ChatKeyUtil.TO_USERNAME, msgObj.get(Constants.TO_USERNAME).getAsString());
-              messageInfo.put(ChatKeyUtil.FROM_TZ_OFFSET, msgObj.get(Constants.FROM_TZ_OFFSET).getAsString());
-              messageInfo.put(ChatKeyUtil.FROM_COLOR, msgObj.get(Constants.FROM_COLOR).getAsString());
-              messageInfo.put(ChatKeyUtil.TO_USERID, msgObj.get(Constants.TO_USERID).getAsString());
-              messageInfo.put(ChatKeyUtil.FROM_USERID, msgObj.get(Constants.FROM_USERID).getAsString());
-              messageInfo.put(ChatKeyUtil.FROM_TIME, msgObj.get(Constants.FROM_TIME).getAsString());
-              messageInfo.put(ChatKeyUtil.FROM_USERNAME, msgObj.get(Constants.FROM_USERNAME).getAsString());
+            } else if (msgObj.has(MessageBodyConstants.CHAT_TYPE)
+                    && msgObj.has(MessageBodyConstants.MESSAGE)
+                    && msgObj.has(MessageBodyConstants.TO_USERNAME)
+                    && msgObj.has(MessageBodyConstants.FROM_TZ_OFFSET)
+                    && msgObj.has(MessageBodyConstants.FROM_COLOR)
+                    && msgObj.has(MessageBodyConstants.TO_USERID)
+                    && msgObj.has(MessageBodyConstants.FROM_USERID)
+                    && msgObj.has(MessageBodyConstants.FROM_TIME)
+                    && msgObj.has(MessageBodyConstants.FROM_USERNAME)) {
+              messageInfo.put(ChatKeyUtil.CHAT_TYPE, msgObj.get(MessageBodyConstants.CHAT_TYPE).getAsString());
+              messageInfo.put(ChatKeyUtil.MESSAGE, msgObj.get(MessageBodyConstants.MESSAGE).getAsString());
+              messageInfo.put(ChatKeyUtil.TO_USERNAME, msgObj.get(MessageBodyConstants.TO_USERNAME).getAsString());
+              messageInfo.put(ChatKeyUtil.FROM_TZ_OFFSET, msgObj.get(MessageBodyConstants.FROM_TZ_OFFSET).getAsString());
+              messageInfo.put(ChatKeyUtil.FROM_COLOR, msgObj.get(MessageBodyConstants.FROM_COLOR).getAsString());
+              messageInfo.put(ChatKeyUtil.TO_USERID, msgObj.get(MessageBodyConstants.TO_USERID).getAsString());
+              messageInfo.put(ChatKeyUtil.FROM_USERID, msgObj.get(MessageBodyConstants.FROM_USERID).getAsString());
+              messageInfo.put(ChatKeyUtil.FROM_TIME, msgObj.get(MessageBodyConstants.FROM_TIME).getAsString());
+              messageInfo.put(ChatKeyUtil.FROM_USERNAME, msgObj.get(MessageBodyConstants.FROM_USERNAME).getAsString());
 
               String requesterId = messageInfo.get(ChatKeyUtil.FROM_USERID);
 

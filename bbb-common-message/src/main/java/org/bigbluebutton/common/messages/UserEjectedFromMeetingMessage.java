@@ -22,9 +22,9 @@ public class UserEjectedFromMeetingMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.USER_ID, userId);
-    payload.put(Constants.EJECTED_BY, ejectedBy);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.USER_ID, userId);
+    payload.put(MessageBodyConstants.EJECTED_BY, ejectedBy);
 
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(USER_EJECTED_FROM_MEETING, VERSION, null);
@@ -48,12 +48,12 @@ public class UserEjectedFromMeetingMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (USER_EJECTED_FROM_MEETING.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.EJECTED_BY)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
-            String userid = payload.get(Constants.USER_ID).getAsString();
-            String ejectedBy = payload.get(Constants.EJECTED_BY).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.EJECTED_BY)) {
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userid = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            String ejectedBy = payload.get(MessageBodyConstants.EJECTED_BY).getAsString();
             return new UserEjectedFromMeetingMessage(id, userid, ejectedBy);
           }
         }

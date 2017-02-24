@@ -27,10 +27,10 @@ public class GetPresentationInfoReplyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
-    payload.put(Constants.PRESENTER, presenter);
-    payload.put(Constants.PRESENTATIONS, presentations);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.PRESENTER, presenter);
+    payload.put(MessageBodyConstants.PRESENTATIONS, presentations);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(GET_PRESENTATION_INFO_REPLY, VERSION, null);
 
@@ -54,18 +54,18 @@ public class GetPresentationInfoReplyMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (GET_PRESENTATION_INFO_REPLY.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.REQUESTER_ID)
-                  && payload.has(Constants.PRESENTER)
-                  && payload.has(Constants.PRESENTATIONS)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
-            JsonObject presenterJsonObject = payload.get(Constants.PRESENTER).getAsJsonObject();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)
+                  && payload.has(MessageBodyConstants.PRESENTER)
+                  && payload.has(MessageBodyConstants.PRESENTATIONS)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
+            JsonObject presenterJsonObject = payload.get(MessageBodyConstants.PRESENTER).getAsJsonObject();
 
             Util util = new Util();
             Map<String, Object> presenter = util.extractCurrentPresenter(presenterJsonObject);
 
-            JsonArray presentationsJsonArray = payload.get(Constants.PRESENTATIONS).getAsJsonArray();
+            JsonArray presentationsJsonArray = payload.get(MessageBodyConstants.PRESENTATIONS).getAsJsonArray();
             ArrayList<Map<String, Object>> presentations = util.extractPresentations(presentationsJsonArray);
 
             return new GetPresentationInfoReplyMessage(meetingId, requesterId, presenter, presentations);

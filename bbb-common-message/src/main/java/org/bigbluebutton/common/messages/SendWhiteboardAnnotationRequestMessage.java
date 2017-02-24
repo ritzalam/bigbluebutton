@@ -24,9 +24,9 @@ public class SendWhiteboardAnnotationRequestMessage implements IBigBlueButtonMes
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
-    payload.put(Constants.ANNOTATION, annotation);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.ANNOTATION, annotation);
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(SEND_WHITEBOARD_ANNOTATION_REQUEST, VERSION, null);
     return MessageBuilder.buildJson(header, payload);
   }
@@ -46,13 +46,13 @@ public class SendWhiteboardAnnotationRequestMessage implements IBigBlueButtonMes
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (SEND_WHITEBOARD_ANNOTATION_REQUEST.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.ANNOTATION)
-                  && payload.has(Constants.REQUESTER_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.ANNOTATION)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
 
-            JsonObject annotationElement = (JsonObject) payload.get(Constants.ANNOTATION);
+            JsonObject annotationElement = (JsonObject) payload.get(MessageBodyConstants.ANNOTATION);
 
             Util util = new Util();
             Map<String, Object> annotation = util.extractAnnotation(annotationElement);

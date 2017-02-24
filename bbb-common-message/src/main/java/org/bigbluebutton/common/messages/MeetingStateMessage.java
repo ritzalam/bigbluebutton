@@ -24,7 +24,7 @@ public class MeetingStateMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(MEETING_STATE, VERSION, null);
 
@@ -47,14 +47,14 @@ public class MeetingStateMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (MEETING_STATE.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.PERMISSIONS)
-                  && payload.has(Constants.MEETING_MUTED)) {
-            String meetingID = payload.get(Constants.MEETING_ID).getAsString();
-            String userId = payload.get(Constants.USER_ID).getAsString();
-            Boolean muted = payload.get(Constants.MEETING_MUTED).getAsBoolean();
-            JsonObject premissions = (JsonObject) payload.get(Constants.PERMISSIONS);
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.PERMISSIONS)
+                  && payload.has(MessageBodyConstants.MEETING_MUTED)) {
+            String meetingID = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userId = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            Boolean muted = payload.get(MessageBodyConstants.MEETING_MUTED).getAsBoolean();
+            JsonObject premissions = (JsonObject) payload.get(MessageBodyConstants.PERMISSIONS);
 
             Util util = new Util();
             Map<String, Boolean> premissionsMap = util.extractPermission(premissions);

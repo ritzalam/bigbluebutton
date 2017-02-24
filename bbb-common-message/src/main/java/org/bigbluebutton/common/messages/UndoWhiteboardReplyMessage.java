@@ -30,10 +30,10 @@ public class UndoWhiteboardReplyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.WHITEBOARD_ID, whiteboardId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
-    payload.put(Constants.SHAPE_ID, shapeId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.WHITEBOARD_ID, whiteboardId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.SHAPE_ID, shapeId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(UNDO_WHITEBOARD_REPLY, VERSION, null);
     return MessageBuilder.buildJson(header, payload);
@@ -54,14 +54,14 @@ public class UndoWhiteboardReplyMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (UNDO_WHITEBOARD_REPLY.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.WHITEBOARD_ID)
-                  && payload.has(Constants.SHAPE_ID)
-                  && payload.has(Constants.REQUESTER_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String whiteboardId = payload.get(Constants.WHITEBOARD_ID).getAsString();
-            String shapeId = payload.get(Constants.SHAPE_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.WHITEBOARD_ID)
+                  && payload.has(MessageBodyConstants.SHAPE_ID)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String whiteboardId = payload.get(MessageBodyConstants.WHITEBOARD_ID).getAsString();
+            String shapeId = payload.get(MessageBodyConstants.SHAPE_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
 
             return new UndoWhiteboardReplyMessage(meetingId, requesterId, whiteboardId, shapeId);
           }

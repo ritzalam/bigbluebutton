@@ -24,10 +24,10 @@ public class LockUserMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
-    payload.put(Constants.LOCK, lock);
-    payload.put(Constants.INTERNAL_USER_ID, internalUserId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.LOCK, lock);
+    payload.put(MessageBodyConstants.INTERNAL_USER_ID, internalUserId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(LOCK_USER, VERSION, null);
     return MessageBuilder.buildJson(header, payload);
@@ -49,14 +49,14 @@ public class LockUserMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (LOCK_USER.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.REQUESTER_ID)
-                  && payload.has(Constants.LOCK)
-                  && payload.has(Constants.INTERNAL_USER_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
-            boolean lock = payload.get(Constants.LOCK).getAsBoolean();
-            String internalUserId = payload.get(Constants.INTERNAL_USER_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)
+                  && payload.has(MessageBodyConstants.LOCK)
+                  && payload.has(MessageBodyConstants.INTERNAL_USER_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
+            boolean lock = payload.get(MessageBodyConstants.LOCK).getAsBoolean();
+            String internalUserId = payload.get(MessageBodyConstants.INTERNAL_USER_ID).getAsString();
 
             return new LockUserMessage(meetingId, requesterId, lock, internalUserId);
           }

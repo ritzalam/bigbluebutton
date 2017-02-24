@@ -26,9 +26,9 @@ public class PresentationConversionDoneMessage implements IBigBlueButtonMessage 
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.CODE, code);
-    payload.put(Constants.PRESENTATION, presentation);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.CODE, code);
+    payload.put(MessageBodyConstants.PRESENTATION, presentation);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(PRESENTATION_CONVERSION_DONE, VERSION, null);
 
@@ -51,13 +51,13 @@ public class PresentationConversionDoneMessage implements IBigBlueButtonMessage 
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (PRESENTATION_CONVERSION_DONE.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.CODE)
-                  && payload.has(Constants.PRESENTATION)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String code = payload.get(Constants.CODE).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.CODE)
+                  && payload.has(MessageBodyConstants.PRESENTATION)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String code = payload.get(MessageBodyConstants.CODE).getAsString();
 
-            JsonObject presObj = (JsonObject) payload.get(Constants.PRESENTATION).getAsJsonObject();
+            JsonObject presObj = (JsonObject) payload.get(MessageBodyConstants.PRESENTATION).getAsJsonObject();
             Map<String, Object> presentation = new HashMap<String, Object>();
 
             if (presObj.has("id")
@@ -73,7 +73,7 @@ public class PresentationConversionDoneMessage implements IBigBlueButtonMessage 
               presentation.put("current", current);
               presentation.put("name", name);
 
-              JsonArray pages = (JsonArray) presObj.get(Constants.PAGES);
+              JsonArray pages = (JsonArray) presObj.get(MessageBodyConstants.PAGES);
 
               Util util = new Util();
               ArrayList<Map<String, Object>> pagesList = util.extractPages(pages);

@@ -25,10 +25,10 @@ public class UserStatusChangedMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.USER_ID, userId);
-    payload.put(Constants.STATUS, status);
-    payload.put(Constants.VALUE, value);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.USER_ID, userId);
+    payload.put(MessageBodyConstants.STATUS, status);
+    payload.put(MessageBodyConstants.VALUE, value);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(USER_STATUS_CHANGED, VERSION, null);
 
@@ -51,14 +51,14 @@ public class UserStatusChangedMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (USER_STATUS_CHANGED.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.STATUS)
-                  && payload.has(Constants.VALUE)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
-            String userid = payload.get(Constants.USER_ID).getAsString();
-            String status = payload.get(Constants.STATUS).getAsString();
-            String value = payload.get(Constants.VALUE).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.STATUS)
+                  && payload.has(MessageBodyConstants.VALUE)) {
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userid = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            String status = payload.get(MessageBodyConstants.STATUS).getAsString();
+            String value = payload.get(MessageBodyConstants.VALUE).getAsString();
             return new UserStatusChangedMessage(id, userid, status, value);
           }
         }

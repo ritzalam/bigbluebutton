@@ -20,8 +20,8 @@ public class GetUsersRequestMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(GET_USERS_REQUEST, VERSION, null);
     return MessageBuilder.buildJson(header, payload);
@@ -43,10 +43,10 @@ public class GetUsersRequestMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (GET_USERS_REQUEST.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.REQUESTER_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
 
             return new GetUsersRequestMessage(meetingId, requesterId);
           }

@@ -1,10 +1,8 @@
 package org.bigbluebutton.common.messages;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -24,9 +22,9 @@ public class SendCaptionHistoryReplyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingID);
-    payload.put(Constants.REQUESTER_ID, requesterID);
-    payload.put(Constants.CAPTION_HISTORY, captionHistory);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingID);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterID);
+    payload.put(MessageBodyConstants.CAPTION_HISTORY, captionHistory);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(SEND_CAPTION_HISTORY_REPLY, VERSION, null);
     return MessageBuilder.buildJson(header, payload);
@@ -47,13 +45,13 @@ public class SendCaptionHistoryReplyMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (SEND_CAPTION_HISTORY_REPLY.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.CAPTION_HISTORY)
-                  && payload.has(Constants.REQUESTER_ID)) {
-            String meetingID = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterID = payload.get(Constants.REQUESTER_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.CAPTION_HISTORY)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)) {
+            String meetingID = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterID = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
 
-            JsonObject history = (JsonObject) payload.get(Constants.CAPTION_HISTORY);
+            JsonObject history = (JsonObject) payload.get(MessageBodyConstants.CAPTION_HISTORY);
 
             Util util = new Util();
 

@@ -21,7 +21,7 @@ public class UsersMessageReceiver implements MessageHandler{
 
 	@Override
 	public void handleMessage(String pattern, String channel, String message) {
-		if (channel.equalsIgnoreCase(MessagingConstants.TO_USERS_CHANNEL)) {
+		if (channel.equalsIgnoreCase(ChannelConstants.TO_USERS_CHANNEL)) {
 			JsonParser parser = new JsonParser();
 			JsonObject obj = (JsonObject) parser.parse(message);
 			if (obj.has("header") && obj.has("payload")) {
@@ -114,7 +114,7 @@ public class UsersMessageReceiver implements MessageHandler{
 					}
 				}
 			}
-		} else if (channel.equalsIgnoreCase(MessagingConstants.FROM_VOICE_CONF_SYSTEM_CHAN)) {
+		} else if (channel.equalsIgnoreCase(ChannelConstants.FROM_VOICE_CONF_SYSTEM_CHAN)) {
 			//System.out.println("Voice message: " + channel + " " + message);
 			JsonParser parser = new JsonParser();
 			JsonObject obj = (JsonObject) parser.parse(message);

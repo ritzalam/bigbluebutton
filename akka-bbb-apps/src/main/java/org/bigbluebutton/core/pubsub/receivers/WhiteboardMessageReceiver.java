@@ -2,13 +2,7 @@
 package org.bigbluebutton.core.pubsub.receivers;
 
 
-import org.bigbluebutton.common.messages.ClearWhiteboardRequestMessage;
-import org.bigbluebutton.common.messages.EnableWhiteboardRequestMessage;
-import org.bigbluebutton.common.messages.IsWhiteboardEnabledRequestMessage;
-import org.bigbluebutton.common.messages.MessagingConstants;
-import org.bigbluebutton.common.messages.RequestWhiteboardAnnotationHistoryRequestMessage;
-import org.bigbluebutton.common.messages.SendWhiteboardAnnotationRequestMessage;
-import org.bigbluebutton.common.messages.UndoWhiteboardRequest;
+import org.bigbluebutton.common.messages.*;
 import org.bigbluebutton.core.api.IBigBlueButtonInGW;
 
 import com.google.gson.JsonParser;
@@ -24,7 +18,7 @@ public class WhiteboardMessageReceiver implements MessageHandler {
 
 	@Override
 	public void handleMessage(String pattern, String channel, String message) {
-		if (channel.equalsIgnoreCase(MessagingConstants.TO_WHITEBOARD_CHANNEL)) {
+		if (channel.equalsIgnoreCase(ChannelConstants.TO_WHITEBOARD_CHANNEL)) {
 
 			JsonParser parser = new JsonParser();
 			JsonObject obj = (JsonObject) parser.parse(message);

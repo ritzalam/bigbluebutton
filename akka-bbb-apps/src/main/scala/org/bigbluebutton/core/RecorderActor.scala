@@ -4,8 +4,10 @@ import akka.actor.Actor
 import akka.actor.ActorRef
 import akka.actor.ActorLogging
 import akka.actor.Props
+import org.bigbluebutton.common.messages.WhiteboardKeyUtil
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.api._
+
 import scala.collection.JavaConversions._
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.core.recorders.events.PublicChatRecordEvent

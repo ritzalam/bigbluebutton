@@ -21,8 +21,8 @@ public class PresentationPageResizedMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.PAGE, page);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.PAGE, page);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(PRESENTATION_PAGE_RESIZED, VERSION, null);
 
@@ -45,11 +45,11 @@ public class PresentationPageResizedMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (PRESENTATION_PAGE_RESIZED.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.PAGE)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.PAGE)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
 
-            JsonObject pageObject = (JsonObject) payload.get(Constants.PAGE).getAsJsonObject();
+            JsonObject pageObject = (JsonObject) payload.get(MessageBodyConstants.PAGE).getAsJsonObject();
             Map<String, Object> page = new HashMap<String, Object>();
             Util util = new Util();
             page = util.extractPage(pageObject);

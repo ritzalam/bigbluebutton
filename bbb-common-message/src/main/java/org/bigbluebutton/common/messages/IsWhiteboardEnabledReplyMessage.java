@@ -23,9 +23,9 @@ public class IsWhiteboardEnabledReplyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
-    payload.put(Constants.ENABLED, enabled);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.ENABLED, enabled);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(IS_WHITEBOARD_ENABLED_REPLY, VERSION, null);
     return MessageBuilder.buildJson(header, payload);
@@ -47,12 +47,12 @@ public class IsWhiteboardEnabledReplyMessage implements IBigBlueButtonMessage {
         String messageName = header.get("name").getAsString();
         if (IS_WHITEBOARD_ENABLED_REPLY.equals(messageName)) {
 
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.REQUESTER_ID)
-                  && payload.has(Constants.ENABLED)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
-            boolean enabled = payload.get(Constants.ENABLED).getAsBoolean();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)
+                  && payload.has(MessageBodyConstants.ENABLED)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
+            boolean enabled = payload.get(MessageBodyConstants.ENABLED).getAsBoolean();
 
             return new IsWhiteboardEnabledReplyMessage(meetingId, requesterId, enabled);
           }

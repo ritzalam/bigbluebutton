@@ -30,13 +30,13 @@ public class EditCaptionHistoryMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingID);
-    payload.put(Constants.USER_ID, userID);
-    payload.put(Constants.START_INDEX, startIndex);
-    payload.put(Constants.END_INDEX, endIndex);
-    payload.put(Constants.LOCALE, locale);
-    payload.put(Constants.LOCALE_CODE, localeCode);
-    payload.put(Constants.TEXT, text);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingID);
+    payload.put(MessageBodyConstants.USER_ID, userID);
+    payload.put(MessageBodyConstants.START_INDEX, startIndex);
+    payload.put(MessageBodyConstants.END_INDEX, endIndex);
+    payload.put(MessageBodyConstants.LOCALE, locale);
+    payload.put(MessageBodyConstants.LOCALE_CODE, localeCode);
+    payload.put(MessageBodyConstants.TEXT, text);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(EDIT_CAPTION_HISTORY, VERSION, null);
 
@@ -59,20 +59,20 @@ public class EditCaptionHistoryMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (EDIT_CAPTION_HISTORY.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.USER_ID)
-                  && payload.has(Constants.START_INDEX)
-                  && payload.has(Constants.END_INDEX)
-                  && payload.has(Constants.LOCALE)
-                  && payload.has(Constants.LOCALE_CODE)
-                  && payload.has(Constants.TEXT)) {
-            String meetingID = payload.get(Constants.MEETING_ID).getAsString();
-            String userID = payload.get(Constants.USER_ID).getAsString();
-            Integer startIndex = payload.get(Constants.START_INDEX).getAsInt();
-            Integer endIndex = payload.get(Constants.END_INDEX).getAsInt();
-            String locale = payload.get(Constants.LOCALE).getAsString();
-            String localeCode = payload.get(Constants.LOCALE_CODE).getAsString();
-            String text = payload.get(Constants.TEXT).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.USER_ID)
+                  && payload.has(MessageBodyConstants.START_INDEX)
+                  && payload.has(MessageBodyConstants.END_INDEX)
+                  && payload.has(MessageBodyConstants.LOCALE)
+                  && payload.has(MessageBodyConstants.LOCALE_CODE)
+                  && payload.has(MessageBodyConstants.TEXT)) {
+            String meetingID = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String userID = payload.get(MessageBodyConstants.USER_ID).getAsString();
+            Integer startIndex = payload.get(MessageBodyConstants.START_INDEX).getAsInt();
+            Integer endIndex = payload.get(MessageBodyConstants.END_INDEX).getAsInt();
+            String locale = payload.get(MessageBodyConstants.LOCALE).getAsString();
+            String localeCode = payload.get(MessageBodyConstants.LOCALE_CODE).getAsString();
+            String text = payload.get(MessageBodyConstants.TEXT).getAsString();
 
             return new EditCaptionHistoryMessage(meetingID, userID, startIndex, endIndex, locale, localeCode, text);
           }

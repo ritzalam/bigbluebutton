@@ -52,10 +52,10 @@ public class PollStartedMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (POLL_STARTED.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
+          if (payload.has(MessageBodyConstants.MEETING_ID)
                   && payload.has(REQUESTER_ID)
                   && payload.has(POLL)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
             String requesterId = payload.get(REQUESTER_ID).getAsString();
 
             JsonObject poll = payload.get(POLL).getAsJsonObject();

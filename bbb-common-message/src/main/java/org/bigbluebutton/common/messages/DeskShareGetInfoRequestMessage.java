@@ -25,9 +25,9 @@ public class DeskShareGetInfoRequestMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
-    payload.put(Constants.REPLY_TO, replyTo);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.REPLY_TO, replyTo);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(GET_DESKTOP_SHARE_GET_INFO_REQUEST, VERSION, null);
 
@@ -50,12 +50,12 @@ public class DeskShareGetInfoRequestMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (GET_DESKTOP_SHARE_GET_INFO_REQUEST.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.REPLY_TO)
-                  && payload.has(Constants.REQUESTER_ID)) {
-            String id = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
-            String replyTo = payload.get(Constants.REPLY_TO).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.REPLY_TO)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)) {
+            String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
+            String replyTo = payload.get(MessageBodyConstants.REPLY_TO).getAsString();
             return new DeskShareGetInfoRequestMessage(id, requesterId, replyTo);
           }
         }

@@ -20,8 +20,8 @@ public class InitPermissionsSettingMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.PERMISSIONS, permissions);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.PERMISSIONS, permissions);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(INIT_PERMISSIONS_SETTING, VERSION, null);
 
@@ -29,7 +29,7 @@ public class InitPermissionsSettingMessage implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    return MessagingConstants.TO_USERS_CHANNEL;
+    return ChannelConstants.TO_USERS_CHANNEL;
   }
 
   public static InitPermissionsSettingMessage fromJson(String message) {
@@ -41,12 +41,12 @@ public class InitPermissionsSettingMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (INIT_PERMISSIONS_SETTING.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.PERMISSIONS)) {
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.PERMISSIONS)) {
 
-            String meetingID = payload.get(Constants.MEETING_ID).getAsString();
+            String meetingID = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
 
-            JsonObject permissions = (JsonObject) payload.get(Constants.PERMISSIONS);
+            JsonObject permissions = (JsonObject) payload.get(MessageBodyConstants.PERMISSIONS);
 
             Util util = new Util();
             Map<String, Boolean> permissionsMap = util.extractPermission(permissions);

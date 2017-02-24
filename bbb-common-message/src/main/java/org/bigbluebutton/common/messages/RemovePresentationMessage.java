@@ -19,8 +19,8 @@ public class RemovePresentationMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.PRESENTATION_ID, presentationId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.PRESENTATION_ID, presentationId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(REMOVE_PRESENTATION, VERSION, null);
 
@@ -43,10 +43,10 @@ public class RemovePresentationMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (REMOVE_PRESENTATION.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.PRESENTATION_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String presentationId = payload.get(Constants.PRESENTATION_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.PRESENTATION_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String presentationId = payload.get(MessageBodyConstants.PRESENTATION_ID).getAsString();
 
             return new RemovePresentationMessage(meetingId, presentationId);
           }

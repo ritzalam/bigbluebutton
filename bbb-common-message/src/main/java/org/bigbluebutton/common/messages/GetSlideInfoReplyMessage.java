@@ -30,12 +30,12 @@ public class GetSlideInfoReplyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
-    payload.put(Constants.X_OFFSET, xOffset);
-    payload.put(Constants.Y_OFFSET, yOffset);
-    payload.put(Constants.WIDTH_RATIO, widthRatio);
-    payload.put(Constants.HEIGHT_RATIO, heightRatio);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.X_OFFSET, xOffset);
+    payload.put(MessageBodyConstants.Y_OFFSET, yOffset);
+    payload.put(MessageBodyConstants.WIDTH_RATIO, widthRatio);
+    payload.put(MessageBodyConstants.HEIGHT_RATIO, heightRatio);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(GET_SLIDE_INFO, VERSION, null);
 
@@ -58,18 +58,18 @@ public class GetSlideInfoReplyMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (GET_SLIDE_INFO.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.REQUESTER_ID)
-                  && payload.has(Constants.X_OFFSET)
-                  && payload.has(Constants.Y_OFFSET)
-                  && payload.has(Constants.WIDTH_RATIO)
-                  && payload.has(Constants.HEIGHT_RATIO)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
-            int xOffset = payload.get(Constants.X_OFFSET).getAsInt();
-            int yOffset = payload.get(Constants.Y_OFFSET).getAsInt();
-            int widthRatio = payload.get(Constants.WIDTH_RATIO).getAsInt();
-            int heightRatio = payload.get(Constants.HEIGHT_RATIO).getAsInt();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)
+                  && payload.has(MessageBodyConstants.X_OFFSET)
+                  && payload.has(MessageBodyConstants.Y_OFFSET)
+                  && payload.has(MessageBodyConstants.WIDTH_RATIO)
+                  && payload.has(MessageBodyConstants.HEIGHT_RATIO)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
+            int xOffset = payload.get(MessageBodyConstants.X_OFFSET).getAsInt();
+            int yOffset = payload.get(MessageBodyConstants.Y_OFFSET).getAsInt();
+            int widthRatio = payload.get(MessageBodyConstants.WIDTH_RATIO).getAsInt();
+            int heightRatio = payload.get(MessageBodyConstants.HEIGHT_RATIO).getAsInt();
 
             return new GetSlideInfoReplyMessage(meetingId, requesterId,
                     xOffset, yOffset, widthRatio, heightRatio);

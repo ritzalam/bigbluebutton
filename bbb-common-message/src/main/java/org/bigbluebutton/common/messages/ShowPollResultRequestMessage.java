@@ -39,7 +39,7 @@ public class ShowPollResultRequestMessage implements IBigBlueButtonMessage {
 	}
 
 	public String getChannel() {
-		return MessagingConstants.TO_POLLING_CHANNEL;
+		return ChannelConstants.TO_POLLING_CHANNEL;
 	}
 
 	public static ShowPollResultRequestMessage fromJson(String message) {
@@ -53,11 +53,11 @@ public class ShowPollResultRequestMessage implements IBigBlueButtonMessage {
 			if (header.has("name")) {
 				String messageName = header.get("name").getAsString();
 				if (SHOW_POLL_RESULT_REQUEST.equals(messageName)) {
-					if (payload.has(Constants.MEETING_ID) 
+					if (payload.has(MessageBodyConstants.MEETING_ID)
 							&& payload.has(REQUESTER_ID)
 							&& payload.has(POLL_ID)
 							&& payload.has(SHOW)) {
-						String id = payload.get(Constants.MEETING_ID).getAsString();
+						String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
 						String requesterId = payload.get(REQUESTER_ID).getAsString();
 						String pollId = payload.get(POLL_ID).getAsString();
 						Boolean show = payload.get(SHOW).getAsBoolean();

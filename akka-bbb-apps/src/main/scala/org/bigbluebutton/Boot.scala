@@ -48,8 +48,9 @@ object Boot extends App with SystemConfiguration {
   val bbbInGW = new BigBlueButtonInGW(system, eventBus, outGW, red5DeskShareIP, red5DeskShareApp)
   val redisMsgReceiver = new RedisMessageReceiver(bbbInGW)
 
+  val eventBus2x = new IncomingEventBus2x
   val incomingJsonMessageBus = new IncomingJsonMessageBus
-  val redisMessageHandlerActor = system.actorOf(RedisMsgHdlrActor.props(incomingJsonMessageBus))
+  val redisMessageHandlerActor = system.actorOf(RedisMsgHdlrActor.props(eventBus2x, incomingJsonMessageBus))
   incomingJsonMessageBus.subscribe(redisMessageHandlerActor, "incoming-json-message")
 
   val redisMessageReceiver2x = new RedisMessageReceiver2x(bbbInGW)

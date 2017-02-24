@@ -21,9 +21,9 @@ public class SendCursorUpdateMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.X_PERCENT, xPercent);
-    payload.put(Constants.Y_PERCENT, yPercent);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.X_PERCENT, xPercent);
+    payload.put(MessageBodyConstants.Y_PERCENT, yPercent);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(SEND_CURSOR_UPDATE, VERSION, null);
 
@@ -46,12 +46,12 @@ public class SendCursorUpdateMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (SEND_CURSOR_UPDATE.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.X_PERCENT)
-                  && payload.has(Constants.Y_PERCENT)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            double xPercent = payload.get(Constants.X_PERCENT).getAsDouble();
-            double yPercent = payload.get(Constants.Y_PERCENT).getAsDouble();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.X_PERCENT)
+                  && payload.has(MessageBodyConstants.Y_PERCENT)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            double xPercent = payload.get(MessageBodyConstants.X_PERCENT).getAsDouble();
+            double yPercent = payload.get(MessageBodyConstants.Y_PERCENT).getAsDouble();
 
             return new SendCursorUpdateMessage(meetingId, xPercent, yPercent);
           }

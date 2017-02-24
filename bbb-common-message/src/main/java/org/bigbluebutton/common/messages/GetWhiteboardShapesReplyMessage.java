@@ -28,10 +28,10 @@ public class GetWhiteboardShapesReplyMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.SHAPES, shapes);
-    payload.put(Constants.WHITEBOARD_ID, whiteboardId);
-    payload.put(Constants.REQUESTER_ID, requesterId);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.SHAPES, shapes);
+    payload.put(MessageBodyConstants.WHITEBOARD_ID, whiteboardId);
+    payload.put(MessageBodyConstants.REQUESTER_ID, requesterId);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(GET_WHITEBOARD_SHAPES_REPLY, VERSION, null);
     return MessageBuilder.buildJson(header, payload);
@@ -52,15 +52,15 @@ public class GetWhiteboardShapesReplyMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (GET_WHITEBOARD_SHAPES_REPLY.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.WHITEBOARD_ID)
-                  && payload.has(Constants.SHAPES)
-                  && payload.has(Constants.REQUESTER_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String requesterId = payload.get(Constants.REQUESTER_ID).getAsString();
-            String whiteboardId = payload.get(Constants.WHITEBOARD_ID).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.WHITEBOARD_ID)
+                  && payload.has(MessageBodyConstants.SHAPES)
+                  && payload.has(MessageBodyConstants.REQUESTER_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String requesterId = payload.get(MessageBodyConstants.REQUESTER_ID).getAsString();
+            String whiteboardId = payload.get(MessageBodyConstants.WHITEBOARD_ID).getAsString();
 
-            JsonArray shapes = (JsonArray) payload.get(Constants.SHAPES);
+            JsonArray shapes = (JsonArray) payload.get(MessageBodyConstants.SHAPES);
 
             Util util = new Util();
 

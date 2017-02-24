@@ -21,7 +21,7 @@ public class PubSubPongMessage implements IBigBlueButtonMessage {
 	}
 
 	public String getChannel() {
-		return MessagingConstants.TO_SYSTEM_CHANNEL;
+		return ChannelConstants.TO_SYSTEM_CHANNEL;
 	}
 
 	public static class PubSubPongMessagePayload {

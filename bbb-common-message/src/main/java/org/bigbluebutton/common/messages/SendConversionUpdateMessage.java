@@ -27,11 +27,11 @@ public class SendConversionUpdateMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.MESSAGE_KEY, messageKey);
-    payload.put(Constants.CODE, code);
-    payload.put(Constants.PRESENTATION_ID, presId);
-    payload.put(Constants.PRESENTATION_NAME, presName);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MESSAGE_KEY, messageKey);
+    payload.put(MessageBodyConstants.CODE, code);
+    payload.put(MessageBodyConstants.PRESENTATION_ID, presId);
+    payload.put(MessageBodyConstants.PRESENTATION_NAME, presName);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(SEND_CONVERSION_UPDATE, VERSION, null);
 
@@ -39,7 +39,7 @@ public class SendConversionUpdateMessage implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    return MessagingConstants.TO_PRESENTATION_CHANNEL;
+    return ChannelConstants.TO_PRESENTATION_CHANNEL;
   }
 
   public static SendConversionUpdateMessage fromJson(String message) {
@@ -53,16 +53,16 @@ public class SendConversionUpdateMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (SEND_CONVERSION_UPDATE.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.MESSAGE_KEY)
-                  && payload.has(Constants.CODE)
-                  && payload.has(Constants.PRESENTATION_NAME)
-                  && payload.has(Constants.PRESENTATION_ID)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String code = payload.get(Constants.CODE).getAsString();
-            String messageKey = payload.get(Constants.MESSAGE_KEY).getAsString();
-            String presId = payload.get(Constants.PRESENTATION_ID).getAsString();
-            String presName = payload.get(Constants.PRESENTATION_NAME).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.MESSAGE_KEY)
+                  && payload.has(MessageBodyConstants.CODE)
+                  && payload.has(MessageBodyConstants.PRESENTATION_NAME)
+                  && payload.has(MessageBodyConstants.PRESENTATION_ID)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String code = payload.get(MessageBodyConstants.CODE).getAsString();
+            String messageKey = payload.get(MessageBodyConstants.MESSAGE_KEY).getAsString();
+            String presId = payload.get(MessageBodyConstants.PRESENTATION_ID).getAsString();
+            String presName = payload.get(MessageBodyConstants.PRESENTATION_NAME).getAsString();
 
             return new SendConversionUpdateMessage(messageKey, meetingId, code, presId, presName);
           }

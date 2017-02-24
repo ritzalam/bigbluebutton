@@ -52,10 +52,10 @@ public class UserVotedPollMessage implements IBigBlueButtonMessage {
 			if (header.has("name")) {
 				String messageName = header.get("name").getAsString();
 				if (USER_VOTED_POLL.equals(messageName)) {
-					if (payload.has(Constants.MEETING_ID) 
+					if (payload.has(MessageBodyConstants.MEETING_ID)
 							&& payload.has(PRESENTER_ID)
 							&& payload.has(POLL)) {
-						String id = payload.get(Constants.MEETING_ID).getAsString();
+						String id = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
 						String presenterId = payload.get(PRESENTER_ID).getAsString();
 						
 						JsonObject poll = payload.get(POLL).getAsJsonObject();

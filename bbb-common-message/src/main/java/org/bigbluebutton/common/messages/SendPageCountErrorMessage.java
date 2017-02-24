@@ -31,13 +31,13 @@ public class SendPageCountErrorMessage implements IBigBlueButtonMessage {
 
   public String toJson() {
     HashMap<String, Object> payload = new HashMap<String, Object>();
-    payload.put(Constants.MEETING_ID, meetingId);
-    payload.put(Constants.MESSAGE_KEY, messageKey);
-    payload.put(Constants.CODE, code);
-    payload.put(Constants.PRESENTATION_ID, presId);
-    payload.put(Constants.NUM_PAGES, numberOfPages);
-    payload.put(Constants.MAX_NUM_PAGES, maxNumberPages);
-    payload.put(Constants.PRESENTATION_NAME, presName);
+    payload.put(MessageBodyConstants.MEETING_ID, meetingId);
+    payload.put(MessageBodyConstants.MESSAGE_KEY, messageKey);
+    payload.put(MessageBodyConstants.CODE, code);
+    payload.put(MessageBodyConstants.PRESENTATION_ID, presId);
+    payload.put(MessageBodyConstants.NUM_PAGES, numberOfPages);
+    payload.put(MessageBodyConstants.MAX_NUM_PAGES, maxNumberPages);
+    payload.put(MessageBodyConstants.PRESENTATION_NAME, presName);
 
     java.util.HashMap<String, Object> header = MessageBuilder.buildHeader(SEND_PAGE_COUNT_ERROR, VERSION, null);
 
@@ -45,7 +45,7 @@ public class SendPageCountErrorMessage implements IBigBlueButtonMessage {
   }
 
   public String getChannel() {
-    return MessagingConstants.TO_PRESENTATION_CHANNEL;
+    return ChannelConstants.TO_PRESENTATION_CHANNEL;
   }
 
   public static SendPageCountErrorMessage fromJson(String message) {
@@ -59,20 +59,20 @@ public class SendPageCountErrorMessage implements IBigBlueButtonMessage {
       if (header.has("name")) {
         String messageName = header.get("name").getAsString();
         if (SEND_PAGE_COUNT_ERROR.equals(messageName)) {
-          if (payload.has(Constants.MEETING_ID)
-                  && payload.has(Constants.MESSAGE_KEY)
-                  && payload.has(Constants.CODE)
-                  && payload.has(Constants.PRESENTATION_ID)
-                  && payload.has(Constants.MAX_NUM_PAGES)
-                  && payload.has(Constants.NUM_PAGES)
-                  && payload.has(Constants.PRESENTATION_NAME)) {
-            String meetingId = payload.get(Constants.MEETING_ID).getAsString();
-            String messageKey = payload.get(Constants.MESSAGE_KEY).getAsString();
-            String code = payload.get(Constants.CODE).getAsString();
-            String presId = payload.get(Constants.PRESENTATION_ID).getAsString();
-            int numberOfPages = payload.get(Constants.NUM_PAGES).getAsInt();
-            int maxNumberPages = payload.get(Constants.MAX_NUM_PAGES).getAsInt();
-            String presName = payload.get(Constants.PRESENTATION_NAME).getAsString();
+          if (payload.has(MessageBodyConstants.MEETING_ID)
+                  && payload.has(MessageBodyConstants.MESSAGE_KEY)
+                  && payload.has(MessageBodyConstants.CODE)
+                  && payload.has(MessageBodyConstants.PRESENTATION_ID)
+                  && payload.has(MessageBodyConstants.MAX_NUM_PAGES)
+                  && payload.has(MessageBodyConstants.NUM_PAGES)
+                  && payload.has(MessageBodyConstants.PRESENTATION_NAME)) {
+            String meetingId = payload.get(MessageBodyConstants.MEETING_ID).getAsString();
+            String messageKey = payload.get(MessageBodyConstants.MESSAGE_KEY).getAsString();
+            String code = payload.get(MessageBodyConstants.CODE).getAsString();
+            String presId = payload.get(MessageBodyConstants.PRESENTATION_ID).getAsString();
+            int numberOfPages = payload.get(MessageBodyConstants.NUM_PAGES).getAsInt();
+            int maxNumberPages = payload.get(MessageBodyConstants.MAX_NUM_PAGES).getAsInt();
+            String presName = payload.get(MessageBodyConstants.PRESENTATION_NAME).getAsString();
 
             return new SendPageCountErrorMessage(messageKey, meetingId, code, presId, numberOfPages, maxNumberPages, presName);
           }

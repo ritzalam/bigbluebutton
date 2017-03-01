@@ -66,25 +66,6 @@ public class RedisMessagingService implements MessagingService {
     sender.send(msg);
   }
 
-  public void createMeeting(String meetingID, String externalMeetingID,
-                            String parentMeetingID, String meetingName, Boolean recorded,
-                            String voiceBridge, Integer duration, Boolean autoStartRecording,
-                            Boolean allowStartStopRecording, Boolean webcamsOnlyForModerator,
-                            String moderatorPass, String viewerPass, Long createTime,
-                            String createDate, Boolean isBreakout, Integer sequence) {
-    CreateMeetingRequestPayload payload = new CreateMeetingRequestPayload(
-            meetingID, externalMeetingID, parentMeetingID, meetingName,
-            recorded, voiceBridge, duration, autoStartRecording,
-            allowStartStopRecording, webcamsOnlyForModerator,
-            moderatorPass, viewerPass, createTime, createDate, isBreakout,
-            sequence);
-    CreateMeetingRequest msg = new CreateMeetingRequest(payload);
-
-    String json = msg.toJson();
-    log.info("Sending create meeting message to bbb-apps:[{}]", json);
-    sender.send(msg);
-  }
-
   public void endMeeting(String meetingId) {
     EndMeetingMessage.EndMeetingMessagePayload payload = new EndMeetingMessage.EndMeetingMessagePayload(meetingId);
     EndMeetingMessage msg = new EndMeetingMessage(payload);
@@ -93,14 +74,6 @@ public class RedisMessagingService implements MessagingService {
     sender.send(msg);
   }
 
-  public void sendKeepAlive(String system, Long timestamp) {
-    PubSubPingMessage.PubSubPingMessagePayload payload =
-            new PubSubPingMessage.PubSubPingMessagePayload("BbbWeb", System.currentTimeMillis());
-    PubSubPingMessage msg = new PubSubPingMessage(payload);
-
-    String json = msg.toJson();
-    sender.send(msg);
-  }
 
   public void send(IBigBlueButtonMessage message) {
     sender.send(message.getChannel(), message.toJson());
@@ -114,14 +87,14 @@ public class RedisMessagingService implements MessagingService {
     Gson gson = new Gson();
 
     HashMap<String, Object> map = new HashMap<String, Object>();
-    map.put("messageId", MessagingConstants.SEND_POLLS_EVENT);
+    map.put("messageId", ChannelConstants.SEND_POLLS_EVENT);
     map.put("meetingId", meetingId);
     map.put("title", title);
     map.put("question", question);
     map.put("questionType", questionType);
     map.put("answers", answers);
 
-    sender.send(MessagingConstants.TO_POLLING_CHANNEL, gson.toJson(map));
+    sender.send(ChannelConstants.TO_POLLING_CHANNEL, gson.toJson(map));
   }
 
   public void setMessageSender(MessagePublisher sender) {
@@ -146,10 +119,10 @@ public class RedisMessagingService implements MessagingService {
       TurnEntry te = (TurnEntry) turnsIter.next();
       if (null != te) {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put(Constants.USERNAME, te.username);
-        map.put(Constants.URL, te.url);
-        map.put(Constants.TTL, te.ttl);
-        map.put(Constants.PASSWORD, te.password);
+        map.put(MessageBodyConstants.USERNAME, te.username);
+        map.put(MessageBodyConstants.URL, te.url);
+        map.put(MessageBodyConstants.TTL, te.ttl);
+        map.put(MessageBodyConstants.PASSWORD, te.password);
 
         turnsArrayList.add(map);
       }

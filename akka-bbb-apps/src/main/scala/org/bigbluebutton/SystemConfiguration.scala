@@ -24,4 +24,7 @@ trait SystemConfiguration {
 
   lazy val meetingManagerChannel = Try(config.getString("eventBus.meetingManagerChannel")).getOrElse("MeetingManagerChannel")
   lazy val outgoingMessageChannel = Try(config.getString("eventBus.outgoingMessageChannel")).getOrElse("OutgoingMessageChannel")
+
+  lazy val outgoingMessageChannel2x = Try(config.getString("eventBus.outgoingMessageChannel2x")).getOrElse("OutgoingMessageChannel2x")
+  lazy val incomingJsonMsgChannel = Try(config.getString("eventBus.incomingJsonMsgChannel")).getOrElse("IncomingJsonMsgChannel")
 }

@@ -7,12 +7,12 @@ import scala.util.{Failure, Success, Try}
 
 object PubSubPongMessage2xConst {
   val NAME = "PubSubPongMessage"
-  val CHANNEL = PubSubChannels.TO_SYSTEM_CHANNEL
+  val CHANNEL = PubSubChannels.FROM_SYSTEM_CHANNEL
 }
 
 case class PubSubPongMessageBody(system: String, timestamp: Long)
 
-case class PubSubPongMessage2x(header: Header, payload: PubSubPongMessageBody)
+case class PubSubPongMessage2x(header: Header, payload: PubSubPongMessageBody) extends BbbMsg
 
 trait PubSubPongMessageProtocol extends HeaderProtocol {
   this: DefaultJsonProtocol =>

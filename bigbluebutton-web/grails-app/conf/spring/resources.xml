@@ -106,6 +106,8 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
     <property name="defaultConfigURL" value="${defaultConfigURL}"/>
     <property name="defaultGuestPolicy" value="${defaultGuestPolicy}"/>
   </bean>
+
+    <bean id="bbbWebActorSystem" class="org.bigbluebutton.web.BbbWebActorSystem"/>
         
 	<import resource="doc-conversion.xml" />
 	<import resource="bbb-redis-pool.xml" />

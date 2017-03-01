@@ -29,7 +29,7 @@ class AppsRedisSubscriberActor(msgReceiver: RedisMessageReceiver, msgReceiver2x:
   channels: Seq[String] = Nil, patterns: Seq[String] = Nil)
     extends RedisSubscriberActor(
       new InetSocketAddress(redisHost, redisPort),
-      channels, patterns) {
+      channels, patterns) with SystemConfiguration {
 
   // Set the name of this client to be able to distinguish when doing
   // CLIENT LIST on redis-cli
@@ -42,7 +42,7 @@ class AppsRedisSubscriberActor(msgReceiver: RedisMessageReceiver, msgReceiver2x:
   def onPMessage(pmessage: PMessage) {
     //log.debug(s"RECEIVED:\n $pmessage \n")
     val receivedJsonMessage = new ReceivedJsonMessage(pmessage.channel, pmessage.data)
-    msgReceiver2x.publish(IncomingJsonMessage("incoming-json-message", receivedJsonMessage))
+    msgReceiver2x.publish(IncomingJsonMessage(incomingJsonMsgChannel, receivedJsonMessage))
 
     msgReceiver.handleMessage(pmessage.patternMatched, pmessage.channel, pmessage.data)
   }

@@ -2,12 +2,10 @@ package org.bigbluebutton.core.api
 
 import org.bigbluebutton.core.bus.{ IncomingEventBus2x, IncomingJsonMessageBus, ReceivedJsonMessage }
 import org.bigbluebutton.common.JsonMsgUnmarshaller
-import org.bigbluebutton.common.message.CreateMeetingRequestMessageUnmarshaller
 import akka.actor.Actor
-import akka.actor.ActorRef
 import akka.actor.ActorLogging
 import akka.actor.Props
-import org.bigbluebutton.core.api.handlers.CreateMeetingRequestMessageHandler
+import org.bigbluebutton.core.api.handlers.{ CreateMeetingRequestMessageHandler, PubSubPingMessageHandler }
 
 import scala.util.{ Failure, Success }
 
@@ -17,7 +15,7 @@ object RedisMsgHdlrActor {
 }
 
 class RedisMsgHdlrActor(val eventBus: IncomingEventBus2x, val incomingJsonMessageBus: IncomingJsonMessageBus)
-    extends Actor with ActorLogging with CreateMeetingRequestMessageHandler {
+    extends Actor with ActorLogging with CreateMeetingRequestMessageHandler with PubSubPingMessageHandler {
 
   def receive = {
     case msg: ReceivedJsonMessage => {

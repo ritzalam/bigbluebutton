@@ -2,12 +2,13 @@ package org.bigbluebutton.core.ingw
 
 import akka.actor.ActorSystem
 import akka.event.Logging
+import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.common.messages.{ IBigBlueButtonMessage, PubSubPingMessage, StartCustomPollRequestMessage }
 import org.bigbluebutton.messages.RegisterUserMessage
 import org.bigbluebutton.core.api._
 import org.bigbluebutton.core.apps.{ AnnotationVO, Page, Presentation }
 import org.bigbluebutton.core.bus._
-import org.bigbluebutton.core.{ BigBlueButtonActor, JsonMessageDecoder, MeetingProperties, OutMessageGateway }
+import org.bigbluebutton.core._
 import org.bigbluebutton.messages._
 
 import scala.collection.JavaConversions._
@@ -16,16 +17,18 @@ class BigBlueButtonInGW(
   val system: ActorSystem,
   val eventBus: IncomingEventBus,
   val outGW: OutMessageGateway,
-  val red5DeskShareIP: String,
-  val red5DeskShareApp: String) extends IBigBlueButtonInGW
+  val outGW2x: OutMessageGateway2x,
+  val eventBus2x: IncomingEventBus2x) extends IBigBlueButtonInGW
+    with SystemConfiguration
     with CreateMeetingRequestHdlr
     with StartCustomPollRequestMessageHdlr
     with PubSubPingMessageHdlr
     with RegisterUserMessageHdlr {
 
   val log = Logging(system, getClass)
-  val bbbActor = system.actorOf(BigBlueButtonActor.props(system, eventBus, outGW), "bigbluebutton-actor")
+  val bbbActor = system.actorOf(BigBlueButtonActor.props(system, eventBus, outGW, outGW2x), "bigbluebutton-actor")
   eventBus.subscribe(bbbActor, "meeting-manager")
+  eventBus2x.subscribe(bbbActor, meetingManagerChannel)
 
   def handleBigBlueButtonMessage(message: IBigBlueButtonMessage) {
     message match {

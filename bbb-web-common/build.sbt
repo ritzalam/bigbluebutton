@@ -1,8 +1,21 @@
+
 name := "bbb-web-common"
 
 organization := "org.bigbluebutton"
 
 version := "0.0.1-SNAPSHOT"
+
+scalaVersion := "2.11.8"
+
+scalacOptions ++= Seq(
+  "-unchecked",
+  "-deprecation",
+  "-Xlint",
+  "-Ywarn-dead-code",
+  "-language:_",
+  "-target:jvm-1.8",
+  "-encoding", "UTF-8"
+)
 
 // We want to have our jar files in lib_managed dir.
 // This way we'll have the right path when we import
@@ -13,25 +26,30 @@ testOptions in Test += Tests.Argument(TestFrameworks.Specs2, "html", "console", 
 
 testOptions in Test += Tests.Argument(TestFrameworks.ScalaTest, "-h", "target/scalatest-reports")
 
-libraryDependencies ++= {
-  Seq(
-    "com.google.code.gson"      %  "gson"              % "2.5",
-    "redis.clients" % "jedis" % "2.7.2",
-    "org.apache.commons" % "commons-pool2" % "2.3",
-    "commons-lang" % "commons-lang" % "2.5",
-    "commons-io" % "commons-io" % "2.4",
-    "commons-httpclient" % "commons-httpclient" % "3.1",
-    "com.zaxxer" % "nuprocess" % "1.1.0",
-    "com.artofsolving" % "jodconverter" % "2.2.1",
-    "org.openoffice" % "unoil" % "3.2.1",
-    "org.openoffice" % "ridl" % "3.2.1",
-    "org.openoffice" % "juh" % "3.2.1",
-    "org.openoffice" % "jurt" % "3.2.1",
-    "org.apache.poi" % "poi-ooxml" % "3.15",
-    "org.bigbluebutton" % "bbb-common-message" % "0.0.19-SNAPSHOT",
-    "org.slf4j" % "slf4j-api" % "1.7.5"
+val akkaVersion = "2.4.17"
+val scalaTestV = "3.0.1"
 
-  )}
+libraryDependencies += "com.typesafe.akka" %% "akka-actor" % akkaVersion
+libraryDependencies += "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test"
+libraryDependencies += "com.typesafe.akka" %% "akka-slf4j" % akkaVersion
+
+libraryDependencies += "com.google.code.gson"      %  "gson"              % "2.5"
+libraryDependencies += "redis.clients" % "jedis" % "2.7.2"
+
+libraryDependencies += "org.apache.commons" % "commons-pool2" % "2.3"
+libraryDependencies += "commons-lang" % "commons-lang" % "2.5"
+libraryDependencies += "commons-io" % "commons-io" % "2.4"
+libraryDependencies += "commons-httpclient" % "commons-httpclient" % "3.1"
+libraryDependencies += "com.zaxxer" % "nuprocess" % "1.1.0"
+libraryDependencies += "com.artofsolving" % "jodconverter" % "2.2.1"
+libraryDependencies += "org.openoffice" % "unoil" % "3.2.1"
+libraryDependencies += "org.openoffice" % "ridl" % "3.2.1"
+libraryDependencies += "org.openoffice" % "juh" % "3.2.1"
+libraryDependencies += "org.openoffice" % "jurt" % "3.2.1"
+
+libraryDependencies += "org.apache.poi" % "poi-ooxml" % "3.15"
+libraryDependencies += "org.bigbluebutton" % "bbb-common-message" % "0.0.19-SNAPSHOT"
+libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.5"
 
 libraryDependencies += "junit" % "junit" % "4.12" % "test"
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"

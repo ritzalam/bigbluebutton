@@ -12,7 +12,7 @@ object PubSubPingMessage2xConst {
 
 case class PubSubPingMessageBody(system: String, timestamp: Long)
 
-case class PubSubPingMessage2x(header: Header, body: PubSubPingMessageBody)
+case class PubSubPingMessage2x(header: Header, body: PubSubPingMessageBody) extends BbbMsg
 
 trait PubSubPingMessageProtocol extends HeaderProtocol {
   this: DefaultJsonProtocol =>

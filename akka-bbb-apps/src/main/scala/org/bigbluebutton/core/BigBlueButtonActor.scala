@@ -11,17 +11,18 @@ import org.bigbluebutton.core.api._
 import org.bigbluebutton.SystemConfiguration
 import java.util.concurrent.TimeUnit
 
+import org.bigbluebutton.common.message._
 import org.bigbluebutton.core.running.RunningMeeting
 
 object BigBlueButtonActor extends SystemConfiguration {
   def props(system: ActorSystem,
     eventBus: IncomingEventBus,
-    outGW: OutMessageGateway): Props =
-    Props(classOf[BigBlueButtonActor], system, eventBus, outGW)
+    outGW: OutMessageGateway, outGW2x: OutMessageGateway2x): Props =
+    Props(classOf[BigBlueButtonActor], system, eventBus, outGW, outGW2x)
 }
 
 class BigBlueButtonActor(val system: ActorSystem,
-    eventBus: IncomingEventBus, outGW: OutMessageGateway) extends Actor with ActorLogging {
+    eventBus: IncomingEventBus, outGW: OutMessageGateway, outGW2x: OutMessageGateway2x) extends Actor with ActorLogging {
 
   implicit def executionContext = system.dispatcher
   implicit val timeout = Timeout(5 seconds)
@@ -32,7 +33,7 @@ class BigBlueButtonActor(val system: ActorSystem,
     case msg: CreateMeeting => handleCreateMeeting(msg)
     case msg: DestroyMeeting => handleDestroyMeeting(msg)
     case msg: KeepAliveMessage => handleKeepAliveMessage(msg)
-    case msg: PubSubPing => handlePubSubPingMessage(msg)
+    case msg: PubSubPingMessage2x => handlePubSubPingMessage(msg)
     case msg: ValidateAuthToken => handleValidateAuthToken(msg)
     case msg: GetAllMeetingsRequest => handleGetAllMeetingsRequest(msg)
     case msg: UserJoinedVoiceConfMessage => handleUserJoinedVoiceConfMessage(msg)
@@ -109,8 +110,12 @@ class BigBlueButtonActor(val system: ActorSystem,
     outGW.send(new KeepAliveMessageReply(msg.aliveID))
   }
 
-  private def handlePubSubPingMessage(msg: PubSubPing): Unit = {
-    outGW.send(new PubSubPong(msg.system, msg.timestamp))
+  private def handlePubSubPingMessage(msg: PubSubPingMessage2x): Unit = {
+    val header = Header(PubSubPongMessage2xConst.NAME, PubSubPongMessage2xConst.CHANNEL)
+    val body = PubSubPongMessageBody(msg.body.system, msg.body.timestamp)
+    val pong = PubSubPongMessage2x(header, body)
+
+    outGW2x.send(pong)
   }
 
   private def handleDestroyMeeting(msg: DestroyMeeting) {

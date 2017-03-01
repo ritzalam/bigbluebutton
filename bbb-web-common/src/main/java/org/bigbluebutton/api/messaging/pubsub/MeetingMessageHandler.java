@@ -100,6 +100,7 @@ public class MeetingMessageHandler implements MessageHandler {
         }
       }
     } else if (channel.equalsIgnoreCase(MessagingConstants.FROM_SYSTEM_CHANNEL)) {
+      System.out.println("Received on channel=" + channel + " msg=" + message);
       if (obj.has("header") && obj.has("payload")) {
         JsonObject header = (JsonObject) obj.get("header");
         JsonObject payload = (JsonObject) obj.get("payload");

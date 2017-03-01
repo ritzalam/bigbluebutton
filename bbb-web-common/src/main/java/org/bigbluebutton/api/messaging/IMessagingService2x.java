@@ -22,14 +22,14 @@ package org.bigbluebutton.api.messaging;
 public interface IMessagingService2x {
 
   void createMeeting(String meetingID, String externalMeetingID,
-                     String parentMeetingID, String meetingName, Boolean recorded,
-                     String voiceBridge, Integer duration, Boolean autoStartRecording,
-                     Boolean allowStartStopRecording, Boolean webcamsOnlyForModerator,
-                     String moderatorPass, String viewerPass, Long createTime,
-                     String createDate, Boolean isBreakout, Integer sequence);
+                     String parentMeetingID, String meetingName, boolean recorded,
+                     String voiceBridge, int duration, boolean autoStartRecording,
+                     boolean allowStartStopRecording, boolean webcamsOnlyForModerator,
+                     String moderatorPass, String viewerPass, long createTime,
+                     String createDate, boolean isBreakout, int sequence);
 
 
 
-  void sendKeepAlive(String system, Long timestamp);
+  void sendKeepAlive(String system, long timestamp);
 
 }

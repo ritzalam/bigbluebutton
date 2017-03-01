@@ -8,15 +8,32 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.bigbluebutton.api.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.Future;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.apache.http.nio.client.methods.ZeroCopyConsumer;
+import org.apache.http.nio.client.methods.ZeroCopyPost;
+import org.apache.http.nio.client.methods.HttpAsyncMethods;
 
 public class PresentationUrlDownloadService {
     private static Logger log = LoggerFactory.getLogger(PresentationUrlDownloadService.class);
@@ -130,8 +147,7 @@ public class PresentationUrlDownloadService {
             int redirectCount, String origUrl) {
 
         if (redirectCount > maxRedirects) {
-            log.error("Max redirect reached for meeting=[{}] with url=[{}]",
-                    meetingId, origUrl);
+            log.error("Max redirect reached for meeting=[{}] with url=[{}]", meetingId, origUrl);
             return null;
         }
 
@@ -139,8 +155,7 @@ public class PresentationUrlDownloadService {
         try {
             presUrl = new URL(redirectUrl);
         } catch (MalformedURLException e) {
-            log.error("Malformed url=[{}] for meeting=[{}]", redirectUrl,
-                    meetingId);
+            log.error("Malformed url=[{}] for meeting=[{}]", redirectUrl, meetingId);
             return null;
         }
 
@@ -158,20 +173,17 @@ public class PresentationUrlDownloadService {
                         || status == HttpURLConnection.HTTP_MOVED_PERM
                         || status == HttpURLConnection.HTTP_SEE_OTHER) {
                     String newUrl = conn.getHeaderField("Location");
-                    return followRedirect(meetingId, newUrl, redirectCount + 1,
-                            origUrl);
+                    return followRedirect(meetingId, newUrl, redirectCount + 1, origUrl);
                 } else {
-                    log.error(
-                            "Invalid HTTP response=[{}] for url=[{}] with meeting[{}]",
-                            status, redirectUrl, meetingId);
+                    log.error("Invalid HTTP response=[{}] for url=[{}] with meeting[{}]",
+                           status, redirectUrl, meetingId);
                     return null;
                 }
             } else {
                 return redirectUrl;
-            }
+           }
         } catch (IOException e) {
-            log.error("IOException for url=[{}] with meeting[{}]", redirectUrl,
-                    meetingId);
+            log.error("IOException for url=[{}] with meeting[{}]", redirectUrl, meetingId);
             return null;
         }
     }
@@ -181,28 +193,44 @@ public class PresentationUrlDownloadService {
 
         String finalUrl = followRedirect(meetingId, urlString, 0, urlString);
 
-        if (finalUrl == null)
-            return false;
+        if (finalUrl == null) return false;
 
         boolean success = false;
-        GetMethod method = new GetMethod(finalUrl);
-        HttpClient client = new HttpClient();
+
+        CloseableHttpAsyncClient httpclient = HttpAsyncClients.createDefault();
         try {
-            int statusCode = client.executeMethod(method);
-            if (statusCode == HttpStatus.SC_OK) {
-                FileUtils.copyInputStreamToFile(
-                        method.getResponseBodyAsStream(), new File(filename));
-                log.info("Downloaded presentation at [{}]", finalUrl);
-                success = true;
-            }
-        } catch (HttpException e) {
-            log.error("HttpException while downloading presentation at [{}]",
-                    finalUrl);
-        } catch (IOException e) {
-            log.error("IOException while downloading presentation at [{}]",
-                    finalUrl);
+            httpclient.start();
+            File download = new File(filename);
+            ZeroCopyConsumer<File> consumer = new ZeroCopyConsumer<File>(download) {
+                @Override
+                protected File process(
+                        final HttpResponse response,
+                        final File file,
+                        final ContentType contentType) throws Exception {
+                    if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                        throw new ClientProtocolException("Upload failed: " + response.getStatusLine());
+                    }
+                    return file;
+                }
+
+            };
+            Future<File> future = httpclient.execute(HttpAsyncMethods.createGet(finalUrl), consumer, null);
+            File result = future.get();
+            System.out.println("Response file length: " + result.length());
+            System.out.println("Shutting down");
+            success = result.exists();
+        } catch (java.lang.InterruptedException ex) {
+
+        } catch (java.util.concurrent.ExecutionException ex) {
+
+        } catch (java.io.FileNotFoundException ex) {
+
         } finally {
-            method.releaseConnection();
+          try {
+            httpclient.close();
+          } catch (java.io.IOException ex) {
+
+          }
         }
 
         return success;

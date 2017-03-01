@@ -42,7 +42,7 @@ public class KeepAliveService implements MessageListener {
   private KeepAliveTask task = new KeepAliveTask();
   private volatile boolean processMessages = false;
 
-  volatile boolean available = false;
+  volatile boolean available = true;
 
   private static final Executor msgSenderExec = Executors.newFixedThreadPool(1);
   private static final Executor runExec = Executors.newFixedThreadPool(1);

@@ -39,7 +39,7 @@ libraryDependencies += "redis.clients" % "jedis" % "2.7.2"
 libraryDependencies += "org.apache.commons" % "commons-pool2" % "2.3"
 libraryDependencies += "commons-lang" % "commons-lang" % "2.5"
 libraryDependencies += "commons-io" % "commons-io" % "2.4"
-libraryDependencies += "commons-httpclient" % "commons-httpclient" % "3.1"
+//libraryDependencies += "commons-httpclient" % "commons-httpclient" % "3.1"
 libraryDependencies += "com.zaxxer" % "nuprocess" % "1.1.0"
 libraryDependencies += "com.artofsolving" % "jodconverter" % "2.2.1"
 libraryDependencies += "org.openoffice" % "unoil" % "3.2.1"
@@ -51,8 +51,20 @@ libraryDependencies += "org.apache.poi" % "poi-ooxml" % "3.15"
 libraryDependencies += "org.bigbluebutton" % "bbb-common-message" % "0.0.19-SNAPSHOT"
 libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.5"
 
+// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+libraryDependencies += "org.apache.httpcomponents" % "httpclient" % "4.5.3"
+// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpasyncclient
+libraryDependencies += "org.apache.httpcomponents" % "httpasyncclient" % "4.1.3"
+
+
+libraryDependencies += "org.pegdown" % "pegdown" % "1.4.0" % "test"
 libraryDependencies += "junit" % "junit" % "4.12" % "test"
 libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
+
+// https://mvnrepository.com/artifact/org.mockito/mockito-core
+libraryDependencies += "org.mockito" % "mockito-core" % "2.7.12" % "test"
+libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1" % "test"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
 seq(Revolver.settings: _*)
 

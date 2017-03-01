@@ -42,7 +42,8 @@ public class UserSession {
   public String avatarURL;
   public String configXML;
   public String guest = "false";
-  String auth = "false";
+  public String auth = "false";
+  public String allowed = "false";
   
   private AtomicInteger connections = new AtomicInteger(0);
   

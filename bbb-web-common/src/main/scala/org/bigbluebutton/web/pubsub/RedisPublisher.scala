@@ -9,17 +9,18 @@ class RedisPublisher(val sender: MessagePublisher) extends IMessagingService2x {
 
 
   def createMeeting(meetingID: String, externalMeetingID: String, parentMeetingID: String, meetingName: String,
-                    recorded: java.lang.Boolean, voiceBridge: String, duration: java.lang.Integer,
-                    autoStartRecording: java.lang.Boolean, allowStartStopRecording: java.lang.Boolean,
-                    webcamsOnlyForModerator: java.lang.Boolean, moderatorPass: String,
-                    viewerPass: String, createTime: java.lang.Long, createDate: String,
-                    isBreakout: java.lang.Boolean, sequence: java.lang.Integer) = {
+                    recorded: Boolean, voiceBridge: String, duration: Int,
+                    autoStartRecording: Boolean, allowStartStopRecording: Boolean,
+                    webcamsOnlyForModerator: Boolean, moderatorPass: String,
+                    viewerPass: String, createTime: Long, createDate: String,
+                    isBreakout: Boolean, sequence: Int) = {
 
     val header: Header = Header(CreateMeetingRequestMessageConst.NAME, CreateMeetingRequestMessageConst.CHANNEL)
 
     val body: CreateMeetingRequestMessageBody =
       new CreateMeetingRequestMessageBody(meetingID, externalMeetingID, parentMeetingID, meetingName,
-        recorded, voiceBridge, duration, autoStartRecording, allowStartStopRecording, webcamsOnlyForModerator,
+        recorded, voiceBridge, duration, autoStartRecording,
+        allowStartStopRecording, webcamsOnlyForModerator,
         moderatorPass, viewerPass, createTime, createDate, isBreakout, sequence)
 
     val msg = CreateMeetingRequestMessage2x(header, body)
@@ -31,7 +32,7 @@ class RedisPublisher(val sender: MessagePublisher) extends IMessagingService2x {
 
 
 
-  def sendKeepAlive(system: String, timestamp: java.lang.Long) = {
+  def sendKeepAlive(system: String, timestamp: Long) = {
 
     val header = Header(PubSubPingMessage2xConst.NAME, PubSubPingMessage2xConst.CHANNEL)
     val body = PubSubPingMessageBody(system, System.currentTimeMillis())

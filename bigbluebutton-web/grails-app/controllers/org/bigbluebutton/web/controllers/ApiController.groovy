@@ -437,14 +437,9 @@ class ApiController {
     }
 
     String allowed = "ALLOW" ;
-    Boolean userAuth
-    if ("true".equals(auth)){
-      userAuth = true;
-    } else{
-      userAuth = false;
-    }
+    Boolean userAuth = authenticated
 
-    if ("true".equals(guest)){
+    if (guest){
       String policy = meeting.getGuestPolicy();
       switch (policy){
         case "ASK_MODERATOR":
@@ -514,7 +509,7 @@ class ApiController {
     us.logoutUrl = meeting.getLogoutUrl();
     us.configXML = configxml;
     us.guest = guest
-    us.auth = auth;
+    us.auth = authenticated;
     us.allowed = allowed;
 
     if (! StringUtils.isEmpty(params.defaultLayout)) {

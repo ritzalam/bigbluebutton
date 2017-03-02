@@ -13,7 +13,7 @@ import org.bigbluebutton.core.pubsub.senders._
 import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.core.bus._
-import org.bigbluebutton.core.ingw.BigBlueButtonInGW
+import org.bigbluebutton.core.ingw.{ ApiMessageGW, BigBlueButtonInGW }
 import io.vertx.core.Vertx
 
 object Boot extends App with SystemConfiguration {
@@ -51,6 +51,11 @@ object Boot extends App with SystemConfiguration {
   outgoingEventBus2x.subscribe(messageSenderActor2x, outgoingMessageChannel2x)
 
   val bbbInGW = new BigBlueButtonInGW(system, eventBus, outGW, outGW2x, eventBus2x)
+
+  val bbbActorWrapper = BbbActorWrapper(eventBus, outGW, outGW2x, eventBus2x)
+
+  val apiGW = new ApiMessageGW(system, bbbActorWrapper)
+
   val redisMsgReceiver = new RedisMessageReceiver(bbbInGW)
 
   val incomingJsonMessageBus = new IncomingJsonMessageBus
@@ -63,5 +68,5 @@ object Boot extends App with SystemConfiguration {
   val keepAliveRedisPublisher = new KeepAliveRedisPublisher(system, redisPublisher)
 
   val vertx = Vertx.vertx()
-  vertx.deployVerticle(new WebApiVerticle())
+  vertx.deployVerticle(new WebApiVerticle(apiGW))
 }

@@ -30,6 +30,8 @@ class BigBlueButtonActor(val system: ActorSystem,
   private var meetings = new collection.immutable.HashMap[String, RunningMeeting]
 
   def receive = {
+    case msg: String => sender ! "Got your message"
+
     case msg: CreateMeeting => handleCreateMeeting(msg)
     case msg: DestroyMeeting => handleDestroyMeeting(msg)
     case msg: KeepAliveMessage => handleKeepAliveMessage(msg)

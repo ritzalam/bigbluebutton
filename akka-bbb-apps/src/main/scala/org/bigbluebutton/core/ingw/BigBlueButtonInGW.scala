@@ -26,9 +26,6 @@ class BigBlueButtonInGW(
     with RegisterUserMessageHdlr {
 
   val log = Logging(system, getClass)
-  val bbbActor = system.actorOf(BigBlueButtonActor.props(system, eventBus, outGW, outGW2x), "bigbluebutton-actor")
-  eventBus.subscribe(bbbActor, "meeting-manager")
-  eventBus2x.subscribe(bbbActor, meetingManagerChannel)
 
   def handleBigBlueButtonMessage(message: IBigBlueButtonMessage) {
     message match {

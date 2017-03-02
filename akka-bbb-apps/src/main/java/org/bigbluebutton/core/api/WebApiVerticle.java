@@ -14,6 +14,12 @@ import java.util.Map;
 public class WebApiVerticle extends AbstractVerticle {
   private Map<String, JsonObject> products = new HashMap<>();
 
+  private final IApiMessageGW gw;
+
+  public WebApiVerticle(IApiMessageGW gw) {
+    this.gw = gw;
+  }
+
   @Override
   public void start() {
 
@@ -26,7 +32,14 @@ public class WebApiVerticle extends AbstractVerticle {
     router.put("/products/:productID").handler(this::handleAddProduct);
     router.get("/products").handler(this::handleListProducts);
 
+    router.get("/createMeeting").handler(this::handleCreateMeeting);
+
     vertx.createHttpServer().requestHandler(router::accept).listen(4000);
+  }
+
+  private void handleCreateMeeting(RoutingContext routingContext) {
+    String foo = gw.apiCreateMeetingMessage("bar");
+    routingContext.response().putHeader("content-type", "application/json").end(foo);
   }
 
   private void handleGetProduct(RoutingContext routingContext) {

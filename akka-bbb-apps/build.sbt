@@ -62,6 +62,7 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
 libraryDependencies += "org.bigbluebutton" % "bbb-common-message" % "0.0.19-SNAPSHOT"
 
+libraryDependencies += "io.vertx" % "vertx-web" % "3.3.3"
 
 seq(Revolver.settings: _*)
 

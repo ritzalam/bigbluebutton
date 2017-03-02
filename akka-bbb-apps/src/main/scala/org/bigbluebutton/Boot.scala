@@ -6,7 +6,7 @@ import akka.actor.{ ActorSystem, Props }
 import scala.concurrent.duration._
 import scala.concurrent.{ Await, Future }
 import org.bigbluebutton.endpoint.redis.{ AppsRedisSubscriberActor, KeepAliveRedisPublisher, RedisMessageReceiver2x, RedisPublisher }
-import org.bigbluebutton.core.api.{ IBigBlueButtonInGW, MessageOutGateway, OutMessageListener2, RedisMsgHdlrActor }
+import org.bigbluebutton.core.api._
 import org.bigbluebutton.core._
 import org.bigbluebutton.core.pubsub.receivers.RedisMessageReceiver
 import org.bigbluebutton.core.pubsub.senders._
@@ -14,6 +14,7 @@ import org.bigbluebutton.core.service.recorder.RedisDispatcher
 import org.bigbluebutton.core.service.recorder.RecorderApplication
 import org.bigbluebutton.core.bus._
 import org.bigbluebutton.core.ingw.BigBlueButtonInGW
+import io.vertx.core.Vertx
 
 object Boot extends App with SystemConfiguration {
 
@@ -60,4 +61,7 @@ object Boot extends App with SystemConfiguration {
   val redisSubscriberActor = system.actorOf(AppsRedisSubscriberActor.props(redisMsgReceiver, incomingJsonMessageBus), "redis-subscriber")
 
   val keepAliveRedisPublisher = new KeepAliveRedisPublisher(system, redisPublisher)
+
+  val vertx = Vertx.vertx()
+  vertx.deployVerticle(new WebApiVerticle())
 }

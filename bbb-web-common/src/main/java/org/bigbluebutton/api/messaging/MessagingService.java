@@ -25,6 +25,12 @@ import java.util.List;
 import java.util.Set;
 
 public interface MessagingService {
+  void createMeeting(String meetingID, String externalMeetingID,
+                     String parentMeetingID, String meetingName, Boolean recorded,
+                     String voiceBridge, Integer duration, Boolean autoStartRecording,
+                     Boolean allowStartStopRecording, Boolean webcamsOnlyForModerator,
+                     String moderatorPass, String viewerPass, Long createTime,
+                     String createDate, Boolean isBreakout, Integer sequence);
 
   void destroyMeeting(String meetingID);
 

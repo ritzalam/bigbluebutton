@@ -341,7 +341,7 @@ public class MeetingService implements MessageListener {
 
     log.info("Create meeting: data={}", logStr);
 
-    msgService2x.createMeeting(m.getInternalId(), m.getExternalId(),
+    messagingService.createMeeting(m.getInternalId(), m.getExternalId(),
             m.getParentMeetingId(), m.getName(), m.isRecord(),
             m.getTelVoice(), m.getDuration(), m.getAutoStartRecording(),
             m.getAllowStartStopRecording(), m.getWebcamsOnlyForModerator(),

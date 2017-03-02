@@ -43,7 +43,25 @@ public class RedisMessagingService implements MessagingService {
 
   private MessagePublisher sender;
 
+  public void createMeeting(String meetingID, String externalMeetingID,
+                            String parentMeetingID, String meetingName, Boolean recorded,
+                            String voiceBridge, Integer duration, Boolean autoStartRecording,
+                            Boolean allowStartStopRecording, Boolean webcamsOnlyForModerator,
+                            String moderatorPass, String viewerPass, Long createTime,
+                            String createDate, Boolean isBreakout, Integer sequence) {
+    CreateMeetingRequestPayload payload = new CreateMeetingRequestPayload(
+      meetingID, externalMeetingID, parentMeetingID, meetingName,
+      recorded, voiceBridge, duration, autoStartRecording,
+      allowStartStopRecording, webcamsOnlyForModerator,
+      moderatorPass, viewerPass, createTime, createDate, isBreakout,
+      sequence);
+    CreateMeetingRequest msg = new CreateMeetingRequest(payload);
 
+    Gson gson = new Gson();
+    String json = gson.toJson(msg);
+    log.info("Sending create meeting message to bbb-apps:[{}]", json);
+    sender.send(msg.getChannel(), json);
+  }
 
   public void destroyMeeting(String meetingID) {
     DestroyMeetingMessage.DestroyMeetingMessagePayload payload =

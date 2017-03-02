@@ -433,6 +433,9 @@ public class ParamsProcessorUtil {
             .build();
 
     String configXML = getDefaultConfigXML();
+
+    System.out.println("******************* CONFIG_XML=" + configXML);
+
     meeting.storeConfig(true, configXML);
 
     if (!StringUtils.isEmpty(params.get("moderatorOnlyMessage"))) {
@@ -498,6 +501,7 @@ public class ParamsProcessorUtil {
       String responseBody = httpclient.execute(httpget, responseHandler);
       System.out.println("----------------------------------------");
       System.out.println(responseBody);
+      configXML = responseBody;
     } catch(IOException ex) {
       // IOException
     } finally {

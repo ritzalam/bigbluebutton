@@ -42,8 +42,6 @@ public interface MessagingService {
 
   void sendPolls(String meetingId, String title, String question, String questionType, List<String> answers);
 
-
-
   void registerUser(String meetingID, String internalUserId, String fullname, String role, String externUserID,
                     String authToken, String avatarURL, Boolean guest, Boolean authed, Boolean needsModApproval);
 

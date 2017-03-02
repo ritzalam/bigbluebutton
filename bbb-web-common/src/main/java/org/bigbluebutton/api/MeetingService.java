@@ -90,7 +90,7 @@ public class MeetingService implements MessageListener {
    * misuse/
    */
   private final ConcurrentMap<String, Meeting> meetings;
-  private final ConcurrentMap<String, UserSession> sessions;
+//  private final ConcurrentMap<String, UserSession> sessions;
   //Map that holds the meetings and all the users with the current status of the waiting list.
   // We created this list, because a user is only added to the user list in the meeting,
   // after he joins the meeting from red5
@@ -104,7 +104,7 @@ public class MeetingService implements MessageListener {
   private IMessagingService2x msgService2x;
   private IStorageService storageService;
   private ExpiredMeetingCleanupTimerTask cleaner;
-  private RegisteredUserCleanupTimerTask registeredUserCleaner;
+//  private RegisteredUserCleanupTimerTask registeredUserCleaner;
   private StunTurnService stunTurnService;
   private boolean removeMeetingWhenEnded = false;
 
@@ -194,14 +194,14 @@ public class MeetingService implements MessageListener {
     }
   }
 
-  private void processMeetingForRemoval(Meeting m) {
+  private void processMeetingForRemoval1(Meeting m) {
     kickOffProcessingOfRecording(m);
     destroyMeeting(m.getInternalId());
     meetings.remove(m.getInternalId());
     removeUserSessions(m.getInternalId());
   }
 
-  private void removeUserSessions(String meetingId) {
+  private void removeUserSessions1(String meetingId) {
     Iterator<Map.Entry<String, UserSession>> iterator = sessions.entrySet()
             .iterator();
     while (iterator.hasNext()) {
@@ -214,7 +214,7 @@ public class MeetingService implements MessageListener {
     }
   }
 
-  private void checkAndRemoveExpiredMeetings() {
+  private void checkAndRemoveExpiredMeetings1() {
     for (Meeting m : meetings.values()) {
       if (m.hasExpired(defaultMeetingExpireDuration)) {
         Map<String, Object> logData = new HashMap<String, Object>();
@@ -341,7 +341,7 @@ public class MeetingService implements MessageListener {
 
     log.info("Create meeting: data={}", logStr);
 
-    messagingService.createMeeting(m.getInternalId(), m.getExternalId(),
+    msgService2x.createMeeting(m.getInternalId(), m.getExternalId(),
             m.getParentMeetingId(), m.getName(), m.isRecord(),
             m.getTelVoice(), m.getDuration(), m.getAutoStartRecording(),
             m.getAllowStartStopRecording(), m.getWebcamsOnlyForModerator(),

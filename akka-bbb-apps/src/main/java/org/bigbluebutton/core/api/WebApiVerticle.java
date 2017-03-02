@@ -32,13 +32,13 @@ public class WebApiVerticle extends AbstractVerticle {
     router.put("/products/:productID").handler(this::handleAddProduct);
     router.get("/products").handler(this::handleListProducts);
 
-    router.get("/createMeeting").handler(this::handleCreateMeeting);
+    router.post("/createMeeting").handler(this::handleCreateMeeting);
 
     vertx.createHttpServer().requestHandler(router::accept).listen(4000);
   }
 
   private void handleCreateMeeting(RoutingContext routingContext) {
-    String foo = gw.apiCreateMeetingMessage("bar");
+    String foo = gw.apiCreateMeetingMessage(routingContext.getBodyAsJson().toString());
     routingContext.response().putHeader("content-type", "application/json").end(foo);
   }
 

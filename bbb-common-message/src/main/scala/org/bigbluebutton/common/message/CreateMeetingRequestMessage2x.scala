@@ -66,11 +66,10 @@ object CreateMeetingRequestMessageUnmarshaller {
 
 trait CreateMeetingRequestMessageMarshaller {
 
-
   def marshall(msg: CreateMeetingRequestMessage2x): String = {
-    object JsonDecoderProtol extends DefaultJsonProtocol with CreateMeetingRequestMessageProtocol
-
     import spray.json._
+
+    object JsonDecoderProtol extends DefaultJsonProtocol with CreateMeetingRequestMessageProtocol
     import JsonDecoderProtol._
     msg.toJson.toString()
   }

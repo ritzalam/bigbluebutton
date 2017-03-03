@@ -90,7 +90,7 @@ public class MeetingService implements MessageListener {
    * misuse/
    */
   private final ConcurrentMap<String, Meeting> meetings;
-//  private final ConcurrentMap<String, UserSession> sessions;
+  private final ConcurrentMap<String, UserSession> sessions;
   //Map that holds the meetings and all the users with the current status of the waiting list.
   // We created this list, because a user is only added to the user list in the meeting,
   // after he joins the meeting from red5
@@ -104,7 +104,7 @@ public class MeetingService implements MessageListener {
   private IMessagingService2x msgService2x;
   private IStorageService storageService;
   private ExpiredMeetingCleanupTimerTask cleaner;
-//  private RegisteredUserCleanupTimerTask registeredUserCleaner;
+  private RegisteredUserCleanupTimerTask registeredUserCleaner;
   private StunTurnService stunTurnService;
   private boolean removeMeetingWhenEnded = false;
 
@@ -190,18 +190,18 @@ public class MeetingService implements MessageListener {
 
       log.info("Initiate recording processing: data={}", logStr);
 
-      processRecording(m.getInternalId());
+      recordingService.processRecording(m.getInternalId());
     }
   }
 
-  private void processMeetingForRemoval1(Meeting m) {
+  private void processMeetingForRemoval(Meeting m) {
     kickOffProcessingOfRecording(m);
     destroyMeeting(m.getInternalId());
     meetings.remove(m.getInternalId());
     removeUserSessions(m.getInternalId());
   }
 
-  private void removeUserSessions1(String meetingId) {
+  private void removeUserSessions(String meetingId) {
     Iterator<Map.Entry<String, UserSession>> iterator = sessions.entrySet()
             .iterator();
     while (iterator.hasNext()) {
@@ -214,7 +214,7 @@ public class MeetingService implements MessageListener {
     }
   }
 
-  private void checkAndRemoveExpiredMeetings1() {
+  private void checkAndRemoveExpiredMeetings() {
     for (Meeting m : meetings.values()) {
       if (m.hasExpired(defaultMeetingExpireDuration)) {
         Map<String, Object> logData = new HashMap<String, Object>();
@@ -417,97 +417,6 @@ public class MeetingService implements MessageListener {
     return null;
   }
 
-  public Map<String, Recording> getRecordings(List<String> idList, List<String> states) {
-    List<Recording> recsList = recordingService.getRecordings(idList, states);
-    Map<String, Recording> recs = reorderRecordings(recsList);
-    return recs;
-  }
-
-  public Map<String, Recording> filterRecordingsByMetadata(
-          Map<String, Recording> recordings,
-          Map<String, String> metadataFilters) {
-    return recordingService.filterRecordingsByMetadata(recordings, metadataFilters);
-  }
-
-  public Map<String, Recording> reorderRecordings(List<Recording> olds) {
-    Map<String, Recording> map = new HashMap<String, Recording>();
-    for (Recording r : olds) {
-      if (!map.containsKey(r.getId())) {
-        Map<String, String> meta = r.getMetadata();
-        String mid = meta.remove("meetingId");
-        String name = meta.remove("meetingName");
-
-        r.setMeetingID(mid);
-        r.setName(name);
-
-        List<Playback> plays = new ArrayList<Playback>();
-
-        if (r.getPlaybackFormat() != null) {
-          plays.add(new Playback(r.getPlaybackFormat(), r.getPlaybackLink(),
-                  getDurationRecording(r.getPlaybackDuration(), r.getEndTime(),
-                          r.getStartTime()), r.getPlaybackExtensions()));
-        }
-
-        r.setPlaybacks(plays);
-        map.put(r.getId(), r);
-      } else {
-        Recording rec = map.get(r.getId());
-        rec.getPlaybacks().add(new Playback(r.getPlaybackFormat(), r.getPlaybackLink(),
-                getDurationRecording(r.getPlaybackDuration(), r.getEndTime(),
-                        r.getStartTime()), r.getPlaybackExtensions()));
-      }
-    }
-
-    return map;
-  }
-
-  private int getDurationRecording(String playbackDuration, String end,
-                                   String start) {
-    int duration;
-    try {
-      if (!playbackDuration.equals("")) {
-        duration = (int) Math
-                .ceil((Long.parseLong(playbackDuration)) / 60000.0);
-      } else {
-        duration = (int) Math.ceil((Long.parseLong(end) - Long
-                .parseLong(start)) / 60000.0);
-      }
-    } catch (Exception e) {
-      log.debug(e.getMessage());
-      duration = 0;
-    }
-
-    return duration;
-  }
-
-  public boolean existsAnyRecording(List<String> idList) {
-    return recordingService.existAnyRecording(idList);
-  }
-
-  public void setPublishRecording(List<String> idList, boolean publish) {
-    for (String id : idList) {
-      if (publish) {
-        recordingService.changeState(id, Recording.STATE_PUBLISHED);
-      } else {
-        recordingService.changeState(id, Recording.STATE_UNPUBLISHED);
-      }
-    }
-  }
-
-  public void deleteRecordings(List<String> idList) {
-    for (String id : idList) {
-      recordingService.changeState(id, Recording.STATE_DELETED);
-    }
-  }
-
-  public void updateRecordings(List<String> idList,
-                               Map<String, String> metaParams) {
-    recordingService.updateMetaParams(idList, metaParams);
-  }
-
-  public void processRecording(String meetingId) {
-    recordingService.startIngestAndProcessing(meetingId);
-  }
 
   public boolean isMeetingWithVoiceBridgeExist(String voiceBridge) {
         /*
@@ -584,7 +493,7 @@ public class MeetingService implements MessageListener {
     if (m != null) {
       m.setForciblyEnded(true);
       if (removeMeetingWhenEnded) {
-        processRecording(m.getInternalId());
+        recordingService.processRecording(m.getInternalId());
         destroyMeeting(m.getInternalId());
         meetings.remove(m.getInternalId());
         removeUserSessions(m.getInternalId());

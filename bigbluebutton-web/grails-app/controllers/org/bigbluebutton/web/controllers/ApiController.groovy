@@ -53,7 +53,7 @@ import org.bigbluebutton.web.services.turn.StunTurnService;
 import org.bigbluebutton.web.services.turn.TurnEntry;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import org.bigbluebutton.api.RecordingService
 import freemarker.template.Configuration;
 import freemarker.cache.WebappTemplateLoader;
 
@@ -74,7 +74,7 @@ class ApiController {
   ClientConfigService configService
   PresentationUrlDownloadService presDownloadService
   StunTurnService stunTurnService
-
+  RecordingService recordingService
 
   /* general methods */
   def index = {
@@ -1913,8 +1913,8 @@ class ApiController {
       internalRecordIds = paramsProcessorUtil.convertToInternalMeetingId(externalMeetingIds);
     }
 
-    Map<String,Recording> recs = meetingService.getRecordings(internalRecordIds, states);
-    recs = meetingService.filterRecordingsByMetadata(recs, ParamsProcessorUtil.processMetaParam(params));
+    Map<String,Recording> recs = recordingService.getRecordings(internalRecordIds, states);
+    recs = recordingService.filterRecordingsByMetadata(recs, ParamsProcessorUtil.processMetaParam(params));
 
     if (recs.isEmpty()) {
       response.addHeader("Cache-Control", "no-cache")
@@ -2012,7 +2012,7 @@ class ApiController {
       recordIdList=paramsProcessorUtil.decodeIds(recordId);
     }
 
-    if (!meetingService.existsAnyRecording(recordIdList)) {
+    if (!recordingService.existsAnyRecording(recordIdList)) {
       // BEGIN - backward compatibility
       invalid("notFound", "We could not find recordings");
       return;
@@ -2020,7 +2020,7 @@ class ApiController {
 
     }
 
-    meetingService.setPublishRecording(recordIdList,publish.toBoolean());
+    recordingService.setPublishRecording(recordIdList,publish.toBoolean());
     withFormat {
       xml {
         render(contentType:"text/xml") {
@@ -2087,14 +2087,14 @@ class ApiController {
       recordIdList=paramsProcessorUtil.decodeIds(recordId);
     }
 
-    if (!meetingService.existsAnyRecording(recordIdList)) {
+    if (!recordingService.existsAnyRecording(recordIdList)) {
       // BEGIN - backward compatibility
       invalid("notFound", "We could not find recordings");
       return;
       // END - backward compatibility
     }
 
-    meetingService.deleteRecordings(recordIdList);
+    recordingService.deleteRecordings(recordIdList);
     withFormat {
       xml {
         render(contentType:"text/xml") {
@@ -2161,7 +2161,7 @@ class ApiController {
        recordIdList=paramsProcessorUtil.decodeIds(recordId);
      }
 
-     if (!meetingService.existsAnyRecording(recordIdList)) {
+     if (!recordingService.existsAnyRecording(recordIdList)) {
        // BEGIN - backward compatibility
        invalid("notFound", "We could not find recordings");
        return;
@@ -2172,7 +2172,7 @@ class ApiController {
      Map<String, String> metaParams = ParamsProcessorUtil.processMetaParam(params)
      if ( !metaParams.empty ) {
          //Proceed with the update
-         meetingService.updateRecordings(recordIdList, metaParams);
+       recordingService.updateRecordings(recordIdList, metaParams);
      }
      withFormat {
        xml {

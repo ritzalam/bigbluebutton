@@ -1,6 +1,6 @@
 package org.bigbluebutton.apps.common.pubsub.redis;
 
-import org.bigbluebutton.common.messages.MessagingConstants;
+import org.bigbluebutton.common.messages.ChannelConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
@@ -41,7 +41,7 @@ public class MessageReceiver {
 			    	if (receiveMessage) {
 			    		try {
 			    			jedis.psubscribe(new PubSubListener(),
-				    				MessagingConstants.FROM_BBB_APPS_PATTERN);
+									ChannelConstants.FROM_BBB_APPS_PATTERN);
 			    		} catch(JedisConnectionException ex) {
 			    			log.warn("Exception on Jedis connection. Resubscribing to pubsub.");
 			    			start();

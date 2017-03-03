@@ -2,9 +2,8 @@ package org.bigbluebutton.red5.client;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bigbluebutton.common.messages.Constants;
 import org.bigbluebutton.common.messages.EditCaptionHistoryMessage;
+import org.bigbluebutton.common.messages.MessageBodyConstants;
 import org.bigbluebutton.common.messages.SendCaptionHistoryReplyMessage;
 import org.bigbluebutton.common.messages.UpdateCaptionOwnerMessage;
 import org.bigbluebutton.red5.client.messaging.BroadcastClientMessage;
@@ -70,9 +69,9 @@ public class CaptionClientMessageSender {
 
 	private void processUpdateCaptionOwnerMessage(UpdateCaptionOwnerMessage msg) {
 		Map<String, Object> message = new HashMap<String, Object>();
-		message.put(Constants.LOCALE, msg.locale);
-		message.put(Constants.LOCALE_CODE, msg.localeCode);
-		message.put(Constants.OWNER_ID, msg.ownerID);
+		message.put(MessageBodyConstants.LOCALE, msg.locale);
+		message.put(MessageBodyConstants.LOCALE_CODE, msg.localeCode);
+		message.put(MessageBodyConstants.OWNER_ID, msg.ownerID);
 
 		BroadcastClientMessage m = new BroadcastClientMessage(msg.meetingID, "updateCaptionOwner", message);
 		service.sendMessage(m);
@@ -80,11 +79,11 @@ public class CaptionClientMessageSender {
 
 	private void processEditCaptionHistoryMessage(EditCaptionHistoryMessage msg) {
 		Map<String, Object> message = new HashMap<String, Object>();
-		message.put(Constants.START_INDEX, msg.startIndex);
-		message.put(Constants.END_INDEX, msg.endIndex);
-		message.put(Constants.LOCALE, msg.locale);
-		message.put(Constants.LOCALE_CODE, msg.localeCode);
-		message.put(Constants.TEXT, msg.text);
+		message.put(MessageBodyConstants.START_INDEX, msg.startIndex);
+		message.put(MessageBodyConstants.END_INDEX, msg.endIndex);
+		message.put(MessageBodyConstants.LOCALE, msg.locale);
+		message.put(MessageBodyConstants.LOCALE_CODE, msg.localeCode);
+		message.put(MessageBodyConstants.TEXT, msg.text);
 
 		BroadcastClientMessage m = new BroadcastClientMessage(msg.meetingID, "editCaptionHistory", message);
 		service.sendMessage(m);

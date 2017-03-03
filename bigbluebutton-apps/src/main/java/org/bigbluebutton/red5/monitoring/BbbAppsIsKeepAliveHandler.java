@@ -28,7 +28,7 @@ public class BbbAppsIsKeepAliveHandler {
 			if (header.has("name")) {
 				String messageName = header.get("name").getAsString();
 				switch (messageName) {
-					case PubSubPongMessage.PUBSUB_PONG:
+					case PubSubPongMessage.NAME:
 						
 						processBbbAppsIsAliveMessage(message);
 						break;

@@ -3,7 +3,7 @@ package org.bigbluebutton.red5.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bigbluebutton.common.messages.Constants;
+import org.bigbluebutton.common.messages.MessageBodyConstants;
 import org.bigbluebutton.common.messages.DisconnectAllUsersMessage;
 import org.bigbluebutton.common.messages.DisconnectUserMessage;
 import org.bigbluebutton.common.messages.MeetingEndedMessage;
@@ -127,13 +127,13 @@ public class MeetingClientMessageSender {
 	
 	private void processNewPermissionsSettingMessage(NewPermissionsSettingMessage msg) {	  	  
 		Map<String, Object> args = new HashMap<String, Object>();  
-		args.put("disableCam", msg.permissions.get(Constants.PERM_DISABLE_CAM));
-		args.put("disableMic", msg.permissions.get(Constants.PERM_DISABLE_MIC));
-		args.put("disablePrivateChat", msg.permissions.get(Constants.PERM_DISABLE_PRIVCHAT));
-		args.put("disablePublicChat", msg.permissions.get(Constants.PERM_DISABLE_PUBCHAT));
-	    args.put("lockedLayout", msg.permissions.get(Constants.PERM_LOCKED_LAYOUT));
-	    args.put("lockOnJoin", msg.permissions.get(Constants.PERM_LOCK_ON_JOIN));
-	    args.put("lockOnJoinConfigurable", msg.permissions.get(Constants.PERM_LOCK_ON_JOIN_CONFIG));
+		args.put("disableCam", msg.permissions.get(MessageBodyConstants.PERM_DISABLE_CAM));
+		args.put("disableMic", msg.permissions.get(MessageBodyConstants.PERM_DISABLE_MIC));
+		args.put("disablePrivateChat", msg.permissions.get(MessageBodyConstants.PERM_DISABLE_PRIVCHAT));
+		args.put("disablePublicChat", msg.permissions.get(MessageBodyConstants.PERM_DISABLE_PUBCHAT));
+	    args.put("lockedLayout", msg.permissions.get(MessageBodyConstants.PERM_LOCKED_LAYOUT));
+	    args.put("lockOnJoin", msg.permissions.get(MessageBodyConstants.PERM_LOCK_ON_JOIN));
+	    args.put("lockOnJoinConfigurable", msg.permissions.get(MessageBodyConstants.PERM_LOCK_ON_JOIN_CONFIG));
 		
 	    args.put("users", msg.users);
 	    

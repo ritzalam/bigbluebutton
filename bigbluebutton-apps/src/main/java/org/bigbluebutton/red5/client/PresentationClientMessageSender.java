@@ -3,18 +3,7 @@ package org.bigbluebutton.red5.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bigbluebutton.common.messages.Constants;
-import org.bigbluebutton.common.messages.GetPresentationInfoReplyMessage;
-import org.bigbluebutton.common.messages.GetSlideInfoReplyMessage;
-import org.bigbluebutton.common.messages.GoToSlideReplyMessage;
-import org.bigbluebutton.common.messages.PresentationConversionDoneMessage;
-import org.bigbluebutton.common.messages.PresentationConversionErrorMessage;
-import org.bigbluebutton.common.messages.PresentationConversionProgressMessage;
-import org.bigbluebutton.common.messages.PresentationCursorUpdateMessage;
-import org.bigbluebutton.common.messages.PresentationPageGeneratedReplyMessage;
-import org.bigbluebutton.common.messages.PresentationPageResizedMessage;
-import org.bigbluebutton.common.messages.PresentationRemovedMessage;
-import org.bigbluebutton.common.messages.PresentationSharedMessage;
+import org.bigbluebutton.common.messages.*;
 import org.bigbluebutton.red5.client.messaging.BroadcastClientMessage;
 import org.bigbluebutton.red5.client.messaging.ConnectionInvokerService;
 import org.bigbluebutton.red5.client.messaging.DirectClientMessage;
@@ -287,15 +276,15 @@ public class PresentationClientMessageSender {
 		GoToSlideReplyMessage msg = GoToSlideReplyMessage.fromJson(json);
 		if (msg != null) {
 			Map<String, Object> args = new HashMap<String, Object>();
-			args.put("id", msg.page.get(Constants.ID));
-			args.put("widthRatio", msg.page.get(Constants.WIDTH_RATIO));
-			args.put("yOffset", msg.page.get(Constants.Y_OFFSET));
-			args.put("xOffset", msg.page.get(Constants.X_OFFSET));
+			args.put("id", msg.page.get(MessageBodyConstants.ID));
+			args.put("widthRatio", msg.page.get(MessageBodyConstants.WIDTH_RATIO));
+			args.put("yOffset", msg.page.get(MessageBodyConstants.Y_OFFSET));
+			args.put("xOffset", msg.page.get(MessageBodyConstants.X_OFFSET));
 			args.put("num", msg.page.get("num"));
-			args.put("heightRatio", msg.page.get(Constants.HEIGHT_RATIO));
+			args.put("heightRatio", msg.page.get(MessageBodyConstants.HEIGHT_RATIO));
 			args.put("svgUri", msg.page.get("svg_uri"));
 			args.put("thumbUri", msg.page.get("thumb_uri"));
-			args.put(Constants.CURRENT, msg.page.get(Constants.CURRENT));
+			args.put(MessageBodyConstants.CURRENT, msg.page.get(MessageBodyConstants.CURRENT));
 			args.put("txtUri", msg.page.get("txt_uri"));
 			args.put("swfUri", msg.page.get("swf_uri"));
 

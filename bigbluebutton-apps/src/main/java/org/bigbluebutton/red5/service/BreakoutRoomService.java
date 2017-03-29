@@ -18,12 +18,12 @@
  */
 package org.bigbluebutton.red5.service;
 
+import org.bigbluebutton.apps.common.pubsub.MessagePublisher;
 import org.bigbluebutton.messages.CreateBreakoutRoomsRequest;
 import org.bigbluebutton.messages.EndAllBreakoutRoomsRequest;
 import org.bigbluebutton.messages.GetBreakoutRoomsList;
 import org.bigbluebutton.messages.ListenInOnBreakout;
 import org.bigbluebutton.messages.RequestBreakoutJoinURL;
-import org.bigbluebutton.red5.pubsub.MessagePublisher;
 import org.red5.logging.Red5LoggerFactory;
 import org.slf4j.Logger;
 

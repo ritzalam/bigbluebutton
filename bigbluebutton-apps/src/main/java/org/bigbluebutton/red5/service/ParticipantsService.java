@@ -26,11 +26,10 @@ import org.red5.server.api.scope.IScope;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import org.bigbluebutton.apps.common.pubsub.MessagePublisher;
 import org.apache.commons.lang3.StringUtils;
 import org.bigbluebutton.red5.BigBlueButtonSession;
 import org.bigbluebutton.red5.Constants;
-import org.bigbluebutton.red5.pubsub.MessagePublisher;
 
 import com.google.gson.Gson;
 

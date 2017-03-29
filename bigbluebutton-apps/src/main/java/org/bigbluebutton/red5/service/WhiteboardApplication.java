@@ -24,7 +24,7 @@ import org.red5.server.api.IClient;
 import org.red5.server.api.IConnection;
 import org.red5.server.api.scope.IScope;
 import org.slf4j.Logger;
-import org.bigbluebutton.red5.pubsub.MessagePublisher;
+import org.bigbluebutton.apps.common.pubsub.MessagePublisher;
 
 public class WhiteboardApplication implements IApplication {	
 	private static Logger log = Red5LoggerFactory.getLogger(WhiteboardApplication.class, "bigbluebutton");

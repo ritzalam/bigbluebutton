@@ -1,4 +1,4 @@
-name := "bbb-common-web"
+name := "bbb-web-common"
 
 organization := "org.bigbluebutton"
 
@@ -51,6 +51,26 @@ libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
 libraryDependencies += "org.mockito" % "mockito-core" % "2.7.12" % "test"
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1" % "test"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+
+libraryDependencies ++= {
+  Seq(
+    "com.google.code.gson"      %  "gson"              % "2.5",
+    "redis.clients" % "jedis" % "2.7.2",
+    "org.apache.commons" % "commons-pool2" % "2.3",
+    "commons-lang" % "commons-lang" % "2.5",
+    "commons-httpclient" % "commons-httpclient" % "3.1",
+    "com.zaxxer" % "nuprocess" % "1.1.0",
+    "com.artofsolving" % "jodconverter" % "2.2.1",
+    "org.openoffice" % "unoil" % "3.2.1",
+    "org.openoffice" % "ridl" % "3.2.1",
+    "org.openoffice" % "juh" % "3.2.1",
+    "org.openoffice" % "jurt" % "3.2.1",
+    "org.apache.poi" % "poi-ooxml" % "3.15",
+    "org.bigbluebutton" % "bbb-common-message" % "0.0.19-SNAPSHOT"
+  )}
+
+libraryDependencies += "junit" % "junit" % "4.12" % "test"
+libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
 
 seq(Revolver.settings: _*)
 
@@ -114,4 +134,3 @@ licenses := Seq("LGPL-3.0" -> url("http://opensource.org/licenses/LGPL-3.0"))
 
 homepage := Some(url("http://www.bigbluebutton.org"))
   
-

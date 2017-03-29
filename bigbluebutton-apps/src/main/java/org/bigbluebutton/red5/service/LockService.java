@@ -20,10 +20,9 @@ package org.bigbluebutton.red5.service;
 
 import java.util.ArrayList;
 import java.util.Map;
-
+import org.bigbluebutton.apps.common.pubsub.MessagePublisher;
 import org.bigbluebutton.red5.BigBlueButtonSession;
 import org.bigbluebutton.red5.Constants;
-import org.bigbluebutton.red5.pubsub.MessagePublisher;
 import org.red5.logging.Red5LoggerFactory;
 import org.red5.server.api.Red5;
 import org.slf4j.Logger;

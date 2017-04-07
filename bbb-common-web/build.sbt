@@ -52,6 +52,8 @@ libraryDependencies += "org.mockito" % "mockito-core" % "2.7.12" % "test"
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.1" % "test"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
+resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases"
+
 seq(Revolver.settings: _*)
 
 //-----------

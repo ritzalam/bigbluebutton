@@ -152,7 +152,7 @@
 			
 				users = UserManager.getInstance().getConference().getUsers();
 
-				breakoutRoomsList = UserManager.getInstance().getConference().breakoutRooms;
+				breakoutRoomsList = UserManager.getInstance().getConference().getBreakoutRooms();
 				breakoutRoomsList.addEventListener(CollectionEvent.COLLECTION_CHANGE, breakoutRoomsListChangeListener);
 
 				amIModerator = UserManager.getInstance().getConference().amIModerator();

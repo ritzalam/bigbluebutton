@@ -57,10 +57,10 @@ package org.bigbluebutton.main.model.users {
 		private var iAskedToLogout:Boolean
 		
 		[Bindable]
-		public var record:Boolean;
+		private var record:Boolean;
 		
 		[Bindable]
-		public var numAdditionalSharedNotes:Number = 0;
+		private var numAdditionalSharedNotes:Number = 0;
 
 		private static const LOGGER:ILogger = getClassLogger(Conference);
 		
@@ -75,10 +75,10 @@ package org.bigbluebutton.main.model.users {
 		private var users:ArrayCollection = null;
 		
 		[Bindable]
-		public var breakoutRooms:ArrayCollection = null;
+		private var breakoutRooms:ArrayCollection = null;
 		
 		[Bindable]
-		public var breakoutRoomsReady:Boolean = false;
+		private var breakoutRoomsReady:Boolean = false;
 		
 		private var sort:Sort;
 		
@@ -167,6 +167,36 @@ package org.bigbluebutton.main.model.users {
 		public function setIsBreakoutRoom(breakout: Boolean):void {
 			this.isBreakout = breakout;
 		}
+		
+		public function setRecord(record:Boolean):void {
+			this.record = record;
+		}
+		
+		public function isRecord():Boolean {
+			return record;
+		}
+		
+		public function setBreakoutRoomsReady(ready:Boolean):void {
+			this.breakoutRoomsReady = ready;
+		}
+		
+		public function isBreakoutRoomsReady():Boolean {
+			return breakoutRoomsReady;
+		}
+		
+		public function getBreakoutRooms():ArrayCollection {
+			return breakoutRooms;
+		}
+		
+		public function getNumAdditionalSharedNotes():int {
+			return numAdditionalSharedNotes;
+		}
+		
+		public function setNumAdditionalSharedNotes(numSharedNotes:int):void {
+			this.numAdditionalSharedNotes = numSharedNotes;
+		}
+		
+
 		
 		// Custom sort function for the users ArrayCollection. Need to put dial-in users at the very bottom.
 		private function sortFunction(a:Object, b:Object, array:Array = null):int {

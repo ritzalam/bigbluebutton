@@ -114,7 +114,7 @@ package org.bigbluebutton.main.model.users
 				UserManager.getInstance().getConference().setAvatarUrl(result.avatarURL);
 				UserManager.getInstance().getConference().setVoiceBridge(result.voicebridge);
 				UserManager.getInstance().getConference().setDialNumber(result.dialnumber);
-				UserManager.getInstance().getConference().record = (result.record.toUpperCase() == "TRUE");
+				UserManager.getInstance().getConference().setRecord((result.record.toUpperCase() == "TRUE"));
 				
         
         

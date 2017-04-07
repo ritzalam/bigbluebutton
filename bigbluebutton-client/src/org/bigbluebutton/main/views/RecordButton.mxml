@@ -143,7 +143,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 				resourcesChanged();
 
-				if (UserManager.getInstance().getConference().record) {
+				if (UserManager.getInstance().getConference().isRecord()) {
 					this.enabled = UserManager.getInstance().getConference().amIModerator() && MeetingModel.getInstance().meeting.allowStartStopRecording;
 				}
 
@@ -198,19 +198,19 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			}
 			
 			private function onRecordButtonMouseOver(event:MouseEvent):void {
-				if (UserManager.getInstance().getConference().amIModerator() && UserManager.getInstance().getConference().record) {
+				if (UserManager.getInstance().getConference().amIModerator() && UserManager.getInstance().getConference().isRecord()) {
 					this.styleName = this.selected? "recordButtonStyleStop": "recordButtonStyleStart";
 				}
 			}
 
 			private function onRecordButtonMouseOut(event:MouseEvent):void {
-				if (UserManager.getInstance().getConference().amIModerator() && UserManager.getInstance().getConference().record) {
+				if (UserManager.getInstance().getConference().amIModerator() && UserManager.getInstance().getConference().isRecord()) {
 					this.styleName = this.selected? "recordButtonStyleStart": "recordButtonStyleNormal";
 				}
 			}
 
 			private function updateToolTip():void {
-				if (UserManager.getInstance().getConference().record) {
+				if (UserManager.getInstance().getConference().isRecord()) {
 					if (UserManager.getInstance().getConference().amIModerator()) {
 						if (MeetingModel.getInstance().meeting.allowStartStopRecording) {
 							if (this.selected) {

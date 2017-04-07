@@ -728,7 +728,7 @@ package org.bigbluebutton.modules.users.services
 			breakoutRoom.sequence = room.sequence;
 			UserManager.getInstance().getConference().addBreakoutRoom(breakoutRoom);
 		}
-		UserManager.getInstance().getConference().breakoutRoomsReady = map.roomsReady;
+		UserManager.getInstance().getConference().setBreakoutRoomsReady(map.roomsReady);
 	}
 	
 	private function handleBreakoutRoomJoinURL(msg:Object):void{

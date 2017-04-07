@@ -68,7 +68,7 @@ package org.bigbluebutton.core
 	}
 	
   public static function isRecorded():Boolean {
-    return UserManager.getInstance().getConference().record;
+    return UserManager.getInstance().getConference().isRecord();
   }
   
     public static function amIPublishing():ArrayCollection {

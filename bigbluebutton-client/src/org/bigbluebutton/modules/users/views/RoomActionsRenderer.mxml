@@ -60,7 +60,7 @@
 			   width="20"
 			   height="20"
 			   icon="{images.join}"
-			   visible="{(UserManager.getInstance().getConference().breakoutRoomsReady &amp;&amp; moderator) || (!moderator &amp;&amp; data.invitedRecently)}"
+			   visible="{(UserManager.getInstance().getConference().isBreakoutRoomsReady() &amp;&amp; moderator) || (!moderator &amp;&amp; data.invitedRecently)}"
 			   toolTip="{ResourceUtil.getInstance().getString('bbb.users.roomsGrid.join')}"
 			   click="requestBreakoutJoinUrl(event)" />
 	<mx:Button id="listenBtn"

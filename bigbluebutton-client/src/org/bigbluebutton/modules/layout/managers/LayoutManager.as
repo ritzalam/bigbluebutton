@@ -346,7 +346,7 @@ package org.bigbluebutton.modules.layout.managers
 					detectContainerChange = true;
 				});
 				dispatchSwitchedLayoutEvent(layout.name);
-				UserManager.getInstance().getConference().numAdditionalSharedNotes = layout.numAdditionalSharedNotes;
+				UserManager.getInstance().getConference().setNumAdditionalSharedNotes(layout.numAdditionalSharedNotes);
 			} else {
 				detectContainerChange = true;
 			}

@@ -195,7 +195,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 					users.addItem(BBBUser.copy(originalUsers[l]));
 				}
 				// Create breakout rooms lists
-				var rooms:int = UserManager.getInstance().getConference().breakoutRooms.length;
+				var rooms:int = UserManager.getInstance().getConference().getBreakoutRooms().length;
 				var user:BBBUser;
 				roomsContainer.removeAllChildren();
 				for (var r:int = 0; r < rooms; r++) {

@@ -59,7 +59,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
             [Bindable] public var chatOptions:ChatOptions = new ChatOptions();		
             
             private function onCreationComplete():void{
-                users = UserManager.getInstance().getConference().users;
+                users = UserManager.getInstance().getConference().getUsers();
                 
                 if (!chatOptions.privateEnabled) {
                     usersList.includeInLayout = usersList.visible = false;

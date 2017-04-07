@@ -150,7 +150,7 @@
 			private function onCreationComplete():void {
 				dispatcher = new Dispatcher();
 			
-				users = UserManager.getInstance().getConference().users;
+				users = UserManager.getInstance().getConference().getUsers();
 
 				breakoutRoomsList = UserManager.getInstance().getConference().breakoutRooms;
 				breakoutRoomsList.addEventListener(CollectionEvent.COLLECTION_CHANGE, breakoutRoomsListChangeListener);

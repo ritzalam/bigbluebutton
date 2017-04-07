@@ -248,7 +248,7 @@ package org.bigbluebutton.main.model.users
 		}
 		
 		public function get participants():ArrayCollection {
-			return UserManager.getInstance().getConference().users;
+			return UserManager.getInstance().getConference().getUsers();
 		}
 				
 		public function addStream(e:BroadcastStartedEvent):void {

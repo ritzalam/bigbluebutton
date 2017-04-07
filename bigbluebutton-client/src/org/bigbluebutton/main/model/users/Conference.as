@@ -72,7 +72,7 @@ package org.bigbluebutton.main.model.users {
 		private var me:BBBUser = null;
 		
 		[Bindable]
-		public var users:ArrayCollection = null;
+		private var users:ArrayCollection = null;
 		
 		[Bindable]
 		public var breakoutRooms:ArrayCollection = null;
@@ -93,6 +93,10 @@ package org.bigbluebutton.main.model.users {
 			users.refresh();
 			breakoutRooms = new ArrayCollection();
 			_myCamSettings = new ArrayCollection();
+		}
+		
+		public function getUsers():ArrayCollection {
+			return users;
 		}
 		
 		// Custom sort function for the users ArrayCollection. Need to put dial-in users at the very bottom.

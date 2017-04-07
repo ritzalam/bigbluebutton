@@ -221,7 +221,7 @@ package org.bigbluebutton.core
     }
 	
 	public static function isAnyoneLocked():Boolean {
-		var users:ArrayCollection = UserManager.getInstance().getConference().users;
+		var users:ArrayCollection = UserManager.getInstance().getConference().getUsers();
 		for(var i:uint = 0; i<users.length; i++) {
 			var user:BBBUser = users.getItemAt(i) as BBBUser;
 			if(user.userLocked)

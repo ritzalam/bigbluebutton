@@ -122,7 +122,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			}
 
 			protected function assignUsersForCreation():void {
-				var originalUsers:ArrayCollection = UserManager.getInstance().getConference().users;
+				var originalUsers:ArrayCollection = UserManager.getInstance().getConference().getUsers();
 				var users:ArrayCollection = new ArrayCollection();
 				var me:BBBUser;
 				// Copy users to avoid removing the references from the original ArrayCollection
@@ -165,7 +165,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 				recordCheckbox.selected = assignement['record'];
 				durationStepper.value = assignement['duration'];
 				var user:BBBUser;
-				var currentUsers:ArrayCollection = UserManager.getInstance().getConference().users;
+				var currentUsers:ArrayCollection = UserManager.getInstance().getConference().getUsers();
 				// Create breakout rooms boxes
 				for (var r:int = 1; r <= rooms; r++) {
 					var list:BreakoutList = roomsContainer.addChild(new BreakoutList()) as BreakoutList;
@@ -188,7 +188,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			}
 
 			protected function assignUsersForInvitation():void {
-				var originalUsers:ArrayCollection = UserManager.getInstance().getConference().users;
+				var originalUsers:ArrayCollection = UserManager.getInstance().getConference().getUsers();
 				var users:ArrayCollection = new ArrayCollection();
 				// Copy users to avoid removing the references from the original ArrayCollection
 				for (var l:int = 0; l < originalUsers.length; l++) {

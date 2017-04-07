@@ -761,7 +761,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
             private function showlogoutWindow(reason:String):void {
                 if (layoutOptions != null && layoutOptions.showLogoutWindow) {
-                    if (UserManager.getInstance().getConference().iAskedToLogout) {
+                    if (UserManager.getInstance().getConference().didIAskedToLogout()) {
                         handleExitApplicationEvent();
                         return;
                     }
@@ -809,7 +809,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
             }
 
             private function handleExitApplicationEvent(e:ExitApplicationEvent = null):void {
-                if (!UserManager.getInstance().getConference().isBreakout) {
+                if (!UserManager.getInstance().getConference().isBreakoutRoom()) {
                     navigateToURL(new URLRequest(BBB.getLogoutURL()), "_self");
                 } else {
                     ExternalInterface.call("window.close");

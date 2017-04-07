@@ -66,7 +66,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 				}
 				
 				if (phoneOptions.showPhoneOption) {
-					txtPhone.text=ResourceUtil.getInstance().getString('bbb.audioSelection.txtPhone.text', [conference.dialNumber, conference.voiceBridge]);
+					txtPhone.text=ResourceUtil.getInstance().getString('bbb.audioSelection.txtPhone.text', [conference.getDialNumber(), conference.getVoiceBridge()]);
 				} else {
 					vrulePhone.visible = vrulePhone.includeInLayout = false;
 					vboxPhone.visible = vboxPhone.includeInLayout = false;

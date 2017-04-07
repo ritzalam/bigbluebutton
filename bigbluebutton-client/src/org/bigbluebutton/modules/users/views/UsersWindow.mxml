@@ -300,7 +300,7 @@
 					paramsMenuData.push({label: ResourceUtil.getInstance().getString('bbb.users.settings.unmuteAll'), icon: images.audio, handler: muteAll});
 								
 				paramsMenuData.push({label: ResourceUtil.getInstance().getString('bbb.users.settings.lockSettings'), icon: images.lock_open, handler: lockSettings});
-				if (breakoutOptions.enabled && amIModerator && !UserManager.getInstance().getConference().isBreakout) {
+				if (breakoutOptions.enabled && amIModerator && !UserManager.getInstance().getConference().isBreakoutRoom()) {
 					if (breakoutRoomsList.length == 0) {
 						paramsMenuData.push({label: ResourceUtil.getInstance().getString('bbb.users.settings.breakoutRooms'), handler: breakoutRooms});
 					} else {
@@ -452,7 +452,7 @@
 			private function loadKeyCombos(modifier:String):void {
 				keyCombos = new Object(); // always start with a fresh array bbb.shortcutkey.users.muteall
 				keyCombos[modifier + (ResourceUtil.getInstance().getString('bbb.shortcutkey.users.makePresenter') as String)] = MAKE_PRESENTER;
-				if (!UserManager.getInstance().getConference().isBreakout) {
+				if (!UserManager.getInstance().getConference().isBreakoutRoom()) {
 					keyCombos[modifier + (ResourceUtil.getInstance().getString('bbb.shortcutkey.users.kick') as String)] = KICK_USER;
 				}
 				keyCombos[modifier + (ResourceUtil.getInstance().getString('bbb.shortcutkey.users.mute') as String)] = MUTE_USER;
@@ -538,7 +538,7 @@
 			}
 			
 			public function remoteKickUser():void {
-				if (amIModerator && usersGrid.selectedIndex != -1 && partOptions.allowKickUser && !UserManager.getInstance().getConference().isBreakout) {
+				if (amIModerator && usersGrid.selectedIndex != -1 && partOptions.allowKickUser && !UserManager.getInstance().getConference().isBreakoutRoom()) {
 					var selData:Object = usersGrid.selectedItem;
 					
 					if (!selData.me)
@@ -595,7 +595,7 @@
 			}
 
 			private function handleOpenBreakoutRooms(e:ShortcutEvent):void{
-				if (breakoutOptions.enabled && amIModerator && !UserManager.getInstance().getConference().isBreakout) {
+				if (breakoutOptions.enabled && amIModerator && !UserManager.getInstance().getConference().isBreakoutRoom()) {
 					breakoutRooms();
 				}
 			}

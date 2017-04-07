@@ -178,7 +178,7 @@
 				var ls:LockSettingsVO = UserManager.getInstance().getConference().getLockSettings();
 				
 				if (data != null) {
-					settingsBtn.visible = rolledOver && !data.me && !UserManager.getInstance().getConference().isBreakout;
+					settingsBtn.visible = rolledOver && !data.me && !UserManager.getInstance().getConference().isBreakoutRoom();
 					
 					if (!data.voiceJoined) {
 						if (data.listenOnly) {

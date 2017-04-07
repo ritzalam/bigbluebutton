@@ -250,11 +250,11 @@ package org.bigbluebutton.main.api
     }
     
     private function handleGetExternalMeetingID():String {
-      return UserManager.getInstance().getConference().externalMeetingID;
+      return UserManager.getInstance().getConference().getExternalMeetingId();
     }
 
     private function handleGetInternalMeetingID():String {
-      return UserManager.getInstance().getConference().internalMeetingID;
+      return UserManager.getInstance().getConference().getInternalMeetingId();
     }
     
     private function handleGetSessionToken():String {

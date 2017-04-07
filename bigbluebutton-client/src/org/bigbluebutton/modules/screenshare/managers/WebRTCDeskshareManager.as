@@ -121,7 +121,7 @@ package org.bigbluebutton.modules.screenshare.managers
 				};
 				ExternalInterface.addCallback("onFail", onFail);
 
-				var voiceBridge:String = UserManager.getInstance().getConference().voiceBridge;
+				var voiceBridge:String = UserManager.getInstance().getConference().getVoiceBridge();
 				var myName:String = UserManager.getInstance().getConference().getMyName();
 
 				ExternalInterface.call(

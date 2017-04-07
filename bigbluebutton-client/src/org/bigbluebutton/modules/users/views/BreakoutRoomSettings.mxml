@@ -69,7 +69,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 				var event:BreakoutRoomEvent = new BreakoutRoomEvent(BreakoutRoomEvent.CREATE_BREAKOUT_ROOMS);
 				// event.meetingId is filled in the event handler for BreakoutRoomEvent in UserService class
 				event.rooms = new Array();
-				var parentMeetingName:String = UserManager.getInstance().getConference().meetingName;
+				var parentMeetingName:String = UserManager.getInstance().getConference().getMeetingName();
 				var roomResource:String = ResourceUtil.getInstance().getString('bbb.users.breakout.room');
 				for (var i:int = 0; i < (roomsCombo.selectedIndex + 2); i++) {
 					var users:Array = BreakoutList(roomsContainer.getChildAt(i)).users.source;

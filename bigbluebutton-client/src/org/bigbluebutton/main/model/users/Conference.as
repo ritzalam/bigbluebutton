@@ -37,24 +37,24 @@ package org.bigbluebutton.main.model.users {
 	import org.bigbluebutton.main.events.BreakoutRoomEvent;
 	
 	public class Conference {
-		public var userEjectedFromMeeting:Boolean = false;
-		public var meetingName:String;
+		private var userEjectedFromMeeting:Boolean = false;
+		private var meetingName:String;
 		
-		public var externalMeetingID:String;
+		private var externalMeetingID:String;
 		
-		public var internalMeetingID:String;
+		private var internalMeetingID:String;
 		
-		public var externalUserID:String;
+		private var externalUserID:String;
 		
-		public var avatarURL:String;
+		private var avatarURL:String;
 		
-		public var voiceBridge:String;
+		private var voiceBridge:String;
 		
-		public var dialNumber:String;
+		private var dialNumber:String;
 		
-		public var isBreakout:Boolean;
+		private var isBreakout:Boolean;
 		
-		public var iAskedToLogout:Boolean
+		private var iAskedToLogout:Boolean
 		
 		[Bindable]
 		public var record:Boolean;
@@ -95,8 +95,77 @@ package org.bigbluebutton.main.model.users {
 			_myCamSettings = new ArrayCollection();
 		}
 		
+		public function getInternalMeetingId():String {
+			return internalMeetingID;
+		}
+		
+		public function setInternalMeetingId(meetingId: String):void {
+			this.internalMeetingID = meetingId;
+		}
+		
+		public function setExternalUserId(userId:String):void {
+			this.externalUserID = userId;
+		}
+		
+		public function getAvatarUrl():String {
+			return avatarURL;
+		}
+		
+		public function setAvatarUrl(url: String):void {
+			this.avatarURL = url;
+		}
+		
+		
+		public function getVoiceBridge():String {
+			return voiceBridge;
+		}
+		
+		public function setVoiceBridge(bridge: String):void {
+			this.voiceBridge = bridge;
+		}
+		
+		public function getDialNumber():String {
+			return dialNumber;
+		}
+		
+		public function setDialNumber(dial: String):void {
+			this.dialNumber = dial;
+		}
+		
+		public function getExternalMeetingId():String {
+			return externalMeetingID;
+		}
+		
+		public function setExternalMeetingId(meetingId: String):void {
+			this.externalMeetingID = meetingId;
+		}
+		
+		public function getMeetingName():String {
+			return meetingName;
+		}
+		
+		public function setMeetingName(name:String):void {
+			this.meetingName = name;
+		}
+		
 		public function getUsers():ArrayCollection {
 			return users;
+		}
+		
+		public function didIAskedToLogout():Boolean {
+			return iAskedToLogout;
+		}
+		
+		public function setIAskedToLogout(askLogout:Boolean):void {
+			iAskedToLogout = askLogout;
+		}
+		
+		public function isBreakoutRoom():Boolean {
+			return isBreakout;
+		}
+		
+		public function setIsBreakoutRoom(breakout: Boolean):void {
+			this.isBreakout = breakout;
 		}
 		
 		// Custom sort function for the users ArrayCollection. Need to put dial-in users at the very bottom.

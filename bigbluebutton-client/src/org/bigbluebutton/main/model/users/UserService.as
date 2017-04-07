@@ -106,14 +106,14 @@ package org.bigbluebutton.main.model.users
 				
 				UserManager.getInstance().getConference().setMyUserid(result.internalUserId);
 				
-				UserManager.getInstance().getConference().externalMeetingID = result.externMeetingID;
-				UserManager.getInstance().getConference().isBreakout = result.isBreakout;
-				UserManager.getInstance().getConference().meetingName = result.conferenceName;
-				UserManager.getInstance().getConference().internalMeetingID = result.room;
-				UserManager.getInstance().getConference().externalUserID = result.externUserID;
-				UserManager.getInstance().getConference().avatarURL = result.avatarURL;
-				UserManager.getInstance().getConference().voiceBridge = result.voicebridge;
-				UserManager.getInstance().getConference().dialNumber = result.dialnumber;
+				UserManager.getInstance().getConference().setExternalMeetingId(result.externMeetingID);
+				UserManager.getInstance().getConference().setIsBreakoutRoom(result.isBreakout);
+				UserManager.getInstance().getConference().setMeetingName(result.conferenceName);
+				UserManager.getInstance().getConference().setInternalMeetingId(result.room);
+				UserManager.getInstance().getConference().setExternalUserId(result.externUserID);
+				UserManager.getInstance().getConference().setAvatarUrl(result.avatarURL);
+				UserManager.getInstance().getConference().setVoiceBridge(result.voicebridge);
+				UserManager.getInstance().getConference().setDialNumber(result.dialnumber);
 				UserManager.getInstance().getConference().record = (result.record.toUpperCase() == "TRUE");
 				
         

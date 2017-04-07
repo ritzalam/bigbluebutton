@@ -106,11 +106,11 @@ package org.bigbluebutton.core
     }
     
     public static function getInternalMeetingID():String {
-      return UserManager.getInstance().getConference().internalMeetingID;
+      return UserManager.getInstance().getConference().getInternalMeetingId();
     }
     
     public static function getAvatarURL():String {
-      return UserManager.getInstance().getConference().avatarURL;
+      return UserManager.getInstance().getConference().getAvatarUrl();
     }
 
     public static function getUserAvatarURL(userID:String):String {
@@ -118,11 +118,11 @@ package org.bigbluebutton.core
     }	
 	
 	public static function getVoiceBridge():String {
-		return UserManager.getInstance().getConference().voiceBridge;
+		return UserManager.getInstance().getConference().getVoiceBridge();
 	}
 	
 	public static function getDialNumber():String {
-		return UserManager.getInstance().getConference().dialNumber;
+		return UserManager.getInstance().getConference().getDialNumber();
 	}
 	
 	public static function getCustomData():Object {
@@ -130,7 +130,7 @@ package org.bigbluebutton.core
 	}
     
     public static function getExternalMeetingID():String {
-      return UserManager.getInstance().getConference().externalMeetingID;
+      return UserManager.getInstance().getConference().getExternalMeetingId();
     }
     
     public static function amIModerator():Boolean {
@@ -213,7 +213,7 @@ package org.bigbluebutton.core
       var userData:Object = new Object();
       userData.meetingId = getInternalMeetingID();
       userData.externalMeetingId = getExternalMeetingID();
-      userData.meetingName = UserManager.getInstance().getConference().meetingName;
+      userData.meetingName = UserManager.getInstance().getConference().getMeetingName();
       userData.userId = getMyUserID();
       userData.username = getMyUsername();
       

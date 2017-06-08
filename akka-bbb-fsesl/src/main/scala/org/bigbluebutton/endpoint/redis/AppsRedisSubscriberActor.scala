@@ -6,16 +6,14 @@ import java.net.InetSocketAddress
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
-
 import org.bigbluebutton.SystemConfiguration
 import org.bigbluebutton.common.converters.FromJsonDecoder
 import org.bigbluebutton.common.messages.PubSubPongMessage
-import org.bigbluebutton.freeswitch.pubsub.receivers.RedisMessageReceiver
-
 import akka.actor.ActorSystem
 import akka.actor.OneForOneStrategy
 import akka.actor.Props
 import akka.actor.SupervisorStrategy.Resume
+import freeswitch.pubsub.receivers.RedisMessageReceiver
 import redis.actors.RedisSubscriberActor
 import redis.api.pubsub.Message
 import redis.api.pubsub.PMessage

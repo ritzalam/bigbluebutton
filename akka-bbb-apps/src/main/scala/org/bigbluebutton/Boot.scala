@@ -2,6 +2,7 @@ package org.bigbluebutton
 
 import akka.event.Logging
 import akka.actor.ActorSystem
+import org.freeswitch.esl.client.manager.DefaultManagerConnection
 import org.bigbluebutton.endpoint.redis.{ AppsRedisSubscriberActor, KeepAliveRedisPublisher, RedisPublisher, RedisRecorderActor }
 import org.bigbluebutton.core.BigBlueButtonInGW
 import org.bigbluebutton.core.MessageSender
@@ -12,6 +13,9 @@ import org.bigbluebutton.core.bus._
 import org.bigbluebutton.core.JsonMessageSenderActor
 import org.bigbluebutton.core.pubsub.senders.ReceivedJsonMsgHandlerActor
 import org.bigbluebutton.core2.FromAkkaAppsMsgSenderActor
+import org.bigbluebutton.freeswitch.VoiceConferenceService
+import org.bigbluebutton.freeswitch.voice.FreeswitchConferenceEventListener
+import org.bigbluebutton.freeswitch.voice.freeswitch.{ ConnectionManager, ESLEventListener, FreeswitchApplication }
 
 object Boot extends App with SystemConfiguration {
 
@@ -54,4 +58,21 @@ object Boot extends App with SystemConfiguration {
   val redisSubscriberActor = system.actorOf(AppsRedisSubscriberActor.props(redisMsgReceiver, incomingJsonMessageBus), "redis-subscriber")
 
   val keepAliveRedisPublisher = new KeepAliveRedisPublisher(system, redisPublisher)
+
+  // FSESL Actor System
+  val eslConnection = new DefaultManagerConnection(eslHost, eslPort, eslPassword)
+
+  val voiceConfService = new VoiceConferenceService(redisPublisher)
+
+  val fsConfEventListener = new FreeswitchConferenceEventListener(voiceConfService)
+  fsConfEventListener.start()
+
+  val eslEventListener = new ESLEventListener(fsConfEventListener)
+  val connManager = new ConnectionManager(eslConnection, eslEventListener, fsConfEventListener)
+
+  connManager.start()
+
+  val fsApplication = new FreeswitchApplication(connManager, fsProfile)
+  fsApplication.start()
+
 }

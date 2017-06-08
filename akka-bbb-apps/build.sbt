@@ -49,6 +49,8 @@ libraryDependencies ++= {
   )
 }
 
+libraryDependencies += "org.bigbluebutton" %  "bbb-fsesl-client" % "0.0.4"
+
 libraryDependencies += "org.bigbluebutton" % "bbb-common-message_2.12" % "0.0.19-SNAPSHOT"
 
 // https://mvnrepository.com/artifact/org.scala-lang/scala-library
@@ -73,8 +75,6 @@ libraryDependencies += "org.parboiled" % "parboiled-scala_2.12" % "1.1.8"
 
 // https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-scala_2.12
 libraryDependencies += "com.fasterxml.jackson.module" % "jackson-module-scala_2.12" % "2.8.8"
-
-
 
 // For generating test reports
 libraryDependencies += "org.pegdown" % "pegdown" % "1.6.0" % "test"

@@ -18,12 +18,12 @@
 */
 package org.bigbluebutton.freeswitch.voice.freeswitch.actions;
 
+import org.bigbluebutton.freeswitch.voice.events.VoiceUserJoinedEvent;
+import org.bigbluebutton.freeswitch.voice.freeswitch.response.XMLResponseConferenceListParser;
 import org.freeswitch.esl.client.transport.message.EslMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.bigbluebutton.freeswitch.voice.events.ConferenceEventListener;
-import org.bigbluebutton.freeswitch.voice.events.VoiceUserJoinedEvent;
 import org.bigbluebutton.freeswitch.voice.freeswitch.response.ConferenceMember;
-import org.bigbluebutton.freeswitch.voice.freeswitch.response.XMLResponseConferenceListParser;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

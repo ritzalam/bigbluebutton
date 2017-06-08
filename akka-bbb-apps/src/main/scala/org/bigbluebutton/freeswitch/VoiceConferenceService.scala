@@ -1,6 +1,5 @@
 package org.bigbluebutton.freeswitch
 
-import org.bigbluebutton.freeswitch.voice.IVoiceConferenceService
 import org.bigbluebutton.endpoint.redis.RedisPublisher
 import org.bigbluebutton.common.messages.VoiceConfRecordingStartedMessage
 import org.bigbluebutton.common.messages.UserJoinedVoiceConfMessage
@@ -11,6 +10,7 @@ import org.bigbluebutton.common.messages.DeskShareStartedEventMessage
 import org.bigbluebutton.common.messages.DeskShareStoppedEventMessage
 import org.bigbluebutton.common.messages.DeskShareRTMPBroadcastStartedEventMessage
 import org.bigbluebutton.common.messages.DeskShareRTMPBroadcastStoppedEventMessage
+import org.bigbluebutton.freeswitch.voice.IVoiceConferenceService
 
 class VoiceConferenceService(sender: RedisPublisher) extends IVoiceConferenceService {
 

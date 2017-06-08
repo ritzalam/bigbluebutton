@@ -1,17 +1,18 @@
 package org.bigbluebutton
 
-import akka.actor.{ ActorSystem, Props }
+import akka.actor.{ActorSystem, Props}
+import freeswitch.pubsub.receivers.RedisMessageReceiver
+
 import scala.concurrent.duration._
 import redis.RedisClient
-import scala.concurrent.{ Future, Await }
+
+import scala.concurrent.{Await, Future}
 import scala.concurrent.ExecutionContext.Implicits.global
 import org.freeswitch.esl.client.manager.DefaultManagerConnection
-import org.bigbluebutton.endpoint.redis.{ RedisPublisher, AppsRedisSubscriberActor }
+import org.bigbluebutton.endpoint.redis.{AppsRedisSubscriberActor, RedisPublisher}
 import org.bigbluebutton.freeswitch.VoiceConferenceService
-import org.bigbluebutton.freeswitch.voice.FreeswitchConferenceEventListener
-import org.bigbluebutton.freeswitch.voice.freeswitch.{ ESLEventListener, ConnectionManager, FreeswitchApplication }
-import org.bigbluebutton.freeswitch.voice.IVoiceConferenceService
-import org.bigbluebutton.freeswitch.pubsub.receivers.RedisMessageReceiver
+import freeswitch.voice.{FreeswitchConferenceEventListener, IVoiceConferenceService}
+import freeswitch.voice.freeswitch.{ConnectionManager, ESLEventListener, FreeswitchApplication}
 
 object Boot extends App with SystemConfiguration {
 

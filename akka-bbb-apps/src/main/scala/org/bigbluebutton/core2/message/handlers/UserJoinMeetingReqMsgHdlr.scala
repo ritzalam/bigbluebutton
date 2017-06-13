@@ -2,8 +2,10 @@ package org.bigbluebutton.core2.message.handlers
 
 import org.bigbluebutton.common2.messages._
 import org.bigbluebutton.core.OutMessageGateway
+import org.bigbluebutton.core.api.GuestPolicy
 import org.bigbluebutton.core.models.{ RegisteredUsers, UserState, Users2x, UsersState }
 import org.bigbluebutton.core.running.MeetingActor
+import org.bigbluebutton.core2.MeetingStatus2x
 
 trait UserJoinMeetingReqMsgHdlr {
   this: MeetingActor =>
@@ -33,8 +35,12 @@ trait UserJoinMeetingReqMsgHdlr {
     for {
       regUser <- RegisteredUsers.findWithToken(msg.body.authToken, liveMeeting.registeredUsers)
     } yield {
+      val waitingForAcceptance = regUser.guest &&
+        MeetingStatus2x.getGuestPolicy(liveMeeting.status) == GuestPolicy.ASK_MODERATOR && regUser.waitingForAcceptance
+      val lockStatus = getInitialLockStatus(regUser.role)
+
       val userState = UserState(intId = regUser.id, extId = regUser.externId, name = regUser.name, role = regUser.role,
-        guest = regUser.guest, authed = regUser.authed, waitingForAcceptance = regUser.waitingForAcceptance,
+        guest = regUser.guest, authed = regUser.authed, waitingForAcceptance = waitingForAcceptance,
         emoji = "none", presenter = false, locked = false, avatar = regUser.avatarURL)
       Users2x.add(liveMeeting.users2x, regUser.id)
       UsersState.add(liveMeeting.usersState, userState)

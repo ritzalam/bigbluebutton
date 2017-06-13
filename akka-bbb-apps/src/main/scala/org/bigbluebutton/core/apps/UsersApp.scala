@@ -12,47 +12,6 @@ trait UsersApp {
 
   val outGW: OutMessageGateway
 
-  def handleUserConnectedToGlobalAudio(msg: UserConnectedToGlobalAudio) {
-    log.info("Handling UserConnectedToGlobalAudio: meetingId=" + props.meetingProp.intId + " userId=" + msg.userid)
-
-    val user = Users.findWithId(msg.userid, liveMeeting.users)
-    user foreach { u =>
-      if (MeetingStatus2x.addGlobalAudioConnection(liveMeeting.status, msg.userid)) {
-        for {
-          uvo <- Users.joinedVoiceListenOnly(msg.userid, liveMeeting.users)
-        } yield {
-          log.info("UserConnectedToGlobalAudio: meetingId=" + props.meetingProp.intId + " userId=" + uvo.id + " user=" + uvo)
-          outGW.send(new UserListeningOnly(props.meetingProp.intId, props.recordProp.record, uvo.id, uvo.listenOnly))
-        }
-      }
-    }
-  }
-
-  def handleUserDisconnectedFromGlobalAudio(msg: UserDisconnectedFromGlobalAudio) {
-    log.info("Handling UserDisconnectedToGlobalAudio: meetingId=" + props.meetingProp.intId + " userId=" + msg.userid)
-
-    val user = Users.findWithId(msg.userid, liveMeeting.users)
-    user foreach { u =>
-      if (MeetingStatus2x.removeGlobalAudioConnection(liveMeeting.status, msg.userid)) {
-        if (!u.joinedWeb) {
-          for {
-            uvo <- Users.userLeft(u.id, liveMeeting.users)
-          } yield {
-            log.info("Not web user. Send user left message. meetingId=" + props.meetingProp.intId + " userId=" + u.id + " user=" + u)
-            outGW.send(new UserLeft(props.meetingProp.intId, props.recordProp.record, uvo))
-          }
-        } else {
-          for {
-            uvo <- Users.leftVoiceListenOnly(u.id, liveMeeting.users)
-          } yield {
-            log.info("UserDisconnectedToGlobalAudio: meetingId=" + props.meetingProp.intId + " userId=" + uvo.id + " user=" + uvo)
-            outGW.send(new UserListeningOnly(props.meetingProp.intId, props.recordProp.record, uvo.id, uvo.listenOnly))
-          }
-        }
-      }
-    }
-  }
-
   def handleMuteAllExceptPresenterRequest(msg: MuteAllExceptPresenterRequest) {
     if (msg.mute) {
       MeetingStatus2x.muteMeeting(liveMeeting.status)
@@ -123,7 +82,7 @@ trait UsersApp {
   def handleMuteUserRequest(msg: MuteUserRequest) {
     log.info("Received mute user request. meetingId=" + props.meetingProp.intId + " userId=" + msg.userID + " mute=" + msg.mute)
     for {
-      u <- Users.findWithId(msg.userID, liveMeeting.users)
+      u <- Users.findWithIntId(msg.userID, liveMeeting.users)
     } yield {
       log.info("Send mute user request. meetingId=" + props.meetingProp.intId + " userId=" + u.id + " user=" + u)
       outGW.send(new MuteVoiceUser(props.meetingProp.intId, props.recordProp.record,
@@ -135,7 +94,7 @@ trait UsersApp {
     log.info("Received eject user request. meetingId=" + msg.meetingID + " userId=" + msg.userId)
 
     for {
-      u <- Users.findWithId(msg.userId, liveMeeting.users)
+      u <- Users.findWithIntId(msg.userId, liveMeeting.users)
     } yield {
       if (u.voiceUser.joined) {
         log.info("Ejecting user from voice.  meetingId=" + props.meetingProp.intId + " userId=" + u.id)
@@ -297,7 +256,7 @@ trait UsersApp {
     log.debug("Received user joined meeting. metingId=" + props.meetingProp.intId + " userId=" + msg.userID)
 
     def initVoiceUser(userId: String, ru: RegisteredUser): VoiceUser = {
-      val wUser = Users.findWithId(userId, liveMeeting.users)
+      val wUser = Users.findWithIntId(userId, liveMeeting.users)
 
       wUser match {
         case Some(u) => {
@@ -334,7 +293,7 @@ trait UsersApp {
     regUser foreach { ru =>
       log.debug("Found registered user. metingId=" + props.meetingProp.intId + " userId=" + msg.userID + " ru=" + ru)
 
-      val wUser = Users.findWithId(msg.userID, liveMeeting.users)
+      val wUser = Users.findWithIntId(msg.userID, liveMeeting.users)
 
       val vu = initVoiceUser(msg.userID, ru)
 
@@ -480,7 +439,7 @@ trait UsersApp {
       + props.meetingProp.intId + " callername=" + msg.callerIdName
       + " userId=" + msg.userId + " extUserId=" + msg.externUserId)
 
-    Users.findWithId(msg.userId, liveMeeting.users) match {
+    Users.findWithIntId(msg.userId, liveMeeting.users) match {
       case Some(user) => {
         val nu = Users.switchUserToPhoneUser(user, liveMeeting.users, msg.voiceUserId, msg.userId, msg.callerIdName,
           msg.callerIdNum, msg.muted, msg.talking, msg.avatarURL, msg.listenOnly)
@@ -504,7 +463,7 @@ trait UsersApp {
     log.info("Received user joined voice. meetingId=" + props.meetingProp.intId + " callername=" + msg.callerIdName
       + " userId=" + msg.userId + " extUserId=" + msg.externUserId)
 
-    Users.findWithId(msg.userId, liveMeeting.users) match {
+    Users.findWithIntId(msg.userId, liveMeeting.users) match {
       case Some(user) => {
         // this is used to restore the mute state on reconnect
         val previouslyMuted = user.voiceUser.muted
@@ -603,7 +562,7 @@ trait UsersApp {
     }
 
     for {
-      newPres <- Users.findWithId(newPresenterID, liveMeeting.users)
+      newPres <- Users.findWithIntId(newPresenterID, liveMeeting.users)
     } yield {
       removePresenterRightsToCurrentPresenter()
       Users.becomePresenter(newPres.id, liveMeeting.users)

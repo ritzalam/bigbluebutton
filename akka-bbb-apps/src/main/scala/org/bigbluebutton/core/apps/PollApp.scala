@@ -184,7 +184,7 @@ trait PollApp {
     }
 
     for {
-      user <- Users.findWithId(msg.requesterId, liveMeeting.users)
+      user <- Users.findWithIntId(msg.requesterId, liveMeeting.users)
       responder = new Responder(user.id, user.name)
       updatedPoll <- storePollResult(responder)
       curPres <- Users.getCurrentPresenter(liveMeeting.users)

@@ -25,93 +25,111 @@ object Users {
     Some(uvo)
   }
 
-  def findWithId(id: String, users: Users): Option[UserVO] = users.toVector.find(u => u.id == id)
-  def findWithExtId(id: String, users: Users): Option[UserVO] = users.toVector.find(u => u.externalId == id)
-  def findModerators(users: Users): Vector[UserVO] = users.toVector.filter(u => u.role == Roles.MODERATOR_ROLE)
-  def findPresenters(users: Users): Vector[UserVO] = users.toVector.filter(u => u.role == Roles.PRESENTER_ROLE)
-  def findViewers(users: Users): Vector[UserVO] = users.toVector.filter(u => u.role == Roles.VIEWER_ROLE)
-  def hasModerator(users: Users): Boolean = users.toVector.filter(u => u.role == Roles.MODERATOR_ROLE).length > 0
-  def hasPresenter(users: Users): Boolean = users.toVector.filter(u => u.role == Roles.PRESENTER_ROLE).length > 0
-  def hasNoPresenter(users: Users): Boolean = users.toVector.filter(u => u.role == Roles.PRESENTER_ROLE).length == 0
-  //def hasSessionId(sessionId: String, users: Users): Boolean = {
-  //  users.toVector.find(u => usessionId)
-  // }
-  def hasUserWithId(id: String, users: Users): Boolean = {
-    findWithId(id, users) match {
-      case Some(u) => true
-      case None => false
-    }
+  def findWithIntId(intId: String, users: Users): Option[UserState] = {
+    users.toVector.find(u => u.intId == intId)
   }
-  def numUsers(users: Users): Int = users.toVector.size
-  def numWebUsers(users: Users): Int = users.toVector filter (u => u.phoneUser == false) size
-  def numUsersInVoiceConference(users: Users): Int = users.toVector filter (u => u.voiceUser.joined) size
-  def getUserWithExternalId(id: String, users: Users): Option[UserVO] = users.toVector find (u => u.externalId == id)
-  def getUserWithVoiceUserId(voiceUserId: String, users: Users): Option[UserVO] = users.toVector find (u => u.voiceUser.userId == voiceUserId)
-  def getUser(userID: String, users: Users): Option[UserVO] = users.toVector find (u => u.id == userID)
+
+  def findWithExtId(extId: String, users: Users): Option[UserState] = {
+    users.toVector.find(u => u.extId == extId)
+  }
+
+  def findModerators(users: Users): Vector[UserState] = {
+    users.toVector.filter(u => u.role == Roles.MODERATOR_ROLE)
+  }
+
+  def findPresenters(users: Users): Vector[UserState] = {
+    users.toVector.filter(u => u.presenter)
+  }
+
+  def findViewers(users: Users): Vector[UserState] = {
+    users.toVector.filter(u => u.role == Roles.VIEWER_ROLE)
+  }
+
+  def hasModerator(users: Users): Boolean = {
+    findModerators(users).length > 0
+  }
+
+  def hasPresenter(users: Users): Boolean = {
+    findPresenters(users).length > 0
+  }
+
+  def numUsers(users: Users): Int = {
+    users.toVector.length
+  }
+
+  def numWebUsers(users: Users): Int = {
+    users.toVector.length
+  }
+
+  def numUsersInVoiceConference(users: Users): Int = {
+    VoiceUsers.numUsers(users.voiceUsers)
+  }
+
+  def getUserWithVoiceUserId(voiceUserId: String, users: Users): Option[VoiceUserState] = {
+    VoiceUsers.findWithVoiceUserId(users.voiceUsers, voiceUserId)
+  }
+
   def numModerators(users: Users): Int = findModerators(users).length
-  def findAModerator(users: Users): Option[UserVO] = users.toVector find (u => u.role == Roles.MODERATOR_ROLE)
-  def getCurrentPresenter(users: Users): Option[UserVO] = users.toVector find (u => u.presenter == true)
 
-  def getUsers(users: Users): Vector[UserVO] = users.toVector
+  def findAModerator(users: Users): Option[UserState] = {
+    val mods = findModerators(users)
+    if (mods.length > 1) Some(mods.head) else None
+  }
 
-  def userLeft(userId: String, users: Users): Option[UserVO] = {
+  def getCurrentPresenter(users: Users): Option[UserState] = {
+    users.toVector.find(u => u.presenter)
+  }
+
+  def getUsers(users: Users): Vector[UserState] = users.toVector
+
+  def userLeft(userId: String, users: Users): Option[UserState] = {
     users.remove(userId)
   }
 
-  def unbecomePresenter(userID: String, users: Users) = {
+  def unbecomePresenter(intId: String, users: Users) = {
     for {
-      u <- Users.findWithId(userID, users)
+      u <- findWithIntId(intId, users)
       user = modify(u)(_.presenter).setTo(false)
     } yield users.save(user)
   }
 
-  def becomePresenter(userID: String, users: Users) = {
+  def becomePresenter(intId: String, users: Users) = {
     for {
-      u <- Users.findWithId(userID, users)
+      u <- findWithIntId(intId, users)
       user = modify(u)(_.presenter).setTo(true)
     } yield users.save(user)
   }
 
   def isModerator(id: String, users: Users): Boolean = {
-    Users.findWithId(id, users) match {
-      case Some(user) => return user.role == Roles.MODERATOR_ROLE && !user.waitingForAcceptance
-      case None => return false
+    findWithIntId(id, users) match {
+      case Some(user) => user.role == Roles.MODERATOR_ROLE && !user.waitingForAcceptance
+      case None => false
     }
   }
+
   def generateWebUserId(users: Users): String = {
     val webUserId = RandomStringGenerator.randomAlphanumericString(6)
-    if (!hasUserWithId(webUserId, users)) webUserId else generateWebUserId(users)
-  }
-
-  def usersWhoAreNotPresenter(users: Users): Vector[UserVO] = users.toVector filter (u => u.presenter == false)
-
-  def joinedVoiceListenOnly(userId: String, users: Users): Option[UserVO] = {
-    for {
-      u <- Users.findWithId(userId, users)
-      vu = u.modify(_.voiceUser.joined).setTo(false)
-        .modify(_.voiceUser.talking).setTo(false)
-        .modify(_.listenOnly).setTo(true)
-    } yield {
-      users.save(vu)
-      vu
+    findWithIntId(webUserId, users) match {
+      case Some(u) => webUserId
+      case None => generateWebUserId(users)
     }
   }
 
-  def leftVoiceListenOnly(userId: String, users: Users): Option[UserVO] = {
-    for {
-      u <- Users.findWithId(userId, users)
-      vu = u.modify(_.voiceUser.joined).setTo(false)
-        .modify(_.voiceUser.talking).setTo(false)
-        .modify(_.listenOnly).setTo(false)
-    } yield {
-      users.save(vu)
-      vu
-    }
+  def usersWhoAreNotPresenter(users: Users): Vector[UserState] = {
+    users.toVector filter (u => u.presenter == false)
   }
 
-  def lockUser(userId: String, lock: Boolean, users: Users): Option[UserVO] = {
+  def joinedVoiceListenOnly(userId: String, users: Users): Option[VoiceUserState] = {
+    VoiceUsers.joinedVoiceListenOnly(users.voiceUsers, userId)
+  }
+
+  def leftVoiceListenOnly(userId: String, users: Users): Option[VoiceUserState] = {
+    VoiceUsers.leftVoiceListenOnly(users.voiceUsers, userId)
+  }
+
+  def lockUser(userId: String, lock: Boolean, users: Users): Option[UserState] = {
     for {
-      u <- findWithId(userId, users)
+      u <- findWithIntId(userId, users)
       uvo = u.modify(_.locked).setTo(lock) // u.copy(locked = msg.lock)
     } yield {
       users.save(uvo)
@@ -119,9 +137,9 @@ object Users {
     }
   }
 
-  def changeRole(userId: String, users: Users, role: String): Option[UserVO] = {
+  def changeRole(userId: String, users: Users, role: String): Option[UserState] = {
     for {
-      u <- findWithId(userId, users)
+      u <- findWithIntId(userId, users)
       uvo = u.modify(_.role).setTo(role)
     } yield {
       users.save(uvo)
@@ -129,9 +147,9 @@ object Users {
     }
   }
 
-  def userSharedWebcam(userId: String, users: Users, streamId: String): Option[UserVO] = {
+  def userSharedWebcam(userId: String, users: Users, streamId: String): Option[VoiceUserState] = {
     for {
-      u <- findWithId(userId, users)
+      u <- findWithIntId(userId, users)
       streams = u.webcamStreams + streamId
       uvo = u.modify(_.hasStream).setTo(true).modify(_.webcamStreams).setTo(streams)
     } yield {
@@ -140,14 +158,14 @@ object Users {
     }
   }
 
-  def userUnsharedWebcam(userId: String, users: Users, streamId: String): Option[UserVO] = {
+  def userUnsharedWebcam(userId: String, users: Users, streamId: String): Option[VoiceUserState] = {
 
     def findWebcamStream(streams: Set[String], stream: String): Option[String] = {
       streams find (w => w == stream)
     }
 
     for {
-      u <- findWithId(userId, users)
+      u <- findWithIntId(userId, users)
       streamName <- findWebcamStream(u.webcamStreams, streamId)
       streams = u.webcamStreams - streamName
       uvo = u.modify(_.hasStream).setTo(!streams.isEmpty).modify(_.webcamStreams).setTo(streams)
@@ -157,36 +175,31 @@ object Users {
     }
   }
 
-  def setEmojiStatus(userId: String, users: Users, emoji: String): Option[UserVO] = {
+  def setEmojiStatus(userId: String, users: Users, emoji: String): Option[UserState] = {
     for {
-      u <- findWithId(userId, users)
-      uvo = u.modify(_.emojiStatus).setTo(emoji)
+      u <- findWithIntId(userId, users)
+      uvo = u.modify(_.emoji).setTo(emoji)
     } yield {
       users.save(uvo)
       uvo
     }
   }
 
-  def setWaitingForAcceptance(user: UserVO, users: Users, waitingForAcceptance: Boolean): UserVO = {
+  def setWaitingForAcceptance(user: UserState, users: Users, waitingForAcceptance: Boolean): UserState = {
     val nu = user.modify(_.waitingForAcceptance).setTo(waitingForAcceptance)
     users.save(nu)
     nu
   }
 
-  def setUserTalking(user: UserVO, users: Users, talking: Boolean): UserVO = {
-    val nv = user.modify(_.voiceUser.talking).setTo(talking)
-    users.save(nv)
-    nv
+  def setUserTalking(voiceUserId: String, users: Users, talking: Boolean): Option[VoiceUserState] = {
+    VoiceUsers.setUserTalking(users.voiceUsers, voiceUserId, talking)
   }
 
-  def setUserMuted(user: UserVO, users: Users, muted: Boolean): UserVO = {
-    val talking: Boolean = if (muted) false else user.voiceUser.talking
-    val nv = user.modify(_.voiceUser.muted).setTo(muted).modify(_.voiceUser.talking).setTo(talking)
-    users.save(nv)
-    nv
+  def setUserMuted(voiceUserId: String, users: Users, muted: Boolean): Option[VoiceUserState] = {
+    VoiceUsers.setUserMuted(users.voiceUsers, voiceUserId, muted)
   }
 
-  def resetVoiceUser(user: UserVO, users: Users): UserVO = {
+  def resetVoiceUser(user: UserVO, users: Users): VoiceUserState = {
     val vu = new VoiceUser(user.id, user.id, user.name, user.name,
       joined = false, locked = false, muted = false, talking = false, user.avatarURL, listenOnly = false)
 
@@ -236,20 +249,48 @@ object Users {
 }
 
 class Users {
-  private var users: collection.immutable.HashMap[String, UserVO] = new collection.immutable.HashMap[String, UserVO]
+  private var users: collection.immutable.HashMap[String, UserState] = new collection.immutable.HashMap[String, UserState]
 
-  private def toVector: Vector[UserVO] = users.values.toVector
+  // Collection of users that left the meeting. We keep a cache of the old users state to recover in case
+  // the user reconnected by refreshing the client. (ralam june 13, 2017)
+  private var usersCache: collection.immutable.HashMap[String, UserState] = new collection.immutable.HashMap[String, UserState]
 
-  private def save(user: UserVO): UserVO = {
-    users += user.id -> user
+  private val voiceUsers = new VoiceUsers
+
+  private def toVector: Vector[UserState] = users.values.toVector
+
+  private def save(user: UserState): UserState = {
+    users += user.intId -> user
     user
   }
 
-  private def remove(id: String): Option[UserVO] = {
-    val user = users.get(id)
-    user foreach (u => users -= id)
-    user
+  private def remove(id: String): Option[UserState] = {
+    for {
+      user <- users.get(id)
+    } yield {
+      users -= id
+      saveToCache(user)
+      user
+    }
   }
+
+  private def saveToCache(user: UserState): Unit = {
+    usersCache += user.intId -> user
+  }
+
+  private def removeFromCache(intId: String): Option[UserState] = {
+    for {
+      user <- usersCache.get(intId)
+    } yield {
+      usersCache -= intId
+      user
+    }
+  }
+
+  private def findUserFromCache(intId: String): Option[UserState] = {
+    usersCache.values.find(u => u.intId == intId)
+  }
+
 }
 
 case class UserIdAndName(id: String, name: String)

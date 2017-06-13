@@ -4,6 +4,8 @@ import com.softwaremill.quicklens.modify
 
 object UsersState {
   def findWithIntId(users: UsersState, intId: String): Option[UserState] = users.toVector.find(u => u.intId == intId)
+  def findWithExtId(users: UsersState, extId: String): Option[UserState] = users.toVector.find(u => u.extId == extId)
+
   def findModerators(users: UsersState): Vector[UserState] = users.toVector.filter(u => u.role == Roles.MODERATOR_ROLE)
   def findPresenters(users: UsersState): Vector[UserState] = users.toVector.filter(u => u.role == Roles.PRESENTER_ROLE)
   def findViewers(users: UsersState): Vector[UserState] = users.toVector.filter(u => u.role == Roles.VIEWER_ROLE)
@@ -17,9 +19,16 @@ object UsersState {
       case None => false
     }
   }
+
+  def usersList(users: UsersState): Vector[UserState] = users.toVector
+
   def numUsers(users: UsersState): Int = users.toVector.size
 
   def usersWhoAreNotPresenter(users: UsersState): Vector[UserState] = users.toVector filter (u => u.presenter == false)
+
+  def getCurrentPresenter(users: UsersState): Option[UserState] = {
+    users.toVector.find(u => u.presenter)
+  }
 
   def unbecomePresenter(users: UsersState, intId: String) = {
     for {
@@ -35,8 +44,8 @@ object UsersState {
     } yield users.save(user)
   }
 
-  def isModerator(id: String, users: Users): Boolean = {
-    Users.findWithId(id, users) match {
+  def isModerator(id: String, users: UsersState): Boolean = {
+    findWithIntId(users, id) match {
       case Some(user) => return user.role == Roles.MODERATOR_ROLE && !user.waitingForAcceptance
       case None => return false
     }

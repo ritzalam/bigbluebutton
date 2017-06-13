@@ -111,3 +111,7 @@ case class UserJoinedVoiceConfToClientEvtMsg(header: BbbClientMsgHeader, body: U
 case class UserJoinedVoiceConfToClientEvtMsgBody(intId: String, voiceUserId: String, callerName: String,
                                                  callerNum: String, muted: Boolean,
                                                  talking: Boolean, callingWith: String, listenOnly: Boolean)
+
+object UserLeftVoiceConfToClientEvtMsg { val NAME = "UserLeftVoiceConfToClientEvtMsg" }
+case class UserLeftVoiceConfToClientEvtMsg(header: BbbClientMsgHeader, body: UserLeftVoiceConfToClientEvtMsgBody) extends BbbCoreMsg
+case class UserLeftVoiceConfToClientEvtMsgBody(intId: String, voiceUserId: String)

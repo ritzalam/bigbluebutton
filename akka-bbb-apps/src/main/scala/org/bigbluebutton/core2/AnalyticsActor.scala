@@ -10,7 +10,7 @@ object AnalyticsActor {
 
 class AnalyticsActor extends Actor with ActorLogging {
 
-  val TAG = "-- analytics -- "
+  val TAG = "-- analytics --"
 
   def receive = {
     case msg: BbbCommonEnvCoreMsg => handleBbbCommonEnvCoreMsg(msg)
@@ -19,7 +19,7 @@ class AnalyticsActor extends Actor with ActorLogging {
 
   def logMessage(msg: BbbCommonEnvCoreMsg): Unit = {
     val json = JsonUtil.toJson(msg)
-    log.info(TAG + json)
+    log.info(TAG + json + TAG)
   }
 
   def handleBbbCommonEnvCoreMsg(msg: BbbCommonEnvCoreMsg): Unit = {

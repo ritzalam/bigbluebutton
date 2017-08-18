@@ -25,6 +25,7 @@ package org.bigbluebutton.main.model.users
 	import flash.events.NetStatusEvent;
 	import flash.events.SecurityErrorEvent;
 	import flash.events.TimerEvent;
+	import flash.external.ExternalInterface;
 	import flash.net.NetConnection;
 	import flash.net.Responder;
 	import flash.utils.Timer;
@@ -399,7 +400,11 @@ package org.bigbluebutton.main.model.users
 
         public function connect():void {
             var intMeetingId: String = LiveMeeting.inst().meeting.internalId;
-                
+            
+            if (ExternalInterface.available) {
+              ExternalInterface.call("BBB.loginToDeepstream", intMeetingId);
+            }
+            
             try {
                 var appURL:String = _applicationOptions.uri;
                 var pattern:RegExp = /(?P<protocol>.+):\/\/(?P<server>.+)\/(?P<app>.+)/;

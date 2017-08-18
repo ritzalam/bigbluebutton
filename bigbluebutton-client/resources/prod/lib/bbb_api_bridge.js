@@ -588,6 +588,14 @@
       broadcast(bbbEvent);
     }
 
+    const dsclient = deepstream('192.168.23.53:6020')
+    
+    BBB.loginToDeepstream = function(meetingId) {
+    console.log("***** LOGGING TO DS " + meetingId)
+        dsclient.login()
+        dsclient.event.subscribe("foo-bar", console.log(data))
+    }
+
     
     // Flag to indicate that the SWF file has been loaded and ready to handle calls.
     var swfReady = false;

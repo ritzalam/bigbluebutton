@@ -94,7 +94,9 @@ class FromAkkaAppsMsgSenderActor(msgSender: MessageSender)
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
       //==================================================================
 
-      case _ => msgSender.send(fromAkkaAppsRedisChannel, json)
+      case _ =>
+        msgSender.send(fromAkkaAppsRedisChannel, json)
+        msgSender.sendToDS("foo-bar", json)
     }
   }
 }

@@ -2,7 +2,7 @@ package org.bigbluebutton
 
 import akka.event.Logging
 import akka.actor.ActorSystem
-import org.bigbluebutton.endpoint.redis.{ AppsRedisSubscriberActor, KeepAliveRedisPublisher, RedisPublisher, RedisRecorderActor }
+import org.bigbluebutton.endpoint.redis._
 import org.bigbluebutton.core._
 import org.bigbluebutton.core.pubsub.receivers.RedisMessageReceiver
 import org.bigbluebutton.core.bus._
@@ -22,9 +22,6 @@ object Boot extends App with SystemConfiguration {
 
   val outGW = new OutMessageGatewayImp(outBus2)
 
-  val redisPublisher = new RedisPublisher(system)
-  val msgSender = new MessageSender(redisPublisher)
-
   val redisRecorderActor = system.actorOf(RedisRecorderActor.props(system), "redisRecorderActor")
 
   recordingEventBus.subscribe(redisRecorderActor, outMessageChannel)
@@ -32,9 +29,8 @@ object Boot extends App with SystemConfiguration {
 
   val bbbMsgBus = new BbbMsgRouterEventBus
 
-  val fromAkkaAppsMsgSenderActorRef = system.actorOf(FromAkkaAppsMsgSenderActor.props(msgSender))
   val analyticsActorRef = system.actorOf(AnalyticsActor.props())
-  outBus2.subscribe(fromAkkaAppsMsgSenderActorRef, outBbbMsgMsgChannel)
+
   outBus2.subscribe(redisRecorderActor, recordServiceMessageChannel)
 
   outBus2.subscribe(analyticsActorRef, outBbbMsgMsgChannel)
@@ -48,5 +44,11 @@ object Boot extends App with SystemConfiguration {
 
   val redisSubscriberActor = system.actorOf(AppsRedisSubscriberActor.props(redisMsgReceiver, incomingJsonMessageBus), "redis-subscriber")
 
+  val redisPublisher = new RedisPublisher(system)
   val keepAliveRedisPublisher = new KeepAliveRedisPublisher(system, redisPublisher)
+
+  val deepstreamClientSender = new BbbDeepstreamClientSender(deepstreamServer)
+  val msgSender = new MessageSender(redisPublisher, deepstreamClientSender)
+  val fromAkkaAppsMsgSenderActorRef = system.actorOf(FromAkkaAppsMsgSenderActor.props(msgSender))
+  outBus2.subscribe(fromAkkaAppsMsgSenderActorRef, outBbbMsgMsgChannel)
 }

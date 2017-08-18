@@ -90,7 +90,7 @@ libraryDependencies += "org.scalatest" % "scalatest_2.12" % "3.0.3" % "test"
 
 libraryDependencies += "org.mockito" % "mockito-core" % "2.7.22" % "test"
 
-
+libraryDependencies += "io.deepstream" % "deepstream.io-client-java" % "2.2.2"
 
 
 import com.typesafe.sbt.SbtScalariform

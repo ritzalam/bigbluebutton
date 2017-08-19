@@ -1,6 +1,7 @@
 package org.bigbluebutton.endpoint.redis
 
-import io.deepstream.{ DeepstreamClient }
+import com.google.gson.Gson
+import io.deepstream.DeepstreamClient
 
 class BbbDeepstreamClientSender(server: String) {
   println("***** Logging into Deepstream!")
@@ -14,7 +15,7 @@ class BbbDeepstreamClientSender(server: String) {
   }
 
   def send(topic: String, json: String): Unit = {
-    println("**** Sending to DS")
+    println("**** Sending to DS " + json)
     client.event.emit("foo-bar", json)
   }
 }

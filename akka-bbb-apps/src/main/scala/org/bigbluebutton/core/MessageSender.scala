@@ -6,7 +6,7 @@ class MessageSender(publisher: RedisPublisher, dsclient: BbbDeepstreamClientSend
 
   def send(channel: String, data: String) {
     publisher.publish(channel, data)
-
+    //dsclient.send("foo-bar", data)
   }
 
   def sendToDS(topic: String, data: String): Unit = {

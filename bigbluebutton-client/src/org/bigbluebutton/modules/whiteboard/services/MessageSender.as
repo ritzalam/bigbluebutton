@@ -43,7 +43,7 @@ package org.bigbluebutton.modules.whiteboard.services
 				function(status:String):void { // status - On error occurred
 					LOGGER.error(status);
 				},
-				JSON.stringify(message)
+				message
 			);
 		}
 		
@@ -60,7 +60,7 @@ package org.bigbluebutton.modules.whiteboard.services
 				function(status:String):void { // status - On error occurred
 					LOGGER.error(status); 
 				},
-				JSON.stringify(message)
+				message
 			);
 		}
 		
@@ -81,7 +81,7 @@ package org.bigbluebutton.modules.whiteboard.services
 				function(status:String):void { // status - On error occurred
 					LOGGER.error(status);
 				},
-				JSON.stringify(message)
+				message
 			);
 		}
 		
@@ -102,7 +102,7 @@ package org.bigbluebutton.modules.whiteboard.services
 				function(status:String):void { // status - On error occurred
 					LOGGER.error(status);
 				},
-				JSON.stringify(message)
+				message
 			);
 		}
 		
@@ -119,7 +119,7 @@ package org.bigbluebutton.modules.whiteboard.services
 				function(status:String):void { // status - On error occurred
 					LOGGER.error(status);
 				},
-				JSON.stringify(message)
+				message
 			);
 		}
 		
@@ -143,14 +143,14 @@ package org.bigbluebutton.modules.whiteboard.services
 			};
 			
 			var _nc:ConnectionManager = BBB.initConnectionManager();
-			_nc.sendMessage2x(
+			_nc.sendMessage2xR5(
 				function(result:String):void { // On successful result
 					// LogUtil.debug(result);
 				},
 				function(status:String):void { // status - On error occurred
 					LOGGER.error(status);
 				},
-				JSON.stringify(message)
+				message
 			);
 		}
 		
@@ -174,7 +174,7 @@ package org.bigbluebutton.modules.whiteboard.services
 				function(status:String):void { // status - On error occurred
 					LOGGER.error(status);
 				},
-				JSON.stringify(message)
+				message
 			);
       
 		}
@@ -199,7 +199,7 @@ package org.bigbluebutton.modules.whiteboard.services
         function(status:String):void { // status - On error occurred
           //LOGGER.error(status);
         },
-        JSON.stringify(message)
+        message
       );
     }
   }

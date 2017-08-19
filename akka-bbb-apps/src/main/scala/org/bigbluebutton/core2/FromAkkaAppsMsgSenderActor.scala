@@ -54,49 +54,66 @@ class FromAkkaAppsMsgSenderActor(msgSender: MessageSender)
       // Whiteboard
       case SendWhiteboardAnnotationEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsWbRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case SendCursorPositionEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsWbRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case ClearWhiteboardEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsWbRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case UndoWhiteboardEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsWbRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
 
       // Chat
       case SendPublicMessageEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsChatRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case ClearPublicChatHistoryEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsChatRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
 
       // Presentation
       case PresentationConversionCompletedEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case SetCurrentPageEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case ResizeAndMovePageEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case RemovePresentationEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case SetCurrentPresentationEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
 
       // Breakout
       case UpdateBreakoutUsersEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case BreakoutRoomsListEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case BreakoutRoomJoinURLEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case BreakoutRoomsTimeRemainingUpdateEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case BreakoutRoomStartedEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       case MeetingTimeRemainingUpdateEvtMsg.NAME =>
         msgSender.send(fromAkkaAppsPresRedisChannel, json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
       //==================================================================
 
       case _ =>
         msgSender.send(fromAkkaAppsRedisChannel, json)
-        msgSender.sendToDS("foo-bar", json)
+        msgSender.sendToDS("foo-bar", JsonUtil.toJson(msg.core))
     }
   }
 }

@@ -56,5 +56,5 @@ trait SystemConfiguration {
   lazy val maxNumberOfNotes = Try(config.getInt("sharedNotes.maxNumberOfNotes")).getOrElse(3)
   lazy val maxNumberOfUndos = Try(config.getInt("sharedNotes.maxNumberOfUndos")).getOrElse(30)
 
-  lazy val deepstreamServer = Try(config.getString("deepstreamServer")).getOrElse("10.130.218.89:6020")
+  lazy val deepstreamServer = Try(config.getString("deepstreamServer")).getOrElse("192.168.246.131:6080")
 }

@@ -45,6 +45,10 @@ package org.bigbluebutton.core.managers {
             connDelegate.disconnect(onUserAction);
         }
 
+        public function onMessageFromDS(msg: Object): void {
+          connDelegate.onMessageFromDS(msg);
+        }
+        
         public function addMessageListener(listener:IMessageListener):void {
             connDelegate.addMessageListener(listener);
         }
@@ -59,6 +63,10 @@ package org.bigbluebutton.core.managers {
 
         public function sendMessage2x(onSuccess:Function, onFailure:Function, message:Object = null):void {
             connDelegate.sendMessage2x(onSuccess, onFailure, message);
+        }
+        
+        public function sendMessage2xR5(onSuccess:Function, onFailure:Function, message:Object = null):void {
+          connDelegate.sendMessage2xR5(onSuccess, onFailure, message);
         }
 
         public function forceClose():void {

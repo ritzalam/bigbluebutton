@@ -161,6 +161,25 @@ package org.bigbluebutton.main.model.users
             }
         }
 
+        public function onMessageFromDS(msg: Object): void {
+        //  trace("*** From DS: " + msg);
+            var map:Object = JSON.parse(msg as String);  
+            var header: Object = map.header as Object;
+            var body: Object = map.body as Object;
+            
+            var messageName: String = header.name
+
+            if (!LiveMeeting.inst().me.authTokenValid && (messageName == "ValidateAuthTokenRespMsg")) {
+              handleValidateAuthTokenReply2x(body)
+            } else if (messageName == "validateAuthTokenTimedOut") {
+              handleValidateAuthTokenTimedOut(map)
+            } else if (LiveMeeting.inst().me.authTokenValid) {
+              notifyListeners(messageName, map);
+            } else {
+              LOGGER.debug("Ignoring message=[{0}] as our token hasn't been validated yet.", [messageName]);
+            }
+        }
+        
         public function onMessageFromServer2x(messageName:String, msg:String):void {
           if (messageName != "SendCursorPositionEvtMsg" &&
             messageName != "UpdateBreakoutUsersEvtMsg" &&
@@ -176,15 +195,15 @@ package org.bigbluebutton.main.model.users
             
             var msgName: String = header.name
              
-          if (!LiveMeeting.inst().me.authTokenValid && (messageName == "ValidateAuthTokenRespMsg")) {
-            handleValidateAuthTokenReply2x(body)
-          } else if (messageName == "validateAuthTokenTimedOut") {
-            handleValidateAuthTokenTimedOut(msg)
-          } else if (LiveMeeting.inst().me.authTokenValid) {
-            notifyListeners(messageName, map);
-          } else {
-            LOGGER.debug("Ignoring message=[{0}] as our token hasn't been validated yet.", [messageName]);
-          } 
+//          if (!LiveMeeting.inst().me.authTokenValid && (messageName == "ValidateAuthTokenRespMsg")) {
+ //           handleValidateAuthTokenReply2x(body)
+ //         } else if (messageName == "validateAuthTokenTimedOut") {
+  //          handleValidateAuthTokenTimedOut(msg)
+   //       } //else if (LiveMeeting.inst().me.authTokenValid) {
+            //notifyListeners(messageName, map);
+          //} else {
+          //  LOGGER.debug("Ignoring message=[{0}] as our token hasn't been validated yet.", [messageName]);
+          //} 
         }
 
         public function onMessageFromServer(messageName:String, msg:Object):void {
@@ -233,7 +252,7 @@ package org.bigbluebutton.main.model.users
                         LOGGER.error(x + " : " + status[x]);
                     } 
                 },
-                JSON.stringify(message)
+                message
             ); //_netConnection.call      
             
             _validateTokenTimer = new Timer(10000, 1);
@@ -242,6 +261,19 @@ package org.bigbluebutton.main.model.users
         }
 
         public function sendMessage2x(onSuccess:Function, onFailure:Function, json:Object):void {
+          
+          if (ExternalInterface.available) {
+            ExternalInterface.call("BBB.sendToDeepstream", json);
+          }
+        }
+        
+
+        public function sendMessage2xR5(onSuccess:Function, onFailure:Function, json:Object):void {
+          
+          sendMessage2xOld(onSuccess, onFailure, JSON.stringify(json));
+        }
+        
+        public function sendMessage2xOld(onSuccess:Function, onFailure:Function, json:Object):void {
 
             var service: String = "onMessageFromClient";
 

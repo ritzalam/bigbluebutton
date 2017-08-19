@@ -51,4 +51,6 @@ object Boot extends App with SystemConfiguration {
   val msgSender = new MessageSender(redisPublisher, deepstreamClientSender)
   val fromAkkaAppsMsgSenderActorRef = system.actorOf(FromAkkaAppsMsgSenderActor.props(msgSender))
   outBus2.subscribe(fromAkkaAppsMsgSenderActorRef, outBbbMsgMsgChannel)
+
+  val dsRx = new DeepstreamClientReceiver(incomingJsonMessageBus, deepstreamServer)
 }

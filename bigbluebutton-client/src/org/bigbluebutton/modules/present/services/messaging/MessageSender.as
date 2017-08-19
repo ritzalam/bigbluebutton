@@ -42,7 +42,7 @@ package org.bigbluebutton.modules.present.services.messaging
       _nc.sendMessage2x(
         function(result:String):void { },
         function(status:String):void { LOGGER.error(status); },
-        JSON.stringify(message)
+        message
       );
     }
     
@@ -56,7 +56,7 @@ package org.bigbluebutton.modules.present.services.messaging
       _nc.sendMessage2x(
         function(result:String):void { },
         function(status:String):void { LOGGER.error(status); },
-        JSON.stringify(message)
+        message
       );
     }
     
@@ -70,7 +70,7 @@ package org.bigbluebutton.modules.present.services.messaging
       _nc.sendMessage2x(
         function(result:String):void { },
         function(status:String):void { LOGGER.error(status); },
-        JSON.stringify(message)
+        message
       );
     }
     
@@ -84,7 +84,7 @@ package org.bigbluebutton.modules.present.services.messaging
       _nc.sendMessage2x(
         function(result:String):void { },
         function(status:String):void { LOGGER.error(status); },
-        JSON.stringify(message)
+        message
       );
     }
     
@@ -98,7 +98,7 @@ package org.bigbluebutton.modules.present.services.messaging
       _nc.sendMessage2x(
         function(result:String):void { },
         function(status:String):void { LOGGER.error(status); },
-        JSON.stringify(message)
+        message
       );
     }
   }

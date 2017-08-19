@@ -516,7 +516,13 @@
       }
     }
 
-
+    BBB.onMessageFromDS = function(data) {
+      var swfObj = getSwfObj();
+      if (swfObj) {
+        swfObj.onMessageFromDS(data);
+      }
+    }
+    
     // Third-party JS apps should use this to query if the BBB SWF file is ready to handle calls.
     BBB.isSwfClientReady = function() {
       return swfReady;
@@ -588,14 +594,23 @@
       broadcast(bbbEvent);
     }
 
-    const dsclient = deepstream('192.168.23.53:6020')
+    const dsclient = deepstream('192.168.246.131:6080')
     
     BBB.loginToDeepstream = function(meetingId) {
-    console.log("***** LOGGING TO DS " + meetingId)
+        console.log("***** LOGGING TO DS " + meetingId)
         dsclient.login()
-        dsclient.event.subscribe("foo-bar", console.log(data))
+        dsclient.event.subscribe("foo-bar", function (data) {
+         // console.log(data);
+          BBB.onMessageFromDS(data);
+          })
+    }
+    
+    BBB.sendToDeepstream = function(data) {
+      //  console.log(data);
+        dsclient.event.emit("from-client", data)
     }
 
+    
     
     // Flag to indicate that the SWF file has been loaded and ready to handle calls.
     var swfReady = false;

@@ -35,16 +35,20 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
   <fx:Script>
     <![CDATA[
       import com.asfusion.mate.events.Dispatcher;
-
+      
       import mx.managers.PopUpManager;
-
-      import org.bigbluebutton.util.i18n.ResourceUtil;
+      
+      import org.bigbluebutton.core.model.LiveMeeting;
       import org.bigbluebutton.modules.sharednotes.events.SharedNotesEvent;
+      import org.bigbluebutton.util.i18n.ResourceUtil;
 
+      [Bindable]
+      private var sharedNoteTitle: String = "";
+      
       private function btnNew_clickHandler(event:MouseEvent):void {
         btnNew.enabled = false;
         var e:SharedNotesEvent = new SharedNotesEvent(SharedNotesEvent.CREATE_ADDITIONAL_NOTES_REQUEST_EVENT);
-        if (textInput.text != ResourceUtil.getInstance().getString('bbb.sharedNotes.title')) {
+        if (textInput.text != sharedNoteTitle) {
           e.noteName = textInput.text;
         }
 
@@ -55,6 +59,8 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
       }
 
       private function onCreationComplete():void {
+        sharedNoteTitle = ResourceUtil.getInstance().getString('bbb.sharedNotes.title') + " " + LiveMeeting.inst().sharedNotes.nextNoteId();
+        
         textInput.setFocus();
       }
 
@@ -69,7 +75,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
           restrict="a-zA-Z0-9 "
           maxChars="20"
           width="100%"
-          text="{ResourceUtil.getInstance().getString('bbb.sharedNotes.title')}"/>
+          text="{sharedNoteTitle}"/>
       <mx:Button id="btnNew"
           click="btnNew_clickHandler(event)"
           styleName="sharedNotesNewButtonStyle"

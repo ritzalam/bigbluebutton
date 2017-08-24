@@ -16,31 +16,15 @@
  * with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.bigbluebutton.main.model.options {
-	import org.bigbluebutton.core.Options;
+package org.bigbluebutton.common {
+	import mx.managers.IFocusManagerComponent;
 
-	public class LoggingOptions extends Options {
+	import spark.components.Label;
 
-		[Bindable]
-		public var enabled:Boolean = true;
-
-		[Bindable]
-		public var logTarget:String = "trace";
-
-		[Bindable]
-		public var level:String = "info";
-
-		[Bindable]
-		public var format:String = "{dateUTC} {time} :: {name} :: [{logLevel}] {message}";
-
-		[Bindable]
-		public var logPattern:String = ".*";
-
-		[Bindable]
-		public var uri:String = "";
-
-		public function LoggingOptions() {
-			name = "logging";
+	public class AdvancedLabel extends Label implements IFocusManagerComponent {
+		public function AdvancedLabel() {
+			super();
 		}
+
 	}
 }

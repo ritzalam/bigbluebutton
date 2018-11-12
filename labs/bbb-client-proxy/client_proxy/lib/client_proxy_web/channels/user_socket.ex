@@ -3,6 +3,7 @@ defmodule ClientProxyWeb.UserSocket do
 
   ## Channels
   # channel "room:*", ClientProxyWeb.RoomChannel
+  channel "client:*", ClientProxyWeb.ClientChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

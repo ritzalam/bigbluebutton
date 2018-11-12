@@ -16,20 +16,11 @@ defmodule ClientProxy.Subscriber do
   def init(:ok) do
       IO.puts("************* INIT **************")
       {:ok, pubsub} = Redix.PubSub.start_link()
-      {:ok, subs} = Redix.PubSub.subscribe(pubsub, "to-akka-apps-redis-channel", self())
-      IO.puts(inspect subs)
-      IO.puts("************* SUBSCRIBED **************")
       {:ok, %{pubsub: pubsub}}
   end
 
   def handle_cast({:subscribe, %{client: client, channel: channel}}, state) do
     {:ok, subs} = Redix.PubSub.subscribe(state.pubsub, channel, client)
-    {:noreply, state}
-  end
-
-  def handle_info({_, _, _, :message, message}, state) do
-    #IO.puts(inspect msg)
-    #ClientProxy.Publisher.send(message.payload)
     {:noreply, state}
   end
 

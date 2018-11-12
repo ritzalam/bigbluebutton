@@ -9,9 +9,16 @@ import css from "../css/app.css"
 //
 // Import dependencies
 //
-
+//import "phoenix_html"
 
 // Import local files
 //
-// Local files can be imported directly using relative paths, for example:
+// Local files can be imported directly using relative
+// paths "./socket" or full ones "web/static/js/socket".
+
 // import socket from "./socket"
+
+import socket from "./socket"
+import MsgBus from "./msgbus"
+
+MsgBus.init(socket)

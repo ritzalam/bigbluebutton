@@ -28,6 +28,7 @@ defmodule ClientProxy.Client do
   def handle_info({_, _, _, :message, message}, state) do
     IO.puts(inspect message)
     #ClientProxy.Publisher.send(message.payload)
+    ClientProxyWeb.Endpoint.broadcast!("users_socket:" <> "foo", "new_msg", message.payload)
     {:noreply, state}
   end
 

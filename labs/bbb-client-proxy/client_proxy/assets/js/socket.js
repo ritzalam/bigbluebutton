@@ -9,7 +9,7 @@
 import {Socket} from "phoenix"
 
 let socket = new Socket("ws://10.130.218.38:4000/socket", {
-  params: {token: window.userToken},
+  params: {token: "foo" /*window.userToken*/},
   logger: (kind, msg, data) => { console.log(`${kind}: ${msg}`, data) }
 })
 

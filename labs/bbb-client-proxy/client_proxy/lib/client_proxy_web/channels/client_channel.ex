@@ -1,9 +1,9 @@
 defmodule ClientProxyWeb.ClientChannel do
   use ClientProxyWeb, :channel
 
-  def join("client:" <> auth_token, _params, socket) do
+  def join("client:" <> auth_token, _params, socket) do    
     :timer.send_interval(5_000, :ping)
-    {:ok, socket}
+    {:ok, assign(socket, :user_id, auth_token)}
   end
 
   def handle_info(:ping, socket) do

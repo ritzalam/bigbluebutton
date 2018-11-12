@@ -12,8 +12,11 @@ defmodule ClientProxy.Application do
       ClientProxyWeb.Endpoint,
       # Starts a worker by calling: ClientProxy.Worker.start_link(arg)
       # {ClientProxy.Worker, arg},
+      ClientProxy.Publisher,
       ClientProxy.Subscriber,
-      ClientProxy.Publisher
+      #ClientProxy.PubSub,
+      {Registry, keys: :unique, name: Registry.Client},
+      ClientProxy.ClientSupervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

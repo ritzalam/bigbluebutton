@@ -15,6 +15,10 @@ let MsgBus = {
       console.log("Received ping message from server.")
     })
 
+    clientChannel.on("new_msg", (resp) => {
+      console.log("Received new_msg message from server." + resp)
+    })
+
     clientChannel.join()
       .receive("ok", resp => {
         console.log(resp)

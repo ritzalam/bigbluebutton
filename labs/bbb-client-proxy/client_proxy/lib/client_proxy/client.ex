@@ -27,8 +27,9 @@ defmodule ClientProxy.Client do
 
   def handle_info({_, _, _, :message, message}, state) do
     IO.puts(inspect message)
-    #ClientProxy.Publisher.send(message.payload)
-    ClientProxyWeb.Endpoint.broadcast!("users_socket:" <> "foo", "new_msg", message.payload)
+    ClientProxyWeb.Endpoint.broadcast("client:" <> "foo", "new_msg", Poison.decode!(message.payload))
+    #ClientProxyWeb.Endpoint.broadcast("users_socket:" <> "foo", "disconnect", %{})
+
     {:noreply, state}
   end
 
@@ -36,7 +37,10 @@ defmodule ClientProxy.Client do
     {:stop, {:shutdown, :timeout}, state_data}
   end
 
-  def terminate(_reason, _state), do: :ok
+  def terminate(reason, _state) do
+    IO.puts("terminate client #{reason}")
+    :ok
+  end
 
 
 end

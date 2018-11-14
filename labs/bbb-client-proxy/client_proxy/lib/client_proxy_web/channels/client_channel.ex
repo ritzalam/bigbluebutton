@@ -17,9 +17,10 @@ defmodule ClientProxyWeb.ClientChannel do
   end
     
   def handle_out("new_msg", payload, socket) do
-    IO.puts(inspect payload)
+    msg_count = socket.assigns[:msg_count] || 1
+    IO.puts(msg_count)
     push(socket, "new_msg", payload)
-    {:noreply, socket}
+    {:noreply, assign(socket, :msg_count, msg_count + 1)}
   end
 
   def terminate(reason, _state) do

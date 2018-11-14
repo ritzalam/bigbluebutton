@@ -7,7 +7,7 @@ let MsgBus = {
   onReady(socket, authToken) {
     let lastSeenId = 0
 
-    var ul = document.getElementById('msg-list');        // list of messages.
+    var ul = document.getElementById('msg-count');        // list of messages.
 
     let clientChannel = socket.channel("client:" + authToken, () => {
       return {last_seen_id: lastSeenId}
@@ -19,9 +19,7 @@ let MsgBus = {
 
     clientChannel.on("new_msg", (resp) => {
       lastSeenId++;
-      var li = document.createElement("li"); // creaet new list item DOM element
-      li.innerHTML = '<b>' + lastSeenId + '</b> <br/>'; // set li contents
-      ul.appendChild(li); 
+      ul.innerHTML = '<b>' + lastSeenId + '</b>'; // set li contents
     })
 
     clientChannel.join()

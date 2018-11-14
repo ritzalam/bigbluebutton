@@ -16,7 +16,7 @@ defmodule ClientProxy.Client do
   def add_player(game, name) when is_binary(name), do:
     GenServer.call(game, {:add_player, name})
 
-  def handle_call({:add_player, name}, _from, state_data) do
+  def handle_call({:add_player, _name}, _from, state_data) do
       {:reply, :ok, state_data}
   end
 

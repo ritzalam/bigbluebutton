@@ -15,7 +15,7 @@ defmodule ClientProxy.Publisher do
 
   def init(_opts) do
       IO.puts("************* PUBLISHER INIT **************")
-      {:ok, pubsub} = Redix.PubSub.start_link()
+      #{:ok, pubsub} = Redix.PubSub.start_link()
       {:ok, client} = Redix.start_link()
       IO.puts(inspect client)
       IO.puts("************* PUBLISHER INITED **************")

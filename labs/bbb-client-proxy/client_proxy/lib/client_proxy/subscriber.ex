@@ -20,7 +20,7 @@ defmodule ClientProxy.Subscriber do
   end
 
   def handle_cast({:subscribe, %{client: client, channel: channel}}, state) do
-    {:ok, subs} = Redix.PubSub.subscribe(state.pubsub, channel, client)
+    {:ok, _subs} = Redix.PubSub.subscribe(state.pubsub, channel, client)
     {:noreply, state}
   end
 

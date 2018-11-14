@@ -22,7 +22,7 @@ defmodule ClientProxyWeb.ClientChannel do
     {:noreply, socket}
   end
 
-  def terminate(reason, state) do
+  def terminate(reason, _state) do
     IO.puts("TERMINATING #{inspect reason}")
     :ok
   end

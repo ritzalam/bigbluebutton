@@ -27,7 +27,8 @@ defmodule ClientProxy.Client do
 
   def handle_info({_, _, _, :message, message}, state) do
     IO.puts(inspect message)
-    ClientProxyWeb.Endpoint.broadcast("client:" <> "foo", "new_msg", Poison.decode!(message.payload))
+    rx_msg = Poison.decode!(message.payload)
+    ClientProxyWeb.Endpoint.broadcast("client:" <> "foo", "new_msg", rx_msg["core"])
     #ClientProxyWeb.Endpoint.broadcast("users_socket:" <> "foo", "disconnect", %{})
 
     {:noreply, state}

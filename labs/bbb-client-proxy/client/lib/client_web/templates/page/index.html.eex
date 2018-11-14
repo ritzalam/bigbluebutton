@@ -1,0 +1,11 @@
+<section class="phx-hero">
+  <h1><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h1>
+  <p>A productive web framework that<br/>does not compromise speed and maintainability.</p>
+</section>
+
+<section class="row">
+  <!-- The list of messages will appear here: -->
+  <ul id="msg-list" class="row" style="list-style: none; min-height:200px;
+    border: 1px solid #e5e5e5; margin: 10px; padding: 10px;">
+  </ul>
+</section>

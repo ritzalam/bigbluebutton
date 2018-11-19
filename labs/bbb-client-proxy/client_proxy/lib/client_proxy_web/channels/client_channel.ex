@@ -5,7 +5,14 @@ defmodule ClientProxyWeb.ClientChannel do
 
   def join("client:" <> auth_token, _params, socket) do    
     :timer.send_interval(5_000, :ping)
+    send(self, {:after_join, auth_token})
     {:ok, assign(socket, :user_id, auth_token)}
+  end
+
+  def handle_info({:after_join, auth_token}, socket) do
+    {:ok, client} = ClientProxy.ClientSupervisor.start_client(auth_token)
+    ClientProxy.Subscriber.subscribe(client, "from-akka-apps-wb-redis-channel")
+    {:noreply, socket}
   end
 
   def handle_info(:ping, socket) do

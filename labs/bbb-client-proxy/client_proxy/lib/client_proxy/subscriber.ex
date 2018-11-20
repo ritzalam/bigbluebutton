@@ -13,10 +13,19 @@ defmodule ClientProxy.Subscriber do
     GenServer.cast(@name, {:subscribe, %{client: client, channel: channel}})
   end
 
+  def unsubscribe(client, channel) do
+    GenServer.cast(@name, {:unsubscribe, %{client: client, channel: channel}})
+  end
+
   def init(:ok) do
       IO.puts("************* INIT **************")
       {:ok, pubsub} = Redix.PubSub.start_link()
       {:ok, %{pubsub: pubsub}}
+  end
+
+  def handle_cast({:unsubscribe, %{client: client, channel: channel}}, state) do
+    {:ok, _subs} = Redix.PubSub.unsubscribe(state.pubsub, channel, client)
+    {:noreply, state}
   end
 
   def handle_cast({:subscribe, %{client: client, channel: channel}}, state) do

@@ -14,7 +14,7 @@ defmodule ClientProxy.Application do
       # {ClientProxy.Worker, arg},
       ClientProxy.Publisher,
       ClientProxy.Subscriber,
-      #ClientProxy.PubSub,
+      ClientProxy.DataProxy,
       {Registry, keys: :unique, name: Registry.Client},
       ClientProxy.ClientSupervisor
     ]

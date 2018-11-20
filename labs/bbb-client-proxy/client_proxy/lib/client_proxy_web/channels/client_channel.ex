@@ -1,17 +1,19 @@
 defmodule ClientProxyWeb.ClientChannel do
   use ClientProxyWeb, :channel
 
+  alias ClientProxy.Client
+
   intercept ["new_msg"]
 
   def join("client:" <> auth_token, _params, socket) do    
     :timer.send_interval(5_000, :ping)
-    send(self, {:after_join, auth_token})
+    send(self(), {:after_join, auth_token})
     {:ok, assign(socket, :user_id, auth_token)}
   end
 
   def handle_info({:after_join, auth_token}, socket) do
     {:ok, client} = ClientProxy.ClientSupervisor.start_client(auth_token)
-    ClientProxy.Subscriber.subscribe(client, "from-akka-apps-wb-redis-channel")
+    ClientProxy.Client.get_auth_token_info(client, auth_token)
     {:noreply, socket}
   end
 
@@ -34,5 +36,7 @@ defmodule ClientProxyWeb.ClientChannel do
     IO.puts("TERMINATING #{inspect reason}")
     :ok
   end
+
+  defp via("client:" <> auth_token), do: Client.via_tuple(auth_token)
 
 end

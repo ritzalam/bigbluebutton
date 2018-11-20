@@ -8,16 +8,17 @@ defmodule ClientProxy.Client do
     GenServer.start_link(__MODULE__, name, name: via_tuple(name))
 
   def init(name) do
-    #send(self(), {:set_state, name})
-
-    {:ok, name}
+    {:ok, %{name: name}}
   end
 
-  def add_player(game, name) when is_binary(name), do:
-    GenServer.call(game, {:add_player, name})
+  def get_auth_token_info(client, auth_token) when is_binary(auth_token), do:
+    GenServer.call(client, {:get_auth_token_info, auth_token})
 
-  def handle_call({:add_player, _name}, _from, state_data) do
-      {:reply, :ok, state_data}
+  def handle_call({:get_auth_token_info, auth_token}, _from, state_data) do
+    result = ClientProxy.DataProxy.get_auth_token_info(auth_token)
+    ClientProxy.Subscriber.subscribe(self(), result.meetingid)
+    ClientProxy.Subscriber.subscribe(self(), result.meetingid <> ":" <> result.userid)
+    {:reply, :ok, state_data}
   end
 
   def handle_info({_, _, _, :subscribed, message}, state) do
@@ -28,9 +29,7 @@ defmodule ClientProxy.Client do
   def handle_info({_, _, _, :message, message}, state) do
     #IO.puts(inspect message)
     rx_msg = Poison.decode!(message.payload)
-    ClientProxyWeb.Endpoint.broadcast("client:" <> "foo", "new_msg", rx_msg["core"])
-    #ClientProxyWeb.Endpoint.broadcast("users_socket:" <> "foo", "disconnect", %{})
-
+    ClientProxyWeb.Endpoint.broadcast("client:" <> state.name, "new_msg", rx_msg["core"])
     {:noreply, state}
   end
 

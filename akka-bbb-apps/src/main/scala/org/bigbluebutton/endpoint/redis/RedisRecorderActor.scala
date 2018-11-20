@@ -45,6 +45,20 @@ class RedisRecorderActor(val system: ActorSystem)
     case _                        => // do nothing
   }
 
+  private def handleUserRegisteredRespMsg(m: UserRegisteredRespMsg): Unit = {
+    val meetingIdUserId = collection.immutable.HashMap(
+      "meetingId" -> m.body.meetingId,
+      "userId" -> m.body.userId)
+    val key = "client:auth_token" + COLON + m.body.authToken
+
+    println("************* STORING DATA FOR " + key)
+
+    for {
+      _ <- redis.hmset(key.mkString, meetingIdUserId)
+      result <- redis.expire(key.mkString, keysExpiresInSec)
+    } yield result
+  }
+
   private def handleBbbCommonEnvCoreMsg(msg: BbbCommonEnvCoreMsg): Unit = {
     msg.core match {
       // Chat
@@ -75,6 +89,7 @@ class RedisRecorderActor(val system: ActorSystem)
       case m: UserEmojiChangedEvtMsg                => handleUserEmojiChangedEvtMsg(m)
       case m: UserBroadcastCamStartedEvtMsg         => handleUserBroadcastCamStartedEvtMsg(m)
       case m: UserBroadcastCamStoppedEvtMsg         => handleUserBroadcastCamStoppedEvtMsg(m)
+      case m: UserRegisteredRespMsg                 => handleUserRegisteredRespMsg(m)
 
       // Voice
       case m: UserJoinedVoiceConfToClientEvtMsg     => handleUserJoinedVoiceConfToClientEvtMsg(m)

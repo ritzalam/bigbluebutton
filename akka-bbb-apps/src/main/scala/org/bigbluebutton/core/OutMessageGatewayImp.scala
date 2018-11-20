@@ -1,7 +1,7 @@
 package org.bigbluebutton.core
 
 import org.bigbluebutton.SystemConfiguration
-import org.bigbluebutton.common2.msgs.BbbCommonEnvCoreMsg
+import org.bigbluebutton.common2.msgs.{ BbbCommonEnvCoreMsg, UserRegisteredRespMsg }
 import org.bigbluebutton.core.bus._
 
 object OutMessageGatewayImp {
@@ -19,6 +19,22 @@ class OutMessageGatewayImp(
   }
 
   def record(msg: BbbCommonEnvCoreMsg): Unit = {
+    msg.core match {
+      case m: UserRegisteredRespMsg =>
+      // do nothing
+      case _ =>
+        outBus2.publish(BbbOutMessage(recordServiceMessageChannel, msg))
+    }
     outBus2.publish(BbbOutMessage(recordServiceMessageChannel, msg))
   }
+
+  def storeClientAuthToken(msg: BbbCommonEnvCoreMsg): Unit = {
+    msg.core match {
+      case m: UserRegisteredRespMsg =>
+        outBus2.publish(BbbOutMessage(recordServiceMessageChannel, msg))
+      case _ => // do nothing
+    }
+
+  }
+
 }

@@ -7,4 +7,6 @@ trait OutMessageGateway {
   def send(msg: BbbCommonEnvCoreMsg): Unit
 
   def record(msg: BbbCommonEnvCoreMsg): Unit
+
+  def storeClientAuthToken(msg: BbbCommonEnvCoreMsg): Unit
 }

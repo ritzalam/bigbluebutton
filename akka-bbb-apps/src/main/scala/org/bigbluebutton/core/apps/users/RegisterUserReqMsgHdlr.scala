@@ -13,11 +13,11 @@ trait RegisterUserReqMsgHdlr {
 
   def handleRegisterUserReqMsg(msg: RegisterUserReqMsg): Unit = {
 
-    def buildUserRegisteredRespMsg(meetingId: String, userId: String, name: String, role: String): BbbCommonEnvCoreMsg = {
+    def buildUserRegisteredRespMsg(meetingId: String, userId: String, name: String, role: String, authToken: String): BbbCommonEnvCoreMsg = {
       val routing = collection.immutable.HashMap("sender" -> "bbb-apps-akka")
       val envelope = BbbCoreEnvelope(UserRegisteredRespMsg.NAME, routing)
       val header = BbbCoreHeaderWithMeetingId(UserRegisteredRespMsg.NAME, meetingId)
-      val body = UserRegisteredRespMsgBody(meetingId, userId, name, role)
+      val body = UserRegisteredRespMsgBody(meetingId, userId, name, role, authToken)
       val event = UserRegisteredRespMsg(header, body)
       BbbCommonEnvCoreMsg(envelope, event)
     }
@@ -34,7 +34,8 @@ trait RegisterUserReqMsgHdlr {
     log.info("Register user success. meetingId=" + liveMeeting.props.meetingProp.intId
       + " userId=" + msg.body.extUserId + " user=" + regUser)
 
-    val event = buildUserRegisteredRespMsg(liveMeeting.props.meetingProp.intId, regUser.id, regUser.name, regUser.role)
+    val event = buildUserRegisteredRespMsg(liveMeeting.props.meetingProp.intId, regUser.id,
+      regUser.name, regUser.role, regUser.authToken)
     outGW.send(event)
 
     def notifyModeratorsOfGuestWaiting(guests: Vector[GuestWaiting], users: Users2x, meetingId: String): Unit = {

@@ -16,7 +16,7 @@ case class RegisterUserReqMsgBody(meetingId: String, intUserId: String, name: St
 object UserRegisteredRespMsg { val NAME = "UserRegisteredRespMsg" }
 case class UserRegisteredRespMsg(header: BbbCoreHeaderWithMeetingId,
                               body: UserRegisteredRespMsgBody) extends BbbCoreMsg
-case class UserRegisteredRespMsgBody(meetingId: String, userId: String, name: String, role: String)
+case class UserRegisteredRespMsgBody(meetingId: String, userId: String, name: String, role: String, authToken: String)
 
 object ValidateAuthTokenReqMsg {
   val NAME = "ValidateAuthTokenReqMsg"

@@ -6,6 +6,8 @@ defmodule ClientProxy.Client do
   @from_akka_apps_chat "from-akka-apps-chat-redis-channel"
   @from_akka_apps_pres "from-akka-apps-pres-redis-channel"
 
+  @on_msg_from_server "on-msg-from-server"
+
   def via_tuple(name), do: {:via, Registry, {Registry.Client, name}}
 
   def start_link(name) when is_binary(name), do:
@@ -42,7 +44,13 @@ defmodule ClientProxy.Client do
   def handle_info({_, _, _, :message, message}, state) do
     #IO.puts(inspect message)
     rx_msg = Poison.decode!(message.payload)
-    ClientProxyWeb.Endpoint.broadcast("client:" <> state.name, "new_msg", rx_msg["core"])
+    envelope = rx_msg["envelope"]["routing"]
+    #IO.puts("ENVELOPE: #{inspect envelope}")
+    body = rx_msg["core"]
+    process_message(envelope, body, state)
+    #IO.puts("#{envelope["name"]} #{envelope["routing"]["msgType"]}")
+    
+    #ClientProxyWeb.Endpoint.broadcast("client:" <> state.name, "new_msg", rx_msg["core"])
     {:noreply, state}
   end
 
@@ -60,5 +68,20 @@ defmodule ClientProxy.Client do
     :ok
   end
 
+  defp process_message(%{"meetingId" => meetingid, "msgType" => "DIRECT", "userId" => userid}, body, state) do
+    IO.puts("PUBLISHING DIRECT MESSAGE")
+    channel = "client:" <> state.name # meetingid <> ":" <> userid
+    ClientProxyWeb.Endpoint.broadcast(channel, @on_msg_from_server, body)
+  end
+
+  defp process_message(%{"meetingId" => meetingid, "msgType" => "BROADCAST_TO_MEETING"}, body, state) do
+    IO.puts("PUBLISHING BROADCAST MESSAGE")
+    channel = "client:" <> state.name #meetingid
+    ClientProxyWeb.Endpoint.broadcast(channel, @on_msg_from_server, body)
+  end
+
+  defp process_message(envelope, body, _) do
+    IO.puts("NOT PROCESSING MESSAGE #{inspect envelope}")
+  end
 
 end

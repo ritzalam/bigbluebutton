@@ -1,8 +1,11 @@
 defmodule ClientProxy.Publisher do
   use GenServer
 
+  @to_akka_apps "to-akka-apps-redis-channel"
+  
   # for a singleton specific to this node
   @name :redis_publisher
+
 
   def start_link(opts) do
     IO.puts("************* PUBLISHER START_LINK **************")
@@ -24,7 +27,7 @@ defmodule ClientProxy.Publisher do
   
   def handle_cast({:send, message}, state) do
     IO.puts("SENDING #{message}")
-    Redix.command!(state.client, ["PUBLISH", "FOO-FOO", message]) 
+    Redix.command!(state.client, ["PUBLISH", @to_akka_apps, message]) 
     {:noreply, state}
   end
 

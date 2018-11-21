@@ -5,6 +5,8 @@ defmodule ClientProxyWeb.ClientChannel do
 
   intercept ["new_msg"]
 
+    defp via("client:" <> auth_token), do: Client.via_tuple(auth_token)
+
   def join("client:" <> auth_token, _params, socket) do    
     :timer.send_interval(5_000, :ping)
     send(self(), {:after_join, auth_token})
@@ -24,11 +26,16 @@ defmodule ClientProxyWeb.ClientChannel do
     
     {:noreply, assign(socket, :count, count + 1)}
   end
+
+  def handle_in("msg-from-client", msg, socket) do
+    IO.puts("from client: #{inspect msg}")
+    {:noreply, socket}
+  end
     
   def handle_out("new_msg", payload, socket) do
     msg_count = socket.assigns[:msg_count] || 1
-    IO.puts(msg_count)
-    push(socket, "new_msg", payload)
+    #IO.puts(msg_count)
+    push(socket, "on-msg-from-server", payload)
     {:noreply, assign(socket, :msg_count, msg_count + 1)}
   end
 
@@ -39,6 +46,6 @@ defmodule ClientProxyWeb.ClientChannel do
     :ok
   end
 
-  defp via("client:" <> auth_token), do: Client.via_tuple(auth_token)
+
 
 end

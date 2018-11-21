@@ -14,7 +14,9 @@ defmodule ClientProxy.ClientSupervisor do
     Supervisor.start_child(__MODULE__, [name])
 
   def stop_client(name) do
-    Supervisor.terminate_child(__MODULE__, pid_from_name(name))    
+    #Supervisor.terminate_child(__MODULE__, pid_from_name(name))    
+    [{client, _}] = Registry.lookup(Registry.Client, name)
+    GenServer.stop(client, :normal)
   end
 
   defp pid_from_name(name) do

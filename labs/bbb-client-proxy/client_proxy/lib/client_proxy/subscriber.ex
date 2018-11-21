@@ -24,7 +24,8 @@ defmodule ClientProxy.Subscriber do
   end
 
   def handle_cast({:unsubscribe, %{client: client, channel: channel}}, state) do
-    {:ok, _subs} = Redix.PubSub.unsubscribe(state.pubsub, channel, client)
+    :ok = Redix.PubSub.unsubscribe(state.pubsub, channel, client)
+    IO.puts("UNSUBSCRIBED from #{channel}")
     {:noreply, state}
   end
 

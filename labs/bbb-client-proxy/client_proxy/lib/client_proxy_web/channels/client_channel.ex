@@ -32,8 +32,10 @@ defmodule ClientProxyWeb.ClientChannel do
     {:noreply, assign(socket, :msg_count, msg_count + 1)}
   end
 
-  def terminate(reason, _state) do
+  def terminate(reason, socket) do
     IO.puts("TERMINATING #{inspect reason}")
+    IO.puts("TERMINATING #{inspect socket}")
+    ClientProxy.ClientSupervisor.stop_client(socket.assigns.user_id)
     :ok
   end
 

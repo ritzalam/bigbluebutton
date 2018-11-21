@@ -1,7 +1,7 @@
 let MsgBus = {
   init(socket){
     socket.connect()
-    this.onReady(socket, "foo")
+    this.onReady(socket, "etyonsqqjcdh")
   },
 
   onReady(socket, authToken) {
@@ -9,25 +9,45 @@ let MsgBus = {
 
     var ul = document.getElementById('msg-count');        // list of messages.
 
-    let clientChannel = socket.channel("client:" + authToken, () => {
+    let meetingChannel = socket.channel("client:foo", () => {
       return {last_seen_id: lastSeenId}
     })
 
-    clientChannel.on("ping", (resp) => {
+    meetingChannel.on("ping", (resp) => {
       console.log("Received ping message from server.")
     })
 
-    clientChannel.on("new_msg", (resp) => {
+    meetingChannel.on("on-msg-from-server", (resp) => {
       lastSeenId++;
       ul.innerHTML = '<b>' + lastSeenId + '</b>'; // set li contents
+      //clientChannel.push('msg-from-client', resp)
     })
 
-    clientChannel.join()
+    meetingChannel.join()
       .receive("ok", resp => {
         console.log(resp)
       })
       .receive("error", reason => console.log("joined failed", reason) )
 
+    let userChannel = socket.channel("client:foo:bar", () => {
+      return {last_seen_id: lastSeenId}
+    })
+
+    userChannel.on("ping", (resp) => {
+      console.log("Received ping message from server.")
+    })
+
+    userChannel.on("on-msg-from-server", (resp) => {
+      lastSeenId++;
+      ul.innerHTML = '<b>' + lastSeenId + '</b>'; // set li contents
+      //clientChannel.push('msg-from-client', resp)
+    })
+
+    userChannel.join()
+      .receive("ok", resp => {
+        console.log(resp)
+      })
+      .receive("error", reason => console.log("joined failed", reason) )
   }
 
 }

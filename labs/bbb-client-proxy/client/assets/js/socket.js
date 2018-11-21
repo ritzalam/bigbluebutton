@@ -8,8 +8,8 @@
 // from the params if you are not using authentication.
 import {Socket} from "phoenix"
 
-let socket = new Socket("ws://10.130.218.38:4000/socket", {
-  params: {token: "foo" /*window.userToken*/},
+let socket = new Socket("ws://192.168.216.128:4000/socket", {
+  params: {token: "etyonsqqjcdh" /*window.userToken*/},
   logger: (kind, msg, data) => { console.log(`${kind}: ${msg}`, data) }
 })
 

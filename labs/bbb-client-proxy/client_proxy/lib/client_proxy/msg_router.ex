@@ -62,13 +62,13 @@ defmodule ClientProxy.MsgRouter do
 
   defp process_message(%{"meetingId" => meetingid, "msgType" => "DIRECT", "userId" => userid}, body, state) do
     #IO.puts("PUBLISHING DIRECT MESSAGE")
-    channel = meetingid <> ":" <> userid
+    channel = "client" <> ":" <> meetingid <> ":" <> userid
     ClientProxyWeb.Endpoint.broadcast(channel, @on_msg_from_server, body)
   end
 
   defp process_message(%{"meetingId" => meetingid, "msgType" => "BROADCAST_TO_MEETING"}, body, state) do
     #IO.puts("PUBLISHING BROADCAST MESSAGE")
-    channel = meetingid
+    channel = "client" <> ":" <> meetingid
     ClientProxyWeb.Endpoint.broadcast(channel, @on_msg_from_server, body)
   end
 

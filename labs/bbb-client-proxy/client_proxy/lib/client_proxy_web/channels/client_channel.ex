@@ -14,7 +14,7 @@ defmodule ClientProxyWeb.ClientChannel do
   end
 
   def handle_info({:after_join, auth_token}, socket) do
-    #{:ok, client} = ClientProxy.ClientSupervisor.start_client(auth_token)
+    {:ok, client} = ClientProxy.ClientSupervisor.start_client(auth_token)
     #ClientProxy.Client.get_auth_token_info(client, auth_token)
     {:noreply, socket}
   end
@@ -42,7 +42,7 @@ defmodule ClientProxyWeb.ClientChannel do
   def terminate(reason, socket) do
     IO.puts("TERMINATING #{inspect reason}")
     IO.puts("TERMINATING #{inspect socket}")
-    #ClientProxy.ClientSupervisor.stop_client(socket.assigns.user_id)
+    ClientProxy.ClientSupervisor.stop_client(socket.assigns.user_id)
     :ok
   end
 

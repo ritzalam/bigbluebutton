@@ -1,15 +1,17 @@
 defmodule ClientProxy.Client do
   use GenServer, start: {__MODULE__, :start_link, []}, restart: :transient
 
+  alias ClientProxy.MsgBridge
 
   @on_msg_from_server "on-msg-from-server"
 
-  def via_tuple(name, value), do: {:via, Registry, {Registry.Client, name, value}}
+  def via_tuple(name), do: {:via, Registry, {Registry.Client, name}}
 
-  def start_link(name, value) when is_binary(name), do:
-    GenServer.start_link(__MODULE__, name, name: via_tuple(name, value))
+  def start_link(name) when is_binary(name), do:
+    GenServer.start_link(__MODULE__, name, name: via_tuple(name))
 
   def init(name) do
+    :ok = MsgBridge.subscribe("foo")
     {:ok, %{name: name}}
   end
 
@@ -40,6 +42,11 @@ defmodule ClientProxy.Client do
     #IO.puts("#{envelope["name"]} #{envelope["routing"]["msgType"]}")
     
     #ClientProxyWeb.Endpoint.broadcast("client:" <> state.name, "new_msg", rx_msg["core"])
+    {:noreply, state}
+  end
+
+  def handle_info({topic, name, event}, state) do
+    IO.puts "the new moving average of the store is #{inspect name}"
     {:noreply, state}
   end
 

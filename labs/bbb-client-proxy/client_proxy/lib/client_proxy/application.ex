@@ -15,8 +15,9 @@ defmodule ClientProxy.Application do
       ClientProxy.Publisher,
       ClientProxy.Subscriber,
       ClientProxy.MsgRouter,
-      {Registry, keys: :duplicate, name: Registry.Client},
-      ClientProxy.ClientSupervisor
+      {Registry, keys: :unique, name: Registry.Client},
+      ClientProxy.ClientSupervisor,
+      EventSubscriber.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

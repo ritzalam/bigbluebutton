@@ -67,9 +67,10 @@ defmodule ClientProxy.MsgRouter do
   end
 
   defp process_message(%{"meetingId" => meetingid, "msgType" => "BROADCAST_TO_MEETING"}, body, state) do
-    #IO.puts("PUBLISHING BROADCAST MESSAGE")
-    channel = "client" <> ":" <> meetingid
-    ClientProxyWeb.Endpoint.broadcast(channel, @on_msg_from_server, body)
+    IO.puts("PUBLISHING BROADCAST MESSAGE")
+    #channel = "client" <> ":" <> meetingid
+    #ClientProxyWeb.Endpoint.broadcast(channel, @on_msg_from_server, body)
+    ClientProxy.MsgBridge.broadcast({"foo", "bar", "baz"})
   end
 
   defp process_message(envelope, body, _) do

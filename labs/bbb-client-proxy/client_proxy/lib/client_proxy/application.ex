@@ -15,7 +15,7 @@ defmodule ClientProxy.Application do
       ClientProxy.Publisher,
       ClientProxy.Subscriber,
       ClientProxy.MsgRouter,
-      {Registry, keys: :unique, name: Registry.Client},
+      {Registry, keys: :duplicate, name: Registry.Client},
       ClientProxy.ClientSupervisor
     ]
 

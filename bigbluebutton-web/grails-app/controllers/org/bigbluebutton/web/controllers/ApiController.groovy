@@ -358,14 +358,11 @@ class ApiController {
       return;
     }
 
-    // We preprend "w_" to our internal meeting Id to indicate that this is a web user.
-    // For users joining using the phone, we will prepend "v_" so it will be easier
-    // to distinguish users who doesn't have a web client. (ralam june 12, 2017)
-    String internalUserID = "w_" + RandomStringUtils.randomAlphanumeric(12).toLowerCase()
+    String internalUserID = paramsProcessorUtil.generateInternalUserId()
 
     String authToken = RandomStringUtils.randomAlphanumeric(12).toLowerCase()
 
-    String sessionToken = RandomStringUtils.randomAlphanumeric(16).toLowerCase()
+    String sessionToken = paramsProcessorUtil.generateSessionToken(meeting.getInternalId(), internalUserID)
 
     String externUserID = params.userID
     if (StringUtils.isEmpty(externUserID)) {
@@ -1223,6 +1220,9 @@ class ApiController {
       reject = true
     } else {
       sessionToken = StringUtils.strip(params.sessionToken)
+      byte[] decodedBytes = java.util.Base64.getUrlDecoder().decode(sessionToken);
+      String decodedUrl = new String(decodedBytes);
+      log.info("Getting ConfigXml for SessionToken = " + decodedUrl)
       log.info("Getting ConfigXml for SessionToken = " + sessionToken)
       if (!session[sessionToken]) {
         reject = true

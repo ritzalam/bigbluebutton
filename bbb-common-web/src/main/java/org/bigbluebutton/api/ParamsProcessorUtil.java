@@ -24,14 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,6 +95,18 @@ public class ParamsProcessorUtil {
 	private Integer userInactivityInspectTimerInMinutes = 120;
 	private Integer userInactivityThresholdInMinutes = 30;
     private Integer userActivitySignResponseDelayInMinutes = 5;
+
+    public String generateInternalUserId() {
+        // We preprend "w_" to our internal meeting Id to indicate that this is a web user.
+        // For users joining using the phone, we will prepend "v_" so it will be easier
+        // to distinguish users who doesn't have a web client. (ralam june 12, 2017)
+        return "w_" + RandomStringUtils.randomAlphanumeric(12).toLowerCase();
+    }
+
+    public String generateSessionToken(String internalMeetingId, String internalUserId) {
+        String origToken = internalMeetingId.concat(":").concat(internalUserId);
+        return Base64.getUrlEncoder().encodeToString(origToken.getBytes());
+    }
 
     private String substituteKeywords(String message, String dialNumber, String telVoice, String meetingName) {
         String welcomeMessage = message;

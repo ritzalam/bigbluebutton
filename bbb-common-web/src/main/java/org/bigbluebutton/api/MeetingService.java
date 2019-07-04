@@ -199,9 +199,9 @@ public class MeetingService implements MessageListener {
     }
   }
 
-  private void kickOffProcessingOfRecording(Meeting m) {
+  private void kickOffProcessingOfRecording(Meeting m, boolean keepEvents) {
     if (m.isRecord() && m.getNumUsers() == 0) {
-      processRecording(m);
+      processRecording(m, keepEvents);
     }
   }
 
@@ -480,7 +480,7 @@ public class MeetingService implements MessageListener {
     recordingService.updateMetaParams(idList, metaParams);
   }
 
-  public void processRecording(Meeting m) {
+  public void processRecording(Meeting m, boolean keepEvents) {
     if (m.isRecord()) {
       Map<String, Object> logData = new HashMap<String, Object>();
       logData.put("meetingId", m.getInternalId());
@@ -493,7 +493,7 @@ public class MeetingService implements MessageListener {
       String logStr = gson.toJson(logData);
 
       log.info(" --analytics-- data={}", logStr);
-      recordingService.startIngestAndProcessing(m.getInternalId());
+      recordingService.startIngestAndProcessing(m.getInternalId(), keepEvents);
     }
   }
 
@@ -568,11 +568,13 @@ public class MeetingService implements MessageListener {
     Meeting m = getMeeting(message.meetingId);
     if (m != null) {
       m.setForciblyEnded(true);
-      processRecording(m);
-      if (keepEvents) {
+
+      if (!m.isRecord() && keepEvents) {
         // The creation of the ended tag must occur after the creation of the
         // recorded tag to avoid concurrency issues at the recording scripts
         recordingService.markAsEnded(m.getInternalId());
+      } else {
+          processRecording(m, keepEvents);
       }
       destroyMeeting(m.getInternalId());
       meetings.remove(m.getInternalId());

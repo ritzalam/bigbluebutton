@@ -111,8 +111,12 @@ public class RecordingService {
         }
     }
 
-    public void startIngestAndProcessing(String meetingId) {
-        String done = recordStatusDir + File.separatorChar + meetingId + ".done";
+    public void startIngestAndProcessing(String meetingId, boolean keepEvents) {
+        String doneFilename = meetingId + ".done";
+        if (keepEvents) {
+            doneFilename = meetingId + ".keep_events.done";
+        }
+        String done = recordStatusDir + File.separatorChar + doneFilename;
 
         File doneFile = new File(done);
         if (!doneFile.exists()) {
@@ -121,7 +125,7 @@ public class RecordingService {
                 if (!doneFile.exists())
                     log.error("Failed to create {} file.", done);
             } catch (IOException e) {
-                log.error("Exception occured when trying to create {} file.", done);
+                log.error("Exception occurred when trying to create {} file.", done);
             }
         } else {
             log.error("{} file already exists.", done);
@@ -134,11 +138,12 @@ public class RecordingService {
         File doneFile = new File(done);
         if (!doneFile.exists()) {
             try {
+                log.info("Writing keep_events done file =" + done);
                 doneFile.createNewFile();
                 if (!doneFile.exists())
                     log.error("Failed to create " + done + " file.");
             } catch (IOException e) {
-                log.error("Exception occured when trying to create {} file.", done);
+                log.error("Exception occurred when trying to create {} file.", done);
             }
         } else {
             log.error(done + " file already exists.");

@@ -23,12 +23,18 @@ require 'rubygems'
 require 'yaml'
 require 'fileutils'
 
-def archive_recorded_meetings(recording_dir)
-  recorded_done_files = Dir.glob("#{recording_dir}/status/recorded/*.done")
-
+def archive_recorded_meetings(recording_dir, recorded_done_files)
+  
   FileUtils.mkdir_p("#{recording_dir}/status/archived")
   recorded_done_files.each do |recorded_done|
     recorded_done_base = File.basename(recorded_done, '.done')
+
+    # We need to trim done files with .keep_events as we don't need it
+    # in the archive step (ralam July 3, 2019)
+    if recorded_done_base.end_with? ".keep_events"
+      recorded_done_base.slice! ".keep_events"
+    end
+
     meeting_id = nil
     break_timestamp = nil
 
@@ -84,28 +90,18 @@ def archive_recorded_meetings(recording_dir)
   end
 end
 
-def keep_events_from_ended_meeting(recording_dir)
-  ended_done_files = Dir.glob("#{recording_dir}/status/ended/*.done")
-  ended_done_files.each do |ended_done|
-    ended_done_base = File.basename(ended_done, '.done')
-    meeting_id = nil
-    break_timestamp = nil
-    if match = /^([0-9a-f]+-[0-9]+)$/.match(ended_done_base)
-      meeting_id = match[1]
-    elsif match = /^([0-9a-f]+-[0-9]+)-([0-9]+)$/.match(ended_done_base)
-      meeting_id = match[1]
-      break_timestamp = match[2]
-    else
-      BigBlueButton.logger.warn("Ended done file for #{ended_done_base} has invalid format")
-      next
-    end
-    if !break_timestamp.nil?
-      ret = BigBlueButton.exec_ret("ruby", "events/events.rb", "-m", meeting_id, '-b', break_timestamp)
-    else
-      ret = BigBlueButton.exec_ret("ruby", "events/events.rb", "-m", meeting_id)
+def keep_events_from_non_recorded_meeting(recording_dir, recorded_done_files)
+  ended_done_dir = "#{recording_dir}/status/ended"
+  recorded_done_files.each do |recorded_done_file|    
+    recorded_done_base = File.basename(recorded_done_file, '.done')
+    if recorded_done_base.end_with? ".keep_events"
+      BigBlueButton.logger.info("keep_events meeting = #{recorded_done_file}")
+      ended_done_file = "#{ended_done_dir}/#{recorded_done_base}.done"
+      FileUtils.touch(ended_done_file)
     end
   end
 end
+
 
 begin
   props = YAML::load(File.open('bigbluebutton.yml'))
@@ -121,12 +117,18 @@ begin
   logger.level = Logger::INFO
   BigBlueButton.logger = logger
 
-  BigBlueButton.logger.debug("Running rap-archive-worker...")
+  BigBlueButton.logger.info("Running rap-archive-worker...")
   
-  archive_recorded_meetings(recording_dir)
-  keep_events_from_ended_meeting(recording_dir)
+  # Hangon to a copy of the done files for the archive step. (ralam July 3, 2019)
+  recorded_done_files = Dir.glob("#{recording_dir}/status/recorded/*.done")
+  # Need another copy for the keep events step so we can inject an ended .done file
+  # to trigger the keep_events process. (ralam July 3, 2019)
+  keep_recorded_done_files = Dir.glob("#{recording_dir}/status/recorded/*.done")
 
-  BigBlueButton.logger.debug("rap-archive-worker done")
+  archive_recorded_meetings(recording_dir, recorded_done_files)
+  keep_events_from_non_recorded_meeting(recording_dir, keep_recorded_done_files)
+
+  BigBlueButton.logger.info("rap-archive-worker done")
 
 rescue Exception => e
   BigBlueButton.logger.error(e.message)

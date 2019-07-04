@@ -1,0 +1,9 @@
+[Unit]
+Description=Run RaP events worker
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=1min
+
+[Install]
+WantedBy=timers.target

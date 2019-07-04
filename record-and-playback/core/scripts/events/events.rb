@@ -24,11 +24,16 @@ require 'logger'
 require 'trollop'
 require 'yaml'
 
-def keep_events(meeting_id, redis_host, redis_port, events_dir, break_timestamp)
+def keep_events(meeting_id, redis_host, redis_port, redis_password, events_dir, break_timestamp)
   BigBlueButton.logger.info("Keeping events for #{meeting_id}")
-  redis = BigBlueButton::RedisWrapper.new(redis_host, redis_port)
+  redis = BigBlueButton::RedisWrapper.new(redis_host, redis_port, redis_password)
   events_archiver = BigBlueButton::RedisEventsArchiver.new redis
-  events_xml = "#{events_dir}/#{meeting_id}/events.xml"
+
+  target_dir = "#{events_dir}/#{meeting_id}"
+  if not FileTest.directory?(target_dir)
+    FileUtils.mkdir_p target_dir
+  end
+  events_xml = "#{target_dir}/events.xml"
   events = events_archiver.store_events(meeting_id, events_xml, break_timestamp)
 end
 
@@ -43,42 +48,24 @@ Trollop::die :meeting_id, "must be provided" if opts[:meeting_id].nil?
 meeting_id = opts[:meeting_id]
 break_timestamp = opts[:break_timestamp]
 
-# This script lives in scripts/archive/steps while bigbluebutton.yml lives in scripts/
 props = YAML::load(File.open('bigbluebutton.yml'))
 recording_dir = props['recording_dir']
-raw_archive_dir = "#{recording_dir}/raw"
 events_dir = props['events_dir']
 redis_host = props['redis_host']
 redis_port = props['redis_port']
+redis_password = props['redis_password']
 log_dir = props['log_dir']
 
-raw_events_xml = "#{raw_archive_dir}/#{meeting_id}/events.xml"
 ended_done_file = "#{recording_dir}/status/ended/#{meeting_id}.done"
-recorded_done_file = "#{recording_dir}/status/recorded/#{meeting_id}.done"
 
 BigBlueButton.logger = Logger.new("#{log_dir}/events.log", 'daily')
 
-# Skip if is recorded and not archived yet
-if File.exist? recorded_done_file
-  BigBlueButton.logger.info("Temporarily skipping #{meeting_id} for archive to finish")
-  exit 0
-end
+keep_events(meeting_id, redis_host, redis_port, redis_password, events_dir, break_timestamp)
 
-target_dir = "#{events_dir}/#{meeting_id}"
-if not FileTest.directory?(target_dir)
-  FileUtils.mkdir_p target_dir
-  if File.exist? raw_events_xml
-    BigBlueButton.logger.info("Copying events from #{raw_events_xml}")
-    events_xml = "#{events_dir}/#{meeting_id}/events.xml"
-    FileUtils.cp(raw_events_xml, events_xml)
-  else
-    keep_events(meeting_id, redis_host, redis_port, events_dir, break_timestamp)
-    # we need to delete the keys here because the sanity phase might not
-    # automatically happen for this recording
-    BigBlueButton.logger.info("Deleting redis keys")
-    redis = BigBlueButton::RedisWrapper.new(redis_host, redis_port)
-    events_archiver = BigBlueButton::RedisEventsArchiver.new(redis)
-    events_archiver.delete_events(meeting_id)
-  end
-  FileUtils.rm ended_done_file
-end
+BigBlueButton.logger.info("Deleting redis keys")
+redis = BigBlueButton::RedisWrapper.new(redis_host, redis_port, redis_password)
+events_archiver = BigBlueButton::RedisEventsArchiver.new(redis)
+events_archiver.delete_events(meeting_id)
+
+FileUtils.rm ended_done_file
+

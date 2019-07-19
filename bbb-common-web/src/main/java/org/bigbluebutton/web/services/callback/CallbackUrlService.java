@@ -174,10 +174,10 @@ public class CallbackUrlService {
 
 			// normally, 3xx is redirect
 			int status = conn.getResponseCode();
-			if (status != HttpURLConnection.HTTP_OK) {
-				if (status == HttpURLConnection.HTTP_MOVED_TEMP
-								|| status == HttpURLConnection.HTTP_MOVED_PERM
-								|| status == HttpURLConnection.HTTP_SEE_OTHER) {
+			if (status < 200 && status >= 300) {
+				if (status == HttpURLConnection.HTTP_MOVED_TEMP /*302*/
+								|| status == HttpURLConnection.HTTP_MOVED_PERM /*301*/
+								|| status == HttpURLConnection.HTTP_SEE_OTHER /*303*/) {
 					String newUrl = conn.getHeaderField("Location");
 					return followRedirect(newUrl, redirectCount + 1, origUrl);
 				} else {

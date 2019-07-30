@@ -303,7 +303,7 @@ class ApiController {
       // BEGIN - backward compatibility
       invalid("invalidMeetingIdentifier",
               "The meeting ID that you supplied did not match any existing meetings",
-              REDIRECT_RESPONSE);
+              REDIRECT_RESPONSE)
       return
       // END - backward compatibility
 
@@ -315,7 +315,7 @@ class ApiController {
     // the createTime mismatch with meeting's createTime, complain
     // In the future, the createTime param will be required
     if (params.createTime != null) {
-      long createTime = 0;
+      long createTime = 0
       try {
         createTime = Long.parseLong(params.createTime)
       } catch (Exception e) {
@@ -499,9 +499,9 @@ class ApiController {
 
     if (!StringUtils.isEmpty(params.redirect)) {
       try {
-        redirectClient = Boolean.parseBoolean(params.redirect);
+        redirectClient = Boolean.parseBoolean(params.redirect)
       } catch (Exception e) {
-        redirectClient = true;
+        redirectClient = true
       }
     }
 
@@ -556,7 +556,18 @@ class ApiController {
       response.addHeader("Cache-Control", "no-cache")
       withFormat {
         xml {
-          render(text: responseBuilder.buildJoinMeeting(us, session[sessionToken], guestStatusVal, destUrl, msgKey, msgValue, RESP_CODE_SUCCESS), contentType: "text/xml")
+          render(
+                  text:
+                          responseBuilder.buildJoinMeeting(
+                                  us,
+                                  session[sessionToken],
+                                  guestStatusVal,
+                                  destUrl,
+                                  msgKey,
+                                  msgValue,
+                                  RESP_CODE_SUCCESS
+                          ),
+                  contentType: "text/xml")
         }
       }
     }

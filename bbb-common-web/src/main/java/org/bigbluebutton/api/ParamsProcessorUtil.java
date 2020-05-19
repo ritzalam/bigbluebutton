@@ -24,14 +24,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,30 +118,34 @@ public class ParamsProcessorUtil {
     private Integer userActivitySignResponseDelayInMinutes = 5;
     private Boolean defaultAllowDuplicateExtUserid = true;
 
-	private String formatConfNum(String s) {
-		if (s.length() == 5) {
-			StringBuilder confNumDash = new StringBuilder(s);
-			confNumDash.insert(2, '-');
-			return confNumDash.toString();
-		} else if (s.length() == 6 || s.length() == 7) {
-			StringBuilder confNumDash = new StringBuilder(s);
-			confNumDash.insert(3, '-');
-			return confNumDash.toString();
-		} else if (s.length() == 8) {
-			StringBuilder confNumDash = new StringBuilder(s);
-			confNumDash.insert(4, '-');
-			return confNumDash.toString();
-		} else if (s.length() == 9) {
-			StringBuilder confNumDash = new StringBuilder(s);
-			confNumDash.insert(3, '-');
-			confNumDash.insert(7, '-');
-			return confNumDash.toString();
-		}
+    private String defaultNumberFormatLocale = "en_US";
+	private String defaultNumberFormatSeparator = "";
 
-		return s;
+	private String formatConfNum(String s, Locale numberFormatLocale, String numberFormatSeparator) {
+		Long confNumL = Long.parseLong(s);
+
+		if ("none".equals(numberFormatSeparator)) {
+			return s;
+		}else	if ("locale".equals(numberFormatSeparator)) {
+			NumberFormat nf = NumberFormat.getInstance(numberFormatLocale);
+			nf.setGroupingUsed(true);
+			return nf.format(confNumL);
+		} else {
+			if (numberFormatSeparator.length() != 1) {
+				return s;
+			} else {
+				String formatPattern = "#,###";
+				DecimalFormatSymbols unusualSymbols = new DecimalFormatSymbols(numberFormatLocale);
+				unusualSymbols.setGroupingSeparator(numberFormatSeparator.charAt(0));
+				DecimalFormat numFormatter = new DecimalFormat(formatPattern, unusualSymbols);
+				numFormatter.setGroupingSize(3);
+				return numFormatter.format(confNumL);
+			}
+		}
 	}
 
-    private String substituteKeywords(String message, String dialNumber, String telVoice, String meetingName) {
+    private String substituteKeywords(String message, String dialNumber, String telVoice,
+                                      String meetingName, Locale numberFormatLocale, String numberFormatSeparator) {
         String welcomeMessage = message;
 
         ArrayList<String> keywordList = new ArrayList<>();
@@ -158,7 +158,8 @@ public class ParamsProcessorUtil {
             if (keyword.equals(DIAL_NUM)) {
                 welcomeMessage = welcomeMessage.replaceAll(DIAL_NUM, dialNumber);
             } else if (keyword.equals(CONF_NUM)) {
-                welcomeMessage = welcomeMessage.replaceAll(CONF_NUM, formatConfNum(telVoice));
+                welcomeMessage = welcomeMessage.replaceAll(CONF_NUM,
+	                formatConfNum(telVoice, numberFormatLocale, numberFormatSeparator));
             } else if (keyword.equals(CONF_NAME)) {
                 welcomeMessage = welcomeMessage.replaceAll(CONF_NAME, meetingName);
             } else if (keyword.equals(SERVER_URL)) {
@@ -367,6 +368,14 @@ public class ParamsProcessorUtil {
             webVoice = telVoice;
         }
 
+        // Get locale to format numbers (e.g. phone num and conf num
+	      Locale numberFormatLocale = processNumberFormatLocale(defaultNumberFormatLocale,
+		      params.get(ApiParams.NUMBER_FORMAT_LOCALE));
+				String numberFormatSeparator = processDefaultNumberFormatSeparator(defaultNumberFormatSeparator,
+					params.get(ApiParams.NUMBER_FORMAT_SEPARATOR));
+
+        System.out.println("************ numberFormatLocale=" + numberFormatLocale);
+
         // Get all the other relevant parameters and generate defaults if none
         // has been provided.
         String dialNumber = processDialNumber(params.get(ApiParams.DIAL_NUMBER));
@@ -389,7 +398,8 @@ public class ParamsProcessorUtil {
         String welcomeMessageTemplate = processWelcomeMessage(
                 params.get(ApiParams.WELCOME), isBreakout);
         String welcomeMessage = substituteKeywords(welcomeMessageTemplate,
-                dialNumber, telVoice, meetingName);
+                dialNumber, telVoice, meetingName,
+	        numberFormatLocale, numberFormatSeparator);
 
         String internalMeetingId = convertToInternalMeetingId(externalMeetingId);
 
@@ -497,7 +507,8 @@ public class ParamsProcessorUtil {
         if (!StringUtils.isEmpty(params.get(ApiParams.MODERATOR_ONLY_MESSAGE))) {
             String moderatorOnlyMessageTemplate = params.get(ApiParams.MODERATOR_ONLY_MESSAGE);
             String moderatorOnlyMessage = substituteKeywords(moderatorOnlyMessageTemplate,
-                    dialNumber, telVoice, meetingName);
+                    dialNumber, telVoice, meetingName,
+	            numberFormatLocale, numberFormatSeparator);
             meeting.setModeratorOnlyMessage(moderatorOnlyMessage);
         }
 
@@ -655,6 +666,37 @@ public class ParamsProcessorUtil {
 		
 	public String processDialNumber(String dial) {
 		return StringUtils.isEmpty(dial) ? defaultDialAccessNumber : dial;	
+	}
+
+	public String processDefaultNumberFormatSeparator(String defaultNumberFormatLocale, String separator) {
+		return StringUtils.isEmpty(separator) ? defaultNumberFormatLocale : separator;
+	}
+
+
+	public Locale processNumberFormatLocale(String defaultNumberFormatLocale, String format) {
+		System.out.println("****** NumberFormatLocale param = " + format);
+		Locale numFormatLocale = null;
+		try {
+			numFormatLocale = Locale.forLanguageTag(defaultNumberFormatLocale);
+		} catch (NullPointerException ex) {
+			System.out.println("****** Exception for default NumberFormatLocale = " + defaultNumberFormatLocale);
+			numFormatLocale = new Locale("en", "US");
+		}
+
+		System.out.println("******default NumberFormatLocale param = " + format);
+
+		if (StringUtils.isEmpty(format)) {
+			System.out.println("******Empty NumberFormatLocale param = " + format);
+			return numFormatLocale;
+		} else {
+			try {
+				System.out.println("****** To Locale NumberFormatLocale param = " + format);
+				return Locale.forLanguageTag(format);
+			} catch (NullPointerException ex) {
+				System.out.println("****** Exception for NumberFormatLocale param = " + format);
+				return numFormatLocale;
+			}
+		}
 	}
 	
 	public String processLogoutUrl(String logoutUrl) {
@@ -1146,5 +1188,13 @@ public class ParamsProcessorUtil {
 
 	public void setAllowDuplicateExtUserid(Boolean allow) {
 		this.defaultAllowDuplicateExtUserid = allow;
+	}
+
+	public void setDefaultNumberFormatLocale(String s) {
+		defaultNumberFormatLocale = s;
+	}
+
+	public void setDefaultNumberFormatSeparator(String s) {
+		defaultNumberFormatSeparator = s;
 	}
 }

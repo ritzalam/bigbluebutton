@@ -70,6 +70,9 @@ public class ApiParams {
     public static final String LOCK_SETTINGS_LOCK_ON_JOIN = "lockSettingsLockOnJoin";
     public static final String LOCK_SETTINGS_LOCK_ON_JOIN_CONFIGURABLE = "lockSettingsLockOnJoinConfigurable";
 
+    public static final String NUMBER_FORMAT_LOCALE = "numberFormatLocale";
+    public static final String NUMBER_FORMAT_SEPARATOR = "numberFormatSeparator";
+
     private ApiParams() {
         throw new IllegalStateException("ApiParams is a utility class. Instanciation is forbidden.");
     }

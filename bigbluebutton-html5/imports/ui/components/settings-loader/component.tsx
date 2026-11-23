@@ -19,6 +19,7 @@ import Auth from '/imports/ui/services/auth';
 import BBBWeb from '/imports/api/bbb-web-api';
 import MeetingStaticDataStore from '/imports/ui/core/singletons/meetingStaticData';
 import { MeetingStaticData } from '/imports/ui/Types/meetingStaticData';
+import { startTelemetry } from '/imports/ui/core/telemetry';
 
 const connectionTimeout = 60000;
 
@@ -98,6 +99,8 @@ const SettingsLoader: React.FC<SettingsLoaderProps> = (props) => {
             } = meeting;
             const settings = clientSettings.clientSettingsJson;
             window.meetingClientSettings = JSON.parse(JSON.stringify(settings));
+            // 4.0 has no deep merge over the client defaults; telemetry's loadConfig falls back per key
+            startTelemetry();
             MeetingStaticDataStore.setMeetingData(staticData);
             setMeetingSettings(settings);
             setLoading(false);
